@@ -1,3 +1,5 @@
 .vscode/*
 .github/*
 .git/*
+greenCan/greenCan/__pycache__/*
+*.pyc
