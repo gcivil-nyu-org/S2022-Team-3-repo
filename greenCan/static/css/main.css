@@ -267,8 +267,8 @@
 }
  @media screen and (max-width: 980px) {
     /* Basic */
-     html, body {
-         overflow-x: hidden;
+    html, body {
+        overflow-x: auto;
     }
 
 	nav#nav, div.nav-brand#logo {
@@ -466,25 +466,32 @@
      body, input, textarea, select {
          font-size: 11pt;
     }
+
+    button, .button {
+        display: block;
+    }
     /* Section/Article */
-     section, article {
+     /* section, article {
          margin-bottom: 2em;
-    }
+    } */
     /* Button */
-     button, .button {
-         display: block;
-         width: 100%;
-    }
-     button.large, .button.large {
-         font-size: 1.25em;
-    }
 }
 /* Small */
  @media screen and (max-width: 360px) {
     /* Basic */
-     body, input, textarea, select {
+    body, input, textarea, select {
          font-size: 10pt;
     }
+
+    body,html {
+        padding-left: 0;
+    }
+
+    button, .button {
+        display: block;
+        width: 100vw;
+    }
+
 }
  button#scrollToTopBtn {
      z-index: 100;
