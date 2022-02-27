@@ -44,6 +44,7 @@ Recycle | greenCan
                 marker.bindTooltip('<b>'+site["name"]+'</b><br/>'+site["phone_number"]+'<br/>'+site["email"], {
                     sticky: true
                 }).addTo(map);            
+                
                 $('#listings').append($("<button class='mb-2 btn' onclick='focusOn("+site['lat']+","+site['long']+")'>"+site['name']+"</button>"));
                 
                 // You card DOM over here

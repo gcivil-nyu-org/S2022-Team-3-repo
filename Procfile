@@ -1,0 +1,1 @@
+web: gunicorn --pythonpath greenCan greenCan.wsgi
