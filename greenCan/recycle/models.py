@@ -3,7 +3,8 @@ from django.db import models
 from django.core.validators import RegexValidator
 
 class ZipCode(models.Model):
-    zip_code = models.CharField(primary_key=True,max_length=5,validators=[RegexValidator(r'^\d{5}$')])
+    id = models.AutoField(primary_key=True,auto_created=True)
+    zip_code = models.CharField(max_length=5,null=False)
     state_id = models.CharField(null=False,max_length=2)
     state = models.CharField(null=False,max_length=100)
     borough = models.CharField(null=False, max_length=13)
