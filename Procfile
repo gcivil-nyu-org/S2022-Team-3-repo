@@ -1,1 +1,1 @@
-web: gunicorn greenCan/greenCan.wsgi
+web: gunicorn --pythonpath greenCan greenCan.wsgi
