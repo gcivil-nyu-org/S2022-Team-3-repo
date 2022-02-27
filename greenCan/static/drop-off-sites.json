@@ -1,0 +1,30 @@
+{
+    "centroid": {
+        "lat": 40.722166,
+        "long": -73.8569656
+    },
+    "sites": [{
+        "name": "xyz drop-off site 1",
+        "lat": 40.723554,
+        "long": -73.727688,
+        "category": "Electronics",
+        "phone_number": "9999999999",
+        "email": "xyz@dsny.nyc.gov"
+    },
+    {
+        "name": "xyz drop-off site 2",
+        "lat": 40.810855,
+        "long": -73.906571,
+        "category": "Textile",
+        "phone_number": "9999999999",
+        "email": "xyz@dsny.nyc.gov"
+    },
+    {
+        "name": "xyz drop-off site 3",
+        "lat": 40.63209,
+        "long": -73.936638,
+        "category": "Food Scrap",
+        "phone_number": "9999999999",
+        "email": "xyz@dsny.nyc.gov"
+    }]
+}
