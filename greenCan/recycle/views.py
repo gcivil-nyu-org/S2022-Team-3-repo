@@ -42,7 +42,7 @@ def min_dist_lat_long(user_location,all_locations):
             df["distance"].iloc[i] = float("inf")
             #dont display inf in sorted list 
     df = df.sort_values(by=['distance'])
-    return df.to_dict()
+    return df.to_json()
 
 
 
