@@ -12,21 +12,30 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import django_heroku
+import os
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# CONFIGS 
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
+
+environ.Env.read_env(BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-#cqhtip#_$ek$ail5(e#=_df_)279o#f)h$md_p38n*ukq1w^_'
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['greenCan.herokuapp.com','greenCan-dev.herokuapp.com','127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1','greencan.herokuapp.com','greencan-dev.herokuapp.com']
 
 
 # Application definition
@@ -74,18 +83,30 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'greenCan.wsgi.application'
 
-
+# print({
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': env('DATABASE_NAME'),
+#         'USER': env('DATABASE_USER'),
+#         'PASSWORD': env('DATABASE_PASSWORD'),
+#         'HOST': env('DATABASE_HOST'),
+#         'PORT': '5432'
+#     })
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'd2boo65k26ke5k',
-        'USER': 'mnhxtuuuttbprh',
-        'PASSWORD': '65c2aa71c3abdf0ef3d2f96468b25cfd993db74e37a371f5577154a40927eb3b',
-        'HOST': 'ec2-54-205-183-19.compute-1.amazonaws.com',
-        'PORT': '5432',
+        'NAME': env('DATABASE_NAME'),
+        'USER': env('DATABASE_USER'),
+        'PASSWORD': env('DATABASE_PASSWORD'),
+        'HOST': env('DATABASE_HOST'),
+        'PORT': '5432'
+        # 'NAME': 'd2boo65k26ke5k',
+        # 'USER': 'mnhxtuuuttbprh',
+        # 'PASSWORD': '65c2aa71c3abdf0ef3d2f96468b25cfd993db74e37a371f5577154a40927eb3b',
+        # 'HOST': 'ec2-54-205-183-19.compute-1.amazonaws.com',
+        # 'PORT': '5432'
     }
 }
 
@@ -114,7 +135,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/New_York'
 
 USE_I18N = True
 

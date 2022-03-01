@@ -1,3 +1,4 @@
 django-heroku
 gunicorn
 django
+django-environ
