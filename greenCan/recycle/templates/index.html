@@ -93,9 +93,17 @@ Recycle | greenCan
     });
 
     function getDropOffSitesZipcode(zipcode){
-        // zipcode is 5 digit zipcode
-        // console.log(zipcode);
-        // write the ajax request over here
+        $.ajax({
+            url: "/recycle/zipcode-search",
+            type: "GET",
+            data: {
+                "zipcode": $('#zipcode').val()
+            },
+
+            success: function (data) {
+                console.log(data)
+            }
+        })
     }
 
     function getDropOffSitesLocations(position){
