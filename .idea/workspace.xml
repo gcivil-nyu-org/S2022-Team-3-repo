@@ -2,8 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d831c992-0f9c-4fbc-a404-e933fa3392e5" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/greenCan/recycle/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/greenCan/recycle/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/greenCan/recycle/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/greenCan/recycle/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/greenCan/recycle/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/greenCan/recycle/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -53,7 +52,7 @@
       <updated>1645913877584</updated>
       <workItem from="1645913883406" duration="6173000" />
       <workItem from="1646013956628" duration="18325000" />
-      <workItem from="1646114051730" duration="4075000" />
+      <workItem from="1646114051730" duration="13767000" />
     </task>
     <servers />
   </component>
