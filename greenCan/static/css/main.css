@@ -23,6 +23,7 @@
 
 .form-control#zipcode{
     text-align: center !important;
+    color: black;
 }
 
 .form-control#zipcode::-webkit-outer-spin-button,
@@ -37,6 +38,21 @@
 .form-control:focus {
     outline: none;
     border-color: #6abe52 !important;
+}
+
+.form-control.is-invalid {
+    outline: none;
+    border: 2px red solid!important;
+    color: red !important;
+}
+
+.invalid-feedback {
+    margin-top: 0.5em;
+    padding: 0;
+    font-size: smaller;
+    line-height: 0.6em;
+    color: red !important;
+    width: 100% !important;
 }
 
 button.btn-rounded {
