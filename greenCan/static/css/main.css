@@ -6,7 +6,58 @@
      min-height: 100vh;
      font-family: 'Roboto', sans-serif;
 }
- .btn-success {
+
+.form-control {
+    -webkit-border-radius: 50px !important;
+    -moz-border-radius: 50px !important;
+    border-radius: 50px !important;
+    border: 1px solid #C4C4C4;
+    box-sizing: border-box;
+    border-radius: 28px;
+    padding: .25em 1em;
+    display: block;
+    width: 30vw;
+    min-width: 200px;
+    height: 40px !important;
+}
+
+.form-control#zipcode{
+    text-align: center !important;
+}
+
+.form-control#zipcode::-webkit-outer-spin-button,
+.form-control#zipcode::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+/* Firefox */
+.form-control#zipcode {
+  -moz-appearance: textfield;
+}
+.form-control:focus {
+    outline: none;
+    border-color: #6abe52 !important;
+}
+
+button.btn-rounded {
+    border-radius: 50px !important;
+    padding: 0.6em 1.4em;
+}
+
+.or-container{
+    background-color: #21212d !important;
+    color: #fff;
+    text-transform: uppercase;
+    line-height: 1.2rem;
+    height: max-content;
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+.btn-success {
      background-color: #6abe52;
 }
  .btn-dark {

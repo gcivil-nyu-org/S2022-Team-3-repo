@@ -26,7 +26,7 @@ class DropOffLocation(models.Model):
     longitude = models.FloatField(null=False)
     items_accepted = models.TextField(null=True)
     type = models.CharField(null=False,max_length=250)
-    public_email = models.EmailField()
+    public_email = models.EmailField(null=True)
     phone_number = models.CharField(max_length=17,null=True)
     street_address = models.TextField(null=False)
 
