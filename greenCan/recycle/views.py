@@ -1,4 +1,3 @@
-
 import pandas as pd
 from geopy import distance
 from django.shortcuts import render
