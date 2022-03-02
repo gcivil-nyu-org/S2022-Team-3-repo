@@ -106,10 +106,10 @@ def search_locations_by_current_location(request):
         state_id = locations[i].zip_code.state_id
         latitude = locations[i].latitude
         longitude = locations[i].longitude
-        items_accepted = locations[i].items_accepted
+        items_accepted = locations[i].items_accepted if locations[i].items_accepted else ''
         category = locations[i].type
-        email = locations[i].public_email
-        phone_number = locations[i].phone_number
+        email = locations[i].public_email if locations[i].public_email else ''
+        phone_number = locations[i].phone_number if locations[i].phone_number else ''
         street_address = locations[i].street_address
         site = {'name': name, 'zip_code': zip_code, 'state_id': state_id, 'latitude': latitude,
                 'longitude': longitude, 'item_accepted': items_accepted, 'type': category,
