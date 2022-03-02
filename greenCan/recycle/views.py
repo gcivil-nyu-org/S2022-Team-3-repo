@@ -16,40 +16,56 @@ def index(request):
 # response for all_locations should be something like :
 # response = requests.get("https://data.cityofnewyork.us/resource/sxx4-xhzg.json")
 def min_dist_lat_long(search_result):
-#     # check if user_location is a zip code or a tuple of latitude/longitude
-#     # if zipcode
+    search_result = search_result
+    # # check if user_location is a zip code or a tuple of latitude/longitude
+    # # if zipcode
     centroid_dict = search_result["centroid"]
     site_dict = search_result["sites"]
 
-#     my_location = (centroid_dict["latitude"], centroid_dict["longitude"])
-#     # try:
-#     #     if(type(user_location)==int):
-#     #         zip = int(user_location)
-#     #         for it in models.ZipCode.objects.filter(zip_code=zip).values():
-#     #             my_location = (it["centroid_latitude"],it["centroid_longitude"])
-#     #     elif(type(user_location)==tuple):
-#     #         latitude,longitude = user_location[0],user_location[1]
-#     #         my_location = (latitude,longitude)
-#     # except:
-#     #     return {"Location could not be found"}
+    my_location = (centroid_dict["latitude"], centroid_dict["longitude"])
+    # # try:
+    # #     if(type(user_location)==int):
+    # #         zip = int(user_location)
+    # #         for it in models.ZipCode.objects.filter(zip_code=zip).values():
+    # #             my_location = (it["centroid_latitude"],it["centroid_longitude"])
+    # #     elif(type(user_location)==tuple):
+    # #         latitude,longitude = user_location[0],user_location[1]
+    # #         my_location = (latitude,longitude)
+    # # except:
+    # #     return {"Location could not be found"}
 
 
-#     # calculate distance for all locations
+    # # calculate distance for all locations
     
-#     df = pd.DataFrame.from_dict(site_dict, orient='columns')
-#     df["distance"] = 0
+    df = pd.DataFrame.from_dict(site_dict, orient='columns')
+    df["distance"] = 0
      
-#     for i in range(len(df)):
-#         try:
-#             site_location = (df["latitude"].iloc[i],df["longitude"].iloc[i])
-#             df["distance"].iloc[i] = distance.distance(my_location,site_location).km
-#         except:
-#             df["distance"].iloc[i] = float("inf")
-#             # dont display inf in sorted list
-#     df = df.sort_values(by=['distance'])
-#     df = df.groupby("type").head(10)
-#     search_result = {"centroid": centroid_dict, 'sites': df.to_json()}
-    search_result = {"centroid": centroid_dict, 'sites': site_dict}
+    for i in range(len(df)):
+        try:
+            site_location = (df["latitude"].iloc[i],df["longitude"].iloc[i])
+            df["distance"].iloc[i] = distance.distance(my_location,site_location).km
+        except:
+            df["distance"].iloc[i] = float("inf")
+            # dont display inf in sorted list
+    df = df.sort_values(by=['distance'])
+    # locations = df
+    # sites = []
+    # for i in range(len(locations)):
+    #     name = locations["name"][i]
+    #     zip_code = locations["zip_code"][i].
+    #     state_id = locations[i].zip_code.state_id
+    #     latitude = locations[i].latitude
+    #     longitude = locations[i].longitude
+    #     items_accepted = locations[i].items_accepted
+    #     category = locations[i].type
+    #     email = locations[i].public_email
+    #     phone_number = locations[i].phone_number
+    #     street_address = locations[i].street_address
+    #     site = {'name': name, 'zip_code': zip_code, 'state_id': state_id, 'latitude': latitude,
+    #             'longitude': longitude, 'item_accepted': items_accepted, 'type': category,
+    #             'email': email, 'phone_number': phone_number, 'street_address': street_address}
+    #     sites.append(site)
+    search_result = {"centroid": centroid_dict, 'sites': eval(df.to_json(orient='records'))}
     return search_result
 
 
