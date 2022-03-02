@@ -9,6 +9,8 @@ Recycle | greenCan
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
 <link rel="stylesheet" href="{% static 'css/map.css' %}" />
+<link rel="stylesheet" href="{% static 'css/filter.css' %}" />
+<link rel="stylesheet" href="{% static 'css/card.css' %}" />
 {% endblock %}
 
 {% block main %}
@@ -30,12 +32,26 @@ Recycle | greenCan
     <button class="btn btn-rounded" id="btn-locate-me">Locate Me</button>
 </div>
 
+<div>
+    <select name="categories" id="categories" onchange = "javascript:filterByCategory(this)">
+        <option value="showing all sites">Showing all sites</option>
+        <!-- <option value="Food Scrap">Food Scrap</option> -->
+        <option value="public recycle bins">Public Recycle Bins</option>
+        <option value="textile">Textile</option>
+        <option value="electronics">Electronics</option>
+        <!-- <option value="Leaf">Leaf</option> -->
+        <!-- <option value="Pharmaceutical and Syringe">Pharmaceutical and Syringe</option>
+        <option value="DSNY Special Waste">DSNY Special Waste</option> -->
+    </select>
+</div>
+
 <div class="row container-fluid px-0 mt-md-2">
     <div class="col-md-8 col-sm-10 col-12 offset-md-0 offset-sm-1 pr-2">
         <div id="map"></div>
     </div>
     <div class="col-md-4 col-sm-10 col-12 offset-md-0 offset-sm-1">
-        <div id="listings" class="mt-2"></div>
+        <div id="listings" class="mt-2 card_frame">
+        </div>
     </div>
 </div>
 
@@ -44,33 +60,88 @@ Recycle | greenCan
 {% block scripts %}
 <script src="{% static 'js/maps.js' %}"></script>
 <script>
-    function markPoints(){
-        $.getJSON("{% static 'drop-off-sites.json' %}", function( data ) {
-            map = L.map('map').setView([data["centroid"]["lat"],data["centroid"]["long"]], 12);
-            L.circle([data["centroid"]["lat"],data["centroid"]["long"]], {radius: 8 * 1609.344, fillColor: '#6ABE52CC', color: '#6ABE52'}).addTo(map);
-            L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=EQtP0E2R31WbTGk6hOcg', {
-                attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
-            }).addTo(map);
-            L.control.scale().addTo(map);
-            var marker;
-            $.each( data["sites"], function( key,site ) {
-                marker = L.marker([site["lat"],site["long"]],{icon: colorCategoryMap[site['category'].toLowerCase()][0]})
-                marker.bindTooltip('<b>'+site["name"]+'</b><br/>'+site["phone_number"]+'<br/>'+site["email"], {
-                    sticky: true
-                }).addTo(map);            
-                
-                $('#listings').append($("<button class='mb-2 btn' onclick='focusOn("+site['lat']+","+site['long']+")'>"+site['name']+"</button>"));
-                
-                // You card DOM over here
+
+    var result = {};
+    var locations = {};
+    function markPoints(locations){
+        if (map){
+            markersLayer.clearLayers();
+        }
+        console.log("here");
+        $('#listings').html('');
+        var marker;
+        $.each(locations, function( key,site ) {
+            marker = L.marker([site["latitude"],site["longitude"]],{icon: colorCategoryMap[site['type'].toLowerCase()][0]})
+            marker.bindTooltip('<b>'+site["name"]+'</b><br/>'+site["stree_address"]+'<br/>'+site['state_id']+' '+site['zip_code'], {
+                sticky: true
+            }).addTo(map);            
             
-            });
-            map.addControl(new customControl());
-            legend.addTo(map);
-            $('.legend').hide();
+            $('#listings').append($('<div class="border_rectangle1"> \
+                    <div class="info_circle_icon_frame"> \
+                      <div class="info_circle_icon"> \
+                        <i class="fa fa-info-circle" style="color: #C4C4C4"></i> \
+                        <div class="overlay">Accepted Items: '+site['type']+'</div> \
+                      </div> \
+                    </div> \
+                    <div class="dhs_donation_site"> \
+                      '+site['name']+' \
+                    </div> \
+                    <div class="map_marker_icon_frame"> \
+                      <div class="map_marker_icon"> \
+                        <i class="fa fa-map-marker" style="color: #C4C4C4"></i> \
+                      </div> \
+                    </div> \
+                    <div class="address"> \
+                      '+site['street_address']+', '+'Manhattan'+', '+ site['state_id'] + ' ' + site['zip_code'] +'  \
+                    </div> \
+                    <div class="phone_icon_frame"> \
+                      <div class="phone_icon"> \
+                        <i class="fa fa-phone" style="color: #C4C4C4"></i> \
+                      </div> \
+                    </div> \
+                    <div class="phone_number"> \
+                      '+site['phone_number']+' \
+                    </div> \
+                    <div class="mail_icon_frame"> \
+                      <div class="mail_icon"> \
+                        <i class="fa fa-envelope" style="color: #C4C4C4"></i> \
+                      </div> \
+                    </div> \
+                    <div class="email"> \
+                      '+site['email']+' \
+                    </div> \
+                    <a class="direction_frame" href="https://www.google.com/maps?saddr=My+Location&daddr='+site['latitude'].toString()+','+site['longitude'].toString()+'" target="_blank"> \
+                      <div class="direction_border"> \
+                      </div> \
+                      <div class="get_direction"> \
+                        Get Directions \
+                      </div> \
+                    </a> \
+                  </div>'));
+            markersLayer.addLayer(marker);
+            // You card DOM over here
+            
         });
     }
     
-    window.onload = function() {markPoints()}
+    function setMap() {
+        map = L.map('map').setView([latitude,longitude], 12);
+        L.circle([latitude,longitude], {radius: 5 * 1609.344, fillColor: '#6ABE52CC', color: '#6ABE52'}).addTo(map);
+        L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=EQtP0E2R31WbTGk6hOcg', {
+            attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
+        }).addTo(map);
+        L.control.scale().addTo(map);
+        markersLayer.addTo(map);
+        map.addControl(new customControl());
+        legend.addTo(map);
+        $('.legend').hide();
+    }
+
+    function loadView() {
+        setMap();   
+    }
+
+    window.onload = function() {loadView()}
 
     function focusOn(lat,long){
         map.flyTo(new L.LatLng(lat, long));
@@ -101,10 +172,29 @@ Recycle | greenCan
         }
     });
 
+    function setData(data){
+        result = Object.entries(data['sites']);
+        locations = result.map(([key, value]) => value);
+        latitude = data['centroid']['lat'];
+        longitude = data['centroid']['long'],
+        markPoints(locations);
+    }
+
     function getDropOffSitesZipcode(zipcode){
-        // zipcode is 5 digit zipcode
-        // console.log(zipcode);
-        // write the ajax request over here
+        $.ajax({
+            url: "/recycle/zipcode-search",
+            type: "GET",
+            data: {
+                "zipcode": $('#zipcode').val()
+            },
+            success: function (data) {
+                if (data['err_flag']==true){
+                    makeInvalid();
+                }else{
+                    setData(data);   
+                }
+            }
+        });
     }
 
     function makeInvalid() {
@@ -118,10 +208,17 @@ Recycle | greenCan
     }
 
     function getDropOffSitesLocations(position){
-        // console.log(position.coords.latitude);
-        // console.log(position.coords.longitude);
-        
-        //write the ajax request over here
+        $.ajax({
+            url: "/recycle/currLoc-search",
+            type: "GET",
+            data: {
+                "latitude": position.coords.latitude,
+                "longitude": position.coords.longitude
+            },
+            success: function (data) {
+                setData(data);
+            }
+        });
     }
 
     $('#btn-locate-me').click(function(){
@@ -130,8 +227,18 @@ Recycle | greenCan
         } else { 
             alert("Geolocation is not supported by this browser.");
         }
-
     });
+    
+    function filterByCategory(obj){
+        var selectedCat = $(obj).val();
+        if(selectedCat == 'showing all sites'){
+            locations = result.map(([key, value]) => value);
+        }
+        else{
+            locations = result.filter(([key, value]) => value.category.toLowerCase() === selectedCat).map(([key, value]) => value);
+        }
+        markPoints(locations);
+    }
 
 </script>
 {% endblock %}
