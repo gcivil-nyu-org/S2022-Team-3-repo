@@ -19,12 +19,14 @@ def min_dist_lat_long(search_result):
     search_result = search_result
     # check if user_location is a zip code or a tuple of latitude/longitude
     # if zipcode
+
     centroid_dict = search_result["centroid"]
     site_dict = search_result["sites"]
 
     my_location = (centroid_dict["latitude"], centroid_dict["longitude"])
     
     # calculate distance for all locations
+    
     df = pd.DataFrame.from_dict(site_dict, orient='columns')
     df["distance"] = 0
      
@@ -36,9 +38,25 @@ def min_dist_lat_long(search_result):
             df["distance"].iloc[i] = float("inf")
             # dont display inf in sorted list
     df = df.sort_values(by=['distance'])
-    # print(eval(df.to_json(orient='records')))
+
+    # locations = df
+    # sites = []
+    # for i in range(len(locations)):
+    #     name = locations["name"][i]
+    #     zip_code = locations["zip_code"][i].
+    #     state_id = locations[i].zip_code.state_id
+    #     latitude = locations[i].latitude
+    #     longitude = locations[i].longitude
+    #     items_accepted = locations[i].items_accepted
+    #     category = locations[i].type
+    #     email = locations[i].public_email
+    #     phone_number = locations[i].phone_number
+    #     street_address = locations[i].street_address
+    #     site = {'name': name, 'zip_code': zip_code, 'state_id': state_id, 'latitude': latitude,
+    #             'longitude': longitude, 'item_accepted': items_accepted, 'type': category,
+    #             'email': email, 'phone_number': phone_number, 'street_address': street_address}
+    #     sites.append(site)
     search_result = {"centroid": centroid_dict, 'sites': eval(df.to_json(orient='records'))}
-    # print(search_result)
     return search_result
 
 @csrf_exempt
