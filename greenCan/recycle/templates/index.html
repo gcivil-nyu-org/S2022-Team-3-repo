@@ -72,7 +72,7 @@ Recycle | greenCan
         var marker;
         $.each(locations, function( key,site ) {
             marker = L.marker([site["latitude"],site["longitude"]],{icon: colorCategoryMap[site['type'].toLowerCase()][0]})
-            marker.bindTooltip('<b>'+site["name"]+'</b><br/>'+site["stree_address"]+'<br/>'+site['state_id']+' '+site['zip_code'], {
+            marker.bindTooltip('<b>'+site["name"]+'</b><br/>'+site["street_address"]+'<br/>'+site['state_id']+' '+site['zip_code'], {
                 sticky: true
             }).addTo(map);            
             var card = '<div class="border_rectangle1" onclick="focusOn('+site['latitude'].toString()+','+site['longitude'].toString()+')"> \
