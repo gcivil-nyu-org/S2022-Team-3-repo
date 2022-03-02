@@ -1,12 +1,9 @@
 
-import requests
 import pandas as pd
 from geopy import distance
-from . import models
 from django.shortcuts import render
 from django.http import JsonResponse
 from .models import *
-import json
 
 
 def index(request):
