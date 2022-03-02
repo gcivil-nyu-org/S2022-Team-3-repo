@@ -47,6 +47,7 @@ def min_dist_lat_long(search_result):
             df["distance"].iloc[i] = float("inf")
             # dont display inf in sorted list
     df = df.sort_values(by=['distance'])
+    df = df.groupby("type").head(10)
     search_result = {"centroid": centroid_dict, 'sites': df.to_json()}
     return search_result
 
