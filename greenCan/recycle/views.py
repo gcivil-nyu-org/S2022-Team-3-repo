@@ -2,6 +2,7 @@ import pandas as pd
 from geopy import distance
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 from .models import *
 
 
@@ -50,6 +51,7 @@ def min_dist_lat_long(search_result):
     return search_result
 
 
+@csrf_exempt
 def search_locations_by_zipcode(request):
     zipcode = request.GET.get('zipcode')
     zip_locations = ZipCode.objects.filter(zip_code=zipcode)
@@ -83,6 +85,7 @@ def search_locations_by_zipcode(request):
         return JsonResponse(sorted_json_data)
 
 
+@csrf_exempt
 def search_locations_by_current_location(request):
     user_lat = request.GET.get('latitude')
     user_long = request.GET.get('longitude')
