@@ -2,3 +2,5 @@ django-heroku
 gunicorn
 django
 django-environ
+pandas
+geopy
