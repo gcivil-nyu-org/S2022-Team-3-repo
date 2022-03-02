@@ -1,5 +1,8 @@
 var map;
-
+var markers = [];
+var markersLayer = new L.LayerGroup();
+var latitude = 40.7128;
+var longitude = -74.0060; 
 var yellowUrl = "/static/images/map-marker/1.svg",
     blueUrl = "/static/images/map-marker/2.svg",
     redUrl = "/static/images/map-marker/3.svg",
