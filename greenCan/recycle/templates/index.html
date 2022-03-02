@@ -103,14 +103,22 @@ Recycle | greenCan
             success: function (data) {
                 console.log(data)
             }
-        })
+        });
     }
 
     function getDropOffSitesLocations(position){
-        // console.log(position.coords.latitude);
-        // console.log(position.coords.longitude);
-        
-        //write the ajax request over here
+        $.ajax({
+            url: "/recycle/currLoc-search",
+            type: "GET",
+            data: {
+                "latitude": position.coords.latitude,
+                "longitude": position.coords.longitude
+            },
+
+            success: function (data) {
+                console.log(data)
+            }
+        });
     }
 
     $('#btn-locate-me').click(function(){
