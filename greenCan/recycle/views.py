@@ -5,6 +5,7 @@ from geopy import distance
 from . import models
 from django.shortcuts import render
 from django.http import JsonResponse
+from .models import *
 import json
 
 
@@ -13,17 +14,17 @@ def index(request):
     return render(request, template, context={})
 
 
-
-#user location is the location of the user i.e in form of latitude,longitude and if zipcode 
+# user location is the location of the user i.e in form of latitude,longitude and if zipcode
 # was entered by the user, then input shall be the centroid of the area
-# response for all_locations should be something like : response = requests.get("https://data.cityofnewyork.us/resource/sxx4-xhzg.json")
+# response for all_locations should be something like :
+# response = requests.get("https://data.cityofnewyork.us/resource/sxx4-xhzg.json")
 def min_dist_lat_long(search_result):
-    #check if user_location is a zip code or a tuple of latitude/longitude
-    #if zipcode
+    # check if user_location is a zip code or a tuple of latitude/longitude
+    # if zipcode
     centroid_dict = search_result["centroid"]
     site_dict = search_result["sites"]
 
-    my_location = (centroid_dict["latitude"],centroid_dict["longitude"])
+    my_location = (centroid_dict["latitude"], centroid_dict["longitude"])
     # try:
     #     if(type(user_location)==int):
     #         zip = int(user_location)
@@ -34,9 +35,9 @@ def min_dist_lat_long(search_result):
     #         my_location = (latitude,longitude)
     # except:
     #     return {"Location could not be found"}
-        
 
-    #calculate distance for all locations
+
+    # calculate distance for all locations
     
     df = pd.DataFrame.from_dict(site_dict, orient='columns')
     df["distance"] = 0
@@ -47,13 +48,10 @@ def min_dist_lat_long(search_result):
             df["distance"].iloc[i] = distance.distance(my_location,site_location).km
         except:
             df["distance"].iloc[i] = float("inf")
-            #dont display inf in sorted list 
+            # dont display inf in sorted list
     df = df.sort_values(by=['distance'])
-    search_result = {"centroid":centroid_dict,'sites':df.to_json()}
+    search_result = {"centroid": centroid_dict, 'sites': df.to_json()}
     return search_result
-
-
-
 
 
 def search_locations_by_zipcode(request):
@@ -64,9 +62,7 @@ def search_locations_by_zipcode(request):
         err_msg = "Please enter a valid NYC zip code"
         return JsonResponse({'err_flag': err_flag, 'err_msg': err_msg})
     else:
-        err_flag = False
         centroid = {'latitude': zip_locations[0].centroid_latitude, 'longitude': zip_locations[0].centroid_longitude}
-        # print(centroid)
         locations = DropOffLocation.objects.all()
         sites = []
         for i in range(locations.count()):
@@ -86,16 +82,16 @@ def search_locations_by_zipcode(request):
             sites.append(site)
 
         search_result = {"centroid": centroid, 'sites': sites}
-        json_data = json.dumps(search_result)
-        # print(json_data)
-        # print(type(json_data))
+        # json_data = json.dumps(search_result)
+        sorted_json_data = min_dist_lat_long(search_result)
+        sorted_json_data['err_flag'] = False
+        return JsonResponse(sorted_json_data)
 
 
 def search_locations_by_current_location(request):
     user_lat = request.GET.get('latitude')
     user_long = request.GET.get('longitude')
     centroid = {'latitude': user_lat, 'longitude': user_long}
-    print(centroid)
     locations = DropOffLocation.objects.all()
     sites = []
     for i in range(locations.count()):
@@ -115,7 +111,8 @@ def search_locations_by_current_location(request):
         sites.append(site)
 
     search_result = {"centroid": centroid, 'sites': sites}
-    json_data = json.dumps(search_result)
-    #print(json_data)
+    sorted_json_data = min_dist_lat_long(search_result)
+    sorted_json_data['err_flag'] = False
+    return JsonResponse(sorted_json_data)
 
 
