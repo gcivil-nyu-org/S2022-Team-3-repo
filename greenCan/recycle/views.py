@@ -17,10 +17,11 @@ def index(request):
 #user location is the location of the user i.e in form of latitude,longitude and if zipcode 
 # was entered by the user, then input shall be the centroid of the area
 # response for all_locations should be something like : response = requests.get("https://data.cityofnewyork.us/resource/sxx4-xhzg.json")
-def min_dist_lat_long(centroid_dict,site_dict):
+def min_dist_lat_long(search_result):
     #check if user_location is a zip code or a tuple of latitude/longitude
     #if zipcode
-
+    centroid_dict = search_result["centroid"]
+    site_dict = search_result["sites"]
 
     my_location = (centroid_dict["latitude"],centroid_dict["longitude"])
     # try:
