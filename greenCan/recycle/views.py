@@ -17,25 +17,15 @@ def index(request):
 # response = requests.get("https://data.cityofnewyork.us/resource/sxx4-xhzg.json")
 def min_dist_lat_long(search_result):
     search_result = search_result
-    # # check if user_location is a zip code or a tuple of latitude/longitude
-    # # if zipcode
+    # check if user_location is a zip code or a tuple of latitude/longitude
+    # if zipcode
+
     centroid_dict = search_result["centroid"]
     site_dict = search_result["sites"]
 
     my_location = (centroid_dict["latitude"], centroid_dict["longitude"])
-    # # try:
-    # #     if(type(user_location)==int):
-    # #         zip = int(user_location)
-    # #         for it in models.ZipCode.objects.filter(zip_code=zip).values():
-    # #             my_location = (it["centroid_latitude"],it["centroid_longitude"])
-    # #     elif(type(user_location)==tuple):
-    # #         latitude,longitude = user_location[0],user_location[1]
-    # #         my_location = (latitude,longitude)
-    # # except:
-    # #     return {"Location could not be found"}
-
-
-    # # calculate distance for all locations
+    
+    # calculate distance for all locations
     
     df = pd.DataFrame.from_dict(site_dict, orient='columns')
     df["distance"] = 0
@@ -48,6 +38,7 @@ def min_dist_lat_long(search_result):
             df["distance"].iloc[i] = float("inf")
             # dont display inf in sorted list
     df = df.sort_values(by=['distance'])
+
     # locations = df
     # sites = []
     # for i in range(len(locations)):
@@ -68,7 +59,6 @@ def min_dist_lat_long(search_result):
     search_result = {"centroid": centroid_dict, 'sites': eval(df.to_json(orient='records'))}
     return search_result
 
-
 @csrf_exempt
 def search_locations_by_zipcode(request):
     zipcode = request.GET.get('zipcode')
@@ -87,10 +77,10 @@ def search_locations_by_zipcode(request):
             state_id = locations[i].zip_code.state_id
             latitude = locations[i].latitude
             longitude = locations[i].longitude
-            items_accepted = locations[i].items_accepted
+            items_accepted = locations[i].items_accepted if locations[i].items_accepted else ''
             category = locations[i].type
-            email = locations[i].public_email
-            phone_number = locations[i].phone_number
+            email = locations[i].public_email if locations[i].public_email else ''
+            phone_number = locations[i].phone_number if locations[i].phone_number else ''
             street_address = locations[i].street_address
             site = {'name': name, 'zip_code': zip_code, 'state_id': state_id, 'latitude': latitude,
                     'longitude': longitude, 'item_accepted': items_accepted, 'type': category,
