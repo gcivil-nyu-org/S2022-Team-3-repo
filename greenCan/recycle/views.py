@@ -18,8 +18,8 @@ def index(request):
 def min_dist_lat_long(search_result):
 #     # check if user_location is a zip code or a tuple of latitude/longitude
 #     # if zipcode
-#     centroid_dict = search_result["centroid"]
-#     site_dict = search_result["sites"]
+    centroid_dict = search_result["centroid"]
+    site_dict = search_result["sites"]
 
 #     my_location = (centroid_dict["latitude"], centroid_dict["longitude"])
 #     # try:
