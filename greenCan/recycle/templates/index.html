@@ -126,7 +126,7 @@ Recycle | greenCan
     
     function setMap() {
         map = L.map('map').setView([latitude,longitude], 12);
-        L.circle([latitude,longitude], {radius: 5 * 1609.344, fillColor: '#6ABE52CC', color: '#6ABE52'}).addTo(map);
+        // L.circle([latitude,longitude], {radius: 5 * 1609.344, fillColor: '#6ABE52CC', color: '#6ABE52'}).addTo(map);
         L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=EQtP0E2R31WbTGk6hOcg', {
             attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
         }).addTo(map);
@@ -173,10 +173,12 @@ Recycle | greenCan
     });
 
     function setData(data){
+
         result = Object.entries(data['sites']);
         locations = result.map(([key, value]) => value);
         latitude = data['centroid']['lat'];
-        longitude = data['centroid']['long'],
+        longitude = data['centroid']['long'];
+        map = L.map('map').setView([latitude,longitude], 12);
         markPoints(locations);
     }
 
@@ -237,7 +239,7 @@ Recycle | greenCan
             locations = result.map(([key, value]) => value);
         }
         else{
-            locations = result.filter(([key, value]) => value.category.toLowerCase() === selectedCat).map(([key, value]) => value);
+            locations = result.filter(([key, value]) => value.type.toLowerCase() === selectedCat).map(([key, value]) => value);
         }
         markPoints(locations);
     }
