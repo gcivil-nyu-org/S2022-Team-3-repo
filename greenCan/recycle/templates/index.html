@@ -67,7 +67,7 @@ Recycle | greenCan
         if (map){
             markersLayer.clearLayers();
         }
-        console.log("here");
+        // console.log("here");
         $('#listings').html('');
         var marker;
         $.each(locations, function( key,site ) {
@@ -75,12 +75,11 @@ Recycle | greenCan
             marker.bindTooltip('<b>'+site["name"]+'</b><br/>'+site["stree_address"]+'<br/>'+site['state_id']+' '+site['zip_code'], {
                 sticky: true
             }).addTo(map);            
-            
-            $('#listings').append($('<div class="border_rectangle1"> \
+            var card = '<div class="border_rectangle1" onclick="focusOn('+site['latitude'].toString()+','+site['longitude'].toString()+')"> \
                     <div class="info_circle_icon_frame"> \
                       <div class="info_circle_icon"> \
                         <i class="fa fa-info-circle" style="color: #C4C4C4"></i> \
-                        <div class="overlay">Accepted Items: '+site['type']+'</div> \
+                        <div class="overlay">Drop-off site category: '+site['type']+'</div> \
                       </div> \
                     </div> \
                     <div class="dhs_donation_site"> \
@@ -93,31 +92,38 @@ Recycle | greenCan
                     </div> \
                     <div class="address"> \
                       '+site['street_address']+', '+'Manhattan'+', '+ site['state_id'] + ' ' + site['zip_code'] +'  \
-                    </div> \
-                    <div class="phone_icon_frame"> \
+                    </div>';
+              if (site['phone_number']!=null && site['phone_number']!='' && site['phone_number']!=undefined){
+                  card += '<div class="phone_icon_frame"> \
                       <div class="phone_icon"> \
                         <i class="fa fa-phone" style="color: #C4C4C4"></i> \
                       </div> \
                     </div> \
                     <div class="phone_number"> \
                       '+site['phone_number']+' \
-                    </div> \
-                    <div class="mail_icon_frame"> \
+                    </div>';
+              }
+
+              if (site['email']!=null && site['email']!='' && site['email']!=undefined){
+                  card +=     '<div class="mail_icon_frame"> \
                       <div class="mail_icon"> \
                         <i class="fa fa-envelope" style="color: #C4C4C4"></i> \
                       </div> \
                     </div> \
                     <div class="email"> \
                       '+site['email']+' \
-                    </div> \
-                    <a class="direction_frame" href="https://www.google.com/maps?saddr=My+Location&daddr='+site['latitude'].toString()+','+site['longitude'].toString()+'" target="_blank"> \
+                    </div>';
+              }     
+                
+                card += '<a class="direction_frame" href="https://www.google.com/maps?saddr=My+Location&daddr='+site['latitude'].toString()+','+site['longitude'].toString()+'" target="_blank"> \
                       <div class="direction_border"> \
                       </div> \
                       <div class="get_direction"> \
                         Get Directions \
                       </div> \
                     </a> \
-                  </div>'));
+                  </div>';
+            $('#listings').append($(card));
             markersLayer.addLayer(marker);
             // You card DOM over here
             
@@ -125,16 +131,16 @@ Recycle | greenCan
     }
     
     function setMap() {
-        map = L.map('map').setView([latitude,longitude], 12);
-        // L.circle([latitude,longitude], {radius: 5 * 1609.344, fillColor: '#6ABE52CC', color: '#6ABE52'}).addTo(map);
-        L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=EQtP0E2R31WbTGk6hOcg', {
-            attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
-        }).addTo(map);
-        L.control.scale().addTo(map);
-        markersLayer.addTo(map);
-        map.addControl(new customControl());
-        legend.addTo(map);
-        $('.legend').hide();
+      map = L.map('map').setView([latitude,longitude], 12);
+      // L.circle([latitude,longitude], {radius: 5 * 1609.344, fillColor: '#6ABE52CC', color: '#6ABE52'}).addTo(map);
+      L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=EQtP0E2R31WbTGk6hOcg', {
+          attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
+      }).addTo(map);
+      L.control.scale().addTo(map);
+      markersLayer.addTo(map);
+      map.addControl(new customControl());
+      legend.addTo(map);
+      $('.legend').hide();
     }
 
     function loadView() {
@@ -150,14 +156,14 @@ Recycle | greenCan
     var curr_zipcode=''; 
 
     $('#zipcode').keyup(function (event) {
-        console.log(typeof this.value);
-        console.log(this.value.includes('-'));
+        // console.log(typeof this.value);
+        // console.log(this.value.includes('-'));
         if (event.keyCode==189 || event.keyCode==190 || event.keyCode==107 || event.keyCode==109)
             this.value = ''
         if(this.value.length==5){
-            makeValid();
             zipcode = $('#zipcode').val();
             if(curr_zipcode!==zipcode){
+                makeValid();
                 curr_zipcode=zipcode;
                 getDropOffSitesZipcode(zipcode);
             }
@@ -173,12 +179,11 @@ Recycle | greenCan
     });
 
     function setData(data){
-
         result = Object.entries(data['sites']);
         locations = result.map(([key, value]) => value);
-        latitude = data['centroid']['lat'];
-        longitude = data['centroid']['long'];
-        map = L.map('map').setView([latitude,longitude], 12);
+        latitude = data['centroid']['latitude'];
+        longitude = data['centroid']['longitude'];
+        focusOn(latitude,longitude);
         markPoints(locations);
     }
 
