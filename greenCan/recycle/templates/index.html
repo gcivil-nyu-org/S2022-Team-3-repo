@@ -93,16 +93,32 @@ Recycle | greenCan
     });
 
     function getDropOffSitesZipcode(zipcode){
-        // zipcode is 5 digit zipcode
-        // console.log(zipcode);
-        // write the ajax request over here
+        $.ajax({
+            url: "/recycle/zipcode-search",
+            type: "GET",
+            data: {
+                "zipcode": $('#zipcode').val()
+            },
+
+            success: function (data) {
+                console.log(data)
+            }
+        });
     }
 
     function getDropOffSitesLocations(position){
-        // console.log(position.coords.latitude);
-        // console.log(position.coords.longitude);
-        
-        //write the ajax request over here
+        $.ajax({
+            url: "/recycle/currLoc-search",
+            type: "GET",
+            data: {
+                "latitude": position.coords.latitude,
+                "longitude": position.coords.longitude
+            },
+
+            success: function (data) {
+                console.log(data)
+            }
+        });
     }
 
     $('#btn-locate-me').click(function(){
