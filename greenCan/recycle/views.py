@@ -82,7 +82,6 @@ def search_locations_by_zipcode(request):
             sites.append(site)
 
         search_result = {"centroid": centroid, 'sites': sites}
-        # json_data = json.dumps(search_result)
         sorted_json_data = min_dist_lat_long(search_result)
         sorted_json_data['err_flag'] = False
         return JsonResponse(sorted_json_data)
