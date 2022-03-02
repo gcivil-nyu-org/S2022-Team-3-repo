@@ -24,8 +24,7 @@ def min_dist_lat_long(search_result):
 
     my_location = (centroid_dict["latitude"], centroid_dict["longitude"])
     
-    # # calculate distance for all locations
-    
+    # calculate distance for all locations
     df = pd.DataFrame.from_dict(site_dict, orient='columns')
     df["distance"] = 0
      
@@ -41,7 +40,6 @@ def min_dist_lat_long(search_result):
     search_result = {"centroid": centroid_dict, 'sites': eval(df.to_json(orient='records'))}
     # print(search_result)
     return search_result
-
 
 @csrf_exempt
 def search_locations_by_zipcode(request):
