@@ -184,6 +184,7 @@ Recycle | greenCan
         $.ajax({
             url: "/recycle/zipcode-search",
             type: "GET",
+            async: false,
             data: {
                 "zipcode": $('#zipcode').val()
             },
@@ -211,6 +212,7 @@ Recycle | greenCan
         $.ajax({
             url: "/recycle/currLoc-search",
             type: "GET",
+            async: false,
             data: {
                 "latitude": position.coords.latitude,
                 "longitude": position.coords.longitude
