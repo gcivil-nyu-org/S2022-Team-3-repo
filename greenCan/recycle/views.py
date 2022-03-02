@@ -11,14 +11,13 @@ def index(request):
 
 def search_locations_by_zipcode(request):
     zipcode = request.GET.get('zipcode')
-    err_flag = False
-    err_msg = ''
     zip_locations = ZipCode.objects.filter(zip_code=zipcode)
     if zip_locations.count() == 0:
         err_flag = True
         err_msg = "Please enter a valid NYC zip code"
         return JsonResponse({'err_flag': err_flag, 'err_msg': err_msg})
     else:
+        err_flag = False
         centroid = {'latitude': zip_locations[0].centroid_latitude, 'longitude': zip_locations[0].centroid_longitude}
         # print(centroid)
         locations = DropOffLocation.objects.all()
@@ -70,5 +69,5 @@ def search_locations_by_current_location(request):
 
     search_result = {"centroid": centroid, 'sites': sites}
     json_data = json.dumps(search_result)
-    print(json_data)
+    #print(json_data)
 
