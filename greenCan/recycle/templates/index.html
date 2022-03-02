@@ -215,14 +215,14 @@ Recycle | greenCan
         $('#zipcode-feedback').addClass('d-none');
     }
 
-    function getDropOffSitesLocations(position){
+    function getDropOffSitesLocations(latitude,longitude){
         $.ajax({
             url: "/recycle/currLoc-search",
             type: "GET",
             async: false,
             data: {
-                "latitude": position.coords.latitude,
-                "longitude": position.coords.longitude
+                "latitude": latitude,
+                "longitude": longitude
             },
             success: function (data) {
                 setData(data);
@@ -231,11 +231,18 @@ Recycle | greenCan
     }
 
     $('#btn-locate-me').click(function(){
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(getDropOffSitesLocations);
-        } else { 
-            alert("Geolocation is not supported by this browser.");
-        }
+        // if (navigator.geolocation) {
+        //     navigator.geolocation.getCurrentPosition(getDropOffSitesLocations);
+        // } else { 
+        //     alert("Geolocation is not supported by this browser.");
+        // }
+        $.ajax({
+          url: 'http://ip-api.com/json',
+          type: 'GET',
+          success: function (data) {
+              getDropOffSitesLocations(data['lat'],data['lon']);
+          }
+        });
     });
     
     function filterByCategory(obj){
