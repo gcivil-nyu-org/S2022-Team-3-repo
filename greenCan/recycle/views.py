@@ -93,6 +93,7 @@ def search_locations_by_current_location(request):
     centroid = {'latitude': user_lat, 'longitude': user_long}
     locations = DropOffLocation.objects.all()
     sites = []
+
     for i in range(locations.count()):
         name = locations[i].name
         zip_code = locations[i].zip_code.zip_code
