@@ -62,17 +62,17 @@ def get_dropoff_locations(centroid):
                 F.TYPE AS TYPE,
                 COALESCE(F.ITEMS_ACCEPTED,'') AS ITEMS_ACCEPTED, 
                 COALESCE(F.PUBLIC_EMAIL,'') AS EMAIL, 
-                COALESCE(F.PHONE_NUMBER,'') AS PUBLIC_PHONE,
-                F.ZIP_CODE_ID AS ZIP_CODE_ID FROM 
+                COALESCE(F.PHONE_NUMBER,'') AS PUBLIC_PHONE
+                FROM 
                     (
-                        SELECT *,row_number() over (partition by TYPE order by D.DISTANCE desc) as TYPE_RANK FROM 
+                        SELECT *,row_number() over (partition by TYPE order by D.DISTANCE asc) as TYPE_RANK FROM 
                         (
                         SELECT *,calculate_distance(40.627038489795, -74.02457508163266, R.LATITUDE, R.LONGITUDE, 'M') AS DISTANCE
                             FROM RECYCLE_DROPOFFLOCATION AS R
-                            ORDER BY DISTANCE
                         ) AS D
                     ) AS F
-                WHERE F.TYPE_RANK<11''').prefetch_related('zip_code')
+                WHERE F.TYPE_RANK<11
+                ORDER BY F.DISTANCE;''').prefetch_related('zip_code')
     sites = []
     for location in locations:
         name = location.name
