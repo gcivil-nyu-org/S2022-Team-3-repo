@@ -35,13 +35,9 @@ Recycle | greenCan
 <div>
     <select name="categories" id="categories" onchange = "javascript:filterByCategory(this)">
         <option value="showing all sites">Showing all sites</option>
-        <!-- <option value="Food Scrap">Food Scrap</option> -->
-        <option value="public recycle bins">Public Recycle Bins</option>
-        <option value="textile">Textile</option>
-        <option value="electronics">Electronics</option>
-        <!-- <option value="Leaf">Leaf</option> -->
-        <!-- <option value="Pharmaceutical and Syringe">Pharmaceutical and Syringe</option>
-        <option value="DSNY Special Waste">DSNY Special Waste</option> -->
+        {% for type in types %}
+            <option value="{{type | lower }}">{{ type | title }}</option>
+        {% endfor %}
     </select>
 </div>
 
@@ -64,11 +60,7 @@ Recycle | greenCan
     var result = {};
     var locations = {};
     function markPoints(locations){
-        if (map){
-            markersLayer.clearLayers();
-        }
-        // console.log("here");
-        $('#listings').html('');
+        clearView();
         var marker;
         $.each(locations, function( key,site ) {
             marker = L.marker([site["latitude"],site["longitude"]],{icon: colorCategoryMap[site['type'].toLowerCase()][0]})
@@ -130,9 +122,15 @@ Recycle | greenCan
         });
     }
     
+    function clearView() {
+        if (map){
+            markersLayer.clearLayers();
+        }
+        $('#listings').html('');
+    }
+
     function setMap() {
       map = L.map('map').setView([latitude,longitude], 12);
-      // L.circle([latitude,longitude], {radius: 5 * 1609.344, fillColor: '#6ABE52CC', color: '#6ABE52'}).addTo(map);
       L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=EQtP0E2R31WbTGk6hOcg', {
           attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
       }).addTo(map);
@@ -156,8 +154,6 @@ Recycle | greenCan
     var curr_zipcode=''; 
 
     $('#zipcode').keyup(function (event) {
-        // console.log(typeof this.value);
-        // console.log(this.value.includes('-'));
         if (event.keyCode==189 || event.keyCode==190 || event.keyCode==107 || event.keyCode==109)
             this.value = ''
         if(this.value.length==5){
@@ -188,11 +184,13 @@ Recycle | greenCan
     }
 
     function getDropOffSitesZipcode(zipcode){
+        clearView();
         $.ajax({
-            url: "/recycle/zipcode-search",
+            url: "{% url 'recycle:fetch-drop-off-locations' %}",
             type: "GET",
             async: false,
             data: {
+                "type": "zipcode",
                 "zipcode": $('#zipcode').val()
             },
             success: function (data) {
@@ -216,11 +214,13 @@ Recycle | greenCan
     }
 
     function getDropOffSitesLocations(latitude,longitude){
+        clearView();
         $.ajax({
-            url: "/recycle/currLoc-search",
+            url: "{% url 'recycle:fetch-drop-off-locations' %}",
             type: "GET",
             async: false,
             data: {
+                "type": "live-location",
                 "latitude": latitude,
                 "longitude": longitude
             },
@@ -231,16 +231,11 @@ Recycle | greenCan
     }
 
     $('#btn-locate-me').click(function(){
-        // if (navigator.geolocation) {
-        //     navigator.geolocation.getCurrentPosition(getDropOffSitesLocations);
-        // } else { 
-        //     alert("Geolocation is not supported by this browser.");
-        // }
         $.ajax({
-          url: 'http://ip-api.com/json',
+          url: 'https://get.geojs.io/v1/ip/geo.json',
           type: 'GET',
           success: function (data) {
-              getDropOffSitesLocations(data['lat'],data['lon']);
+              getDropOffSitesLocations(data['latitude'],data['longitude']);
           }
         });
     });
