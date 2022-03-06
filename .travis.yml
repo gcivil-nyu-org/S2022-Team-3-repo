@@ -14,13 +14,13 @@ install:
   - pip install coverage
 
 before_script:
-  - python manage.py migrate
+  - python ./greenCan/manage.py migrate
 
 script:
-  - python manage.py
+  - python ./greenCan/manage.py
   - python -m black . --check
   - python -m flake8 --max-line-length=150
-  - python -m coverage run --source='.' manage.py test
+  - python -m coverage run --source='./greenCan/' manage.py test
 
 after_success:
   - coveralls
