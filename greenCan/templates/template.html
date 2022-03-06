@@ -1,6 +1,7 @@
 {% url 'recycle:index' as recycle_base_url %}
 {% url 'reuse:index' as reuse_base_url %}
 {% url 'home:index' as home_base_url %}
+
 {% load static %}
 <!DOCTYPE HTML>
 <html lang="en">
@@ -9,19 +10,19 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 	<link rel="stylesheet" href="{% static 'css/main.css' %}" />
-	<link rel="stylesheet" href="{% static 'modules/bootstrap/css/bootstrap-grid.min.css' %}" />
+	<link rel="stylesheet" href="{% static 'modules/bootstrap/css/bootstrap-grid.css' %}" />
 	<link rel="icon" href="{% static 'images/icons/favicon.ico' %}" type="image/x-icon" />
     {% block style %}
     {% endblock %}
 </head>
 
 <body>
-	<div id="page-wrapper">
+	<div id="page-wrapper" class="container-fuild">
 		<!-- Header -->
 		<header id="header">
 			<div class="container-fluid">
 				<div class="nav-brand" id="logo">
-					<a href="./"><span><img src="{% static 'images/icons/full-logo.svg' %}" height="100%"></span></a>
+					<a href="/"><span><img src="{% static 'images/icons/full-logo.svg' %}" height="100%"></span></a>
 					<button href="#joinUs" style="border-radius: 0px !important;" class="slanted-btn">
 						<span class="slanted-btn-contain">Join Our Community!</span>
 					</button>
@@ -43,16 +44,18 @@
                     current
                     {% endif %} nav-link"><a href="{{ reuse_base_url }}">Reuse</a></li>
 					<li class="
-                    {% if request.path == recycle_url %}
+					{% if request.path == reuse_base_url or is_reuse %}
                     current
-                    {% endif %} nav-link"><a href="{{ recycle_url }}">Recycle</a></li>
-					<li class="nav-link"><a href="#">Reduce</a></li>
-					<li class="nav-link"><a href="#">Reuse</a></li>
+                    {% endif %} nav-link"><a href="{{ reuse_base_url }}">Reuse</a></li>
+					<li class="
+                    {% if request.path == recycle_base_url or is_recycle %}
+                    current
+                    {% endif %} nav-link"><a href="{{ recycle_base_url }}">Recycle</a></li>
 				</ul>
 			</div>
 		</nav>
 
-		<section id="main" class="container-md">
+		<section id="main" class="container-md mx-md-auto mx-1">
 			{% block main %}
             {% endblock %}
 		</section>
