@@ -1,7 +1,6 @@
 from django.db import models
 
 
-
 class ZipCode(models.Model):
     id = models.AutoField(primary_key=True, auto_created=True)
     zip_code = models.CharField(max_length=5, null=False)
