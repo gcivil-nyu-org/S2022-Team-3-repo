@@ -2,10 +2,13 @@ from django.urls import path
 
 from . import views
 
-app_name = 'recycle'
+app_name = "recycle"
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('zipcode-search', views.search_locations_by_zipcode, name='search-location-zip'),
-    path('currLoc-search', views.search_locations_by_current_location, name='search-location-currLoc'),
+    path("", views.index, name="index"),
+    path(
+        "fetch-drop-off-locations",
+        views.search_dropoff_locations,
+        name="fetch-drop-off-locations",
+    ),
 ]

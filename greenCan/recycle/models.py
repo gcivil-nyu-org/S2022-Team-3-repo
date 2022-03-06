@@ -1,6 +1,5 @@
-# from django.contrib.gis.db.models import PointField,PolygonField
 from django.db import models
-from django.core.validators import RegexValidator
+
 
 
 class ZipCode(models.Model):
@@ -21,7 +20,6 @@ class DropOffLocation(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
     name = models.CharField(max_length=250)
     zip_code = models.ForeignKey(ZipCode, null=False, on_delete=models.CASCADE)
-    # coordinates = PointField(srid=4326,null=False)
     latitude = models.FloatField(null=False)
     longitude = models.FloatField(null=False)
     items_accepted = models.TextField(null=True)

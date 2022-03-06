@@ -1,10 +1,48 @@
 @import url("/static/css/fontawesome/fontawesome-all.min.css");
- @import url('/static/fonts/google-fonts.css');
- html {
+@import url('/static/fonts/google-fonts.css');
+html {
      padding: 0;
      margin: 0;
      min-height: 100vh;
      font-family: 'Roboto', sans-serif;
+}
+
+.coolBeans {
+    background-color: #6abe52;
+    font-family: 'Roboto', sans-serif;
+    overflow: hidden;
+    position: relative;
+    text-decoration: none;
+    transition: 0.2s transform ease-in-out;
+    will-change: transform;
+    z-index: 0;
+}
+  .coolBeans::after {
+    background-color: #6abe52;
+    border-radius: 3rem;
+    content: '';
+    display: block;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translate(-100%, 0) rotate(10deg);
+    transform-origin: top left;
+    transition: 0.2s transform ease-out;
+    will-change: transform;
+    z-index: -1;
+  }
+.coolBeans:hover::after {
+    transform: translate(0, 0);
+}
+
+.coolBeans:hover {
+    border: 2px solid transparent;
+    color: white;
+    transform: scale(1.05);
+    will-change: transform;
+    border: 0;
 }
 
 .form-control {
@@ -55,9 +93,42 @@
     width: 100% !important;
 }
 
-button.btn-rounded {
+.btn-rounded {
     border-radius: 50px !important;
     padding: 0.6em 1.4em;
+    width: fit-content;
+    text-overflow: clip;
+}
+
+.btn-rounded:hover {
+    background-color: black !important;
+    color: white;
+}
+
+.btn-xlg {
+    padding: 1em 2em !important;
+}
+
+.horizontal-divider {
+    margin: 2em 0;
+    width: 130%;
+    left: -15%;
+    height: 5px;
+    border-radius: 2.5px;
+    background-color: #21212d;
+    position: relative;
+}
+
+.text-primary {
+    color: #6abe52 !important;
+}
+
+.horizontal-divider {
+    background: #21212d;
+}
+
+.grey-icon {
+    color: #C4C4C4 !important;
 }
 
 .or-container{
@@ -73,18 +144,44 @@ button.btn-rounded {
     vertical-align: middle;
 }
 
+.horizontal-divider .or-container {
+    display: inline-block;
+    position: relative;
+    top: -25px;
+    left: calc(50% - 25px);
+    align-content: center;
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 50%;
+    padding: auto;
+}
+
+.horizontal-divider .or-container span{
+    position: relative;
+    top: calc(50% - 0.6em);
+    left: calc(50% - 0.8em);
+}
+
 .btn-success {
      background-color: #6abe52;
 }
- .btn-dark {
+
+.btn-dark {
      background-color: #21212d;
 }
- body {
+
+.btn-link {
+    text-decoration: none !important;
+    color: black;
+}
+
+body {
      line-height: 1;
-     min-width: 100vh;
+     min-width: 100vw;
      overflow-x: hidden;
 }
- #page-wrapper {
+
+#page-wrapper {
      min-height: 100vh;
      display: flex;
      flex-direction: column;
@@ -125,18 +222,19 @@ button.btn-rounded {
 	 display: flex;
 	 flex-direction: column;
 	 min-height: 90vh;
+     padding: 0 20px;
 }
 /* Basic */
- html {
+html {
      box-sizing: border-box;
 }
  *, *:before, *:after {
      box-sizing: inherit;
 }
- body {
+body {
      background: #ffffff;
 }
- button, .button {
+button, .button {
      -webkit-appearance: none;
      font-weight: 700;
      text-decoration: none;
@@ -537,11 +635,12 @@ button.btn-rounded {
     button, .button {
         display: block;
     }
-    /* Section/Article */
-     /* section, article {
-         margin-bottom: 2em;
-    } */
-    /* Button */
+    
+    .horizontal-divider {
+        width: 90%;
+        left: 5%;
+    }
+
 }
 /* Small */
  @media screen and (max-width: 360px) {
@@ -556,7 +655,7 @@ button.btn-rounded {
 
     button, .button {
         display: block;
-        width: 100vw;
+        width: 90vw;
     }
 
 }
