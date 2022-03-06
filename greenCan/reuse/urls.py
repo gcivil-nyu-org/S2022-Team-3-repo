@@ -6,4 +6,5 @@ app_name = 'reuse'
 
 urlpatterns = [
     # URLs here
+    path('', views.listingPage, name='listingPage'),
 ]
