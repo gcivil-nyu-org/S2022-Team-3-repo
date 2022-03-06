@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="d831c992-0f9c-4fbc-a404-e933fa3392e5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/greenCan/reuse/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/greenCan/reuse/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/greenCan/reuse/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/greenCan/reuse/models.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,6 +54,7 @@
       <workItem from="1645913883406" duration="6173000" />
       <workItem from="1646013956628" duration="18325000" />
       <workItem from="1646114051730" duration="16313000" />
+      <workItem from="1646287269680" duration="9021000" />
     </task>
     <servers />
   </component>
