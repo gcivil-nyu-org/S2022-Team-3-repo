@@ -1,0 +1,183 @@
+{% extends 'template.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}"/>
+{% endblock %}
+
+{% block main %}
+<section class="developers-corner">
+    <div class="section-title">
+        <h1 class="title-text">Developer's Corner</h1>
+        <div class="title-seprator">
+            <span class="separator-border"></span>
+        </div>
+    </div>
+    <div class="outer-container">
+        <div class="container">
+            <div class="wrapper">
+                <a href="#">
+                    <img src="{% static 'images/developers/kevin_patel_profile.jpg' %}" class="profile-img" alt="Kevin Patel">
+                </a>
+                <div class="title">Kevin Patel</div>
+                <div class="place">New York, NY</div>
+            </div>
+            <div class="content">
+                <p>Project Owner & <br/> Software Developer</p>
+                <div class="buttons">
+                    <div class="btn">
+                        <button>Portfolio</button>
+                    </div>
+                    <div class="btn">
+                        <button>Following</button>
+                    </div>
+                </div>
+            </div>
+            <div class="icons">
+                <li>
+                    <a href="#"><span class="fab fa-linkedin"></span></a>
+                </li>
+                <li>
+                    <a href="#"><span class="fab fa-github"></span></a>
+                </li>
+                <li>
+                    <a href="#"><span class="fas fa-envelope"></span></a>
+                </li>
+            </div>
+        </div>
+        <div class="container">
+            <div class="wrapper">
+                <a href="#">
+                    <img src="{% static 'images/developers/kevin_patel_profile.jpg' %}" class="profile-img" alt="Kevin Patel">
+                </a>
+                <div class="title">Kevin Patel</div>
+                <div class="place">New York, NY</div>
+            </div>
+            <div class="content">
+                <p>Project Owner & <br/> Software Developer</p>
+                <div class="buttons">
+                    <div class="btn">
+                        <button>Portfolio</button>
+                    </div>
+                    <div class="btn">
+                        <button>Following</button>
+                    </div>
+                </div>
+            </div>
+            <div class="icons">
+                <li>
+                    <a href="#"><span class="fab fa-linkedin"></span></a>
+                </li>
+                <li>
+                    <a href="#"><span class="fab fa-github"></span></a>
+                </li>
+                <li>
+                    <a href="#"><span class="fas fa-envelope"></span></a>
+                </li>
+            </div>
+        </div>
+        <div class="container">
+            <div class="wrapper">
+                <a href="#">
+                    <img src="{% static 'images/developers/kevin_patel_profile.jpg' %}" class="profile-img" alt="Kevin Patel">
+                </a>
+                <div class="title">Kevin Patel</div>
+                <div class="place">New York, NY</div>
+            </div>
+            <div class="content">
+                <p>Project Owner & <br/> Software Developer</p>
+                <div class="buttons">
+                    <div class="btn">
+                        <button>Portfolio</button>
+                    </div>
+                    <div class="btn">
+                        <button>Following</button>
+                    </div>
+                </div>
+            </div>
+            <div class="icons">
+                <li>
+                    <a href="#"><span class="fab fa-linkedin"></span></a>
+                </li>
+                <li>
+                    <a href="#"><span class="fab fa-github"></span></a>
+                </li>
+                <li>
+                    <a href="#"><span class="fas fa-envelope"></span></a>
+                </li>
+            </div>
+        </div>
+        <div class="container">
+            <div class="wrapper">
+                <a href="#">
+                    <img src="{% static 'images/developers/kevin_patel_profile.jpg' %}" class="profile-img" alt="Kevin Patel">
+                </a>
+                <div class="title">Kevin Patel</div>
+                <div class="place">New York, NY</div>
+            </div>
+            <div class="content">
+                <p>Project Owner & <br/> Software Developer</p>
+                <div class="buttons">
+                    <div class="btn">
+                        <button>Portfolio</button>
+                    </div>
+                    <div class="btn">
+                        <button>Following</button>
+                    </div>
+                </div>
+            </div>
+            <div class="icons">
+                <li>
+                    <a href="#"><span class="fab fa-linkedin"></span></a>
+                </li>
+                <li>
+                    <a href="#"><span class="fab fa-github"></span></a>
+                </li>
+                <li>
+                    <a href="#"><span class="fas fa-envelope"></span></a>
+                </li>
+            </div>
+        </div>
+        <div class="container">
+            <div class="wrapper">
+                <a href="#">
+                    <img src="{% static 'images/developers/kevin_patel_profile.jpg' %}" class="profile-img" alt="Kevin Patel">
+                </a>
+                <div class="title">Kevin Patel</div>
+                <div class="place">New York, NY</div>
+            </div>
+            <div class="content">
+                <p>Project Owner & <br/> Software Developer</p>
+                <div class="buttons">
+                    <div class="btn">
+                        <button>Portfolio</button>
+                    </div>
+                    <div class="btn">
+                        <button>Following</button>
+                    </div>
+                </div>
+            </div>
+            <div class="icons">
+                <li>
+                    <a href="#"><span class="fab fa-linkedin"></span></a>
+                </li>
+                <li>
+                    <a href="#"><span class="fab fa-github"></span></a>
+                </li>
+                <li>
+                    <a href="#"><span class="fas fa-envelope"></span></a>
+                </li>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $('.profile-img').click(function(){
+        // $(this).css('opacity','0');
+        $(this).toggleClass('active');
+    });
+</script>
+{% endblock %}

@@ -7,11 +7,9 @@ from .models import *
 from django.core import serializers
 
 def index(request):
-    template = 'index.html'
-    types = DropOffLocation.objects.values_list('type',flat=True).distinct()
-    context = {
-        'types': types
-    }
+    template = "recycle/templates/index.html"
+    types = DropOffLocation.objects.values_list("type", flat=True).distinct()
+    context = {"types": types}
     return render(request, template, context=context)
 
 

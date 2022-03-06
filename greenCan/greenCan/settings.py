@@ -64,10 +64,10 @@ ROOT_URLCONF = 'greenCan.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            BASE_DIR / 'recycle/templates',
-            BASE_DIR / 'templates'
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [
+            BASE_DIR / "templates",
+            BASE_DIR,
         ],
         'APP_DIRS': True,
         'OPTIONS': {
