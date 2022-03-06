@@ -2,8 +2,8 @@ from django.urls import path
 
 from . import views
 
-app_name = 'reuse'
+app_name = "reuse"
 
 urlpatterns = [
-    # URLs here
+    path("donations", views.donation_view, name="donation-page"),
 ]

@@ -2,16 +2,289 @@
 {% load static %}
 
 {% block title %}
-Recycle | greenCan
+Reuse | greenCan
 {% endblock %}
 
 {% block style %}
+<link rel="stylesheet" href="{% static 'css/carousel.css' %}" />
+<link rel="stylesheet" href="{% static 'modules/owl-carousel-2/css/owl-carousel2.min.css' %}" />
 {% endblock %}
 
 {% block main %}
+<div class="d-flex flex-column justify-content-center my-5">
+    <button class="btn-xlg btn-rounded coolBeans mb-md-2 mb-1 mt-3 mx-auto">POST AN AD</button>
+    <div class="horizontal-divider">
+        <div class="or-container">
+            <span class="">OR</span>
+        </div>
+      </div>
+    <a href="#" class="button btn-xlg btn-rounded coolBeans mt-md-1 mt-1">NEAR BY DONATION SITE</a>
+</div>
+<!-- Carousel -->
+<div class="container-fluid">
+  <div class="wrapper mb-5">
+    <h1 class="d-flex justify-content-center">
+      NYC Shelter Homes
+    </h1>
+    <div class="carousel owl-carousel">
+      <div class="card shelter-home-card" data-url="https://www.google.com/maps?saddr=My+Location&daddr=40.812663,-73.924125">
+        <div class="row">
+            <div class="col-md-5 col-12 d-md-block d-sm-none d-none pr-0">
+              <img src="{% static 'images/donation/donate-1.png' %}" class="mt-1 ml-1 mb-0">
+            </div>
+            <div class="col-md-7 col-12 pl-0 my-auto">
+              <div class="container card-content d-flex justify-content-center flex-column pl-0 pr-0">
+                <h4 class="title my-0">Haven</h4>
+                <div class="justify-content-left pr-0 pl-0">
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-map-marker-alt grey-icon"></i>
+                    </div>
+                    <div class="col-md-1 text-primary text-address">
+                      2640 Third Ave.,<br/>
+                      Bronx, NY 10454
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-clock grey-icon"></i>
+                    </div>
+                    <div class="col-md-10 text-primary text-time">
+                      Open 24 x 7
+                      <div class="small-time text-white">.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="card shelter-home-card" data-url="https://www.google.com/maps?saddr=My+Location&daddr=40.689535,-73.843952">
+        <div class="row">
+            <div class="col-md-5 col-12 d-md-block d-sm-none d-none pr-0">
+              <img src="{% static 'images/donation/donate-2.png' %}" class="mt-1 ml-1 mb-0">
+            </div>
+            <div class="col-md-7 col-12 pl-0 my-auto">
+              <div class="container card-content d-flex justify-content-center flex-column pl-0 pr-0">
+                <h4 class="title my-0">Queens Drop In Center</h4>
+                <div class="justify-content-left pr-0 pl-0">
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-map-marker-alt grey-icon"></i>
+                    </div>
+                    <div class="col-md-1 text-primary pr-0 text-address">
+                      100-32 Atlantic Ave.,<br/>
+                      Jamaica, NY 11416
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-clock grey-icon"></i>
+                    </div>
+                    <div class="col-md-10 text-primary text-time pr-0">
+                      Open 7:30 - 20:30
+                      <div class="small-time">24 hours (winters)</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="card shelter-home-card" data-url="https://www.google.com/maps?saddr=My+Location&daddr=40.676015,-73.905105">
+        <div class="row" >
+            <div class="col-md-5 col-12 d-md-block d-sm-none d-none pr-0">
+              <img src="{% static 'images/donation/donate-3.png' %}" class="mt-1 ml-1 mb-0">
+            </div>
+            <div class="col-md-7 col-12 pl-0 my-auto">
+              <div class="container card-content d-flex justify-content-center flex-column pl-0 pr-0">
+                <h4 class="title my-0">The Gathering Place</h4>
+                <div class="justify-content-left pr-0 pl-0">
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-map-marker-alt grey-icon"></i>
+                    </div>
+                    <div class="col-md-1 text-primary pr-0 text-address">
+                      2402 Atlantic Ave.,<br/>
+                      Brooklyn, NY 11233
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-clock grey-icon"></i>
+                    </div>
+                    <div class="col-md-10 text-primary text-time pr-0">
+                      Open 24 x 7
+                      <div class="small-time text-white">.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="card shelter-home-card" data-url="https://www.google.com/maps?saddr=My+Location&daddr=40.745377,-73.981306">
+        <div class="row">
+            <div class="col-md-5 col-12 d-md-block d-sm-none d-none pr-0">
+              <img src="{% static 'images/donation/donate-1.png' %}" class="mt-1 ml-1 mb-0">
+            </div>
+            <div class="col-md-7 col-12 pl-0 my-auto">
+              <div class="container card-content d-flex justify-content-center flex-column pl-0 pr-0">
+                <h4 class="title my-0">Mainchance</h4>
+                <div class="justify-content-left pr-0 pl-0">
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-map-marker-alt grey-icon"></i>
+                    </div>
+                    <div class="col-md-1 text-primary pr-0 text-address">
+                      120 E. 32nd Street,<br/>
+                      Manhattan, NY 10016
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-clock grey-icon"></i>
+                    </div>
+                    <div class="col-md-10 text-primary text-time pr-0">
+                      Open 24 x 7
+                      <div class="small-time text-white">.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="card shelter-home-card" data-url="https://www.google.com/maps?saddr=My+Location&daddr=40.749139,-73.994016">
+        <div class="row">
+            <div class="col-md-5 col-12 d-md-block d-sm-none d-none pr-0">
+              <img src="{% static 'images/donation/donate-4.png' %}" class="mt-1 ml-1 mb-0">
+            </div>
+            <div class="col-md-7 col-12 pl-0 my-auto">
+              <div class="container card-content d-flex justify-content-center flex-column pl-0 pr-0">
+                <h4 class="title my-0">Olivieri</h4>
+                <div class="justify-content-left pr-0 pl-0">
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-map-marker-alt grey-icon"></i>
+                    </div>
+                    <div class="col-md-1 text-primary pr-0 text-address">
+                      257 W. 30th Street,<br/>
+                      Manhattan, NY 10001
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-clock grey-icon"></i>
+                    </div>
+                    <div class="col-md-10 text-primary text-time pr-0">
+                      Open 7:30 - 20:30
+                      <div class="small-time">24 hours (winters)</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="card shelter-home-card" data-url="https://www.google.com/maps?saddr=My+Location&daddr=40.645821,-74.077908">
+        <div class="row">
+            <div class="col-md-5 col-12 d-md-block d-sm-none d-none pr-0">
+              <img src="{% static 'images/donation/donate-2.png' %}" class="mt-1 ml-1 mb-0">
+            </div>
+            <div class="col-md-7 col-12 pl-0 my-auto">
+              <div class="container card-content d-flex justify-content-center flex-column pl-0 pr-0">
+                <h4 class="title my-0">Project Hospitality</h4>
+                <div class="justify-content-left pr-0 pl-0">
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-map-marker-alt grey-icon"></i>
+                    </div>
+                    <div class="col-md-1 text-primary pr-0 text-address">
+                      150 Richmond Terrace,<br/>
+                      Staten Island, NY 10301
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-clock grey-icon"></i>
+                    </div>
+                    <div class="col-md-10 text-primary text-time pr-0">
+                      Open 24 x 7
+                      <div class="small-time text-white">.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="card shelter-home-card" data-url="https://www.google.com/maps?saddr=My+Location&daddr=40.816615,-73.889883">
+        <div class="row">
+            <div class="col-md-5 col-12 d-md-block d-sm-none d-none pr-0">
+              <img src="{% static 'images/donation/donate-5.png' %}" class="mt-1 ml-1 mb-0">
+            </div>
+            <div class="col-md-7 col-12 pl-0 my-auto">
+              <div class="container card-content d-flex justify-content-center flex-column pl-0 pr-0">
+                <h4 class="title my-0">Living Room</h4>
+                <div class="justify-content-left pr-0 pl-0">
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-map-marker-alt grey-icon"></i>
+                    </div>
+                    <div class="col-md-1 text-primary pr-0 text-address">
+                      800 Barretto Street,<br/>
+                      Bronx, NY 10474
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-clock grey-icon"></i>
+                    </div>
+                    <div class="col-md-10 text-primary text-time pr-0">
+                      Open 24 x 7
+                      <div class="small-time text-white">.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Carousel -->
 
 {% endblock %}
 
 {% block scripts %}
-
+<script src="{% static 'modules/owl-carousel-2/js/owl-carousel2.min.js' %}"></script>
+<script>
+  $('.carousel').owlCarousel({
+    margin: 10,
+    loop: true,
+    autoplay: true,
+    autoplayTimeout: 2800,
+    autoplayHoverpause: true,
+    responsive: {
+      0: {
+        items: 1,
+        nav: false,
+      },
+      600: {
+        items: 2,
+        nav: false,
+      },
+      1000: {
+        items: 3,
+        nav: false,
+      }
+    },
+    navText : ["<i class='fas fa-chevron-left'></i>","<i class='fas fa-chevron-right'></i>"]
+  });
+  $('.shelter-home-card').click(function(){
+    window.open($(this).attr('data-url'),'_blank');
+  });
+</script>
 {% endblock %}
