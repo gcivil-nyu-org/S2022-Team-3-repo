@@ -1,6 +1,6 @@
 from django.db import models
-from greenCan.account.models import Account
-from greenCan.recycle.models import ZipCode
+from account.models import Account
+from recycle.models import ZipCode
 
 
 class Post(models.Model):
