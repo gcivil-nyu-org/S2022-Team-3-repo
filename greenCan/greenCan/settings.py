@@ -40,6 +40,8 @@ ALLOWED_HOSTS = ["127.0.0.1", "greencan.herokuapp.com", "greencan-dev.herokuapp.
 # Application definition
 
 INSTALLED_APPS = [
+    "account.apps.AccountConfig",
+    "reuse.apps.ReuseConfig",
     "recycle.apps.RecycleConfig",
     "django.contrib.admin",
     "django.contrib.auth",
