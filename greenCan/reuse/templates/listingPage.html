@@ -1,0 +1,67 @@
+{% extends 'template.html' %}
+{% load static %}
+
+{% block title %}
+reuse | greenCan
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{% static 'css/donationCard.css' %}" >
+{% endblock %}
+
+{% block main %}
+<!---
+<div class="my-md-4 my-2 mx-md-2 mx-1 d-flex container-fluid justify-content-center pb-3 align-items-center">
+    <div class="row">
+        <div class="col-md-8">
+          <input type="string" class="form-control" id="items"  value="" required placeholder="Searching an item for donation">
+          <div class="invalid-feedback d-flex justify-content-center d-none" id="searching-feedback">
+                Searching an item for donation
+          </div>
+        </div>
+    </div>
+    
+    <button class="btn btn-circle btn-success" id="searchingBtn">
+        <i class="fa fa-search"></i>
+    </button>
+</div>
+-->
+<div class="input-group col-3" style="margin-top:15px;margin-bottom:30px;white-space:nowrap">
+    <input type="text" class="form-control" placeholder="Searching an item for donation" style="display:inline"/>
+        <button class="btn btn-circle btn-search" style="margin-left: 3px"> <i class="fa fa-search"></i></button>
+</div>
+{% for post in Posts %}
+<!-- {% with image_link as {{Images.filter(post_id=1)[0].url}} %} -->
+
+<div class = "container">
+    <div class="row" id = "wholeCard">
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <div class="card">
+                <img src={{post.url}}/>
+
+                <div class="row" id = "cardInfo">
+                    <div class="col-6">
+                        <h3>{{post.title}}</h3>
+                        <i class="fa fa-map-marker" id = "positionIcon"><p class="card-text">
+                            {{post.location }}</p></i>
+                    </div>
+
+                    <div class = "col-6">
+                        <button>Details</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- {% endwith %} -->
+{% endfor %}
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+</script>
+{% endblock %}
