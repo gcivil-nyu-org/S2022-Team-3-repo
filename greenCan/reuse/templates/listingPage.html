@@ -1,0 +1,72 @@
+{% extends 'template.html' %}
+{% load static %}
+
+{% block title %}
+reuse | greenCan
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="{% static 'css/donationCard.css' %}" >
+{% endblock %}
+
+{% block main %}
+
+<div class="input-group" style="margin-top:15px;margin-bottom:30px;white-space:nowrap">
+    <input type="text" class="form-control" placeholder="Searching an item for donation" style="display:inline"/>
+        <button class="btn btn-circle btn-search" style="margin-left: 3px"> <i class="fa fa-search"></i></button>
+</div>
+
+<div class = "container">
+    <div class="row" id = "wholeCard">
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-10">
+            <div class="card">
+                <img src="https://i.ibb.co/n7xLRwx/jean2-1536x1536.jpg" class="card-img-top img-fluid">
+
+                <div class="row" id = "cardInfo">
+                    <div class="col-6">
+                        <h3>Jeans Pants</h3>
+                        <i class="fa fa-map-marker" id = "positionIcon"><p class="card-text">Brooklyn, NY</p></i>
+                    </div>
+
+                    <div class = "col-6">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#details_Model">Details</button>
+
+                    </div>         
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- pop-up window -->
+<div class="modal" id="details_Model" tabindex="-1" aria-labelledby="exampleModalLabel" hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="exampleModalLabel" style = "text-align: center;">ITEM DETAILS</h3>
+        </div>
+        <div class="modal-body">
+            <p><b>&#x1f4e6 Item description:   </b>   Those are jeans...</p>
+            <p><b>&#128231 Email :   </b>   user@gmail.com</p>
+            <p><b>&#128241 Phone number:</b> xxx-xxx-xxxx</p>
+            <p><b>&#x1F4CD Pick-up location:   </b>   Brooklyn, NY</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+
+</script>
+{% endblock %}
