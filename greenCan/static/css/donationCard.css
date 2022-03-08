@@ -69,6 +69,7 @@
     float: left;
     left: 50%;
     top: 50%;
+    max-width: 60%;
     transform: translate(-50%, -50%);
     background:#ffffff;
     border: 2px solid #00000060;
