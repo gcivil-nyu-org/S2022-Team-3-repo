@@ -1,9 +1,9 @@
 .outer_frame{
   position: absolute;
-  width: 1249px;
-  height: 839px;
-  left: 10px;
-  top: 10px;
+  width: 1250px;
+  height: 710px;
+  left: 305px;
+  top: 180px;
 
   background: #FFFFFF;
   border: 1px solid #000000;
@@ -150,11 +150,10 @@
 
       color: #21212D;
     }
-
+/*
     .title_rectangle{
       position: absolute;
-      left: 0%;
-      right: 0%;
+      
       top: 34.21%;
       bottom: 0%;
   
@@ -162,13 +161,17 @@
       box-sizing: border-box;
       border-radius: 25px;
     }
-
+*/
     .enter_title{
       position: absolute;
-      width: 380.84px;
+      width: 471px;
       height: 46px;
-      left: 29.52px;
+      left: 0%;
       top: 30px;
+
+      border: 1px solid #C4C4C4;
+      box-sizing: border-box;
+      border-radius: 25px;
 
       font-family: Open Sans;
       font-style: normal;
@@ -207,7 +210,7 @@
 
       color: #21212D;
     }
-
+/*
     .description_rectangle{
       position: absolute;
       width: 471px;
@@ -220,13 +223,20 @@
       box-sizing: border-box;
       border-radius: 20px;
     }
-
-    .enter_description{
+*/
+    .enter_description{     
       position: absolute;
-      width: 380.84px;
-      height: 46px;
-      left: 24px;
-      top: 27px;
+      width: 471px;
+      height: 210px;
+      top: 23px;
+      left: 0%;
+      right: 0%;
+      
+  
+      background: #FFFFFF;
+      border: 1px solid #C4C4C4;
+      box-sizing: border-box;
+      border-radius: 20px;
 
       font-family: Open Sans;
       font-style: normal;
@@ -235,7 +245,7 @@
       line-height: 25px;
       display: flex;
       align-items: center;
-
+      
       color: #C4C4C4;
     }
 
@@ -297,10 +307,25 @@
 
     .category_select_icon{
       position: absolute;
-      width: 20px;
-      height: 20px;
-      left: 251px;
-      top: 40px;
+      width: 330px;
+      height: 46px;
+      left: 0%;
+      right: 0%;
+      top: 26px;
+
+      border: 1px solid #C4C4C4;
+      box-sizing: border-box;
+      border-radius: 25px;
+
+      font-family: Open Sans;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 18px;
+      line-height: 25px;
+      display: flex;
+      align-items: center;
+
+      color: #C4C4C4;
       /*
       background: #C4C4C4;
       */
@@ -331,7 +356,7 @@
 
       color: #21212D;
     }
-
+/*
     .contact_rectangle{
       position: absolute;
       left: 0%;
@@ -343,13 +368,18 @@
       box-sizing: border-box;
       border-radius: 25px;
     }
-
+*/
     .enter_contact{
       position: absolute;
-      width: 290px;
+      width: 330px;
       height: 46px;
-      left: 20px;
-      top: 27px;
+      left: 0%;
+      bottom: 0%;
+      top: 31.51%;
+
+      border: 1px solid #C4C4C4;
+      box-sizing: border-box;
+      border-radius: 25px;
 
       font-family: Open Sans;
       font-style: normal;
@@ -388,7 +418,7 @@
 
       color: #21212D;
     }
-
+/*
     .email_rectangle{
       position: absolute;
       left: 0%;
@@ -400,13 +430,18 @@
       box-sizing: border-box;
       border-radius: 25px;
     }
-
+*/
     .enter_email{
       position: absolute;
-      width: 290px;
+      width: 330px;
       height: 46px;
-      left: 20px;
-      top: 27px;
+      left: 0%;
+      bottom: 0%;
+      top: 31.51%;
+
+      border: 1px solid #C4C4C4;
+      box-sizing: border-box;
+      border-radius: 25px;
 
       font-family: Open Sans;
       font-style: normal;
@@ -416,7 +451,7 @@
       display: flex;
       align-items: center;
 
-      color: #C4C4C4;
+      color: #C4C4C4;      
     }
 
   .zipcode_frame{
@@ -445,7 +480,7 @@
 
       color: #21212D;
     }
-
+/*
     .zipcode_rectangle{
       position: absolute;
       left: 0%;
@@ -457,13 +492,18 @@
       box-sizing: border-box;
       border-radius: 25px;
     }
-
+*/
     .enter_zipcode{
       position: absolute;
-      width: 290px;
+      width: 330px;
       height: 46px;
-      left: 20px;
-      top: 27px;
+      left: 0%;
+      bottom: 0%;
+      top: 31.51%;
+
+      border: 1px solid #C4C4C4;
+      box-sizing: border-box;
+      border-radius: 25px;
 
       font-family: Open Sans;
       font-style: normal;
@@ -480,29 +520,32 @@
     position: absolute;
     width: 240px;
     height: 80px;
-    right: 35px;
-    bottom: 35px;
+    right: 2px;
+    bottom: 2px;
   }
 
     .post_text{
       position: absolute;
-      width: 78px;
-      height: 35px;
+      width: 110px;
+      height: 40px;
       left: 81px;
       top: 25px;
 
       font-family: Roboto;
       font-style: normal;
       font-weight: bold;
-      font-size: 30px;
+      font-size: 20px;
       line-height: 35px;
       display: flex;
       align-items: center;
       text-align: center;
 
+      background: #6ABE52;
+      border-radius: 40px;
+
       color: #FFFFFF;
     }
-
+/*
     .post_rectangle{
       position: absolute;
       width: 240px;
@@ -513,3 +556,4 @@
       background: #6ABE52;
       border-radius: 40px;
     }
+*/
