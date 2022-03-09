@@ -11,6 +11,108 @@ Reuse | greenCan
 {% endblock %}
 
 {% block main %}
+<!--post ad window-->
+<div style = "position: absolute;
+float: left;
+left: 50%;
+top: 57%;
+width: 70%;
+transform: translate(-50%, -50%);
+background:#ffffff;
+border: 2px solid #00000060;
+border-radius: 10px;
+z-index: 1500;
+padding-left: 20px;
+padding-right: 20px;
+overflow-y: auto !important;
+
+box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);"class="modal fade" id="postAd_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="exampleModalLabel" style = "text-align: center;">Create an Ad Post</h3>
+        </div>
+        <div class="modal-body">
+          <!--information collection form -->
+          <form class="form-container g-3 needs-validation" id = "infoForm">
+            <div class="form-group">
+            <!--img upload-->
+            <div class="upload-image-frame d-flex flex-column align-middle py-auto" id="image-frame">
+              <div class="upload-text" id="show-image-frame">
+                Upload few pictures of the item
+              </div>
+              <div class="upload-btn">
+                <i class="fa fa-plus"></i>
+                <span>
+                  ADD PICTURES
+                </span>
+              </div>
+            </div>
+            <input type="file" name="file[]" class="d-none" id="image-upload" accept="image/*" multiple="multiple" >
+            <p></p>
+            <div class ="row">
+            <!--left side info-->
+            <div class="col-6">
+                <label for="validationCustom01" class="form-label" ><b>Title:</b></label>
+                  <input type="text" class="form-control" name = "title" id="validationCustom01" style = "max-width: 100%;" placeholder="Enter the Title">
+             
+                <p></p>
+                <label for="validationCustom02" class="form-label"><b>Description:</b></label>
+                  <textarea rows=4 type="text" class="form-control" name = "description" id="validationCustom02" style = "max-width: 100%;height:auto;" placeholder="Enter the Description"></textarea>
+               
+            </div>
+
+            <!--right side info-->
+            <div class = "col-6">
+              <label for="validationCustom03" class="form-label"><b>Category:</b></label>
+              <select class="form-select" name = "category" id = "validationCustom03" aria-label="categories">
+                <option selected>Select Item Category</option>
+                <option value="1">Furniture</option>
+                <option value="2">Books</option>
+                <option value="3">Toys</option>
+                <option value="3">Electronics</option>
+              </select>
+           
+              <p></p>
+              
+              <label for="validationCustom04" class="form-label"><b>Your Contact Number:</b></label>
+                <input type="number" name = "number" class="form-control"  id="validationCustom04" placeholder="Enter your Contact Number" style = "max-width: 100%;">
+          
+                <p></p>
+              
+              <label for="validationCustom05" class="form-label"><b>Your E-mail:</b></label>
+                <input type="email" name = "email" class="form-control"  id="validationCustom05" placeholder="Enter your E-mail" style = "max-width: 100%;">
+            
+                <p></p> 
+              
+              <label for="validationCustom06" class="form-label"><b>Zipcode of Pick-up Location:</b></label>
+                <input type="text" name = "zipcode" class="form-control"  id="validationCustom06" placeholder="Enter the Zipcode of the loaction" style = "max-width: 100%;">
+          
+                <p></p> 
+            </div>
+            </div>
+         
+       <div class="form-group">
+              <div class="col-sm-9 col-sm-offset-3">
+                  <div id="messages" style="color: red;"></div>
+              </div>
+          </div>
+    
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color: gray;">Close</button>
+            <button class="btn btn-primary" type="submit" value="Save">Post</button>
+
+            </div>
+          </form>
+          
+          <!--End of the form-->
+          </div>
+        </div>
+        <div class="modal-footer">
+        </div>
+      </div>
+    </div>
+<!--end of post add modal-->
+
 
 <div class="d-flex flex-column justify-content-center my-5">
   <button class="btn-xlg btn-rounded coolBeans mb-md-2 mb-1 mt-3 mx-auto" data-bs-toggle="modal" data-bs-target="#postAd_Modal">POST AN AD</button>
@@ -261,6 +363,7 @@ Reuse | greenCan
 
 {% block scripts %}
 <script src="{% static 'modules/owl-carousel-2/js/owl-carousel2.min.js' %}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
 <script>
   $('.carousel').owlCarousel({
     margin: 10,
@@ -450,6 +553,78 @@ if (window.File && window.FileList && window.FileReader) {
     $('#image-upload').trigger('click');
   });
 
+  
+//form validation function
+$(document).ready(function() {
+    $('#infoForm').bootstrapValidator({
+     container: '#messages',
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+            title: {
+                validators: {
+                    notEmpty: {
+                        message: '- The title is required and cannot be empty<br>'
+                    },
+                    stringLength: {
+                        max: 100,
+                        message: '- The title must be less than 100 characters long<br>'
+                    }
+                }
+            },
+            description: {
+                validators: {
+                    notEmpty: {
+                        message: '- The description is required and cannot be empty<br>'
+                    },
+                    stringLength: {
+                        max: 500,
+                        message: '- The description must be less than 100 characters long<br>'
+                    }
+                }
+            },
+            category: {
+                validators: {
+                    notEmpty: {
+                        message: '- Please select a category<br>'
+                    }
+                }
+            },
+            email: {
+                validators: {
+                    notEmpty: {
+                        message: '- The email address is required<br>'
+                    },
+                    emailAddress: {
+                        message: '- The input is not a valid email address<br>'
+                    }
+                }
+            },
+            zipcode: {
+                validators: {
+                    notEmpty: {
+                        message: '- The zip code is required<br>'
+                    },
+                }
+            },
+            number: {
+                validators: {
+                    notEmpty: {
+                        message: '- The contact number is required<br>'
+                    }
+                }
+            }
+        },
+        
+    }).on('error.field.bv', function(e, data) {
+        data.bv.disableSubmitButtons(true); // Disable submit button
+      }).on('success.field.bv', function(e, data) {
+          data.bv.disableSubmitButtons(false); // Enable submit button
+      });
+});
 </script>
 
 {% endblock %}
