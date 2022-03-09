@@ -6,7 +6,7 @@ def donation_view(request):
     context = {"is_reuse": True}
     return render(request, template, context=context)
 
-def showform(request):
+def ShowAdPostForm(request):
     form= FormPost(request.POST or None)
     if form.is_valid():
         form.save()
