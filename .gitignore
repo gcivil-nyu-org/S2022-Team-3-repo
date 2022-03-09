@@ -6,4 +6,4 @@ __pycache__/*
 **/*.pyc
 .idea/*
 .env
-.env copy
+.env-*

@@ -1,7 +1,9 @@
+from datetime import datetime
+from venv import create
 from django.db import models
 from account.models import Account
 from recycle.models import ZipCode
-
+from datetime import datetime
 
 class Post(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
@@ -14,6 +16,7 @@ class Post(models.Model):
     user = models.ForeignKey(Account, null=False, on_delete=models.CASCADE)
     approved = models.BooleanField(null=True, default=False)
     still_available = models.BooleanField(null=True, default=True)
+    created_on = models.DateTimeField(default=datetime.now())
 
     def __str__(self):
         return str(self.id)
