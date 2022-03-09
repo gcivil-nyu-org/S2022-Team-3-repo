@@ -17,9 +17,9 @@ reuse | greenCan
         <button class="btn btn-circle btn-search" style="margin-left: 3px"> <i class="fa fa-search"></i></button>
 </div>
 <div class = "container">
-    <div class="row" id = "wholeCard">
+    <div class="row mb-5" id = "wholeCard">
 {% for post in Posts %}
-        <div class="col-lg-4 col-md-6 col-sm-8 col-xs-8">
+        <div class="col-lg-4 col-md-6 col-sm-8 col-xs-8 pt-3">
             <div class="card">
                 <img src={{post.url}} class="card-img-top img-fluid">
 
@@ -74,6 +74,8 @@ box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);"class="modal fade" id="details_Mode
     </div>
 </div>
 {% endfor %}
+
+
 </div>
 </div>
 
