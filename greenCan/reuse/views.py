@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .forms import FormPost
+from .models import Post
 
 def donation_view(request):
     template = "donate-item-page.html"
@@ -15,4 +16,13 @@ def ShowAdPostForm(request):
     context= {'form': form }
         
     return render(request, 'adpostui.html', context)
+
+def showdata(request):
+ 
+    alldata= Post.objects.all()
+    
+    context= {'alldata': alldata}
+
+        
+    return render(request, 'adpostuidata.html', context)
 
