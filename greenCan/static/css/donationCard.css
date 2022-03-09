@@ -64,7 +64,7 @@
     font-size: 16px;
 } 
 
-.details_Model{
+.modal{
 	position: absolute;
     float: left;
     left: 50%;
@@ -79,24 +79,3 @@
 
     box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);
 }
-
-/*
-.details_Model button{
-    position: relative;
-    background:#ffffff;
-    border-radius: 30px;
-    border: 1px solid #000000;
-
-    color: #000000;
-    width: 50%;
-    height: 3vw;
-
-    text-align:center;
-    margin: auto;
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 300;
-    font-size: 14px;
-    cursor:pointer;
-}
-*/
