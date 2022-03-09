@@ -11,7 +11,6 @@ def ShowAdPostForm(request):
     form= FormPost(request.POST or None)
     if form.is_valid():
         form.save()
-        messages.success(request,'Data has been submitted')
         
     context= {'form': form }
         
