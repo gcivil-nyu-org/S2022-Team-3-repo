@@ -5,3 +5,5 @@ django-environ
 flake8
 black
 coverage
+pyrebase
+datetime
