@@ -31,6 +31,7 @@ reuse | greenCan
 
                     <div class = "col-6">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#details_Model{{post.id}}">Details</button>
+                        <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#details_Model">Details</button> -->
 
                     </div>         
                 </div>
@@ -41,7 +42,8 @@ reuse | greenCan
 </div>
 
 <!-- pop-up window -->
-<div class="modal fade" id="details_Model{{post.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" hidden="true">
+<div class="details_Model" id="details_Model{{post.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" hidden="true">
+    <!-- <div class="details_Model" id="details_Model" tabindex="-1" aria-labelledby="exampleModalLabel" hidden="true"></div> -->
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">

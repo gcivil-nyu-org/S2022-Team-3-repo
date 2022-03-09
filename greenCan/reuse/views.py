@@ -5,7 +5,8 @@ from recycle.models import ZipCode
 
 def index(request):
     template = 'reuse_index.html'
-    return render(request, template, context={})
+    context = {"is_reuse": True}
+    return render(request, template, context=context)
 
 def donation_view(request):
     template = "donate-item-page.html"
