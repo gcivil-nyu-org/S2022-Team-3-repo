@@ -290,36 +290,6 @@ Reuse | greenCan
 
 
 //img uploading script
-if (window.File && window.FileList && window.FileReader) {
-      var filesInput = document.getElementById("image-upload");
-      filesInput.addEventListener("change", function (event) {
-          var files = event.target.files; //FileList object
-          var output = document.getElementById("show-image-frame");
-          output.innerHTML = "";
-          for (var i = 0; i < files.length; i++) {
-              var file = files[i];
-              //Only pics
-              if (!file.type.match('image'))
-                  continue;
-              var picReader = new FileReader();
-              picReader.addEventListener("load", function (event) {
-                  var picFile = event.target;
-                  var div = document.createElement("div");
-                  div.innerHTML = "<img class='thumbnail' src='" + picFile.result + "'" +
-                      "title='" + picReader.name + "'/>";
-                  output.insertBefore(div, null);
-              });
-              //Read the image
-              picReader.readAsDataURL(file);
-          }
-      });
-  } else {
-      console.log("Your browser does not support File API");
-  }
-
-  $('#image-frame').click(function(){
-    $('#image-upload').trigger('click');
-  });
 
 //form validation function
 // $(document).ready(function () {
@@ -363,7 +333,7 @@ box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);" class="modal fade" id="postAd_Moda
         </div>
         <div class="modal-body">
           <!--information collection form -->
-          <form class="form-container g-3" action="#" method="POST">
+          <form class="form-container g-3" enctype="multipart/form-data" action="/reuse/create_post" method="POST">
             <!--img upload-->
             <div class="upload-image-frame d-flex flex-column align-middle py-auto" id="image-frame">
               <div class="upload-text" id="show-image-frame">
@@ -384,14 +354,14 @@ box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);" class="modal fade" id="postAd_Moda
             <div class="col-6">
                 <div class="form-group">
                   <label for="validationCustom01" class="form-label"><b>Title:</b></label>
-                  <input type="text" class="form-control" id="validationCustom01" style = "max-width: 100%;" placeholder="Enter the Title" required>
+                  <input type="text" class="form-control" name="title" id="validationCustom01" style = "max-width: 100%;" placeholder="Enter the Title" required>
                   <!-- <div class="invalid-feedback">
                     Please enter a title for your item.
                   </div> -->
                 </div>
                 <div class="form-group">
                   <label for="validationCustom02" class="form-label"><b>Description:</b></label>
-                <textarea type="text" class="form-control" id="validationCustom02" style = "max-width: 100%;" placeholder="Enter the Description" required row="30"></textarea>
+                <textarea type="text" class="form-control" name="description" id="validationCustom02" style = "max-width: 100%;" placeholder="Enter the Description" required row="30"></textarea>
                 <!-- <div class="invalid-feedback">
                   Please add some description.
                 </div> -->
@@ -402,7 +372,7 @@ box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);" class="modal fade" id="postAd_Moda
             <div class = "col-6">
               <div class="form-group">
                 <label for="validationCustom03" class="form-label"><b>Category:</b></label>
-              <select class="form-select" id = "validationCustom03" aria-label="categories" required>
+              <select class="form-select" id = "validationCustom03" name="category" aria-label="categories" required>
                 <option selected>Select Item Category</option>
                 <option value="Furniture">Furniture</option>
                 <option value="Books">Books</option>
@@ -415,21 +385,21 @@ box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);" class="modal fade" id="postAd_Moda
               </div>
               <div class="form-group">
                 <label for="validationCustom04" class="form-label"><b>Your Contact Number:</b></label>
-                <input type="number" min="1000000000" max="9999999999" class="form-control"  id="validationCustom04" placeholder="Enter your Contact Number" style = "max-width: 100%;" required>
+                <input type="number" min="1000000000" max="9999999999" class="form-control"  id="validationCustom04" name="number" placeholder="Enter your Contact Number" style = "max-width: 100%;" required>
                 <!-- <div class="invalid-feedback">
                   Please enter a valid contact number.
                 </div> -->
               </div>
               <div class="form-group">
               <label for="validationCustom05" class="form-label"><b>Your E-mail:</b></label>
-                <input type="email" class="form-control"  id="validationCustom05" placeholder="Enter your E-mail" style = "max-width: 100%;" required>
+                <input type="email" class="form-control"  id="validationCustom05" name="email" placeholder="Enter your E-mail" style = "max-width: 100%;" required>
                 <!-- <div class="invalid-feedback">
                   Please enter a valid email.
                 </div> -->
               </div>
               <div class="form-group">
               <label for="validationCustom06" class="form-label"><b>Zipcode of Pick-up Location:</b></label>
-                <input type="text" class="form-control" pattern="^\d{5}$" id="validationCustom06" placeholder="Enter the Zipcode of the loaction" style = "max-width: 100%;" required>
+                <input type="text" class="form-control" pattern="^\d{5}$" id="validationCustom06" name="zipcode" placeholder="Enter the Zipcode of the loaction" style = "max-width: 100%;" required>
                 <!-- <div class="invalid-feedback">
                   Please enter a valid zipcode.
                 </div> -->
@@ -448,6 +418,38 @@ box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);" class="modal fade" id="postAd_Moda
       </div>
     </div>
 <!--end of post add modal-->
+<script>
+if (window.File && window.FileList && window.FileReader) {
+      var filesInput = document.getElementById("image-upload");
+      filesInput.addEventListener("change", function (event) {
+          var files = event.target.files; //FileList object
+          var output = document.getElementById("show-image-frame");
+          output.innerHTML = "";
+          for (var i = 0; i < files.length; i++) {
+              var file = files[i];
+              //Only pics
+              if (!file.type.match('image'))
+                  continue;
+              var picReader = new FileReader();
+              picReader.addEventListener("load", function (event) {
+                  var picFile = event.target;
+                  var div = document.createElement("div");
+                  div.innerHTML = "<img class='thumbnail' src='" + picFile.result + "'" +
+                      "title='" + picReader.name + "'/>";
+                  output.insertBefore(div, null);
+              });
+              //Read the image
+              picReader.readAsDataURL(file);
+          }
+      });
+  } else {
+      console.log("Your browser does not support File API");
+  }
 
+  $('#image-frame').click(function(){
+    $('#image-upload').trigger('click');
+  });
+
+</script>
 
 {% endblock %}
