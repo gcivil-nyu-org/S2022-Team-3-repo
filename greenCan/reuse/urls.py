@@ -6,4 +6,5 @@ app_name = "reuse"
 
 urlpatterns = [
     path("donations", views.donation_view, name="donation-page"),
+    path('showform', views.showform),
 ]
