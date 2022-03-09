@@ -24,7 +24,7 @@ def listingPage(request):
     ZipCodes = ZipCode.objects.all().values()
     for index in range(len(Posts)):
         # add the url
-        Posts[index]["url"] = Images.filter(post_id = Posts[index])[0]["url"]
+        Posts[index]["url"] = Images.filter(post=Posts[index]['id'])[0]['url']
         # Posts[index]["url"] = Images.objects.filter(post_id=Posts[index]).first().url
         temp = ZipCodes.filter(id = Posts[index]["zip_code_id"])[0]
         Posts[index]["location"] = str(temp["borough"]+", "+temp["state"]+", "+temp["zip_code"])
