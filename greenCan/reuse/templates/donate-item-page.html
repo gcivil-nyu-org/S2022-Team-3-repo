@@ -11,9 +11,115 @@ Reuse | greenCan
 {% endblock %}
 
 {% block main %}
+<!--post ad window-->
+<div style = "position: absolute;
+float: left;
+left: 50%;
+top: 57%;
+width: 70%;
+transform: translate(-50%, -50%);
+background:#ffffff;
+border: 2px solid #00000060;
+border-radius: 10px;
+z-index: 1500;
+padding:20px;
+padding-left: 20px;
+padding-right: 20px;
+overflow-y:auto;
+
+box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);"class="modal" id="postAd_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title" id="exampleModalLabel" style = "text-align: center;">Create an Ad Post</h3>
+        </div>
+        <div class="modal-body">
+          <!--information collection form -->
+          <form class="form-container g-3 needs-validation" novalidate>
+            <!--img upload-->
+            <div class="upload-image-frame d-flex flex-column align-middle py-auto" id="image-frame">
+              <div class="upload-text" id="show-image-frame">
+                Upload few pictures of the item
+              </div>
+              <div class="upload-btn">
+                <i class="fa fa-plus"></i>
+                <span>
+                  ADD PICTURES
+                </span>
+              </div>
+            </div>
+            <input type="file" name="file[]" class="d-none" id="image-upload" accept="image/*" multiple="multiple" >
+            <p></p>
+            <div class ="row">
+            <!--left side info-->
+            <div class="col-6">
+                <label for="validationCustom01" class="form-label"><b>Title:</b></label>
+                  <input type="text" class="form-control" id="validationCustom01" style = "max-width: 100%;" placeholder="Enter the Title" required>
+                  <div class="invalid-feedback">
+                    Please enter a title for your item.
+                  </div>
+                <p></p>
+                <label for="validationCustom02" class="form-label"><b>Description:</b></label>
+                <textarea type="text" class="form-control" id="validationCustom02" style = "max-width: 100%;" placeholder="Enter the Description" required></textarea>
+                <div class="invalid-feedback">
+                  Please add some description.
+                </div>
+            </div>
+
+            <!--right side info-->
+            <div class = "col-6">
+              <label for="validationCustom03" class="form-label"><b>Category:</b></label>
+              <select class="form-select" id = "validationCustom03" aria-label="categories" required>
+                <option selected>Select Item Category</option>
+                <option value="1">Furniture</option>
+                <option value="2">Books</option>
+                <option value="3">Toys</option>
+                <option value="3">Electronics</option>
+              </select>
+              <div class="invalid-feedback">
+                Please select a category.
+              </div>
+              <p></p>
+              
+              <label for="validationCustom04" class="form-label"><b>Your Contact Number:</b></label>
+                <input type="number" class="form-control"  id="validationCustom04" placeholder="Enter your Contact Number" style = "max-width: 100%;" required>
+                <div class="invalid-feedback">
+                  Please enter a valid contact number.
+                </div>
+                <p></p>
+              
+              <label for="validationCustom05" class="form-label"><b>Your E-mail:</b></label>
+                <input type="email" class="form-control"  id="validationCustom05" placeholder="Enter your E-mail" style = "max-width: 100%;" required>
+                <div class="invalid-feedback">
+                  Please enter a valid email.
+                </div>
+                <p></p> 
+              
+              <label for="validationCustom06" class="form-label"><b>Zipcode of Pick-up Location:</b></label>
+                <input type="text" class="form-control"  id="validationCustom06" placeholder="Enter the Zipcode of the loaction" style = "max-width: 100%;" required>
+                <div class="invalid-feedback">
+                  Please enter a valid zipcode.
+                </div>
+                <p></p> 
+            </div>
+            </div>
+          </form>
+          
+          <!--End of the form-->
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button class="btn btn-primary" type="submit">Post</button>
+        </div>
+      </div>
+    </div>
+<!--end of post add modal-->
+
+
 <div class="d-flex flex-column justify-content-center my-5">
-    <button class="btn-xlg btn-rounded coolBeans mb-md-2 mb-1 mt-3 mx-auto">POST AN AD</button>
-    <div class="horizontal-divider">
+  <button class="btn-xlg btn-rounded coolBeans mb-md-2 mb-1 mt-3 mx-auto" data-bs-toggle="modal" data-bs-target="#postAd_Modal">POST AN AD</button>
+  <div class="horizontal-divider">
         <div class="or-container">
             <span class="">OR</span>
         </div>
@@ -286,5 +392,59 @@ Reuse | greenCan
   $('.shelter-home-card').click(function(){
     window.open($(this).attr('data-url'),'_blank');
   });
+
+
+//img uploading script
+if (window.File && window.FileList && window.FileReader) {
+      var filesInput = document.getElementById("image-upload");
+      filesInput.addEventListener("change", function (event) {
+          var files = event.target.files; //FileList object
+          var output = document.getElementById("show-image-frame");
+          output.innerHTML = "";
+          for (var i = 0; i < files.length; i++) {
+              var file = files[i];
+              //Only pics
+              if (!file.type.match('image'))
+                  continue;
+              var picReader = new FileReader();
+              picReader.addEventListener("load", function (event) {
+                  var picFile = event.target;
+                  var div = document.createElement("div");
+                  div.innerHTML = "<img class='thumbnail' src='" + picFile.result + "'" +
+                      "title='" + picReader.name + "'/>";
+                  output.insertBefore(div, null);
+              });
+              //Read the image
+              picReader.readAsDataURL(file);
+          }
+      });
+  } else {
+      console.log("Your browser does not support File API");
+  }
+
+  $('#image-frame').click(function(){
+    $('#image-upload').trigger('click');
+  });
+
+//form validation function
+$(document).ready(function () {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  var forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.prototype.slice.call(forms)
+    .forEach(function (form) {
+      form.addEventListener('submit', function (event) {
+        if (!form.checkValidity()) {
+          event.preventDefault()
+          event.stopPropagation()
+        }
+
+        form.classList.add('was-validated')
+      }, false)
+    })
+})()
 </script>
 {% endblock %}
