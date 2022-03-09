@@ -5,50 +5,58 @@
 Reuse | greenCan
 {% endblock %}
 {% block style %}
+  <link rel="stylesheet" href="{% static 'css/bg.css' %}" />  
+  <style>
+    .background{
+    background-image: url("{% static 'images/landing/donation.jpg' %}");
+    object-fit:cover;
+    height: 100vh;
+    width: 100vw;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    text-align:center;
+    margin:0;
+    padding:0;
+  }
+  
+  body {
+    overflow-x: hidden;
+  }
 
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-<link rel="stylesheet" href="{% static 'css/map.css' %}" />
-<link rel="stylesheet" href="{% static 'css/filter.css' %}" />
-<link rel="stylesheet" href="{% static 'css/card.css' %}" />
-<link rel="stylesheet" href="{% static 'css/bg.css' %}" />
-
-  {% endblock %}
+  </style>
+{% endblock %}
 
 {% block main %}
-
-<!-- <div class="container-fluid" style="background-image: url({% static 'images/backgrounds/reuse.jpg'%});object-fit:cover;height:100vh;width: 100vw;border:1px solid #000000;margin: 0px 20px 20px 20px;"> -->
-  <div class="container-fluid" style="background-image: url({% static 'images/landing/donation.jpg'%});object-fit:cover;height:100vh;width: 100vw;background-size: cover; backgound-position: center center;
-  background-repeat: no-repeat;
-  text-align:center;
-  margin:0px 20px 0px 20px;
-  padding:0;">
- 
-    <!-- <img src="{% static 'images/backgrounds/reuse.jpg' %}"  style="object-fit: cover;height: 100vh;width: 100vw;"/> -->
-  <div class="row justify-content-center align-items-center" style="padding-top: 15%;">
-
-   <div class="col-md-2 col-10 offset-1 justify-content-center align-items-center">
-    <div class="left-frame">
-      <div class="box-left">
-      <div class="text-box-left">
-        <a href="{% url 'reuse:donation-page' %}" class="landing-anchors" >Want to donate an item?</a></div></div></div></div>
-        <div class="col-md-1 col-10  d-none d-md-block offset-1 align-items-center">
-          <!-- <div class="line"></div> -->
-          <!-- <div class="or-text">OR</div></div> -->
-          <div class="horizontal-divider-l">
-            <div class="or-container-l">
-                <div>OR</div>
-            </div>
+<div class="container-fluid background d-flex justify-content-center py-auto">
+  <div class="row justify-content-center align-items-center row-frame mx-3">
+    <div class="col-md-5 offset-md-0 col-10 d-flex justify-content-center align-items-center mb-md-0 my-1">
+      <div class="left-frame">
+        <div class="box-left py-5">
+          <div class="text-box-left">
+            <a href="{% url 'reuse:donation-page' %}" class="landing-anchors" >Want to donate an item?</a>
           </div>
-          </div>
-        <div class="col-md-3 col-10 offset-1 align-items-center">
-         <div class="right-frame"> 
-           <div class="box-right">
-             <div class="text-box-right"><a href="{% url 'reuse:listingPage' %}" class="landing-anchors">
-           Looking for a donated item?</a></div></div></div>
+        </div>
+      </div>
     </div>
-
+    <div class="col-md-2 offset-md-0 d-none d-md-block offset-0 d-flex justify-content-center align-items-center mb-md-0 mb-1">
+      <div class="horizontal-divider-l">
+        <div class="or-container-l">
+            <div>OR</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5 offset-md-0 col-10 offset-0 d-flex justify-content-center align-items-center mb-md-0 my-2">
+      <div class="right-frame"> 
+        <div class="box-right py-5">
+          <div class="text-box-right">
+            <a href="{% url 'reuse:listingPage' %}" class="landing-anchors">Looking for a donated item?</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+</div>
 
 
 {% endblock %}
