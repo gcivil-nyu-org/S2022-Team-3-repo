@@ -16,7 +16,7 @@ Reuse | CreateAdPost
 
 
 <div class="outer_frame">
-  <form action="some_page.php">
+  <form action="action_page.php">
     <div class="cancel_icon">
 
     </div>
@@ -27,39 +27,30 @@ Reuse | CreateAdPost
       <div class="upload_text">
         Upload few pictures of the item
       </div>
-      <div class="add_pic_frame">
-        <div class="plus_icon">
-          <i class="fa fa-plus" style="color: #FFFFFF"></i>
+      <button type="button" onclick="alert('Hello world!')">
+        <div class="add_pic_frame">
+          <div class="plus_icon">
+            <i class="fa fa-plus" style="color: #FFFFFF"></i>
+          </div>
+          <div class="add_pic_text">
+            ADD PICTURES
+          </div>
         </div>
-        <div class="add_pic_text">
-          ADD PICTURES
-        </div>
-      </div>
+      </button>
     </div>
     <div class="title_frame">
       <div class="title_text">
         Title:
-      </div>
-      <div class="title_rectangle">
-      </div>
-      <div class="enter_title">
-       <input type="text" id="enter_title" name="enter_title" placeholder="Enter the Title">
-      </div>
-    </div>
-  
-  
-  
+      </div>        
+      <input type="text" class="enter_title" id="enter_title" name="enter_title" placeholder="  Enter the Title">        
+    </div> 
   
   
     <div class="description_frame">
       <div class="description_text">
         Description:
       </div>
-      <div class="description_rectangle">
-      </div>
-      <div class="enter_description">
-        <input type="text" id="enter_description" name="enter_description" placeholder="Enter the Item Description">
-      </div>
+      <textarea class="enter_description" placeholder="  Enter the description"></textarea>               
     </div>
   
   
@@ -67,49 +58,27 @@ Reuse | CreateAdPost
       <div class="category_text">
         Category:
       </div>
-      <div class="category_rectangle">
-      </div>
-      <div class="enter_category">
-        <input type="text" id="enter_category" name="enter_category" placeholder="Select Item Category">
-      </div>
-      <div class="category_select_icon">
-        <!--<i class="fa fa-caret-down" style="color: #C4C4C4"></i>--->
-        <select id="country" name="country">
-          <option value="blank"></option>
-          <option value="ewaste">Ewaste</option>
-          <option value="textile">Textile</option>
-        </select>
-      </div>
-    </div>
-  
-  
-  
-  
-  
+      <select id="country" class="category_select_icon" name="country">
+        <option value="blank"> Select</option>
+        <option value="ewaste"> Ewaste</option>
+        <option value="textile"> Textile</option>
+      </select>        
+    </div>  
   
   
     <div class="contact_frame">
       <div class="contact_text">
         Your Contact Number:
       </div>
-      <div class="contact_rectangle">
-      </div>
-      <div class="enter_contact">
-        <input type="tel" id="enter_contact" name="enter_contact" placeholder="Enter your Contact Number">
-      </div>
-    </div>
-  
+      <input type="tel" class="enter_contact"  id="enter_contact" name="enter_contact" placeholder="  Enter your Contact Number">            
+    </div> 
   
   
     <div class="email_frame">
       <div class="email_text">
         Your Email:
       </div>
-      <div class="email_rectangle">
-      </div>
-      <div class="enter_email">
-        <input type="email" id="enter_email" name="enter_email" placeholder="Enter your E-mail">
-      </div>
+      <input type="email" class="enter_email"  id="enter_email" name="enter_email" placeholder="  Enter your E-mail">           
     </div>
   
   
@@ -117,23 +86,13 @@ Reuse | CreateAdPost
       <div class="zipcode_text">
         Zipcode of Pick-up Location:
       </div>
-      <div class="zipcode_rectangle">
-      </div>
-      <div class="enter_zipcode">
-        <input type="text" id="enter_zipcode" name="enter_zipcode" pattern="[0-9]{5}" placeholder="Enter the Zipcode of the location">
-      </div>
+      <input type="text" class="enter_zipcode"  id="enter_zipcode" name="enter_zipcode" pattern="[0-9]{5}" placeholder="  Enter the Zipcode of the location">
     </div>
   
   
     <div class="post_frame">
-      <div class="post_rectangle">
-      </div>
-      <div class="post_text">
-        <input type="submit" value="POST">
-      </div>
-    </div>
-  
-  
+      <input type="submit" class="post_text" value="    POST">
+    </div>  
   
   </form>
 </div>
