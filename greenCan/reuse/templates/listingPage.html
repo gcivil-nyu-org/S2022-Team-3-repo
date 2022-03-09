@@ -16,10 +16,10 @@ reuse | greenCan
     <input type="text" class="form-control" placeholder="Searching an item for donation" style="display:inline"/>
         <button class="btn btn-circle btn-search" style="margin-left: 3px"> <i class="fa fa-search"></i></button>
 </div>
-{% for post in Posts %}
 <div class = "container">
-    <div class="row" id = "wholeCard">
-        <div class="col-lg-4 col-md-6 col-sm-8 col-xs-8">
+    <div class="row mb-5" id = "wholeCard">
+{% for post in Posts %}
+        <div class="col-lg-4 col-md-6 col-sm-8 col-xs-8 pt-3">
             <div class="card">
                 <img src={{post.url}} class="card-img-top img-fluid">
 
@@ -31,17 +31,30 @@ reuse | greenCan
 
                     <div class = "col-6">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#details_Model{{post.id}}">Details</button>
+                        <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#details_Model">Details</button> -->
 
                     </div>         
                 </div>
 
             </div>
         </div>
-    </div>
-</div>
-
 <!-- pop-up window -->
-<div class="modal fade" id="details_Model{{post.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" hidden="true">
+<div style = "position: absolute;
+float: left;
+left: 50%;
+top: 50%;
+max-width: 60%;
+transform: translate(-50%, -50%);
+background:#ffffff;
+border: 2px solid #00000060;
+border-radius: 10px;
+z-index: 500;
+padding:20px;
+padding-left: 20px;
+padding-right: 20px;
+
+box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);"class="modal fade" id="details_Model{{post.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" hidden="true">
+    <!-- <div class="details_Model" id="details_Model" tabindex="-1" aria-labelledby="exampleModalLabel" hidden="true"></div> -->
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -61,6 +74,10 @@ reuse | greenCan
     </div>
 </div>
 {% endfor %}
+
+
+</div>
+</div>
 
 
 

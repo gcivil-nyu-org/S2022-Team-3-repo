@@ -9,9 +9,11 @@
     .box-left{
         width: 460px;
         height: 298px;
-        /* display: flex; */
-    /* justify-content: center; /* align horizontal */
-    /* align-items: center;  */
+        display: flex;
+        flex-direction: column;
+        vertical-align: middle;
+    justify-content: center; /* align horizontal */
+    align-items: center;
         
         
         background: #6ABE52;
@@ -22,14 +24,25 @@
         }
     
         .text-box-left{
-          
+            /* position: absolute; */
+        /* width: 352px;
+        height: 118px; */
+        /* left: 54px;
+        top: 95px; */
+        height: inherit;
         text-decoration: none;
+        padding: 30px;
         
         font-family: Roboto;
         font-style: normal;
         font-weight: 900;
         font-size: 50px;
         line-height: 59px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        
+        color: #21212D;
         }
     
     
@@ -42,7 +55,44 @@
     
     }
     
+.or-container-l{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(90deg);
+    background-color: #21212d !important;
+    color: #fff;
+    text-transform: uppercase;
+    line-height: 1.2rem;
+    height: max-content;
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+.horizontal-divider-l .or-container-l{
+    position: relative;
+    top: -25px;
+    left: calc(50% - 25px);
+    align-content: center;
+    width: 50px !important;
+    height: 50px !important;
+}
+    .horizontal-divider-l {
+        display: flex;
+        transform: rotate(-90deg);
+        margin: 2em 0;
+        width: 298px;
+        left: -15%;
+        height: 5px;
+        border-radius: 2.5px;
+        background-color: #21212d;
+        position: relative;
+    }
     a.landing-anchors{
+        height: inherit;
         text-decoration: none;
         font-family: Roboto;
         font-style: normal;
@@ -52,16 +102,15 @@
         display: flex;
         align-items: center;
         text-align: center;
-        
         color: #21212D;
     }
     
     
     .or-text{
-        display: flex;
+    display: flex;
     justify-content: center; /* align horizontal */
     align-items: center;
-        font-family: Roboto;
+    font-family: Roboto;
     font-style: normal;
     font-weight: 600;
     font-size: 24px;
@@ -87,9 +136,14 @@
     
     .box-right{
         /* position: absolute; */
-    width: 460px;
-    height: 298px;
-    
+    flex-direction: column;
+    vertical-align: middle;
+
+    min-width: 460px;
+    min-height: 298px;
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center;
     /* left: 0px;
     top: 0px; */
     
@@ -101,10 +155,8 @@
     }
     
     .text-box-right{
-        /* position: absolute; */
-    /* left: 29px;
-    top: 90px; */
-    
+    flex-direction: column;
+    height: inherit;
     font-family: Roboto;
     font-style: normal;
     font-weight: 900;
@@ -116,4 +168,3 @@
     
     color: #21212D;
     }
-    
