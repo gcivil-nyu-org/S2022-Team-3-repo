@@ -7,13 +7,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('reuse', '0002_post_created_on'),
+        ("reuse", "0002_post_created_on"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='post',
-            name='created_on',
-            field=models.DateTimeField(default=datetime.datetime(2022, 3, 7, 16, 27, 30, 825479)),
+            model_name="post",
+            name="created_on",
+            field=models.DateTimeField(
+                default=datetime.datetime(2022, 3, 7, 16, 27, 30, 825479)
+            ),
         ),
     ]
