@@ -3,13 +3,6 @@ os: linux
 
 python:
   - 3.8
-
-env:
-  - SECRET_KEY=django-secure-#cqhtip#_$ek$ail5(e#=_df_)279o#f)h$md_p38n*ukq1w^_
-  - DATABASE_HOST=ec2-52-1-68-9.compute-1.amazonaws.com
-  - DATABASE_NAME=dcqtehvmi68eom
-  - DATABASE_USER=nseetdynfnqazd
-  - DATABASE_PASSWORD=cf490d7f5f46263db970de8737a0df8cee1846a92a025a935497269decaccb68
   
 install:
   - pip install -r requirements.txt
@@ -20,7 +13,7 @@ before_script:
 script:
   - python -m black . --check
   - python -m flake8 --max-line-length=150
-  - python ./greenCan/run_coverage_tests.py
+  - cd greenCan && python -m coverage run --source='.' manage.py test
 
 after_success:
   - coveralls
