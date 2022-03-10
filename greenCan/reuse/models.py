@@ -5,6 +5,7 @@ from account.models import Account
 from recycle.models import ZipCode
 from datetime import datetime
 
+
 class Post(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
     title = models.CharField(max_length=250, null=False)
@@ -25,7 +26,7 @@ class Post(models.Model):
 class Image(models.Model):
     id = models.AutoField(primary_key=True, auto_created=True)
     post = models.ForeignKey(Post, null=False, on_delete=models.CASCADE)
-    url = models.URLField(max_length=500, null=False)
+    url = models.URLField(max_length=2000, null=False)
 
     def __str__(self):
         return str(self.id)

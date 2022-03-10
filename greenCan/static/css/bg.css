@@ -1,0 +1,117 @@
+.left-frame, .right-frame {
+    max-width: 460px;
+    max-height: 298px;  
+}
+
+.box-left, .box-right{
+    min-width: inherit;
+    min-height: inherit;
+    display: flex;
+    flex-direction: column;
+    vertical-align: middle;
+    justify-content: center; /* align horizontal */
+    align-items: center;
+    background: #6ABE52;
+    border: 3px dashed #008037;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+}
+    
+.text-box-left, .text-box-right{
+    height: inherit;
+    text-decoration: none;
+    padding: 30px;   
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 50px;
+    line-height: 59px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    
+    color: #21212D;
+}
+
+.or-container-l{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: rotate(90deg);
+    background-color: #21212d !important;
+    color: #fff;
+    text-transform: uppercase;
+    line-height: 1.2rem;
+    height: max-content;
+    width: 38px !important;
+    height: 38px !important;
+    border-radius: 50% !important;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+.horizontal-divider-l .or-container-l{
+    position: relative;
+    top: -25px;
+    left: calc(50% - 25px);
+    align-content: center;
+    width: 50px !important;
+    height: 50px !important;
+}
+.horizontal-divider-l {
+    display: flex;
+    /* margin: 2em 0; */
+    width: 298px;
+    height: 5px;
+    border-radius: 2.5px;
+    left: -28%;
+    background-color: #21212d;
+    position: relative;
+    transform: rotate(-90deg);
+}
+
+a.landing-anchors{
+    height: inherit;
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 0.8em;
+    line-height: 1em;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #21212D;
+}
+    
+    
+.or-text{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 28px;
+    align-items: center;
+    text-align: center;    
+    color: #ffffff;
+}
+    
+.line{
+    border: 5px solid #21212D;
+}
+
+@media screen and (max-width: 1025px) {
+    .horizontal-divider-l {
+        left: -55%;
+    }
+}
+
+@media screen and (max-width: 770px) {
+    .horizontal-divider-l {
+        left: -95%;
+    }
+}
