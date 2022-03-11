@@ -42,10 +42,6 @@
 					<li class="
 					{% if request.path == reuse_base_url or is_reuse %}
                     current
-                    {% endif %} nav-link"><a href="{% url 'reuse:reuse-landing-page' %}">Reuse</a></li>
-					<li class="
-					{% if request.path == reuse_base_url or is_reuse %}
-                    current
                     {% endif %} nav-link"><a href="{{ reuse_base_url }}">Reuse</a></li>
 					<li class="
                     {% if request.path == recycle_base_url or is_recycle %}
