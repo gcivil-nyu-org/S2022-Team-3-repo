@@ -1,7 +1,7 @@
+from datetime import datetime
 from django.db import models
 from account.models import Account
 from recycle.models import ZipCode
-from datetime import datetime
 
 
 class Post(models.Model):

@@ -7,6 +7,45 @@ html {
      font-family: 'Roboto', sans-serif;
 }
 
+section {
+    align-items: center;
+    margin: 20px auto;
+}
+
+.section-title {
+    text-align: center;
+    margin: 0 auto;
+    font-size: 1.5rem;
+    line-height: 1.5em;
+    font-weight: 700;
+    justify-content: left;
+    text-transform: uppercase;
+}
+
+.title-text {
+    margin-bottom: 30px;
+}
+
+.title-separator {
+    margin-left: 0;
+    margin-bottom: 20px;
+    margin-right: auto;
+    align-items: center;
+}
+
+.title-separator .separator-border {
+    position: relative;
+    top: 100px;
+    content: "";
+    left: 30px;
+    height: 3px;
+    width: 3rem;
+    opacity: 1;
+    background-color: red;
+    margin-bottom: 20px;
+    z-index: 30;
+}
+
 .coolBeans {
     background-color: #6abe52;
     font-family: 'Roboto', sans-serif;
@@ -17,7 +56,8 @@ html {
     will-change: transform;
     z-index: 0;
 }
-  .coolBeans::after {
+
+.coolBeans::after {
     background-color: #6abe52;
     border-radius: 3rem;
     content: '';
@@ -32,7 +72,8 @@ html {
     transition: 0.2s transform ease-out;
     will-change: transform;
     z-index: -1;
-  }
+}
+
 .coolBeans:hover::after {
     transform: translate(0, 0);
 }
@@ -53,9 +94,10 @@ html {
     box-sizing: border-box;
     border-radius: 28px;
     padding: .25em 1em;
-    display: block;
+    display: block !important;
     width: 30vw;
     min-width: 200px;
+    /* width: 100%; */
     height: 40px !important;
 }
 
@@ -222,7 +264,7 @@ body {
 	 display: flex;
 	 flex-direction: column;
 	 min-height: 90vh;
-     padding: 0 20px;
+     padding: 0px 20px;
 }
 /* Basic */
 html {
@@ -643,7 +685,7 @@ button, .button {
 
 }
 /* Small */
- @media screen and (max-width: 360px) {
+@media screen and (max-width: 360px) {
     /* Basic */
     body, input, textarea, select {
          font-size: 10pt;

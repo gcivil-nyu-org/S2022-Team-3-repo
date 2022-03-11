@@ -3,24 +3,17 @@ os: linux
 
 python:
   - 3.8
-
-env:
-  - SECRET_KEY='django-secure-#cqhtip#_$ek$ail5(e#=_df_)279o#f)h$md_p38n*ukq1w^_'
   
 install:
   - pip install -r requirements.txt
-  - pip install black
-  - pip install flake8
-  - pip install coverage
 
 before_script:
   - python ./greenCan/manage.py migrate
 
 script:
-  - python ./greenCan/manage.py
   - python -m black . --check
   - python -m flake8 --max-line-length=150
-  - python -m coverage run --source='./greenCan/' manage.py test
+  - cd greenCan && python -m coverage run --source='.' manage.py test
 
 after_success:
   - coveralls

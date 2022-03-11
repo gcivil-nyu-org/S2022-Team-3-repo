@@ -5,7 +5,7 @@ from .models import DropOffLocation, ZipCode
 
 
 def index(request):
-    template = "index.html"
+    template = "recycle/templates/index.html"
     types = DropOffLocation.objects.values_list("type", flat=True).distinct()
     context = {"types": types}
     return render(request, template, context=context)
