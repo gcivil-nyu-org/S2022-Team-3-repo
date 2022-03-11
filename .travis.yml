@@ -14,7 +14,6 @@ script:
   - python -m black . --check
   - python -m flake8 --max-line-length=150
   - cd greenCan && python -m coverage run --source='.' manage.py test
-  - cd ..
-  
+
 after_success:
-  - coveralls
+  - python -m coveralls
