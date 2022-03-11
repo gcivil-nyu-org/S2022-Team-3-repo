@@ -1,0 +1,455 @@
+{% extends 'template.html' %}
+{% load static %}
+
+{% block title %}
+Reuse | greenCan
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/carousel.css' %}" />
+<link rel="stylesheet" href="{% static 'modules/owl-carousel-2/css/owl-carousel2.min.css' %}" />
+{% endblock %}
+
+{% block main %}
+
+<div class="d-flex flex-column justify-content-center my-5">
+  <button class="btn-xlg btn-rounded coolBeans mb-md-2 mb-1 mt-3 mx-auto" data-bs-toggle="modal" data-bs-target="#postAd_Modal">POST AN AD</button>
+  <div class="horizontal-divider">
+        <div class="or-container">
+            <span class="">OR</span>
+        </div>
+      </div>
+    <a href="#" class="button btn-xlg btn-rounded coolBeans mt-md-1 mt-1">NEAR BY DONATION SITE</a>
+</div>
+<!-- Carousel -->
+<div class="container-fluid">
+  <div class="wrapper mb-5">
+    <h1 class="d-flex justify-content-center">
+      NYC Shelter Homes
+    </h1>
+    <div class="carousel owl-carousel">
+      <div class="card shelter-home-card" data-url="https://www.google.com/maps?saddr=My+Location&daddr=40.812663,-73.924125">
+        <div class="row">
+            <div class="col-md-5 col-12 d-md-block d-sm-none d-none pr-0">
+              <img src="{% static 'images/donation/donate-1.png' %}" class="mt-1 ml-1 mb-0">
+            </div>
+            <div class="col-md-7 col-12 pl-0 my-auto">
+              <div class="container card-content d-flex justify-content-center flex-column pl-0 pr-0">
+                <h4 class="title my-0">Haven</h4>
+                <div class="justify-content-left pr-0 pl-0">
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-map-marker-alt grey-icon"></i>
+                    </div>
+                    <div class="col-md-1 text-primary text-address">
+                      2640 Third Ave.,<br/>
+                      Bronx, NY 10454
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-clock grey-icon"></i>
+                    </div>
+                    <div class="col-md-10 text-primary text-time">
+                      Open 24 x 7
+                      <div class="small-time text-white">.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="card shelter-home-card" data-url="https://www.google.com/maps?saddr=My+Location&daddr=40.689535,-73.843952">
+        <div class="row">
+            <div class="col-md-5 col-12 d-md-block d-sm-none d-none pr-0">
+              <img src="{% static 'images/donation/donate-2.png' %}" class="mt-1 ml-1 mb-0">
+            </div>
+            <div class="col-md-7 col-12 pl-0 my-auto">
+              <div class="container card-content d-flex justify-content-center flex-column pl-0 pr-0">
+                <h4 class="title my-0">Queens Drop In Center</h4>
+                <div class="justify-content-left pr-0 pl-0">
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-map-marker-alt grey-icon"></i>
+                    </div>
+                    <div class="col-md-1 text-primary pr-0 text-address">
+                      100-32 Atlantic Ave.,<br/>
+                      Jamaica, NY 11416
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-clock grey-icon"></i>
+                    </div>
+                    <div class="col-md-10 text-primary text-time pr-0">
+                      Open 7:30 - 20:30
+                      <div class="small-time">24 hours (winters)</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="card shelter-home-card" data-url="https://www.google.com/maps?saddr=My+Location&daddr=40.676015,-73.905105">
+        <div class="row" >
+            <div class="col-md-5 col-12 d-md-block d-sm-none d-none pr-0">
+              <img src="{% static 'images/donation/donate-3.png' %}" class="mt-1 ml-1 mb-0">
+            </div>
+            <div class="col-md-7 col-12 pl-0 my-auto">
+              <div class="container card-content d-flex justify-content-center flex-column pl-0 pr-0">
+                <h4 class="title my-0">The Gathering Place</h4>
+                <div class="justify-content-left pr-0 pl-0">
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-map-marker-alt grey-icon"></i>
+                    </div>
+                    <div class="col-md-1 text-primary pr-0 text-address">
+                      2402 Atlantic Ave.,<br/>
+                      Brooklyn, NY 11233
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-clock grey-icon"></i>
+                    </div>
+                    <div class="col-md-10 text-primary text-time pr-0">
+                      Open 24 x 7
+                      <div class="small-time text-white">.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="card shelter-home-card" data-url="https://www.google.com/maps?saddr=My+Location&daddr=40.745377,-73.981306">
+        <div class="row">
+            <div class="col-md-5 col-12 d-md-block d-sm-none d-none pr-0">
+              <img src="{% static 'images/donation/donate-1.png' %}" class="mt-1 ml-1 mb-0">
+            </div>
+            <div class="col-md-7 col-12 pl-0 my-auto">
+              <div class="container card-content d-flex justify-content-center flex-column pl-0 pr-0">
+                <h4 class="title my-0">Mainchance</h4>
+                <div class="justify-content-left pr-0 pl-0">
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-map-marker-alt grey-icon"></i>
+                    </div>
+                    <div class="col-md-1 text-primary pr-0 text-address">
+                      120 E. 32nd Street,<br/>
+                      Manhattan, NY 10016
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-clock grey-icon"></i>
+                    </div>
+                    <div class="col-md-10 text-primary text-time pr-0">
+                      Open 24 x 7
+                      <div class="small-time text-white">.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="card shelter-home-card" data-url="https://www.google.com/maps?saddr=My+Location&daddr=40.749139,-73.994016">
+        <div class="row">
+            <div class="col-md-5 col-12 d-md-block d-sm-none d-none pr-0">
+              <img src="{% static 'images/donation/donate-4.png' %}" class="mt-1 ml-1 mb-0">
+            </div>
+            <div class="col-md-7 col-12 pl-0 my-auto">
+              <div class="container card-content d-flex justify-content-center flex-column pl-0 pr-0">
+                <h4 class="title my-0">Olivieri</h4>
+                <div class="justify-content-left pr-0 pl-0">
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-map-marker-alt grey-icon"></i>
+                    </div>
+                    <div class="col-md-1 text-primary pr-0 text-address">
+                      257 W. 30th Street,<br/>
+                      Manhattan, NY 10001
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-clock grey-icon"></i>
+                    </div>
+                    <div class="col-md-10 text-primary text-time pr-0">
+                      Open 7:30 - 20:30
+                      <div class="small-time">24 hours (winters)</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="card shelter-home-card" data-url="https://www.google.com/maps?saddr=My+Location&daddr=40.645821,-74.077908">
+        <div class="row">
+            <div class="col-md-5 col-12 d-md-block d-sm-none d-none pr-0">
+              <img src="{% static 'images/donation/donate-2.png' %}" class="mt-1 ml-1 mb-0">
+            </div>
+            <div class="col-md-7 col-12 pl-0 my-auto">
+              <div class="container card-content d-flex justify-content-center flex-column pl-0 pr-0">
+                <h4 class="title my-0">Project Hospitality</h4>
+                <div class="justify-content-left pr-0 pl-0">
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-map-marker-alt grey-icon"></i>
+                    </div>
+                    <div class="col-md-1 text-primary pr-0 text-address">
+                      150 Richmond Terrace,<br/>
+                      Staten Island, NY 10301
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-clock grey-icon"></i>
+                    </div>
+                    <div class="col-md-10 text-primary text-time pr-0">
+                      Open 24 x 7
+                      <div class="small-time text-white">.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+      <div class="card shelter-home-card" data-url="https://www.google.com/maps?saddr=My+Location&daddr=40.816615,-73.889883">
+        <div class="row">
+            <div class="col-md-5 col-12 d-md-block d-sm-none d-none pr-0">
+              <img src="{% static 'images/donation/donate-5.png' %}" class="mt-1 ml-1 mb-0">
+            </div>
+            <div class="col-md-7 col-12 pl-0 my-auto">
+              <div class="container card-content d-flex justify-content-center flex-column pl-0 pr-0">
+                <h4 class="title my-0">Living Room</h4>
+                <div class="justify-content-left pr-0 pl-0">
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-map-marker-alt grey-icon"></i>
+                    </div>
+                    <div class="col-md-1 text-primary pr-0 text-address">
+                      800 Barretto Street,<br/>
+                      Bronx, NY 10474
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-1 pl-0">
+                      <i class="fas fa-clock grey-icon"></i>
+                    </div>
+                    <div class="col-md-10 text-primary text-time pr-0">
+                      Open 24 x 7
+                      <div class="small-time text-white">.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Carousel -->
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'modules/owl-carousel-2/js/owl-carousel2.min.js' %}"></script>
+<script>
+  $('.carousel').owlCarousel({
+    margin: 10,
+    loop: true,
+    autoplay: true,
+    autoplayTimeout: 2800,
+    autoplayHoverpause: true,
+    responsive: {
+      0: {
+        items: 1,
+        nav: false,
+      },
+      600: {
+        items: 2,
+        nav: false,
+      },
+      1000: {
+        items: 3,
+        nav: false,
+      }
+    },
+    navText : ["<i class='fas fa-chevron-left'></i>","<i class='fas fa-chevron-right'></i>"]
+  });
+  $('.shelter-home-card').click(function(){
+    window.open($(this).attr('data-url'),'_blank');
+  });
+
+
+//img uploading script
+
+//form validation function
+// $(document).ready(function () {
+//   'use strict'
+//   // Fetch all the forms we want to apply custom Bootstrap validation styles to
+//   var forms = document.querySelectorAll('.needs-validation')
+
+//   // Loop over them and prevent submission
+//   Array.prototype.slice.call(forms)
+//     .forEach(function (form) {
+//       form.addEventListener('submit', function (event) {
+//         if (!form.checkValidity()) {
+//           event.preventDefault()
+//           event.stopPropagation()
+//         }
+
+//         form.classList.add('was-validated')
+//       }, false)
+//     })
+// });
+</script>
+
+<!--post ad window-->
+<div style = "position: absolute;
+float: left;
+left: 50%;
+top: 50%;
+width: 70%;
+justify-content: center;
+transform: translate(-50%, -50%);
+background:#ffffff;
+border: 2px solid #00000060;
+border-radius: 10px;
+z-index: 1500;
+/* padding: 20px 40px !important; */
+box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);" class="modal fade" id="postAd_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable px-5 py-3">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title" id="exampleModalLabel" style = "text-align: center;">Create an Ad Post</h2>
+        </div>
+        <div class="modal-body">
+          <!--information collection form -->
+          <form class="form-container g-3" enctype="multipart/form-data" action="/reuse/create_post" method="POST">
+            <!--img upload-->
+            <div class="upload-image-frame d-flex flex-column align-middle py-auto" id="image-frame">
+              <div class="upload-text" id="show-image-frame">
+                Upload few pictures of the item
+              </div>
+              <div class="upload-btn">
+                <i class="fa fa-plus"></i>
+                <span>
+                  ADD PICTURES
+                </span>
+              </div>
+            </div>
+            <input type="file" name="file[]" class="d-none" id="image-upload" accept="image/*" multiple="multiple" >
+            <br>
+            {% csrf_token %}
+            <div class ="row">
+            <!--left side info-->
+            <div class="col-6">
+                <div class="form-group">
+                  <label for="validationCustom01" class="form-label"><b>Title:</b></label>
+                  <input type="text" class="form-control" name="title" id="validationCustom01" style = "max-width: 100%;" placeholder="Enter the Title" required>
+                  <!-- <div class="invalid-feedback">
+                    Please enter a title for your item.
+                  </div> -->
+                </div>
+                <div class="form-group">
+                  <label for="validationCustom02" class="form-label"><b>Description:</b></label>
+                <textarea type="text" class="form-control" name="description" id="validationCustom02" style = "max-width: 100%;" placeholder="Enter the Description" required row="30"></textarea>
+                <!-- <div class="invalid-feedback">
+                  Please add some description.
+                </div> -->
+                </div>
+            </div>
+
+            <!--right side info-->
+            <div class = "col-6">
+              <div class="form-group">
+                <label for="validationCustom03" class="form-label"><b>Category:</b></label>
+              <select class="form-select" id = "validationCustom03" name="category" aria-label="categories" required>
+                <option selected>Select Item Category</option>
+                <option value="Furniture">Furniture</option>
+                <option value="Books">Books</option>
+                <option value="Toys">Toys</option>
+                <option value="Electronics">Electronics</option>
+              </select>
+              <!-- <div class="invalid-feedback">
+                Please select a category.
+              </div> -->
+              </div>
+              <div class="form-group">
+                <label for="validationCustom04" class="form-label"><b>Your Contact Number:</b></label>
+                <input type="number" min="1000000000" max="9999999999" class="form-control"  id="validationCustom04" name="number" placeholder="Enter your Contact Number" style = "max-width: 100%;" required>
+                <!-- <div class="invalid-feedback">
+                  Please enter a valid contact number.
+                </div> -->
+              </div>
+              <div class="form-group">
+              <label for="validationCustom05" class="form-label"><b>Your E-mail:</b></label>
+                <input type="email" class="form-control"  id="validationCustom05" name="email" placeholder="Enter your E-mail" style = "max-width: 100%;" required>
+                <!-- <div class="invalid-feedback">
+                  Please enter a valid email.
+                </div> -->
+              </div>
+              <div class="form-group">
+              <label for="validationCustom06" class="form-label"><b>Zipcode of Pick-up Location:</b></label>
+                <input type="text" class="form-control" pattern="^\d{5}$" id="validationCustom06" name="zipcode" placeholder="Enter the Zipcode of the loaction" style = "max-width: 100%;" required>
+                <!-- <div class="invalid-feedback">
+                  Please enter a valid zipcode.
+                </div> -->
+              </div>
+            </div>
+            </div>
+            <div class="d-flex float-right py-3">
+              <button type="button" class="btn btn-rounded"  style="background-color: #777 !important;" data-bs-dismiss="modal">Close</button>
+              <span class="text-white">.</span>
+              <button class="btn btn-rounded" type="submit">Post</button>
+            </div>
+          </form>
+          <!--End of the form-->
+          </div>
+        </div>
+      </div>
+    </div>
+<!--end of post add modal-->
+<script>
+if (window.File && window.FileList && window.FileReader) {
+      var filesInput = document.getElementById("image-upload");
+      filesInput.addEventListener("change", function (event) {
+          var files = event.target.files; //FileList object
+          var output = document.getElementById("show-image-frame");
+          output.innerHTML = "";
+          for (var i = 0; i < files.length; i++) {
+              var file = files[i];
+              //Only pics
+              if (!file.type.match('image'))
+                  continue;
+              var picReader = new FileReader();
+              picReader.addEventListener("load", function (event) {
+                  var picFile = event.target;
+                  var div = document.createElement("div");
+                  div.innerHTML = "<img class='thumbnail' src='" + picFile.result + "'" +
+                      "title='" + picReader.name + "'/>";
+                  output.insertBefore(div, null);
+              });
+              //Read the image
+              picReader.readAsDataURL(file);
+          }
+      });
+  } else {
+      console.log("Your browser does not support File API");
+  }
+
+  $('#image-frame').click(function(){
+    $('#image-upload').trigger('click');
+  });
+
+</script>
+
+{% endblock %}

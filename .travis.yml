@@ -1,0 +1,19 @@
+language: python
+os: linux
+
+python:
+  - 3.8
+  
+install:
+  - pip install -r requirements.txt
+
+before_script:
+  - python ./greenCan/manage.py migrate
+
+script:
+  - python -m black . --check
+  - python -m flake8 --max-line-length=150
+  - cd greenCan && python -m coverage run --source='.' manage.py test
+
+after_success:
+  - coveralls

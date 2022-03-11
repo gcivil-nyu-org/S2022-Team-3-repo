@@ -2,5 +2,8 @@ django-heroku
 gunicorn
 django
 django-environ
-pandas
-geopy
+flake8
+black
+coverage
+pyrebase
+datetime
