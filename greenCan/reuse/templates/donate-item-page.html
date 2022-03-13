@@ -288,28 +288,6 @@ Reuse | greenCan
     window.open($(this).attr('data-url'),'_blank');
   });
 
-
-//img uploading script
-
-//form validation function
-// $(document).ready(function () {
-//   'use strict'
-//   // Fetch all the forms we want to apply custom Bootstrap validation styles to
-//   var forms = document.querySelectorAll('.needs-validation')
-
-//   // Loop over them and prevent submission
-//   Array.prototype.slice.call(forms)
-//     .forEach(function (form) {
-//       form.addEventListener('submit', function (event) {
-//         if (!form.checkValidity()) {
-//           event.preventDefault()
-//           event.stopPropagation()
-//         }
-
-//         form.classList.add('was-validated')
-//       }, false)
-//     })
-// });
 </script>
 
 <!--post ad window-->
@@ -417,28 +395,27 @@ box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);" class="modal fade" id="postAd_Moda
         </div>
       </div>
     </div>
+
 <!--end of post add modal-->
 <script>
 if (window.File && window.FileList && window.FileReader) {
-      var filesInput = document.getElementById("image-upload");
+      let filesInput = document.getElementById("image-upload");
       filesInput.addEventListener("change", function (event) {
-          var files = event.target.files; //FileList object
-          var output = document.getElementById("show-image-frame");
+          let files = event.target.files; //FileList object
+          let output = document.getElementById("show-image-frame");
           output.innerHTML = "";
-          for (var i = 0; i < files.length; i++) {
-              var file = files[i];
-              //Only pics
+          for (let i = 0; i < files.length; i++) {
+              let file = files[i];
               if (!file.type.match('image'))
                   continue;
-              var picReader = new FileReader();
+              let picReader = new FileReader();
               picReader.addEventListener("load", function (event) {
-                  var picFile = event.target;
-                  var div = document.createElement("div");
+                  let picFile = event.target;
+                  let div = document.createElement("div");
                   div.innerHTML = "<img class='thumbnail' src='" + picFile.result + "'" +
                       "title='" + picReader.name + "'/>";
                   output.insertBefore(div, null);
               });
-              //Read the image
               picReader.readAsDataURL(file);
           }
       });

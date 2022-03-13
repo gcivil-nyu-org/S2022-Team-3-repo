@@ -84,6 +84,7 @@ def search_dropoff_locations(request):
         centroid = {"latitude": user_lat, "longitude": user_long}
     else:
         err_msg = "Invalid arguments provided"
+        err_flag = True
         return JsonResponse({"err_flag": err_flag, "err_msg": err_msg})
     sites = get_dropoff_locations(centroid)
     search_result = {"centroid": centroid, "sites": sites}

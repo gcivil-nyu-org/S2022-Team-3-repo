@@ -18,21 +18,19 @@ def donation_view(request):
     return render(request, template, context=context)
 
 
-def listingPage(request):
+def listing_page(request):
     template = "listingPage.html"
-    Posts = Post.objects.all().values()
-    Images = Image.objects.all().values()
-    ZipCodes = ZipCode.objects.all().values()
-    for index in range(len(Posts)):
-        # add the url
-        Posts[index]["url"] = Images.filter(post=Posts[index]["id"])[0]["url"]
-        # Posts[index]["url"] = Images.objects.filter(post_id=Posts[index]).first().url
-        temp = ZipCodes.filter(id=Posts[index]["zip_code_id"])[0]
-        Posts[index]["location"] = str(
+    posts = Post.objects.all().values()
+    images = Image.objects.all().values()
+    zip_codes = ZipCode.objects.all().values()
+    for index in range(len(posts)):
+        posts[index]["url"] = images.filter(post=posts[index]["id"])[0]["url"]
+        temp = zip_codes.filter(id=posts[index]["zip_code_id"])[0]
+        posts[index]["location"] = str(
             temp["borough"] + ", " + temp["state"] + ", " + temp["zip_code"]
         )
 
-    context = {"Posts": Posts, "is_reuse": True}
+    context = {"Posts": posts, "is_reuse": True}
     return render(request, template, context=context)
 
 
@@ -52,7 +50,6 @@ def create_post(request):
     auth = firebase.auth()
     auth_email = "nyc.greencan@gmail.com"
     auth_pswd = "Tandon123"
-    # auth.create_user_with_email_and_password(auth_email, auth_pswd)
     user = auth.sign_in_with_email_and_password(auth_email, auth_pswd)
     storage = firebase.storage()
     urls = []

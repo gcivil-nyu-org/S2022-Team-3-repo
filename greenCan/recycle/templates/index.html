@@ -61,17 +61,17 @@ Recycle | greenCan
 <script src="{% static 'js/maps.js' %}"></script>
 <script>
 
-    var result = {};
-    var locations = {};
+    let result = {};
+    let locations = {};
     function markPoints(locations){
         clearView();
-        var marker;
+        let marker;
         $.each(locations, function( key,site ) {
             marker = L.marker([site["latitude"],site["longitude"]],{icon: colorCategoryMap[site['type'].toLowerCase()][0]})
             marker.bindTooltip('<b>'+site["name"]+'</b><br/>'+site["street_address"]+'<br/>'+site['state_id']+' '+site['zip_code'], {
                 sticky: true
             }).addTo(map);            
-            var card = '<div class="border_rectangle1" onclick="focusOn('+site['latitude'].toString()+','+site['longitude'].toString()+')"> \
+            let card = '<div class="border_rectangle1" onclick="focusOn('+site['latitude'].toString()+','+site['longitude'].toString()+')"> \
                     <div class="info_circle_icon_frame"> \
                       <div class="info_circle_icon"> \
                         <i class="fa fa-info-circle" style="color: #C4C4C4"></i> \
@@ -155,7 +155,7 @@ Recycle | greenCan
         map.flyTo(new L.LatLng(lat, long));
     }
     
-    var curr_zipcode=''; 
+    let curr_zipcode='';
 
     $('#zipcode').keyup(function (event) {
         if (event.keyCode==189 || event.keyCode==190 || event.keyCode==107 || event.keyCode==109)
@@ -247,7 +247,7 @@ Recycle | greenCan
     });
     
     function filterByCategory(obj){
-        var selectedCat = $(obj).val();
+        let selectedCat = $(obj).val();
         if(selectedCat == 'showing all sites'){
             locations = result.map(([key, value]) => value);
         }
