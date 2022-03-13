@@ -6,16 +6,38 @@ import pyrebase
 from account.models import Account
 
 
+"""
+function: index
+
+set path for reuse page
+"""
+
+
 def index(request):
     template = "reuse_index.html"
     context = {"is_reuse": True}
     return render(request, template, context=context)
 
 
+"""
+function: donation_view
+
+set path for donation view page
+"""
+
+
 def donation_view(request):
     template = "reuse/templates/donate-item-page.html"
     context = {"is_reuse": True}
     return render(request, template, context=context)
+
+
+"""
+function: listing_page
+
+Obtain all posts in database with their images
+then rebuild the data format for frontend view
+"""
 
 
 def listing_page(request):
@@ -32,6 +54,16 @@ def listing_page(request):
 
     context = {"Posts": posts, "is_reuse": True}
     return render(request, template, context=context)
+
+
+"""
+function: create_post
+
+Firstly, set configuration for Google firebase cloud storage
+then obtain post data and images from frontend
+save the images to firebase and get urls
+create Post object and Images object for this user's post and save into database
+"""
 
 
 def create_post(request):
