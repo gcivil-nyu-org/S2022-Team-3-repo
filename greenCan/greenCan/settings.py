@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import django_heroku
 import environ
+import sys
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -85,14 +87,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "greenCan.wsgi.application"
 
-# print({
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': env('DATABASE_NAME'),
-#         'USER': env('DATABASE_USER'),
-#         'PASSWORD': env('DATABASE_PASSWORD'),
-#         'HOST': env('DATABASE_HOST'),
-#         'PORT': '5432'
-#     })
+
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
@@ -104,13 +99,15 @@ DATABASES = {
         "PASSWORD": env("DATABASE_PASSWORD"),
         "HOST": env("DATABASE_HOST"),
         "PORT": "5432"
-        # 'NAME': 'd2boo65k26ke5k',
-        # 'USER': 'mnhxtuuuttbprh',
-        # 'PASSWORD': '65c2aa71c3abdf0ef3d2f96468b25cfd993db74e37a371f5577154a40927eb3b',
-        # 'HOST': 'ec2-54-205-183-19.compute-1.amazonaws.com',
-        # 'PORT': '5432'
     }
 }
+
+
+if 'test' in sys.argv:
+    DATABASES['default'] = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'mydatabase'
+    }
 
 
 # Password validation
