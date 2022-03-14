@@ -1,8 +1,10 @@
-.vscode/*
-.github/*
-.git/*
-**/__pycache__
-__pycache__/*
-**/*.pyc
-.idea/*
 **/.vscode/*
+**/.github/*
+**/.git/*
+**/__pycache__/*
+**/*.pyc
+**/.idea/*
+**/.vscode/*
+**/staticfiles/*
+**/mydatabase*
+**/.coverage

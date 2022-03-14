@@ -13,6 +13,7 @@ before_script:
 script:
   - python -m black . --check
   - python -m flake8 --max-line-length=150
+  - python ./greenCan/manage.py collectstatic
   - cd greenCan && python -m coverage run --source='.' manage.py test
 
 after_success:

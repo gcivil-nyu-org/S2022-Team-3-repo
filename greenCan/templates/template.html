@@ -23,9 +23,9 @@
 			<div class="container-fluid">
 				<div class="nav-brand" id="logo">
 					<a href="/"><span><img src="{% static 'images/icons/full-logo.svg' %}" height="100%"></span></a>
-					<button href="#joinUs" style="border-radius: 0px !important;" class="slanted-btn">
+					<a href="{% url 'account:login' %}" style="border-radius: 0px !important;" class="button slanted-btn">
 						<span class="slanted-btn-contain">Join Our Community!</span>
-					</button>
+					</a>
 				</div>
 			</div>
 		</header>
