@@ -40,6 +40,7 @@ ALLOWED_HOSTS = ["127.0.0.1", "greencan.herokuapp.com", "greencan-dev.herokuapp.
 # Application definition
 
 INSTALLED_APPS = [
+    "home.apps.HomeConfig",
     "account.apps.AccountConfig",
     "reuse.apps.ReuseConfig",
     "recycle.apps.RecycleConfig",
@@ -153,5 +154,19 @@ STATICFILES_DIRS = [BASE_DIR / "static/"]
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# AUTH_USER_MODEL = 'account.User'
+
+# swappable = 'AUTH_USER_MODEL'
+
+ACCOUNT_ACTIVATION_DAYS = 7
+
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+# REGISTRATION_OPEN = True
+
+LOGIN_REDIRECT_URL = "/"
+
+LOGOUT_REDIRECT_URL = "/"
 
 django_heroku.settings(locals())

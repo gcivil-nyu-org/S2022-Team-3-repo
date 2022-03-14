@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %} | greenCan</title>
+        <meta charset="utf-8" />
+	    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        <link href="{% static 'css/auth.css' %}" rel="stylesheet">
+        <link href="{% static 'modules/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+        <link rel="icon" href="{% static 'images/icons/favicon.ico' %}" type="image/x-icon" />
+        <link rel="stylesheet" href="{% static 'css/fontawesome/fontawesome-all.min.css' %}">
+    </head>
+    <body>
+        <a class="btn-close" href="{% url 'home:index' %}"></a>
+        <div class="container-fluid ps-md-0">
+            <div class="row g-0">
+              <div class="d-none d-md-flex col-md-4 col-lg-6 bg-image"></div>
+              <div class="col-md-8 col-lg-6">
+                <div class="login d-flex align-items-center py-5 px-md-3 px-2">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col-md-9 col-lg-8 mx-auto">
+                        {% block main %}
+
+                        {% endblock %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+        <script src="{% static 'js/jquery.min.js' %}"></script>
+        <script src="{% static 'modules/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+        <script>
+
+            $('.password-toggler').click(function(){
+                if($('input#password').attr('type')=='text'){
+                    $('input#password').attr('type','password');
+                    $('.password-toggler span').html('<i class="far fa-eye"></i> Show');
+                }else{
+                    $('input#password').attr('type','text');
+                    $('.password-toggler span').html('<i class="far fa-eye-slash"></i> Hide');
+                }
+            });
+
+            $('.confirm-password-toggler').click(function(){
+                if($('input#confirm-password').attr('type')=='text'){
+                    $('input#confirm-password').attr('type','password');
+                    $('.confirm-password-toggler span').html('<i class="far fa-eye"></i> Show');
+                }else{
+                    $('input#confirm-password').attr('type','text');
+                    $('.confirm-password-toggler span').html('<i class="far fa-eye-slash"></i> Hide');
+                }
+            });
+
+        </script>
+    </body>
+</html>

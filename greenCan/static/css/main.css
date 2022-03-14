@@ -296,7 +296,9 @@ button, .button {
      padding: 0.85em 1.85em;
      text-align: center;
 }
- ul {
+
+
+ul {
      list-style: disc;
      padding-left: 1.25em;
 }
