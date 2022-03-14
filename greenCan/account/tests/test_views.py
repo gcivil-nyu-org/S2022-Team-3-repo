@@ -1,6 +1,5 @@
 from django.test import TestCase, Client
 from django.urls import reverse
-from account.views import *
 
 
 class TestViews(TestCase):
