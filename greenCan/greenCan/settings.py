@@ -98,15 +98,15 @@ DATABASES = {
         "USER": env("DATABASE_USER"),
         "PASSWORD": env("DATABASE_PASSWORD"),
         "HOST": env("DATABASE_HOST"),
-        "PORT": "5432"
+        "PORT": "5432",
     }
 }
 
 
-if 'test' in sys.argv:
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'mydatabase'
+if "test" in sys.argv:
+    DATABASES["default"] = {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "mydatabase",
     }
 
 
