@@ -8,7 +8,8 @@ install:
   - pip install -r requirements.txt
 
 before_script:
-  - python -m ./greenCan/manage.py migrate
+  - python ./greenCan/manage.py makemigrations
+  - python ./greenCan/manage.py migrate
 
 script:
   - python -m black . --check
