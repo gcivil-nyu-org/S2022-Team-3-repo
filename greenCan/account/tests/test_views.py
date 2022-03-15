@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.contrib.auth import get_user_model
+from django.contrib.auth import get_user_model, get_user
 from django.test import TestCase
 from django.urls import reverse
 from django.core import mail
@@ -177,45 +177,45 @@ class TestLoginView(TestCase):
         )
         self.url = reverse("account:login")
 
-    # def test_unauthenticated_user_is_redirected(self):
-    #     self.client._login(self.user)
-    #     response = self.client.get(self.url)
-    #     expected_url = reverse("home:index")  # change expected_url in your project
-    #     self.assertRedirects(response, expected_url, 302)
+    def test_unauthenticated_user_is_redirected(self):
+        self.client._login(self.user)
+        response = self.client.get(self.url)
+        expected_url = reverse("home:index")  # change expected_url in your project
+        self.assertRedirects(response, expected_url, 302)
 
-    # def test_template_used(self):
-    #     response = self.client.get(self.url)
-    #     self.assertTemplateUsed(
-    #         response, "account/templates/login.html"
-    #     )  # change to your login template
+    def test_template_used(self):
+        response = self.client.get(self.url)
+        self.assertTemplateUsed(
+            response, "account/templates/login.html"
+        )  # change to your login template
 
-    # def test_response_status_code(self):
-    #     response = self.client.get(self.url)
-    #     self.assertEquals(response.status_code, 200)
+    def test_response_status_code(self):
+        response = self.client.get(self.url)
+        self.assertEquals(response.status_code, 200)
 
-    # def test_post_method_with_valid_credentials(self):
-    #     # user with these credentials exists and is active
-    #     self.client.login(email="testemail@gmail.com", password="password1")
-    #     user = get_user(self.client)
-    #     self.assertTrue(user.is_authenticated)
+    def test_post_method_with_valid_credentials(self):
+        # user with these credentials exists and is active
+        self.client.login(email="testemail@gmail.com", password="password1")
+        user = get_user(self.client)
+        self.assertTrue(user.is_authenticated)
 
-    # def test_with_invalid_credentials(self):
-    #     data = {
-    #         "email": "email@gmail.com",
-    #         "password": "somepassword",
-    #     }  # user with these credentials doesn't exist
-    #     response = self.client.post(self.url, data, follow=True)
-    #     message = list(response.context.get("messages"))[0]
-    #     user = get_user(self.client)
-    #     self.assertFalse(user.is_authenticated)
-    #     self.assertEquals(message.tags, "error")
-    #     self.assertEquals(message.message, "Incorrect email or password")
+    def test_with_invalid_credentials(self):
+        data = {
+            "email": "email@gmail.com",
+            "password": "somepassword",
+        }  # user with these credentials doesn't exist
+        response = self.client.post(self.url, data, follow=True)
+        message = list(response.context.get("messages"))[0]
+        user = get_user(self.client)
+        self.assertFalse(user.is_authenticated)
+        self.assertEquals(message.tags, "error")
+        self.assertEquals(message.message, "Incorrect email or password")
 
-    # def test_inactive_user_cannot_login(self):
-    #     # user with these credentials is_active = False
-    #     self.client.login(email="testemail2@gmail.com", password="password2")
-    #     user = get_user(self.client)
-    #     self.assertFalse(user.is_authenticated)
+    def test_inactive_user_cannot_login(self):
+        # user with these credentials is_active = False
+        self.client.login(email="testemail2@gmail.com", password="password2")
+        user = get_user(self.client)
+        self.assertFalse(user.is_authenticated)
 
     def test_login_attempts_increments_on_wrong_password(self):
         data = {

@@ -95,7 +95,7 @@ def login_page(request):
                 if (
                     login_attempt.timestamp
                     + timedelta(seconds=settings.LOGIN_ATTEMPTS_TIME_LIMIT)
-                ) < now:
+                ) <= now:
                     user = authenticate(request, username=email, password=password)
                     if user is not None:
                         if not _user.is_active:
