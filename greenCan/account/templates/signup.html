@@ -8,31 +8,34 @@ Sign-Up
     <h6 class="login-subheading">Welcome!</h6>
     <h3 class="login-heading mb-5">Create your account</h3>
 
+    {% include 'messages.html' %}
+
     <!-- Sign Up Form -->
-    <form class="">
+    <form action="{% url 'account:create' %}" method="POST">
+        {% csrf_token %}
         <div class="row mb-2">
             <div class="col-md-6 col-12">
                 <div class="form-group">
                     <label for="first-name">First name</label>
-                    <input type="text" class="form-control" id="first-name" placeholder="Firstname" required>
+                    <input type="text" class="form-control" id="first-name" name="first-name" placeholder="Firstname" required>
                 </div>
             </div>
             <div class="col-md-6 col-12">
                 <div class="form-group">
                     <label for="last-name">Last name</label>
-                    <input type="text" class="form-control" id="last-name" placeholder="Lastname" required>
+                    <input type="text" class="form-control" id="last-name" name="last-name" placeholder="Lastname" required>
                 </div>
             </div>
         </div> 
 
         <div class="form-group mb-2">
             <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" placeholder="name@example.com" required>
+            <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
         </div>
 
         <div class="form-group">
             <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+            <input type="password" class="form-control" id="password" name="password" placeholder="••••••••" required>
         </div>
         <div class="w-100 text-right mb-3">
             <button class="password-toggler small" type="button">

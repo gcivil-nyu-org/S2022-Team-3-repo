@@ -14,6 +14,7 @@ from pathlib import Path
 import django_heroku
 import environ
 import sys
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,10 +42,10 @@ ALLOWED_HOSTS = ["127.0.0.1", "greencan.herokuapp.com", "greencan-dev.herokuapp.
 # Application definition
 
 INSTALLED_APPS = [
-    "home.apps.HomeConfig",
-    "account.apps.AccountConfig",
-    "reuse.apps.ReuseConfig",
-    "recycle.apps.RecycleConfig",
+    "home",
+    "account",
+    "reuse",
+    "recycle",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -151,18 +152,35 @@ STATICFILES_DIRS = [BASE_DIR / "static/"]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-# AUTH_USER_MODEL = 'account.User'
+AUTH_USER_MODEL = 'account.User'
 
-# swappable = 'AUTH_USER_MODEL'
+LOGIN_URL = reverse_lazy('account:login')
+
+LOGOUT_REDIRECT_URL = LOGIN_URL
+
+LOGIN_REDIRECT_URL = reverse_lazy('home:index') # change this to your home page
+
+# email configuration for development
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# email configuration in production
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_USE_TLS = True
+
+EMAIL_HOST = 'smtp.gmail.com'
+
+EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+
+EMAIL_PORT = 587
+
+# Time in seconds after each login attempts
+LOGIN_ATTEMPTS_TIME_LIMIT = 0
+# limit the amount of attempts to which the user will be inactive and password set mail sent
+MAX_LOGIN_ATTEMPTS = 5
 
 ACCOUNT_ACTIVATION_DAYS = 7
-
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-
-# REGISTRATION_OPEN = True
-
-LOGIN_REDIRECT_URL = "/"
-
-LOGOUT_REDIRECT_URL = "/"
 
 django_heroku.settings(locals(), test_runner=False)
