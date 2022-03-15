@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from .models import Post, Image
 from recycle.models import ZipCode
 import pyrebase
-from account.models import User
 
 
 def index(request):
@@ -67,8 +66,7 @@ def create_post(request):
     email = request.POST.get("email")
     zipcode = request.POST.get("zipcode")
 
-    # user = User.objects.filter(first_name="John")
-    user = 1
+    user = request.user
     zip_code = ZipCode.objects.filter(zip_code=zipcode)
 
     if (
@@ -86,7 +84,7 @@ def create_post(request):
             email=email,
             zip_code=zip_code[0],
             description=description,
-            user=user
+            user=user,
         )
         post.save()
 

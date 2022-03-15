@@ -9,28 +9,49 @@ User = get_user_model()
 
 
 class UserAdmin(BaseUserAdmin):
-    search_fields = ['email', 'first_name', 'last_name']
-    list_display = ['email', 'first_name', 'last_name', 'is_active', 'staff', 'admin', 'last_login', 'timestamp']
-    list_filter = ['is_active', 'staff',  'admin']
-    ordering = ['email']
+    search_fields = ["email", "first_name", "last_name"]
+    list_display = [
+        "email",
+        "first_name",
+        "last_name",
+        "is_active",
+        "staff",
+        "admin",
+        "last_login",
+        "timestamp",
+    ]
+    list_filter = ["is_active", "staff", "admin"]
+    ordering = ["email"]
     filter_horizontal = []
 
     form = UserAdminChangeForm  # for updating user in admin
-    add_form = UserAdminCreationForm    # for creating user in admin
+    add_form = UserAdminCreationForm  # for creating user in admin
 
     fieldsets = (
-        (None, {'fields': ('email', 'password', 'first_name', 'last_name')}),
-        ('Personal info', {'fields': ()}), # if you have any personal info fields e.g. names, include them as strings in the empty tuple.
-        ('Permissions', {'fields': ('admin', 'staff', 'is_active')})
+        (None, {"fields": ("email", "password", "first_name", "last_name")}),
+        (
+            "Personal info",
+            {"fields": ()},
+        ),  # if you have any personal info fields e.g. names, include them as strings in the empty tuple.
+        ("Permissions", {"fields": ("admin", "staff", "is_active")}),
     )
-    '''
+    """
     add_fieldsets is not a standard ModelAdmin attribute. UserAdmin overides get_fieldsets
-    to use this attribute when creating a user. '''
+    to use this attribute when creating a user. """
     add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('email', 'first_name', 'last_name', 'password1', 'password2')
-        }),
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": (
+                    "email",
+                    "first_name",
+                    "last_name",
+                    "password1",
+                    "password2",
+                ),
+            },
+        ),
     )
 
 
@@ -42,7 +63,5 @@ admin.site.unregister(Group)
 
 @admin.register(LoginAttempt)
 class LoginAttemptAdmin(admin.ModelAdmin):
-    list_display = ['user', 'login_attempts', 'timestamp']
-    search_fields = ['user']
-
-
+    list_display = ["user", "login_attempts", "timestamp"]
+    search_fields = ["user"]

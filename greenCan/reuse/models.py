@@ -1,7 +1,7 @@
 from django.db import models
-from account.models import User
 from recycle.models import ZipCode
 from django.conf import settings
+
 
 class Post(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
@@ -11,7 +11,9 @@ class Post(models.Model):
     email = models.EmailField(null=True)
     zip_code = models.ForeignKey(ZipCode, null=False, on_delete=models.CASCADE)
     description = models.TextField(null=False)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE
+    )
     approved = models.BooleanField(null=True, default=False)
     still_available = models.BooleanField(null=True, default=True)
     created_on = models.DateTimeField(auto_now_add=True, null=False)

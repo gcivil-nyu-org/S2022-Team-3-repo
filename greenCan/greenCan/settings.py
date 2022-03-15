@@ -152,27 +152,27 @@ STATICFILES_DIRS = [BASE_DIR / "static/"]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = 'account.User'
+AUTH_USER_MODEL = "account.User"
 
-LOGIN_URL = reverse_lazy('account:login')
+LOGIN_URL = reverse_lazy("account:login")
 
 LOGOUT_REDIRECT_URL = LOGIN_URL
 
-LOGIN_REDIRECT_URL = reverse_lazy('home:index') # change this to your home page
+LOGIN_REDIRECT_URL = reverse_lazy("home:index")  # change this to your home page
 
 # email configuration for development
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # email configuration in production
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 EMAIL_USE_TLS = True
 
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = "smtp.gmail.com"
 
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 
 EMAIL_PORT = 587
 
