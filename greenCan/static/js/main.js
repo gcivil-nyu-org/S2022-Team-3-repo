@@ -13,6 +13,13 @@
 			xsmall:  [ null,      '360px'  ]
 		});
 
+		$('#nav > ul').dropotron({
+			mode: 'fade',
+			noOpenerFade: true,
+			speed: 300,
+			alignment: 'left'
+		});
+
 		$(window).scroll(function() {
 			scrollFunction();
 		});

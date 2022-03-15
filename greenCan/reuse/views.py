@@ -1,9 +1,7 @@
-from datetime import datetime
 from django.shortcuts import render, redirect
 from .models import Post, Image
 from recycle.models import ZipCode
 import pyrebase
-from account.models import Account
 
 
 def index(request):
@@ -68,7 +66,7 @@ def create_post(request):
     email = request.POST.get("email")
     zipcode = request.POST.get("zipcode")
 
-    user = Account.objects.filter(first_name="John")
+    user = request.user
     zip_code = ZipCode.objects.filter(zip_code=zipcode)
 
     if (
@@ -86,8 +84,7 @@ def create_post(request):
             email=email,
             zip_code=zip_code[0],
             description=description,
-            user=user[0],
-            created_on=datetime.now(),
+            user=user,
         )
         post.save()
 

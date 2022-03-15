@@ -23,9 +23,11 @@
 			<div class="container-fluid">
 				<div class="nav-brand" id="logo">
 					<a href="/"><span><img src="{% static 'images/icons/full-logo.svg' %}" height="100%"></span></a>
+					{% if not user.is_authenticated %}
 					<a href="{% url 'account:login' %}" style="border-radius: 0px !important;" class="button slanted-btn">
 						<span class="slanted-btn-contain">Join Our Community!</span>
 					</a>
+					{% endif %}
 				</div>
 			</div>
 		</header>
@@ -47,6 +49,31 @@
                     {% if request.path == recycle_base_url or is_recycle %}
                     current
                     {% endif %} nav-link"><a href="{{ recycle_base_url }}">Recycle</a></li>
+					{% if user.is_authenticated %}
+					<li class="nav-dropdown">
+						<a href="#">Dropdown</a>
+						<ul>
+							<li><a href="#">Lorem ipsum dolor</a></li>
+							<li><a href="#">Magna phasellus</a></li>
+							<li>
+								<a href="#">Phasellus consequat</a>
+								<ul>
+									<li><a href="#">Lorem ipsum dolor</a></li>
+									<li><a href="#">Phasellus consequat</a></li>
+									<li><a href="#">Magna phasellus</a></li>
+									<li><a href="#">Etiam dolore nisl</a></li>
+								</ul>
+							</li>
+							<li><a href="#">Veroeros feugiat</a></li>
+						</ul>
+					</li>
+						<!-- {% if user.avatar %}
+							<img height="35" src="{{ url.avatar }}">
+						{% else %}
+							<img height="35" src="{% static 'images/avatar/avatar.svg' %}">
+						{% endif %}
+						<span class="align-middle text-white">{{ user.get_full_name | title }}</span> -->
+					{% endif %}
 				</ul>
 			</div>
 		</nav>
