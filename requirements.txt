@@ -7,3 +7,4 @@ black
 coverage
 pyrebase
 datetime
+django-crispy-forms

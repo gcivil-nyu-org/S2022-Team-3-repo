@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model, get_user
 from django.test import TestCase
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.core import mail
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
@@ -24,7 +24,7 @@ class TestSignupView(TestCase):
         )
         self.client._login(user)
         response = self.client.get(self.url)
-        expected_url = reverse("home:index")  # change expected_url in your project
+        expected_url = reverse("home:index")
         self.assertRedirects(response, expected_url, 302)
 
     def test_template_used(self):
@@ -39,8 +39,8 @@ class TestSignupView(TestCase):
         data = {
             "email": "testuser@gmail.com",
             "password": "password1",
-            "first_name": "john",
-            "last_name": "doe",
+            "first-name": "john",
+            "last-name": "doe",
         }
         response = self.client.post(self.url, data, follow=True)
         user = response.context["user"]
@@ -54,7 +54,7 @@ class TestSignupView(TestCase):
         self.assertEqual(mail.outbox[0].to, ["testuser@gmail.com"])  # self.user.email
         self.assertEqual(
             mail.outbox[0].body,
-            "\nHi ,\nPlease click on the link to confirm your registration,\n"
+            f"\nHi {data['first-name']+' '+data['last-name']},\nPlease click on the link to confirm your registration,\n"
             "http://testserver/account/activate/" + str(uid) + "/" + str(token) + "/\n",
         )
 
@@ -70,8 +70,8 @@ class TestSignupView(TestCase):
         data = {
             "email": "testuser@gmail.com",
             "password": "password1",
-            "first_name": "",
-            "last_name": "doe",
+            "first-name": "",
+            "last-name": "doe",
         }
         response = self.client.post(self.url, data, follow=True)
         message = list(response.context.get("messages"))[0]
@@ -82,8 +82,8 @@ class TestSignupView(TestCase):
         data = {
             "email": "testuser@gmail.com",
             "password": "password1",
-            "first_name": "john",
-            "last_name": "",
+            "first-name": "john",
+            "last-name": "",
         }
         response = self.client.post(self.url, data, follow=True)
         message = list(response.context.get("messages"))[0]
@@ -94,8 +94,8 @@ class TestSignupView(TestCase):
         data = {
             "email": "",
             "password": "password1",
-            "first_name": "john",
-            "last_name": "doe",
+            "first-name": "john",
+            "last-name": "doe",
         }
         response = self.client.post(self.url, data, follow=True)
         message = list(response.context.get("messages"))[0]
@@ -106,8 +106,8 @@ class TestSignupView(TestCase):
         data = {
             "email": "testuser@gmail.com",
             "password": "",
-            "first_name": "john",
-            "last_name": "doe",
+            "first-name": "john",
+            "last-name": "doe",
         }
         response = self.client.post(self.url, data, follow=True)
         message = list(response.context.get("messages"))[0]
@@ -286,3 +286,47 @@ class TestLogoutView(TestCase):
         self.assertNotIn(
             user.id, self.client.session
         )  # user does not have an active session i.e. is logged out
+
+class TestForgetPassword(TestCase):
+    def setUp(self):
+        self.password_reset_sent_url = reverse_lazy('account:password-reset-sent')
+        self.url = reverse_lazy('account:forget-password')
+        self.testemail1 = 'testemail@gmail.com'
+        self.testemail2 = 'testemail2@gmail.com'
+        self.user = User.objects.create(
+            email="testemail@gmail.com",
+            password="password1",
+            first_name="john",
+            last_name="doe",
+        )
+        self.uidb64 = urlsafe_base64_encode(force_bytes(self.user.id))
+
+    def test_forget_password_view_template(self):
+        response = self.client.get(self.url)
+        self.assertTemplateUsed(response, "account/templates/forget-password.html")
+        self.assertEquals(response.status_code, 200)
+
+    def test_forget_password_with_valid_data(self):
+        data = {
+            'email': self.testemail1
+        }        
+        response = self.client.post(self.url,data,follow=True)
+        self.assertRedirects(response, self.password_reset_sent_url, 302)
+
+    def test_forget_password_with_invalid_data(self):
+        data = {
+            'email': self.testemail2
+        }        
+        response = self.client.post(self.url,data,follow=True)
+        self.assertFalse(response.context['form'].is_valid())
+
+    def test_csrf_token(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, "csrfmiddlewaretoken")
+
+
+        
+
+
+
+

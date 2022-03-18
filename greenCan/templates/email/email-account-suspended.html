@@ -1,5 +1,5 @@
 {% autoescape off %}
-Hi {{ user.username }},
+Hi {{ user.get_full_name }},
 We have detected suspicious activity on your account. Maximum login attempts
 have been exceeded, as a result your account has been suspended.
 

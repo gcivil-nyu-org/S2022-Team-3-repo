@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "account",
     "reuse",
     "recycle",
+    "crispy_forms",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -182,5 +183,7 @@ LOGIN_ATTEMPTS_TIME_LIMIT = 0
 MAX_LOGIN_ATTEMPTS = 5
 
 ACCOUNT_ACTIVATION_DAYS = 7
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 django_heroku.settings(locals(), test_runner=False)
