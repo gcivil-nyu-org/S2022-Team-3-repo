@@ -5,6 +5,8 @@ django-environ
 flake8
 black
 coverage
+coveralls
 pyrebase
 datetime
 django-crispy-forms
+pyyaml
