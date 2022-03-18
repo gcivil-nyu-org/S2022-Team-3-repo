@@ -7,6 +7,7 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from account.models import LoginAttempt
 from account.token import account_activation_token
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
 
 User = get_user_model()
 
@@ -287,12 +288,13 @@ class TestLogoutView(TestCase):
             user.id, self.client.session
         )  # user does not have an active session i.e. is logged out
 
+
 class TestForgetPassword(TestCase):
     def setUp(self):
-        self.password_reset_sent_url = reverse_lazy('account:password-reset-sent')
-        self.url = reverse_lazy('account:forget-password')
-        self.testemail1 = 'testemail@gmail.com'
-        self.testemail2 = 'testemail2@gmail.com'
+        self.password_reset_sent_url = reverse_lazy("account:password-reset-sent")
+        self.url = reverse_lazy("account:forget-password")
+        self.testemail1 = "testemail@gmail.com"
+        self.testemail2 = "testemail2@gmail.com"
         self.user = User.objects.create(
             email="testemail@gmail.com",
             password="password1",
@@ -307,26 +309,31 @@ class TestForgetPassword(TestCase):
         self.assertEquals(response.status_code, 200)
 
     def test_forget_password_with_valid_data(self):
-        data = {
-            'email': self.testemail1
-        }        
-        response = self.client.post(self.url,data,follow=True)
+        data = {"email": self.testemail1}
+        response = self.client.post(self.url, data, follow=True)
+        token = PasswordResetTokenGenerator().make_token(self.user)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, "Password reset for greenCan")
+        self.assertEqual(
+            mail.outbox[0].from_email, settings.EMAIL_HOST_USER
+        )  # change to your email <youremail>
+        self.assertEqual(mail.outbox[0].to, [self.user.email])
+        self.assertEqual(
+            mail.outbox[0].body,
+            f"\nHi {self.user.get_full_name()},\nForgot your password? Don't worry.\n\nClick the link below to reset your account password.\n"
+            "http://testserver/account/reset/"
+            + str(self.uidb64)
+            + "/"
+            + str(token)
+            + "/\n",
+        )
         self.assertRedirects(response, self.password_reset_sent_url, 302)
 
     def test_forget_password_with_invalid_data(self):
-        data = {
-            'email': self.testemail2
-        }        
-        response = self.client.post(self.url,data,follow=True)
-        self.assertFalse(response.context['form'].is_valid())
+        data = {"email": self.testemail2}
+        response = self.client.post(self.url, data, follow=True)
+        self.assertFalse(response.context["form"].is_valid())
 
     def test_csrf_token(self):
         response = self.client.get(self.url)
         self.assertContains(response, "csrfmiddlewaretoken")
-
-
-        
-
-
-
-

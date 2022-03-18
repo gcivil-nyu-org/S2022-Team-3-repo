@@ -35,6 +35,7 @@ def listingPage(request):
     context = {"Posts": Posts, "is_reuse": True}
     return render(request, template, context=context)
 
+
 @login_required
 def create_post(request):
     images = request.FILES.getlist("file[]")
@@ -93,4 +94,4 @@ def create_post(request):
             image = Image(url=url, post=post)
             image.save()
 
-    return redirect(reverse('reuse:donations-page'))
+    return redirect(reverse("reuse:donations-page"))

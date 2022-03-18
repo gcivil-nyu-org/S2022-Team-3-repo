@@ -175,6 +175,8 @@ EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
 EMAIL_PORT = 587
 
 # Time in seconds after each login attempts
@@ -184,6 +186,6 @@ MAX_LOGIN_ATTEMPTS = 5
 
 ACCOUNT_ACTIVATION_DAYS = 7
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 django_heroku.settings(locals(), test_runner=False)

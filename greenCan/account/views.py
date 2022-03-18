@@ -21,12 +21,14 @@ from .forms import PasswordResetForm, SetPasswordForm
 class PasswordResetView(auth_views.PasswordResetView):
     form_class = PasswordResetForm
     email_template_name = "email/email-forgot-password.html"
-    success_url = reverse_lazy('account:password-reset-sent')
+    success_url = reverse_lazy("account:password-reset-sent")
     subject_template_name = "email/password-reset-subject.txt"
+
 
 class PasswordResetConfirmView(auth_views.PasswordResetConfirmView):
     form_class = SetPasswordForm
-    success_url = reverse_lazy('account:password-reset-complete')
+    success_url = reverse_lazy("account:password-reset-complete")
+
 
 @unauthenticated_user
 def signup_page(request):
