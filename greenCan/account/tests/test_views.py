@@ -314,9 +314,7 @@ class TestForgetPassword(TestCase):
         token = PasswordResetTokenGenerator().make_token(self.user)
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, "Password reset for greenCan")
-        self.assertEqual(
-            mail.outbox[0].from_email, settings.EMAIL_HOST_USER
-        )
+        self.assertEqual(mail.outbox[0].from_email, settings.EMAIL_HOST_USER)
         self.assertEqual(mail.outbox[0].to, [self.user.email])
         self.assertEqual(
             mail.outbox[0].body,
@@ -338,21 +336,22 @@ class TestForgetPassword(TestCase):
         response = self.client.get(self.url)
         self.assertContains(response, "csrfmiddlewaretoken")
 
-class TestPasswordResetDone(TestCase):
 
+class TestPasswordResetDone(TestCase):
     def test_template_used(self):
         url = reverse_lazy("account:password-reset-complete")
         response = self.client.get(url)
         self.assertTemplateUsed(response, "account/templates/reset-password-done.html")
         self.assertEquals(response.status_code, 200)
 
-class TestPasswordResetSent(TestCase):
 
+class TestPasswordResetSent(TestCase):
     def test_template_used(self):
         url = reverse_lazy("account:password-reset-sent")
         response = self.client.get(url)
         self.assertTemplateUsed(response, "account/templates/forget-password-done.html")
         self.assertEquals(response.status_code, 200)
+
 
 # class TestPasswordReset(TestCase):
 
@@ -386,7 +385,7 @@ class TestPasswordResetSent(TestCase):
 #         token = PasswordResetTokenGenerator().make_token(self.user)
 #         response = self.client.post(reverse_lazy(self.url_str, args=[self.uidb64,token]), data, follow=True)
 #         self.assertRedirects(response, self.password_reset_done_url, 302)
-    
+
 #     def test_password_reset_invalid_data_1(self):
 #         data = {
 #             'password': '',
@@ -395,4 +394,3 @@ class TestPasswordResetSent(TestCase):
 #         token = PasswordResetTokenGenerator().make_token(self.user)
 #         response = self.client.post(reverse_lazy(self.url_str, args=[self.uidb64,token]), data, follow=True)
 #         self.assertRedirects(response, reverse_lazy(self.url_str, args=[self.uidb64,token]) , 302)
-    
