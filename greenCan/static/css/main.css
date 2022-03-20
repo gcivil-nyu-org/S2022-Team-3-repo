@@ -242,7 +242,8 @@ body {
 }
 /* Footer */
  footer {
-     top: auto;
+     /*top: auto;*/
+     bottom: 0;
      background-color: #21212d;
      color: #fff;
      font-family: 'Roboto', sans-serif;
