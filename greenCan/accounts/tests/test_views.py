@@ -57,8 +57,13 @@ class TestSignupView(TestCase):
         self.assertEqual(mail.outbox[0].to, ["testuser@gmail.com"])  # self.user.email
         self.assertEqual(
             mail.outbox[0].body,
-            f"\nHi { user.get_full_name() },\n\nWe need to verify that you are the owner of this email address.\n\nPlease click on the link to confirm your registration.\n"
-            "http://testserver/accounts/activate/" + str(uid) + "/" + str(token) + "/\n\n",
+            f"\nHi { user.get_full_name() },\n\nWe need to verify that you are the owner of this email address."
+            "\n\nPlease click on the link to confirm your registration.\n"
+            "http://testserver/accounts/activate/"
+            + str(uid)
+            + "/"
+            + str(token)
+            + "/\n\n",
         )
 
         message = list(response.context.get("messages"))[0]
@@ -322,14 +327,14 @@ class TestForgetPassword(TestCase):
         self.assertEqual(
             mail.outbox[0].body,
             render_to_string(
-                'email/email-forgot-password.html',
+                "email/email-forgot-password.html",
                 {
                     "user": self.user,
-                    "domain": 'testserver',
+                    "domain": "testserver",
                     "uid": str(self.uidb64),
                     "token": str(token),
                 },
-            )
+            ),
         )
         self.assertRedirects(response, self.password_reset_sent_url, 302)
 
@@ -355,7 +360,9 @@ class TestPasswordResetSent(TestCase):
     def test_template_used(self):
         url = reverse_lazy("accounts:password-reset-sent")
         response = self.client.get(url)
-        self.assertTemplateUsed(response, "accounts/templates/forget-password-done.html")
+        self.assertTemplateUsed(
+            response, "accounts/templates/forget-password-done.html"
+        )
         self.assertEquals(response.status_code, 200)
 
 

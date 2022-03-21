@@ -17,7 +17,7 @@ urlpatterns = [
         "forgot-password/",
         PasswordResetView.as_view(
             template_name="accounts/templates/forget-password.html",
-            html_email_template_name = "email/email-forgot-password.html"
+            html_email_template_name="email/email-forgot-password.html",
         ),
         name="forget-password",
     ),
