@@ -4,6 +4,7 @@ from recycle.models import ZipCode
 import pyrebase
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from django.conf import settings
 
 
 """
@@ -83,8 +84,8 @@ def create_post(request):
 
     firebase = pyrebase.initialize_app(config)
     auth = firebase.auth()
-    auth_email = "nyc.greencan@gmail.com"
-    auth_pswd = "Tandon123"
+    auth_email = settings.FIREBASE_HOST_USER
+    auth_pswd = settings.FIREBASE_HOST_PASSWORD
     user = auth.sign_in_with_email_and_password(auth_email, auth_pswd)
     storage = firebase.storage()
     urls = []
@@ -126,4 +127,4 @@ def create_post(request):
             image = Image(url=url, post=post)
             image.save()
 
-    return redirect(reverse("reuse:donations-page"))
+    return redirect(reverse("reuse:donation-page"))

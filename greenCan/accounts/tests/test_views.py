@@ -5,16 +5,18 @@ from django.urls import reverse, reverse_lazy
 from django.core import mail
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
-from account.models import LoginAttempt
-from account.token import account_activation_token
+from accounts.models import LoginAttempt
+from accounts.token import account_activation_token
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from django.template.loader import render_to_string
+
 
 User = get_user_model()
 
 
 class TestSignupView(TestCase):
     def setUp(self):
-        self.url = reverse("account:create")
+        self.url = reverse("accounts:create")
 
     def test_unauthenticated_user(self):
         user = User.objects.create(
@@ -30,7 +32,7 @@ class TestSignupView(TestCase):
 
     def test_template_used(self):
         response = self.client.get(self.url)
-        self.assertTemplateUsed(response, "account/templates/signup.html")
+        self.assertTemplateUsed(response, "accounts/templates/signup.html")
 
     def test_response_status_code(self):
         response = self.client.get(self.url)
@@ -55,8 +57,13 @@ class TestSignupView(TestCase):
         self.assertEqual(mail.outbox[0].to, ["testuser@gmail.com"])  # self.user.email
         self.assertEqual(
             mail.outbox[0].body,
-            f"\nHi {data['first-name']+' '+data['last-name']},\nPlease click on the link to confirm your registration,\n"
-            "http://testserver/account/activate/" + str(uid) + "/" + str(token) + "/\n",
+            f"\nHi { user.get_full_name() },\n\nWe need to verify that you are the owner of this email address."
+            "\n\nPlease click on the link to confirm your registration.\n"
+            "http://testserver/accounts/activate/"
+            + str(uid)
+            + "/"
+            + str(token)
+            + "/\n\n",
         )
 
         message = list(response.context.get("messages"))[0]
@@ -134,11 +141,11 @@ class TestActivateAccountView(TestCase):
         uidb64 = urlsafe_base64_encode(force_bytes(self.user.id))
         token = account_activation_token.make_token(self.user)
 
-        url = reverse("account:activate", args=[uidb64, token])
+        url = reverse("accounts:activate", args=[uidb64, token])
 
         response = self.client.get(url, follow=True)
         message = list(response.context.get("messages"))[0]
-        self.assertRedirects(response, reverse("account:login"), 302)
+        self.assertRedirects(response, reverse("accounts:login"), 302)
         self.assertEquals(message.tags, "success")
         self.assertEquals(
             message.message, "Thank you for confirming your email. You can now login."
@@ -151,11 +158,11 @@ class TestActivateAccountView(TestCase):
     def test_with_invalid_token(self):
         uidb64 = urlsafe_base64_encode(force_bytes(3))  # user with id = 3 DoesNotExist
         token = account_activation_token.make_token(self.user)
-        url = reverse("account:activate", args=[uidb64, token])
+        url = reverse("accounts:activate", args=[uidb64, token])
 
         response = self.client.get(url, follow=True)
         message = list(response.context.get("messages"))[0]
-        self.assertRedirects(response, reverse("account:login"), 302)
+        self.assertRedirects(response, reverse("accounts:login"), 302)
         self.assertEquals(message.tags, "error")
         self.assertEquals(message.message, "Activation link is invalid!")
 
@@ -176,7 +183,13 @@ class TestLoginView(TestCase):
             last_name="doe",
             is_active=False,
         )
-        self.url = reverse("account:login")
+        self.url = reverse("accounts:login")
+
+    def test_message_login_is_required(self):
+        response = self.client.get(self.url + "?next=/reuse/create-post")
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "error")
+        self.assertEquals(message.message, "Login is required to access.")
 
     def test_unauthenticated_user_is_redirected(self):
         self.client._login(self.user)
@@ -187,7 +200,7 @@ class TestLoginView(TestCase):
     def test_template_used(self):
         response = self.client.get(self.url)
         self.assertTemplateUsed(
-            response, "account/templates/login.html"
+            response, "accounts/templates/login.html"
         )  # change to your login template
 
     def test_response_status_code(self):
@@ -199,6 +212,17 @@ class TestLoginView(TestCase):
         self.client.login(email="testemail@gmail.com", password="password1")
         user = get_user(self.client)
         self.assertTrue(user.is_authenticated)
+
+    def test_post_method_with_valid_credentials_redirect(self):
+        data = {
+            "email": "testemail@gmail.com",
+            "password": "password1",
+        }  # user with these credentials doesn't exist
+        response = self.client.post(self.url, data, follow=True)
+        user = get_user(self.client)
+        login_attempt = LoginAttempt.objects.get(user=user)
+        self.assertEquals(login_attempt.login_attempts, 0)
+        self.assertRedirects(response, reverse("home:index"), 302)
 
     def test_with_invalid_credentials(self):
         data = {
@@ -212,11 +236,29 @@ class TestLoginView(TestCase):
         self.assertEquals(message.tags, "error")
         self.assertEquals(message.message, "Incorrect email or password")
 
+    def test_post_method_with_invalid_data_email(self):
+        data = {"email": "", "password": "password1"}
+        response = self.client.post(self.url, data, follow=True)
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "error")
+        self.assertEquals(message.message, "Email is required")
+
+    def test_post_method_with_invalid_data_password(self):
+        data = {"email": "testuser@gmail.com", "password": ""}
+        response = self.client.post(self.url, data, follow=True)
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "error")
+        self.assertEquals(message.message, "Password is required")
+
     def test_inactive_user_cannot_login(self):
         # user with these credentials is_active = False
-        self.client.login(email="testemail2@gmail.com", password="password2")
+        data = {"email": self.user2.email, "password": self.user2.password}
+        response = self.client.post(self.url, data, follow=True)
         user = get_user(self.client)
         self.assertFalse(user.is_authenticated)
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "error")
+        self.assertEquals(message.message, "Please verify your email first.")
 
     def test_login_attempts_increments_on_wrong_password(self):
         data = {
@@ -275,12 +317,12 @@ class TestLogoutView(TestCase):
         self.user = User.objects.create(
             email="testemail@gmail.com", password="password1"
         )
-        self.url = reverse("account:logout")
+        self.url = reverse("accounts:logout")
 
     def test_logout(self):
         self.client._login(self.user)
         response = self.client.get(self.url)
-        expected_url = reverse("account:login")
+        expected_url = reverse("accounts:login")
         self.assertRedirects(response, expected_url, 302)
 
         user = User.objects.get(id=1)
@@ -291,8 +333,8 @@ class TestLogoutView(TestCase):
 
 class TestForgetPassword(TestCase):
     def setUp(self):
-        self.password_reset_sent_url = reverse_lazy("account:password-reset-sent")
-        self.url = reverse_lazy("account:forget-password")
+        self.password_reset_sent_url = reverse_lazy("accounts:password-reset-sent")
+        self.url = reverse_lazy("accounts:forget-password")
         self.testemail1 = "testemail@gmail.com"
         self.testemail2 = "testemail2@gmail.com"
         self.user = User.objects.create(
@@ -305,7 +347,7 @@ class TestForgetPassword(TestCase):
 
     def test_forget_password_view_template(self):
         response = self.client.get(self.url)
-        self.assertTemplateUsed(response, "account/templates/forget-password.html")
+        self.assertTemplateUsed(response, "accounts/templates/forget-password.html")
         self.assertEquals(response.status_code, 200)
 
     def test_forget_password_with_valid_data(self):
@@ -316,14 +358,18 @@ class TestForgetPassword(TestCase):
         self.assertEqual(mail.outbox[0].subject, "Password reset for greenCan")
         self.assertEqual(mail.outbox[0].from_email, settings.EMAIL_HOST_USER)
         self.assertEqual(mail.outbox[0].to, [self.user.email])
+
         self.assertEqual(
             mail.outbox[0].body,
-            f"\nHi {self.user.get_full_name()},\nForgot your password? Don't worry.\n\nClick the link below to reset your account password.\n"
-            "http://testserver/account/reset/"
-            + str(self.uidb64)
-            + "/"
-            + str(token)
-            + "/\n",
+            render_to_string(
+                "email/email-forgot-password.html",
+                {
+                    "user": self.user,
+                    "domain": "testserver",
+                    "uid": str(self.uidb64),
+                    "token": str(token),
+                },
+            ),
         )
         self.assertRedirects(response, self.password_reset_sent_url, 302)
 
@@ -339,58 +385,17 @@ class TestForgetPassword(TestCase):
 
 class TestPasswordResetDone(TestCase):
     def test_template_used(self):
-        url = reverse_lazy("account:password-reset-complete")
+        url = reverse_lazy("accounts:password-reset-complete")
         response = self.client.get(url)
-        self.assertTemplateUsed(response, "account/templates/reset-password-done.html")
+        self.assertTemplateUsed(response, "accounts/templates/reset-password-done.html")
         self.assertEquals(response.status_code, 200)
 
 
 class TestPasswordResetSent(TestCase):
     def test_template_used(self):
-        url = reverse_lazy("account:password-reset-sent")
+        url = reverse_lazy("accounts:password-reset-sent")
         response = self.client.get(url)
-        self.assertTemplateUsed(response, "account/templates/forget-password-done.html")
+        self.assertTemplateUsed(
+            response, "accounts/templates/forget-password-done.html"
+        )
         self.assertEquals(response.status_code, 200)
-
-
-# class TestPasswordReset(TestCase):
-
-#     def setUp(self):
-#         self.url_str = "account:password-reset"
-#         self.password_reset_done_url = reverse_lazy("account:password-reset-complete")
-#         self.user = User.objects.create(
-#             email="testemail@gmail.com",
-#             password="password1",
-#             first_name="john",
-#             last_name="doe",
-#         )
-#         self.uidb64 = urlsafe_base64_encode(force_bytes(self.user.id))
-
-#     def test_template_used(self):
-#         token = PasswordResetTokenGenerator().make_token(self.user)
-#         response = self.client.get(reverse_lazy(self.url_str, args=[self.uidb64,token]))
-#         self.assertTemplateUsed(response,'account/templates/reset-password.html')
-#         self.assertEquals(response.status_code, 200)
-
-#     def test_csrf_token(self):
-#         token = PasswordResetTokenGenerator().make_token(self.user)
-#         response = self.client.get(reverse_lazy(self.url_str, args=[self.uidb64,token]))
-#         self.assertContains(response, "csrfmiddlewaretoken")
-
-#     def test_password_reset_valid_data(self):
-#         data = {
-#             'password': 'newpassword1',
-#             'confirm_password': 'newpassword2'
-#         }
-#         token = PasswordResetTokenGenerator().make_token(self.user)
-#         response = self.client.post(reverse_lazy(self.url_str, args=[self.uidb64,token]), data, follow=True)
-#         self.assertRedirects(response, self.password_reset_done_url, 302)
-
-#     def test_password_reset_invalid_data_1(self):
-#         data = {
-#             'password': '',
-#             'confirm_password': 'newpassword2'
-#         }
-#         token = PasswordResetTokenGenerator().make_token(self.user)
-#         response = self.client.post(reverse_lazy(self.url_str, args=[self.uidb64,token]), data, follow=True)
-#         self.assertRedirects(response, reverse_lazy(self.url_str, args=[self.uidb64,token]) , 302)

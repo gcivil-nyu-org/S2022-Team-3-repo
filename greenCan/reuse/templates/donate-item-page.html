@@ -13,7 +13,17 @@ Reuse | greenCan
 {% block main %}
 
 <div class="d-flex flex-column justify-content-center my-5">
-  <button class="btn-xlg btn-rounded coolBeans mb-md-2 mb-1 mt-3 mx-auto" data-bs-toggle="modal" data-bs-target="#postAd_Modal">POST AN AD</button>
+  <button class="btn-xlg btn-rounded mb-md-2 mb-1 mt-3 mx-auto {% if not user.is_authenticated %}
+  disabled
+  {% else %}
+  coolBeans
+  {% endif %}
+  " data-bs-toggle="modal" data-bs-target="#postAd_Modal" {% if not user.is_authenticated %}
+  disabled
+  {% endif %}>POST AN AD</button>
+  {% if not user.is_authenticated %}
+    <span style="color: red; text-align: center;">Login is requied to post an ad.</span>
+  {% endif %}
   <div class="horizontal-divider">
         <div class="or-container">
             <span class="">OR</span>

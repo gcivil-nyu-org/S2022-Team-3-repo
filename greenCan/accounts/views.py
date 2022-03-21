@@ -21,13 +21,13 @@ from .forms import PasswordResetForm, SetPasswordForm
 class PasswordResetView(auth_views.PasswordResetView):
     form_class = PasswordResetForm
     email_template_name = "email/email-forgot-password.html"
-    success_url = reverse_lazy("account:password-reset-sent")
+    success_url = reverse_lazy("accounts:password-reset-sent")
     subject_template_name = "email/password-reset-subject.txt"
 
 
 class PasswordResetConfirmView(auth_views.PasswordResetConfirmView):
     form_class = SetPasswordForm
-    success_url = reverse_lazy("account:password-reset-complete")
+    success_url = reverse_lazy("accounts:password-reset-complete")
 
 
 @unauthenticated_user
@@ -50,10 +50,10 @@ def signup_page(request):
             try:
                 user = User(
                     email=email,
-                    password=password,
-                    first_name=first_name,
-                    last_name=last_name,
+                    first_name=first_name.title(),
+                    last_name=last_name.title(),
                 )
+                user.set_password(password)
                 user.is_active = False
                 user.staff = False
                 user.admin = False
@@ -66,6 +66,7 @@ def signup_page(request):
                     email,
                     current_site,
                     "email/email-verification.html",
+                    "email/email-verification-no-style.html",
                 )
                 if response == "success":
                     messages.success(
@@ -87,7 +88,7 @@ def signup_page(request):
                 if user:
                     user.delete()
     context = {}
-    return render(request, "account/templates/signup.html", context)
+    return render(request, "accounts/templates/signup.html", context)
 
 
 @unauthenticated_user
@@ -115,48 +116,53 @@ def login_page(request):
                 login_attempt.timestamp
                 + timedelta(seconds=settings.LOGIN_ATTEMPTS_TIME_LIMIT)
             ) <= now:
-                user = authenticate(request, username=email, password=password)
-                if user is not None:
-                    if not _user.is_active:
-                        messages.error(request, "Please verify your email first.")
-                        return redirect(settings.LOGIN_URL)
-                    else:
+                if not _user.is_active:
+                    messages.error(request, "Please verify your email first.")
+                    return redirect(settings.LOGIN_URL)
+                else:
+                    user = authenticate(request, username=email, password=password)
+                    if user is not None:
                         login(request, user)
                         login_attempt.login_attempts = 0  # reset the login attempts
                         login_attempt.save()
                         return redirect(settings.LOGIN_REDIRECT_URL)
-                else:
-                    # if the password is incorrect, increment the login attempts and
-                    # if the login attempts == MAX_LOGIN_ATTEMPTS, set the user to be inactive and send activation email
-                    login_attempt.login_attempts += 1
-                    login_attempt.timestamp = now
-                    login_attempt.save()
-                    if login_attempt.login_attempts == settings.MAX_LOGIN_ATTEMPTS:
-                        _user.is_active = False
-                        _user.save()
-                        # send the re-activation email
-                        mail_subject = "Account suspended"
-                        current_site = get_current_site(request)
-                        send_user_email(
-                            _user,
-                            mail_subject,
-                            email,
-                            current_site,
-                            "email/email-account-suspended.html",
-                        )
-                        messages.error(
-                            request,
-                            "Account suspended, maximum login attempts exceeded. "
-                            "Reactivation link has been sent to your email",
-                        )
                     else:
-                        messages.error(request, "Incorrect email or password")
-                    return redirect(settings.LOGIN_URL)
+                        # if the password is incorrect, increment the login attempts and
+                        # if the login attempts == MAX_LOGIN_ATTEMPTS, set the user to be inactive and send activation email
+                        login_attempt.login_attempts += 1
+                        login_attempt.timestamp = now
+                        login_attempt.save()
+                        if login_attempt.login_attempts == settings.MAX_LOGIN_ATTEMPTS:
+                            _user.is_active = False
+                            _user.save()
+                            # send the re-activation email
+                            mail_subject = "Account suspended"
+                            current_site = get_current_site(request)
+                            send_user_email(
+                                _user,
+                                mail_subject,
+                                email,
+                                current_site,
+                                "email/email-account-suspended.html",
+                                "email/email-account-suspended-no-style.html",
+                            )
+                            messages.error(
+                                request,
+                                "Account suspended, maximum login attempts exceeded. "
+                                "Reactivation link has been sent to your email",
+                            )
+                        else:
+                            messages.error(request, "Incorrect email or password")
+                        return redirect(settings.LOGIN_URL)
             else:
                 messages.error(request, "Login failed, please try again")
                 return redirect(settings.LOGIN_URL)
+
+    next = request.GET.get("next")
+    if next:
+        messages.error(request, "Login is required to access.")
     context = {}
-    return render(request, "account/templates/login.html", context)
+    return render(request, "accounts/templates/login.html", context)
 
 
 def activate_account_page(request, uidb64, token):
