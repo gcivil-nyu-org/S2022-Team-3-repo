@@ -95,4 +95,4 @@ def create_post(request):
             image = Image(url=url, post=post)
             image.save()
 
-    return redirect(reverse("reuse:donations-page"))
+    return redirect(reverse("reuse:donation-page"))
