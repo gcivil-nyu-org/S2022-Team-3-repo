@@ -179,6 +179,10 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 EMAIL_PORT = 587
 
+FIREBASE_HOST_USER = EMAIL_HOST_USER
+
+FIREBASE_HOST_PASSWORD = EMAIL_HOST_PASSWORD
+
 # Time in seconds after each login attempts
 LOGIN_ATTEMPTS_TIME_LIMIT = 0
 # limit the amount of attempts to which the user will be inactive and password set mail sent
