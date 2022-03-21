@@ -7,6 +7,7 @@ Reuse | greenCan
 
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/carousel.css' %}" />
+<link rel="stylesheet" href="{% static 'css/modal.css' %}" />
 <link rel="stylesheet" href="{% static 'modules/owl-carousel-2/css/owl-carousel2.min.css' %}" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.min.css">
 <style>
@@ -330,19 +331,7 @@ Reuse | greenCan
 </script>
 
 <!--post ad window-->
-<div style = "position: absolute;
-float: left;
-left: 50%;
-top: 50%;
-width: 70%;
-justify-content: center;
-transform: translate(-50%, -50%);
-background:#ffffff;
-border: 2px solid #00000060;
-border-radius: 10px;
-z-index: 1500;
-/* padding: 20px 40px !important; */
-box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);" class="modal fade" id="postAd_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" hidden="true">
+<div class="modal fade" id="postAd_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" hidden="true">
     <div class="modal-dialog modal-dialog-scrollable px-5 py-3" style="overflow-y: initial !important">
       <div class="modal-content">
         <div class="modal-header">
