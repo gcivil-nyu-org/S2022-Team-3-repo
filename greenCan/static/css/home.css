@@ -1,0 +1,209 @@
+.developers-corner .outer-container {
+    display: flex;
+    margin: 10px;
+    justify-content: center;
+}
+
+.developers-corner .outer-container .container {
+    text-align: center;
+    height: 200px;
+    width: 200px;
+    overflow: hidden;
+    border-radius: 50%;
+    margin: 5px;
+    transition: all 0.3s ease-in-out;
+    background: linear-gradient(45deg, #6ABE52, #6AAA64);
+    font-family: 'Roboto', sans-serif;
+}
+
+.developers-corner .outer-container .container:hover {
+    height: 400px;
+    width: 300px;
+    border-radius: 10px;
+}
+
+.developers-corner .outer-container .container .wrapper img {
+    position: relative;
+    z-index: 20;
+    border-radius: 50%;
+    display: block;
+    width: 155px;
+    border: 5px solid #fff;
+    object-fit: cover;
+    margin: 20px auto;
+    transition: all 0.3s ease;
+}
+
+.developers-corner .outer-container .container:hover .wrapper img.active {
+    height: 400px;
+    width: 300px;
+    left: -12px;
+    margin: 0px auto;
+    border: none;
+    border-radius: 10px;
+}
+
+.developers-corner .outer-container .container .wrapper .title {
+    color: #fff;
+    font-size: 30px;
+    font-weight: 500;
+    padding: 5px;
+    line-height: 25px;
+}
+
+.developers-corner .outer-container .container .wrapper .place {
+    color: #fff;
+    font-size: 17x;
+    line-height: 0px;
+    margin: 5px 0;
+}
+
+.developers-corner .outer-container .container .content {
+    color: #fff;
+    font-size: 17px;
+    margin-top: 10px;
+    padding: 1px 20px 10px 20px !important;
+}
+
+.developers-corner .outer-container .container .content .buttons {
+    display: flex;
+}
+
+.developers-corner .outer-container .container .content .buttons .btn button{
+    height: 100%;
+    width: 95%;
+    background-color: black;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 50vh;
+    transition: 0.2s transform ease-in-out;
+    will-change: transform;
+    overflow: hidden;
+}
+
+.developers-corner .outer-container .container .content .buttons .btn button:hover {
+    border: 2px solid transparent;
+    background-color: #fff;
+    color: black;
+    transform: scale(1.05);
+    will-change: transform;
+    border: 0;
+}
+
+.developers-corner .outer-container .container .content .buttons .btn button::after {
+    background-color: #fff;
+    border-radius: 3rem;
+    content: '';
+    display: block;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    transform: translate(-100%, 0) rotate(10deg);
+    transform-origin: top left;
+    transition: 0.3s transform ease-in-out;
+    will-change: transform;
+    z-index: -1;
+}
+
+.developers-corner .outer-container .container .content .buttons .btn button:hover::after {
+    transform: translate(0, 0);
+}
+
+.developers-corner .outer-container .container .icons {
+    position: relative;
+    margin-top: -375px;
+    list-style: none;
+}
+
+.developers-corner .outer-container .container .icons li {
+    height: 40px;
+    width: 40px;
+    margin: 5px 0;
+    margin-left: -100px;
+}
+
+.developers-corner .outer-container .container:hover .icons li {
+    opacity: 1;
+    margin-left: 7px;
+}
+
+.developers-corner .outer-container .container .icons li a {
+    height: 100%;
+    width: 100%;
+    color: #6ABE52;
+    background: #fff;
+    display: block;
+    line-height: 40px;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+.developers-corner .outer-container .container .icons li a:hover {
+    background: black;
+    color: #fff;
+    transform: scale(0.9);
+}
+
+.made-possible-by .outer-container .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.section-title {
+    text-align: center;
+    margin: 0 auto;
+    font-size: 1.5rem;
+    line-height: 1.5em;
+    font-weight: 700;
+    width: max-content;
+    margin-bottom: 30px;
+}
+
+.section-title .title-text {
+    margin-bottom: 0.09em !important;
+}
+
+.section-title .title-separator.separator-border {
+    box-sizing: border-box;
+    display: block;
+    content: "";
+    height: 3px;
+    width: 38px;
+    background: #000;
+    position: relative;
+    opacity: 1;
+}
+
+.section-title .title-separator.separator-border:before,
+.section-title .title-separator.separator-border:after {
+    content: "";
+    height: 3px;
+    width: 10px;
+    background: #000;
+    position: absolute;
+    left: 43px;
+    opacity: .8;
+}
+
+.section-title .title-separator.separator-border:after {
+    position: absolute;
+    width: 5px;
+    left: 58px;
+    opacity: .5;
+}
+
+.section-title .title-separator.separator-border,
+.section-title .title-separator.separator-border:after,
+.section-title .title-separator.separator-border:before {
+    background-color: #6abe52;
+}
+
+@media screen and (max-width: 1025px) {
+    .developers-corner .outer-container {
+        overflow-wrap: normal;
+        flex-wrap: wrap;
+    }
+}

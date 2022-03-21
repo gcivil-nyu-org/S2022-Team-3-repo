@@ -43,9 +43,10 @@ ALLOWED_HOSTS = ["127.0.0.1", "greencan.herokuapp.com", "greencan-dev.herokuapp.
 
 INSTALLED_APPS = [
     "home",
-    "account",
+    "accounts",
     "reuse",
     "recycle",
+    "crispy_forms",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -152,9 +153,9 @@ STATICFILES_DIRS = [BASE_DIR / "static/"]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = "account.User"
+AUTH_USER_MODEL = "accounts.User"
 
-LOGIN_URL = reverse_lazy("account:login")
+LOGIN_URL = reverse_lazy("accounts:login")
 
 LOGOUT_REDIRECT_URL = LOGIN_URL
 
@@ -174,6 +175,8 @@ EMAIL_HOST_USER = env("EMAIL_HOST_USER")
 
 EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
 EMAIL_PORT = 587
 
 # Time in seconds after each login attempts
@@ -182,5 +185,7 @@ LOGIN_ATTEMPTS_TIME_LIMIT = 0
 MAX_LOGIN_ATTEMPTS = 5
 
 ACCOUNT_ACTIVATION_DAYS = 7
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 django_heroku.settings(locals(), test_runner=False)

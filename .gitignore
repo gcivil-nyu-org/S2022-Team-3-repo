@@ -1,5 +1,4 @@
 **/.vscode/*
-**/.github/*
 **/.git/*
 **/__pycache__/*
 **/*.pyc
@@ -8,4 +7,3 @@
 **/staticfiles/*
 **/mydatabase*
 **/.coverage
-**/migrations/*

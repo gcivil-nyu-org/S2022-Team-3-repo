@@ -24,9 +24,9 @@
 				<div class="nav-brand" id="logo">
 					<a href="/"><span><img src="{% static 'images/icons/full-logo.svg' %}" height="100%"></span></a>
 					{% if not user.is_authenticated %}
-					<a href="{% url 'account:login' %}" style="border-radius: 0px !important;" class="button slanted-btn">
-						<span class="slanted-btn-contain">Join Our Community!</span>
-					</a>
+						<a href="{% url 'accounts:login' %}" style="border-radius: 0px !important;" class="button slanted-btn">
+							<span class="slanted-btn-contain">Join Our Community!</span>
+						</a>
 					{% endif %}
 				</div>
 			</div>
@@ -35,46 +35,43 @@
 		<!-- Nav -->
 		<nav id="nav" class="navbar align-left mt-0">
 			<div class="container-fluid">
-				<ul>
-					<li class="
-					{% if request.path == home_base_url %}
-                    current
-                    {% endif %} nav-link"><a href="{{ home_base_url }}">Home</a></li>
-					<li class="nav-link"><a href="#">Reduce</a></li>
-					<li class="
-					{% if request.path == reuse_base_url or is_reuse %}
-                    current
-                    {% endif %} nav-link"><a href="{{ reuse_base_url }}">Reuse</a></li>
-					<li class="
-                    {% if request.path == recycle_base_url or is_recycle %}
-                    current
-                    {% endif %} nav-link"><a href="{{ recycle_base_url }}">Recycle</a></li>
+				<div class="d-flex justify-content-between">
+					<ul>
+						<li class="
+						{% if request.path == home_base_url %}
+						current
+						{% endif %} nav-link"><a href="{{ home_base_url }}">Home</a></li>
+						<li class="nav-link"><a href="#">Reduce</a></li>
+						<li class="
+						{% if request.path == reuse_base_url or is_reuse %}
+						current
+						{% endif %} nav-link"><a href="{{ reuse_base_url }}">Reuse</a></li>
+						<li class="
+						{% if request.path == recycle_base_url or is_recycle %}
+						current
+						{% endif %} nav-link"><a href="{{ recycle_base_url }}">Recycle</a></li>
+					</ul>
 					{% if user.is_authenticated %}
-					<li class="nav-dropdown">
-						<a href="#">Dropdown</a>
-						<ul>
-							<li><a href="#">Lorem ipsum dolor</a></li>
-							<li><a href="#">Magna phasellus</a></li>
-							<li>
-								<a href="#">Phasellus consequat</a>
-								<ul>
-									<li><a href="#">Lorem ipsum dolor</a></li>
-									<li><a href="#">Phasellus consequat</a></li>
-									<li><a href="#">Magna phasellus</a></li>
-									<li><a href="#">Etiam dolore nisl</a></li>
-								</ul>
-							</li>
-							<li><a href="#">Veroeros feugiat</a></li>
-						</ul>
-					</li>
-						<!-- {% if user.avatar %}
-							<img height="35" src="{{ url.avatar }}">
-						{% else %}
-							<img height="35" src="{% static 'images/avatar/avatar.svg' %}">
-						{% endif %}
-						<span class="align-middle text-white">{{ user.get_full_name | title }}</span> -->
+					<div class="profile-btn-container">
+						<div class="dropdown">
+							<a class="btn btn-secondary dropdown-toggle d-flex align-items-center px-3" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								{% if user.avatar %}
+									<img height="35" src="{{ url.avatar }}">
+								{% else %}
+									<img height="35" src="{% static 'images/avatar/avatar.svg' %}">
+								{% endif %}
+									<span class="align-middle text-white name">{{ user.get_full_name }}</span>
+							</a>
+						  
+							<div class="dropdown-menu d-none" id="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							  <a class="dropdown-item" href="#">My Profile</a>
+							  <a class="dropdown-item" href="#">Green Credits</a>
+							  <a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a>
+							</div>
+						  </div>
+					</div>
 					{% endif %}
-				</ul>
+				</div>
 			</div>
 		</nav>
 
@@ -113,20 +110,6 @@
 	<script src="{% static 'js/util.js' %}"></script>
 	<script src="{% static 'js/main.js' %}"></script>
 	<script src="{% static 'modules/bootstrap/js/bootstrap.min.js' %}"></script>
-	<script>
-		window.onscroll = function () { myFunction() };
-
-		var navbar = document.getElementById("nav");
-		var sticky = navbar.offsetTop;
-
-		function myFunction() {
-			if (window.pageYOffset >= sticky) {
-				navbar.classList.add("sticky")
-			} else {
-				navbar.classList.remove("sticky");
-			}
-		}
-	</script>
     {% block scripts %}
     {% endblock %}
 </body>
