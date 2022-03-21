@@ -11,7 +11,7 @@ Sign-Up
     {% include 'messages.html' %}
 
     <!-- Sign Up Form -->
-    <form action="{% url 'account:create' %}" method="POST">
+    <form action="{% url 'accounts:create' %}" method="POST">
         {% csrf_token %}
         <div class="row mb-2">
             <div class="col-md-6 col-12">
@@ -50,7 +50,7 @@ Sign-Up
             </div>
             
             <div class="text-secondary text-center small mt-3">
-                Already have an account? <a class="text-light-green" href="{% url 'account:login' %}">Log In</a>
+                Already have an account? <a class="text-light-green" href="{% url 'accounts:login' %}">Log In</a>
             </div>
         </div>
     </form>

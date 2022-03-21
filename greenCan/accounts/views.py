@@ -21,13 +21,13 @@ from .forms import PasswordResetForm, SetPasswordForm
 class PasswordResetView(auth_views.PasswordResetView):
     form_class = PasswordResetForm
     email_template_name = "email/email-forgot-password.html"
-    success_url = reverse_lazy("account:password-reset-sent")
+    success_url = reverse_lazy("accounts:password-reset-sent")
     subject_template_name = "email/password-reset-subject.txt"
 
 
 class PasswordResetConfirmView(auth_views.PasswordResetConfirmView):
     form_class = SetPasswordForm
-    success_url = reverse_lazy("account:password-reset-complete")
+    success_url = reverse_lazy("accounts:password-reset-complete")
 
 
 @unauthenticated_user
@@ -50,10 +50,10 @@ def signup_page(request):
             try:
                 user = User(
                     email=email,
-                    password=password,
-                    first_name=first_name,
-                    last_name=last_name,
+                    first_name=first_name.title(),
+                    last_name=last_name.title(),
                 )
+                user.set_password(password)
                 user.is_active = False
                 user.staff = False
                 user.admin = False
@@ -66,6 +66,7 @@ def signup_page(request):
                     email,
                     current_site,
                     "email/email-verification.html",
+                    "email/email-verification-no-style.html",
                 )
                 if response == "success":
                     messages.success(
@@ -87,7 +88,7 @@ def signup_page(request):
                 if user:
                     user.delete()
     context = {}
-    return render(request, "account/templates/signup.html", context)
+    return render(request, "accounts/templates/signup.html", context)
 
 
 @unauthenticated_user
@@ -143,6 +144,7 @@ def login_page(request):
                             email,
                             current_site,
                             "email/email-account-suspended.html",
+                            "email/email-account-suspended-no-style.html",
                         )
                         messages.error(
                             request,
@@ -156,7 +158,7 @@ def login_page(request):
                 messages.error(request, "Login failed, please try again")
                 return redirect(settings.LOGIN_URL)
     context = {}
-    return render(request, "account/templates/login.html", context)
+    return render(request, "accounts/templates/login.html", context)
 
 
 def activate_account_page(request, uidb64, token):

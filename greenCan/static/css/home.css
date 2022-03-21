@@ -146,6 +146,61 @@
     transform: scale(0.9);
 }
 
+.made-possible-by .outer-container .container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.section-title {
+    text-align: center;
+    margin: 0 auto;
+    font-size: 1.5rem;
+    line-height: 1.5em;
+    font-weight: 700;
+    width: max-content;
+    margin-bottom: 30px;
+}
+
+.section-title .title-text {
+    margin-bottom: 0.09em !important;
+}
+
+.section-title .title-separator.separator-border {
+    box-sizing: border-box;
+    display: block;
+    content: "";
+    height: 3px;
+    width: 38px;
+    background: #000;
+    position: relative;
+    opacity: 1;
+}
+
+.section-title .title-separator.separator-border:before,
+.section-title .title-separator.separator-border:after {
+    content: "";
+    height: 3px;
+    width: 10px;
+    background: #000;
+    position: absolute;
+    left: 43px;
+    opacity: .8;
+}
+
+.section-title .title-separator.separator-border:after {
+    position: absolute;
+    width: 5px;
+    left: 58px;
+    opacity: .5;
+}
+
+.section-title .title-separator.separator-border,
+.section-title .title-separator.separator-border:after,
+.section-title .title-separator.separator-border:before {
+    background-color: #6abe52;
+}
+
 @media screen and (max-width: 1025px) {
     .developers-corner .outer-container {
         overflow-wrap: normal;

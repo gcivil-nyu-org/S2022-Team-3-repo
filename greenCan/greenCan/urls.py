@@ -22,5 +22,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("recycle/", include("recycle.urls")),
     path("reuse/", include("reuse.urls")),
-    path("account/", include("account.urls")),
+    path("accounts/", include("accounts.urls")),
 ]

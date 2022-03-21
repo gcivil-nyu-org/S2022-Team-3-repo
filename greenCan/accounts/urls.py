@@ -4,7 +4,7 @@ from .views import PasswordResetView, PasswordResetConfirmView
 
 from .views import signup_page, login_page, logout_view, activate_account_page
 
-app_name = "account"
+app_name = "accounts"
 
 urlpatterns = [
     path("create/", signup_page, name="create"),
@@ -16,28 +16,29 @@ urlpatterns = [
     path(
         "forgot-password/",
         PasswordResetView.as_view(
-            template_name="account/templates/forget-password.html",
+            template_name="accounts/templates/forget-password.html",
+            html_email_template_name = "email/email-forgot-password.html"
         ),
         name="forget-password",
     ),
     path(
         "password-reset/sent/",
         PasswordResetDoneView.as_view(
-            template_name="account/templates/forget-password-done.html"
+            template_name="accounts/templates/forget-password-done.html"
         ),
         name="password-reset-sent",
     ),
     path(
         "reset/<uidb64>/<token>/",
         PasswordResetConfirmView.as_view(
-            template_name="account/templates/reset-password.html"
+            template_name="accounts/templates/reset-password.html"
         ),
         name="password-reset",
     ),
     path(
         "reset/done/",
         PasswordResetCompleteView.as_view(
-            template_name="account/templates/reset-password-done.html"
+            template_name="accounts/templates/reset-password-done.html"
         ),
         name="password-reset-complete",
     ),

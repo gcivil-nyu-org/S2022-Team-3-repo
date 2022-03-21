@@ -1,7 +1,7 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
 from django.contrib.auth.views import PasswordResetDoneView, PasswordResetCompleteView
-from account.views import (
+from accounts.views import (
     signup_page,
     login_page,
     logout_view,
@@ -13,57 +13,57 @@ from account.views import (
 
 class TestUrls(SimpleTestCase):
     def test_signup_url(self):
-        url = reverse("account:create")
+        url = reverse("accounts:create")
         resolved = resolve(url)
         self.assertEqual(resolved.func, signup_page)
-        self.assertEqual(resolved.namespace, "account")
-        self.assertEqual(url, "/account/create/")
+        self.assertEqual(resolved.namespace, "accounts")
+        self.assertEqual(url, "/accounts/create/")
 
     def test_login_url(self):
-        url = reverse("account:login")
+        url = reverse("accounts:login")
         resolved = resolve(url)
         self.assertEqual(resolved.func, login_page)
-        self.assertEqual(resolved.namespace, "account")
-        self.assertEqual(url, "/account/login/")
+        self.assertEqual(resolved.namespace, "accounts")
+        self.assertEqual(url, "/accounts/login/")
 
     def test_activate_url(self):
-        url = reverse("account:activate", args=["uid", "token"])
+        url = reverse("accounts:activate", args=["uid", "token"])
         resolved = resolve(url)
         self.assertEqual(resolved.func, activate_account_page)
-        self.assertEqual(resolved.namespace, "account")
-        self.assertEqual(url, "/account/activate/uid/token/")
+        self.assertEqual(resolved.namespace, "accounts")
+        self.assertEqual(url, "/accounts/activate/uid/token/")
 
     def test_logout_url(self):
-        url = reverse("account:logout")
+        url = reverse("accounts:logout")
         resolved = resolve(url)
         self.assertEqual(resolved.func, logout_view)
-        self.assertEqual(resolved.namespace, "account")
-        self.assertEqual(url, "/account/logout/")
+        self.assertEqual(resolved.namespace, "accounts")
+        self.assertEqual(url, "/accounts/logout/")
 
     def test_password_reset_url(self):
-        url = reverse("account:password-reset", args=["1", "7giugiugugiugiguigiugiug"])
+        url = reverse("accounts:password-reset", args=["1", "7giugiugugiugiguigiugiug"])
         resolved = resolve(url)
         self.assertEqual(resolved.func.view_class, PasswordResetConfirmView)
-        self.assertEqual(resolved.namespace, "account")
-        self.assertEqual(url, "/account/reset/1/7giugiugugiugiguigiugiug/")
+        self.assertEqual(resolved.namespace, "accounts")
+        self.assertEqual(url, "/accounts/reset/1/7giugiugugiugiguigiugiug/")
 
     def test_password_reset_sent_url(self):
-        url = reverse("account:password-reset-sent")
+        url = reverse("accounts:password-reset-sent")
         resolved = resolve(url)
         self.assertEqual(resolved.func.view_class, PasswordResetDoneView)
-        self.assertEqual(resolved.namespace, "account")
-        self.assertEqual(url, "/account/password-reset/sent/")
+        self.assertEqual(resolved.namespace, "accounts")
+        self.assertEqual(url, "/accounts/password-reset/sent/")
 
     def test_password_reset_done_url(self):
-        url = reverse("account:password-reset-complete")
+        url = reverse("accounts:password-reset-complete")
         resolved = resolve(url)
         self.assertEqual(resolved.func.view_class, PasswordResetCompleteView)
-        self.assertEqual(resolved.namespace, "account")
-        self.assertEqual(url, "/account/reset/done/")
+        self.assertEqual(resolved.namespace, "accounts")
+        self.assertEqual(url, "/accounts/reset/done/")
 
     def test_forget_password_url(self):
-        url = reverse("account:forget-password")
+        url = reverse("accounts:forget-password")
         resolved = resolve(url)
         self.assertEqual(resolved.func.view_class, PasswordResetView)
-        self.assertEqual(resolved.namespace, "account")
-        self.assertEqual(url, "/account/forgot-password/")
+        self.assertEqual(resolved.namespace, "accounts")
+        self.assertEqual(url, "/accounts/forgot-password/")

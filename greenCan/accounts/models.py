@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from recycle.models import ZipCode
+from django.contrib.auth.hashers import make_password
 
 
 class UserManager(BaseUserManager):
@@ -28,8 +29,8 @@ class UserManager(BaseUserManager):
 
         user_obj = self.model(
             email=self.normalize_email(email),
-            first_name=first_name,
-            last_name=last_name,
+            first_name=first_name.title(),
+            last_name=last_name.title(),
             phone_number=phone_number,
             zipcode=zipcode,
         )
