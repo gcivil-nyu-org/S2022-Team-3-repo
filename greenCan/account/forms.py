@@ -1,6 +1,12 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.contrib.auth.forms import (
+    PasswordResetForm as AuthPasswordResetForm,
+    SetPasswordForm as AuthSetPasswordForm,
+)
+from django.forms.widgets import EmailInput
+from django.utils.encoding import force_str as _
 
 User = get_user_model()
 
@@ -109,3 +115,67 @@ class RegistrationForm(forms.ModelForm):
             user.is_active = False
             user.save()
         return user
+
+
+class PasswordResetForm(AuthPasswordResetForm):
+    def __init__(self, *args, **kwargs):
+        super(PasswordResetForm, self).__init__(*args, **kwargs)
+
+    email = forms.EmailField(
+        widget=EmailInput(
+            attrs={
+                "class": "validate form-control",
+                "placeholder": "name@example.com",
+                "required": "required",
+                "name": "email",
+            }
+        ),
+        label="Email",
+    )
+
+    def clean_email(self):
+        email = self.cleaned_data["email"]
+        if not User.objects.filter(email=email, is_active=True).exists():
+            msg = _("There is no user registered with the specified E-Mail address.")
+            self.add_error("email", msg)
+        return email
+
+
+class SetPasswordForm(AuthSetPasswordForm):
+    def __init__(self, *args, **kwargs):
+        self.auto_id = False
+        super(SetPasswordForm, self).__init__(*args, **kwargs)
+
+    new_password1 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "validate form-control",
+                "placeholder": "••••••••",
+                "required": "required",
+                "name": "password",
+                "id": "password",
+            }
+        ),
+        label="Password",
+    )
+
+    new_password2 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "class": "validate form-control",
+                "placeholder": "••••••••",
+                "required": "required",
+                "name": "confirm_password",
+                "id": "confirm-password",
+            }
+        ),
+        label="Confirm Password",
+    )
+
+    def clean_password2(self):  # checking that the two passwords match
+        password1 = self.cleaned_data.get("password")
+        password2 = self.cleaned_data.get("confirm_password")
+        if password1 and password2 and password1 != password2:
+            msg = _("Password and confirm password do not match.")
+            self.add_error("confirm_password", msg)
+        return password1

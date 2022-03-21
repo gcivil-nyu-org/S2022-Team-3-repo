@@ -20,25 +20,30 @@
 			alignment: 'left'
 		});
 
-		$(window).scroll(function() {
-			scrollFunction();
-		});
-				
 		$('#scrollToTopBtn').hide();
 
-		function scrollFunction() {
-			if (document.documentElement.scrollTop > 50) {
-				$('#scrollToTopBtn').show();
-			} else {
-				$('#scrollToTopBtn').hide();
-			}
-		}
-
+		
 		$('#scrollToTopBtn').click(function() {
 			$('html, body').animate({scrollTop : 0},700);
 		});
 
 		// Nav.
+		var navbar = document.getElementById("nav");
+		var sticky = navbar.offsetTop;
+		
+		$(window).scroll(function() {
+			if (document.documentElement.scrollTop > sticky * .3) {
+				$('#scrollToTopBtn').show();
+				navbar.classList.add("sticky");
+			} else {
+				$('#scrollToTopBtn').hide();
+				navbar.classList.remove("sticky");
+			}
+		});
+		
+		 $('.dropdown').hover(function(){
+			$('.dropdown-menu').toggleClass('d-none');
+		 });
 
 		// Title Bar.
 			$(

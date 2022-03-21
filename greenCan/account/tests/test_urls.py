@@ -1,7 +1,14 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-
-from account.views import signup_page, login_page, logout_view, activate_account_page
+from django.contrib.auth.views import PasswordResetDoneView, PasswordResetCompleteView
+from account.views import (
+    signup_page,
+    login_page,
+    logout_view,
+    activate_account_page,
+    PasswordResetView,
+    PasswordResetConfirmView,
+)
 
 
 class TestUrls(SimpleTestCase):
@@ -32,3 +39,31 @@ class TestUrls(SimpleTestCase):
         self.assertEqual(resolved.func, logout_view)
         self.assertEqual(resolved.namespace, "account")
         self.assertEqual(url, "/account/logout/")
+
+    def test_password_reset_url(self):
+        url = reverse("account:password-reset", args=["1", "7giugiugugiugiguigiugiug"])
+        resolved = resolve(url)
+        self.assertEqual(resolved.func.view_class, PasswordResetConfirmView)
+        self.assertEqual(resolved.namespace, "account")
+        self.assertEqual(url, "/account/reset/1/7giugiugugiugiguigiugiug/")
+
+    def test_password_reset_sent_url(self):
+        url = reverse("account:password-reset-sent")
+        resolved = resolve(url)
+        self.assertEqual(resolved.func.view_class, PasswordResetDoneView)
+        self.assertEqual(resolved.namespace, "account")
+        self.assertEqual(url, "/account/password-reset/sent/")
+
+    def test_password_reset_done_url(self):
+        url = reverse("account:password-reset-complete")
+        resolved = resolve(url)
+        self.assertEqual(resolved.func.view_class, PasswordResetCompleteView)
+        self.assertEqual(resolved.namespace, "account")
+        self.assertEqual(url, "/account/reset/done/")
+
+    def test_forget_password_url(self):
+        url = reverse("account:forget-password")
+        resolved = resolve(url)
+        self.assertEqual(resolved.func.view_class, PasswordResetView)
+        self.assertEqual(resolved.namespace, "account")
+        self.assertEqual(url, "/account/forgot-password/")
