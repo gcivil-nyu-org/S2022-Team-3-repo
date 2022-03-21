@@ -1,0 +1,141 @@
+@import url('/static/fonts/google-fonts.css');
+
+.login {
+    min-height: 100vh;
+}
+  
+.bg-image {
+  background-image: url('/static/images/landing/auth-background.webp');
+  background-size: cover;
+  background-position: center;
+}
+
+.login-heading,
+.login-subheading {
+  color: #21212d !important;
+  font-family: 'Roboto', sans-serif;
+}
+
+.login-subheading {
+  font-weight: 300;
+}
+
+.login-heading {
+  line-height: 0.6em;
+  font-weight: bold;
+  font-size: 30px !important;
+}
+
+.btn-login {
+  font-size: 0.9rem;
+  letter-spacing: 0.05rem;
+  padding: 0.75rem 1rem;
+  border-radius: 60px !important;
+  background-color: #6ABE52 !important;
+  color: #fff !important;
+  font-family: 'Roboto', sans-serif;
+}
+
+.btn-close {
+  color: #21212d;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+  box-shadow: none !important;
+  border: 0 !important;
+}
+
+.btn-close:hover,
+.btn-close:active {
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+.btn-google-auth {
+  font-size: 0.9rem;
+  letter-spacing: 0.05rem;
+  padding: 0.75rem 1rem;
+  border-radius: 60px !important;
+  background-color: #21212d !important;
+  color: #fff !important;
+  font-family: 'Roboto', sans-serif;
+}
+ 
+.text-light-green {
+  color: #6ABE52 !important;
+}
+
+.text-link {
+  text-decoration: none;
+}
+
+.text-dark-blue {
+  color: #21212d !important;
+}
+
+.password-toggler,
+.confirm-password-toggler {
+  border: 0px;
+  box-shadow: none;
+  outline: none;
+  padding: 0px;
+  background-color: transparent;
+  color: #48556888;
+  font-family: 'Roboto', sans-serif;
+}
+
+
+.password-toggler:active,
+.password-toggler:focus,
+.password-toggler:hover,
+.confirm-password-toggler:active,
+.confirm-password-toggler:focus,
+.confirm-password-toggler:hover {
+  color: #6ABE52;
+}
+
+
+label {
+  margin-bottom: 8px;
+  color: #485568 !important;
+  font-family: 'Roboto', sans-serif;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+input[type='text'],
+input[type='email'],
+input[type='password'],
+input[type='checkbox'] {
+  border-radius: 60px !important;
+  font-family: 'Roboto', sans-serif;
+}
+
+input[type='text'],
+input[type='email'],
+input[type='password'] {
+  height: 40px;
+}
+
+input[type='checkbox']:checked {
+  background-color: #6ABE52 !important;
+}
+
+input[type='checkbox']:active,
+input[type='checkbox']:focus,
+input[type='checkbox']:hover,
+input[type='text']:active,
+input[type='text']:hover,
+input[type='text']:focus,
+input[type='email']:active,
+input[type='email']:hover,
+input[type='email']:focus,
+input[type='password']:active,
+input[type='password']:focus,
+input[type='password']:hover {
+  box-shadow: 0 0 0 0.25rem #6ABE5219 !important;
+  border-color: #6ABE52 !important;
+}

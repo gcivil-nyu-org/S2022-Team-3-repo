@@ -1,0 +1,57 @@
+{% extends 'template-auth.html' %}
+{% load static %}
+{% block title %}
+Sign-Up
+{% endblock %}
+
+{% block main %}
+    <h6 class="login-subheading">Welcome!</h6>
+    <h3 class="login-heading mb-5">Create your account</h3>
+
+    {% include 'messages.html' %}
+
+    <!-- Sign Up Form -->
+    <form action="{% url 'account:create' %}" method="POST">
+        {% csrf_token %}
+        <div class="row mb-2">
+            <div class="col-md-6 col-12">
+                <div class="form-group">
+                    <label for="first-name">First name</label>
+                    <input type="text" class="form-control" id="first-name" name="first-name" placeholder="Firstname" required>
+                </div>
+            </div>
+            <div class="col-md-6 col-12">
+                <div class="form-group">
+                    <label for="last-name">Last name</label>
+                    <input type="text" class="form-control" id="last-name" name="last-name" placeholder="Lastname" required>
+                </div>
+            </div>
+        </div> 
+
+        <div class="form-group mb-2">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="••••••••" required>
+        </div>
+        <div class="w-100 text-right mb-3">
+            <button class="password-toggler small" type="button">
+                <span><i class="far fa-eye"></i> Show</span> password  
+            </button>
+        </div>
+        
+        <div class="gy-5">
+            <div class="d-grid">
+                <button class="btn btn-lg btn-login fw-bold mb-2" type="submit">Sign Up</button>
+                <button class="btn btn-lg btn-google-auth fw-normal mb-2" type="button"><img src="{% static 'images/icons/google_G_logo.png' %}" height="25"/> Sign up with Google</button>
+            </div>
+            
+            <div class="text-secondary text-center small mt-3">
+                Already have an account? <a class="text-light-green" href="{% url 'account:login' %}">Log In</a>
+            </div>
+        </div>
+    </form>
+{% endblock %}

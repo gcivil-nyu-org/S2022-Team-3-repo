@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 import django_heroku
 import environ
+import sys
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -40,9 +42,11 @@ ALLOWED_HOSTS = ["127.0.0.1", "greencan.herokuapp.com", "greencan-dev.herokuapp.
 # Application definition
 
 INSTALLED_APPS = [
-    "account.apps.AccountConfig",
-    "reuse.apps.ReuseConfig",
-    "recycle.apps.RecycleConfig",
+    "home",
+    "account",
+    "reuse",
+    "recycle",
+    "crispy_forms",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -84,14 +88,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "greenCan.wsgi.application"
 
-# print({
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': env('DATABASE_NAME'),
-#         'USER': env('DATABASE_USER'),
-#         'PASSWORD': env('DATABASE_PASSWORD'),
-#         'HOST': env('DATABASE_HOST'),
-#         'PORT': '5432'
-#     })
+
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
@@ -102,14 +99,16 @@ DATABASES = {
         "USER": env("DATABASE_USER"),
         "PASSWORD": env("DATABASE_PASSWORD"),
         "HOST": env("DATABASE_HOST"),
-        "PORT": "5432"
-        # 'NAME': 'd2boo65k26ke5k',
-        # 'USER': 'mnhxtuuuttbprh',
-        # 'PASSWORD': '65c2aa71c3abdf0ef3d2f96468b25cfd993db74e37a371f5577154a40927eb3b',
-        # 'HOST': 'ec2-54-205-183-19.compute-1.amazonaws.com',
-        # 'PORT': '5432'
+        "PORT": "5432",
     }
 }
+
+
+if "test" in sys.argv:
+    DATABASES["default"] = {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": "mydatabase",
+    }
 
 
 # Password validation
@@ -154,4 +153,39 @@ STATICFILES_DIRS = [BASE_DIR / "static/"]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-django_heroku.settings(locals())
+AUTH_USER_MODEL = "account.User"
+
+LOGIN_URL = reverse_lazy("account:login")
+
+LOGOUT_REDIRECT_URL = LOGIN_URL
+
+LOGIN_REDIRECT_URL = reverse_lazy("home:index")  # change this to your home page
+
+# email configuration for development
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# email configuration in production
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+
+EMAIL_USE_TLS = True
+
+EMAIL_HOST = "smtp.gmail.com"
+
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+EMAIL_PORT = 587
+
+# Time in seconds after each login attempts
+LOGIN_ATTEMPTS_TIME_LIMIT = 0
+# limit the amount of attempts to which the user will be inactive and password set mail sent
+MAX_LOGIN_ATTEMPTS = 5
+
+ACCOUNT_ACTIVATION_DAYS = 7
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+django_heroku.settings(locals(), test_runner=False)

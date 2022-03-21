@@ -8,12 +8,14 @@ install:
   - pip install -r requirements.txt
 
 before_script:
+  - python ./greenCan/manage.py makemigrations
   - python ./greenCan/manage.py migrate
 
 script:
   - python -m black . --check
   - python -m flake8 --max-line-length=150
+  - python greenCan/manage.py collectstatic
   - cd greenCan && python -m coverage run --source='.' manage.py test
 
 after_success:
-  - coveralls
+  - python -m coveralls
