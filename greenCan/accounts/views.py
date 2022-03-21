@@ -116,47 +116,51 @@ def login_page(request):
                 login_attempt.timestamp
                 + timedelta(seconds=settings.LOGIN_ATTEMPTS_TIME_LIMIT)
             ) <= now:
-                user = authenticate(request, username=email, password=password)
-                if user is not None:
-                    if not _user.is_active:
-                        messages.error(request, "Please verify your email first.")
-                        return redirect(settings.LOGIN_URL)
-                    else:
+                if not _user.is_active:
+                    messages.error(request, "Please verify your email first.")
+                    return redirect(settings.LOGIN_URL)
+                else:
+                    user = authenticate(request, username=email, password=password)
+                    if user is not None:
                         login(request, user)
                         login_attempt.login_attempts = 0  # reset the login attempts
                         login_attempt.save()
                         return redirect(settings.LOGIN_REDIRECT_URL)
-                else:
-                    # if the password is incorrect, increment the login attempts and
-                    # if the login attempts == MAX_LOGIN_ATTEMPTS, set the user to be inactive and send activation email
-                    login_attempt.login_attempts += 1
-                    login_attempt.timestamp = now
-                    login_attempt.save()
-                    if login_attempt.login_attempts == settings.MAX_LOGIN_ATTEMPTS:
-                        _user.is_active = False
-                        _user.save()
-                        # send the re-activation email
-                        mail_subject = "Account suspended"
-                        current_site = get_current_site(request)
-                        send_user_email(
-                            _user,
-                            mail_subject,
-                            email,
-                            current_site,
-                            "email/email-account-suspended.html",
-                            "email/email-account-suspended-no-style.html",
-                        )
-                        messages.error(
-                            request,
-                            "Account suspended, maximum login attempts exceeded. "
-                            "Reactivation link has been sent to your email",
-                        )
                     else:
-                        messages.error(request, "Incorrect email or password")
-                    return redirect(settings.LOGIN_URL)
+                        # if the password is incorrect, increment the login attempts and
+                        # if the login attempts == MAX_LOGIN_ATTEMPTS, set the user to be inactive and send activation email
+                        login_attempt.login_attempts += 1
+                        login_attempt.timestamp = now
+                        login_attempt.save()
+                        if login_attempt.login_attempts == settings.MAX_LOGIN_ATTEMPTS:
+                            _user.is_active = False
+                            _user.save()
+                            # send the re-activation email
+                            mail_subject = "Account suspended"
+                            current_site = get_current_site(request)
+                            send_user_email(
+                                _user,
+                                mail_subject,
+                                email,
+                                current_site,
+                                "email/email-account-suspended.html",
+                                "email/email-account-suspended-no-style.html",
+                            )
+                            messages.error(
+                                request,
+                                "Account suspended, maximum login attempts exceeded. "
+                                "Reactivation link has been sent to your email",
+                            )
+                        else:
+                            messages.error(request, "Incorrect email or password")
+                        return redirect(settings.LOGIN_URL)
             else:
                 messages.error(request, "Login failed, please try again")
                 return redirect(settings.LOGIN_URL)
+
+    next = request.GET.get("next")
+    if next:
+        messages.error(request, "Login is required to access.")
     context = {}
     return render(request, "accounts/templates/login.html", context)
 
