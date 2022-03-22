@@ -42,18 +42,24 @@ ALLOWED_HOSTS = ["127.0.0.1", "greencan.herokuapp.com", "greencan-dev.herokuapp.
 # Application definition
 
 INSTALLED_APPS = [
-    "home",
-    "accounts",
-    "reuse",
-    "recycle",
-    "crispy_forms",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites", #imperative to configure auth to external sites
+    "home",
+    "accounts",
+    "reuse",
+    "recycle",
+    "crispy_forms",
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -179,10 +185,6 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 EMAIL_PORT = 587
 
-FIREBASE_HOST_USER = EMAIL_HOST_USER
-
-FIREBASE_HOST_PASSWORD = EMAIL_HOST_PASSWORD
-
 # Time in seconds after each login attempts
 LOGIN_ATTEMPTS_TIME_LIMIT = 0
 # limit the amount of attempts to which the user will be inactive and password set mail sent
@@ -193,3 +195,42 @@ ACCOUNT_ACTIVATION_DAYS = 7
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 django_heroku.settings(locals(), test_runner=False)
+
+SITE_ID = 2     
+LOGIN_REDIRECT_URL = '/'
+
+# Additional configuration settings
+# SOCIALACCOUNT_QUERY_EMAIL = True
+# ACCOUNT_LOGOUT_ON_GET= True
+# ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS=False
+SOCIALACCOUNT_LOGIN_ON_GET=True
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+        'client_id': '428024403516-i463ndq59nu1r0lmqp701398o5efhv2u.apps.googleusercontent.com',
+        'secret': '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',
+        'key': ''
+},
+
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  #authenticate using django
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+
+
