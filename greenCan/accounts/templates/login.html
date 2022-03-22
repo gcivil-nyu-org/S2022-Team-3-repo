@@ -44,12 +44,16 @@ Sign-In
     </div>
     <div class="gy-5">
       <div class="d-grid">
+        {% load socialaccount %}
         <button class="btn btn-lg btn-login fw-bold mb-2" type="submit">Login now</button>
-        <button  class="btn btn-lg btn-google-auth fw-normal mb-2" type="button">
+        <button type="submit" formaction='{% provider_login_url "google" %}' class="btn btn-lg btn-google-auth fw-normal mb-2" type="button">
           <img src="{% static 'images/icons/google_G_logo.png' %}" height="25"/> 
-          {% load socialaccount %}
-          <a style="text-decoration: none;color: rgb(247, 247, 247);" 
-          href='{% provider_login_url "google"%}'>Sign in with Google</a></button>
+         
+          <!-- <a style="text-decoration: none;color: rgb(247, 247, 247);" 
+          href='{% provider_login_url "google" %}'> -->
+          Sign in with Google
+        <!-- </a> -->
+      </button>
           
       </div>
       
