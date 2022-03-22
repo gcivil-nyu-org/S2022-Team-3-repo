@@ -305,29 +305,6 @@ Reuse | greenCan
   $('.shelter-home-card').click(function(){
     window.open($(this).attr('data-url'),'_blank');
   });
-
-
-//img uploading script
-
-//form validation function
-// $(document).ready(function () {
-//   'use strict'
-//   // Fetch all the forms we want to apply custom Bootstrap validation styles to
-//   var forms = document.querySelectorAll('.needs-validation')
-
-//   // Loop over them and prevent submission
-//   Array.prototype.slice.call(forms)
-//     .forEach(function (form) {
-//       form.addEventListener('submit', function (event) {
-//         if (!form.checkValidity()) {
-//           event.preventDefault()
-//           event.stopPropagation()
-//         }
-
-//         form.classList.add('was-validated')
-//       }, false)
-//     })
-// });
 </script>
 
 <!--post ad window-->
@@ -380,22 +357,18 @@ Reuse | greenCan
                   <option value="Electronics">Electronics</option>
                 </select>
               </div>
-
               <div class="form-group">
                 <label for="validationCustom04" class="form-label"><b>Your Contact Number:</b></label>
                 <input type="number" class="form-control"  id="validationCustom04" name="number" placeholder="Enter your Contact Number" style = "max-width: 100%;" required>
               </div>
-
               <div class="form-group">
                 <label for="validationCustom05" class="form-label"><b>Your E-mail:</b></label>
                 <input type="email" class="form-control"  id="validationCustom05" name="email" placeholder="Enter your E-mail" style = "max-width: 100%;" required>
               </div>
-
               <div class="form-group">
               <label for="validationCustom06" class="form-label"><b>Zipcode of Pick-up Location:</b></label>
                 <input type="number" class="form-control" id="validationCustom06" name="zipcode" placeholder="Enter the Zipcode of the loaction" style = "max-width: 100%;" required>
               </div>
-
             </div>
             </div>
             <div class="d-flex float-right py-3">
@@ -441,7 +414,6 @@ if (window.File && window.FileList && window.FileReader) {
   $('#image-frame').click(function(){
     $('#image-upload').trigger('click');
   });
-
 
   $(document).ready(function() {
   $('#infoForm').bootstrapValidator({
@@ -519,5 +491,4 @@ if (window.File && window.FileList && window.FileReader) {
     })
   })
 </script>
-
 {% endblock %}
