@@ -74,4 +74,3 @@ class TestUrls(SimpleTestCase):
     #     self.assertEqual(resolved.func, signup_page)
     #     self.assertEqual(resolved.namespace, "accounts")
     #     self.assertEqual(url, "/accounts/create/")
-        

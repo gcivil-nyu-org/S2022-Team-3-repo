@@ -208,7 +208,7 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = False
-SOCIALACCOUNT_LOGIN_ON_GET = True #bypass the "do you want to login page"
+SOCIALACCOUNT_LOGIN_ON_GET = True  # bypass the "do you want to login page"
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
         "SCOPE": [

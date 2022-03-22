@@ -23,5 +23,5 @@ urlpatterns = [
     path("recycle/", include("recycle.urls")),
     path("reuse/", include("reuse.urls")),
     path("accounts/", include("accounts.urls")),
-    path("social/", include("allauth.urls"),name='social'),
+    path("social/", include("allauth.urls"), name="social"),
 ]
