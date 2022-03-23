@@ -68,9 +68,11 @@ def create_post(request):
     number = request.POST.get("number")
     email = request.POST.get("email")
     zipcode = request.POST.get("zipcode")
-
     user = request.user
     zip_code = ZipCode.objects.filter(zip_code=zipcode)
+
+    if len(zip_code) == 0:
+        zip_code = None
 
     if (
         title is not None
