@@ -8,10 +8,8 @@ from PIL import Image as Img
 from six import BytesIO
 from recycle.models import ZipCode
 from reuse.models import Image, Post
-import json
 
 User = get_user_model()
-
 
 
 def create_image(

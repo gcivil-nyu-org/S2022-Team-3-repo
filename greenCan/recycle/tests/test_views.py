@@ -35,7 +35,7 @@ class TestViews(TestCase):
                     dist = dist * 0.8684
                 return dist
 
-        calc_distance(12,23,30,40,'K')
+        calc_distance(12, 23, 30, 40, "K")
         # create the user defined function
         connection.connection.create_function("calculate_distance", 5, calc_distance)
 
