@@ -9,6 +9,11 @@ reuse | greenCan
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="{% static 'css/donationCard.css' %}" >
 <link rel="stylesheet" href="{% static 'css/modal.css' %}" />
+<link rel="stylesheet" href="{% static 'css/picSlider.css' %}" />
+<link rel="stylesheet" href="{% static 'modules/owl-carousel-2/css/owl-carousel2.min.css' %}" />
+<style>
+
+</style>
 {% endblock %}
 
 {% block main %}
@@ -47,58 +52,11 @@ reuse | greenCan
             <div class = "container">
                 <div class = "row">
                     <!-- slides of item pictures -->
-                    
-                    <!--<div class = "col-md-6">
-                        <div class="slideshow-container">
-                            <div class="mySlides fade" id = "gallery{{post.id}}">
-                                <img src={{post.url}} style="width:100%">
-                            </div>                      
-                            <div class="mySlides fade">
-                                <img src={{post.url}} style="width:100%">
-                            </div> 
-                            <div class="mySlides fade">
-                                <img src={{post.url}} style="width:100%">
-                            </div>                          
-                      
-                            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-                            <a class="next" onclick="plusSlides(1)">&#10095;</a>
-                          
-                        </div> 
-
-                        <div style="text-align:center">
-                            <span class="dot" onclick="currentSlide(1)"></span>
-                            <span class="dot" onclick="currentSlide(2)"></span>
-                            <span class="dot" onclick="currentSlide(3)"></span>
-                        </div>
-                    </div>-->
                     <div class = "col-md-6">
-                        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
-                            <ol class="carousel-indicators">
-                              <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-                              <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-                              <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-                            </ol>
-                            <div class="carousel-inner">
-                              <div class="carousel-item active">
-                                <img src={{post.url}} style="width:100%">
-                              </div>
-                              <div class="carousel-item">
-                                <img src={{post.url}} style="width:100%">
-                              </div>
-                              <div class="carousel-item">
-                                <img src={{post.url}} style="width:100%">
-                              </div>
-                            </div>
-                            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-                              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                              <span class="sr-only">Previous</span>
-                            </a>
-                            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-                              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                              <span class="sr-only">Next</span>
-                            </a>
-                          </div>
-
+                        <div class="owl-carousel owl-theme">
+                            <div class="item"><img src={{post.url}} style="width:100%"/></div>
+                            <div class="item"><img src={{post.url}} style="width:100%"/></div>
+                        </div>
                     </div>
                     <!-- slides of item pictures -->
                     <div class = "col-md-6">
@@ -124,50 +82,20 @@ reuse | greenCan
 {% endblock %}
 
 {% block scripts %}
+<script src="{% static 'modules/owl-carousel-2/js/owl-carousel2.min.js' %}"></script>
 <script>
-/*
-//Script for the slider of pictures
-    var slideIndex = 1;
-    showSlides(slideIndex);
-    // Next/previous controls
-    
-    function plusSlides(n) {
-        showSlides(slideIndex += n);
-    }
-    //click on dots
-    function currentSlide(n,gallery) {
-        showSlides(slideIndex = n, gallery);
-    }
-    function showSlides(n,gallery) {
-        var i;
-        var slides = document.getElementsByClassName("mySlides");
-        var dots = document.getElementsByClassName("dot");
-        
-        if (n < 1) {
-            slideIndex = 1;
-        } 
-        else if (n > slides.length) {
-            slideIndex = slides.length;
-        }
-        else{
-            slideIndex = n;
-        } 
-        for (i = 0; i < slides.length; i++) {
-            slides[i].style.display = "none";
-        }
-        for (i = 0; i < dots.length; i++) {
-            dots[i].className = dots[i].className.replace(" active", "");
-        }
-        slides[slideIndex-1].style.display = "block";
-        dots[slideIndex-1].className += " active";
-    }
-*/
-</script>
-<script language="JavaScript" type="text/javascript">
-    $(document).ready(function(){
-      $('.carousel').carousel({
-        interval: 3000
-      })
-    });    
+  $(document).ready(function() {
+    var owl = $('.owl-carousel');
+    //init default carousel
+    owl.owlCarousel({
+        items: 1,
+        margin:40,
+        nav:true,
+        stagePadding: 30,
+        smartSpeed: 450,
+        navText : ["<i class='fas fa-chevron-left'></i>","<i class='fas fa-chevron-right'></i>"]
+    });
+
+}); 
 </script>
 {% endblock %}
