@@ -1,26 +1,29 @@
-"""
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
 from reuse.views import index, donation_view, listing_page, create_post
 
 
 class TestUrls(SimpleTestCase):
-    def test_index(self):
-        url = reverse("index")
-        self.assertEqual(resolve(url).func, index)
+    def test_index_url_is_resolved(self):
+        url = reverse("reuse:index")
+        self.assertEquals(resolve(url).func, index)
+        self.assertEquals(resolve(url).namespace, "reuse")
+        self.assertEquals(url, "/reuse/")
 
+    def test_donationpage_url_is_resolved(self):
+        url = reverse("reuse:donation-page")
+        self.assertEquals(resolve(url).func, donation_view)
+        self.assertEquals(resolve(url).namespace, "reuse")
+        self.assertEquals(url, "/reuse/donations")
 
-    def test_donation_view(self):
-        url = reverse("donation-page")
-        self.assertEqual(resolve(url).func, donation_view)
+    def test_listingPage_url_is_resolved(self):
+        url = reverse("reuse:listingPage")
+        self.assertEquals(resolve(url).func, listing_page)
+        self.assertEquals(resolve(url).namespace, "reuse")
+        self.assertEquals(url, "/reuse/listings")
 
-
-    def test_listing_page(self):
-        url = reverse("listingPage")
-        self.assertEqual(resolve(url).func, listing_page)
-
-
-    def test_create_post(self):
-        url = reverse("create-post")
-        self.assertEqual(resolve(url).func, create_post)
-"""
+    def test_createpost_url_is_resolved(self):
+        url = reverse("reuse:create-post")
+        self.assertEquals(resolve(url).func, create_post)
+        self.assertEquals(resolve(url).namespace, "reuse")
+        self.assertEquals(url, "/reuse/create_post")
