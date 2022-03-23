@@ -42,18 +42,24 @@ ALLOWED_HOSTS = ["127.0.0.1", "greencan.herokuapp.com", "greencan-dev.herokuapp.
 # Application definition
 
 INSTALLED_APPS = [
-    "home",
-    "account",
-    "reuse",
-    "recycle",
-    "crispy_forms",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django.contrib.sites",  # imperative to configure auth to external sites
+    "home",
+    "accounts",
+    "reuse",
+    "recycle",
+    "crispy_forms",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.google",
 ]
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -70,10 +76,7 @@ ROOT_URLCONF = "greenCan.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [
-            BASE_DIR / "templates",
-            BASE_DIR,
-        ],
+        "DIRS": [BASE_DIR / "templates", BASE_DIR],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -118,15 +121,9 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
-    {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-    {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
+    {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
+    {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
+    {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
 
@@ -153,9 +150,9 @@ STATICFILES_DIRS = [BASE_DIR / "static/"]
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = "account.User"
+AUTH_USER_MODEL = "accounts.User"
 
-LOGIN_URL = reverse_lazy("account:login")
+LOGIN_URL = reverse_lazy("accounts:login")
 
 LOGOUT_REDIRECT_URL = LOGIN_URL
 
@@ -179,6 +176,10 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 EMAIL_PORT = 587
 
+FIREBASE_HOST_USER = EMAIL_HOST_USER
+
+FIREBASE_HOST_PASSWORD = EMAIL_HOST_PASSWORD
+
 # Time in seconds after each login attempts
 LOGIN_ATTEMPTS_TIME_LIMIT = 0
 # limit the amount of attempts to which the user will be inactive and password set mail sent
@@ -187,5 +188,33 @@ MAX_LOGIN_ATTEMPTS = 5
 ACCOUNT_ACTIVATION_DAYS = 7
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+SITE_ID = 2
+
+# Additional configuration settings
+# SOCIALACCOUNT_QUERY_EMAIL = True
+# ACCOUNT_LOGOUT_ON_GET= True
+# ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+
+ACCOUNT_EMAIL_REQUIRED = True
+
+ACCOUNT_USERNAME_REQUIRED = False
+
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = False
+
+SOCIALACCOUNT_LOGIN_ON_GET = True  # bypass the "do you want to login page"
+
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {"SCOPE": ["profile", "email"], "AUTH_PARAMS": {"access_type": "online"}}
+}
+
+AUTHENTICATION_BACKENDS = [
+    "django.contrib.auth.backends.ModelBackend",  # authenticate using django
+    "allauth.account.auth_backends.AuthenticationBackend",
+]
+SOCIAL_AUTH_URL_NAMESPACE = "social"
 
 django_heroku.settings(locals(), test_runner=False)

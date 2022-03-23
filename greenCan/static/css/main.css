@@ -12,40 +12,6 @@ section {
     margin: 20px auto;
 }
 
-.section-title {
-    text-align: center;
-    margin: 0 auto;
-    font-size: 1.5rem;
-    line-height: 1.5em;
-    font-weight: 700;
-    justify-content: left;
-    text-transform: uppercase;
-}
-
-.title-text {
-    margin-bottom: 30px;
-}
-
-.title-separator {
-    margin-left: 0;
-    margin-bottom: 20px;
-    margin-right: auto;
-    align-items: center;
-}
-
-.title-separator .separator-border {
-    position: relative;
-    top: 100px;
-    content: "";
-    left: 30px;
-    height: 3px;
-    width: 3rem;
-    opacity: 1;
-    background-color: red;
-    margin-bottom: 20px;
-    z-index: 30;
-}
-
 .coolBeans {
     background-color: #6abe52;
     font-family: 'Roboto', sans-serif;

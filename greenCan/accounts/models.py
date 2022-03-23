@@ -28,8 +28,8 @@ class UserManager(BaseUserManager):
 
         user_obj = self.model(
             email=self.normalize_email(email),
-            first_name=first_name,
-            last_name=last_name,
+            first_name=first_name.title(),
+            last_name=last_name.title(),
             phone_number=phone_number,
             zipcode=zipcode,
         )

@@ -4,6 +4,14 @@ from recycle.models import ZipCode
 import pyrebase
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+from django.conf import settings
+
+
+"""
+function: index
+
+set path for reuse page
+"""
 
 
 def index(request):
@@ -12,13 +20,28 @@ def index(request):
     return render(request, template, context=context)
 
 
+"""
+function: donation_view
+
+set path for donation view page
+"""
+
+
 def donation_view(request):
     template = "reuse/templates/donate-item-page.html"
     context = {"is_reuse": True}
     return render(request, template, context=context)
 
 
-def listingPage(request):
+"""
+function: listing_page
+
+Obtain all posts in database with their images
+then rebuild the data format for frontend view
+"""
+
+
+def listing_page(request):
     template = "listingPage.html"
     Posts = Post.objects.all().values()
     Images = Image.objects.all().values()
@@ -36,6 +59,16 @@ def listingPage(request):
     return render(request, template, context=context)
 
 
+"""
+function: create_post
+
+Firstly, set configuration for Google firebase cloud storage
+then obtain post data and images from frontend
+save the images to firebase and get urls
+create Post object and Images object for this user's post and save into database
+"""
+
+
 @login_required
 def create_post(request):
     images = request.FILES.getlist("file[]")
@@ -51,8 +84,8 @@ def create_post(request):
 
     firebase = pyrebase.initialize_app(config)
     auth = firebase.auth()
-    auth_email = "nyc.greencan@gmail.com"
-    auth_pswd = "Tandon123"
+    auth_email = settings.FIREBASE_HOST_USER
+    auth_pswd = settings.FIREBASE_HOST_PASSWORD
     user = auth.sign_in_with_email_and_password(auth_email, auth_pswd)
     storage = firebase.storage()
     urls = []
@@ -67,9 +100,11 @@ def create_post(request):
     number = request.POST.get("number")
     email = request.POST.get("email")
     zipcode = request.POST.get("zipcode")
-
     user = request.user
     zip_code = ZipCode.objects.filter(zip_code=zipcode)
+
+    if len(zip_code) == 0:
+        zip_code = None
 
     if (
         title is not None
@@ -94,4 +129,4 @@ def create_post(request):
             image = Image(url=url, post=post)
             image.save()
 
-    return redirect(reverse("reuse:donations-page"))
+    return redirect(reverse("reuse:donation-page"))

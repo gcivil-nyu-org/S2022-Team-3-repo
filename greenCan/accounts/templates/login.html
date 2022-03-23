@@ -1,3 +1,4 @@
+
 {% extends 'template-auth.html' %}
 {% load static %}
 
@@ -12,7 +13,7 @@ Sign-In
   {% include 'messages.html' %}
 
   <!-- Sign In Form -->
-  <form action="{% url 'account:login' %}" method="POST">
+  <form action="{% url 'accounts:login' %}" method="POST">
     {% csrf_token %}
     <div class="form-group mb-2">
       <label for="email">Email</label>
@@ -29,26 +30,43 @@ Sign-In
     </div>
     
     <div class="row mb-3">  
-      <div class="col-7">
+      <!-- <div class="col-7">
         <div class="form-check">
           <input class="form-check-input" type="checkbox" value="" name="remember-me" id="remember-me">
           <label class="form-check-label" for="remember-me">
             Remember me
           </label>
         </div>
-      </div>
-      <div class="col-5 text-right">
-        <a class="text-light-green text-link" href="{% url 'account:forget-password' %}">Forgot password?</a>
+      </div> -->
+      <div class="col-12 text-right">
+        <a class="text-light-green text-link" href="{% url 'accounts:forget-password' %}">Forgot password?</a>
       </div>
     </div>
     <div class="gy-5">
       <div class="d-grid">
+        {% load socialaccount %}
         <button class="btn btn-lg btn-login fw-bold mb-2" type="submit">Login now</button>
-        <button class="btn btn-lg btn-google-auth fw-normal mb-2" type="button"><img src="{% static 'images/icons/google_G_logo.png' %}" height="25"/> Sign in with Google</button>
+        </div>
+      </form>
+      <form>
+        <div class="form-group mb-2">
+      </form>
+        <button type="submit" formaction='{% provider_login_url "google" %}' class="btn btn-lg btn-google-auth fw-normal mb-2" 
+        style="width: 100%;"
+        type="button">
+          <img src="{% static 'images/icons/google_G_logo.png' %}" height="25"/> 
+         
+          <!-- <a style="text-decoration: none;color: rgb(247, 247, 247);" 
+          href='{% provider_login_url "google" %}'> -->
+          Sign in with Google
+        <!-- </a> -->
+      </button>
+          </div>
       </div>
+      
         
       <div class="text-secondary text-center small mt-3">
-        Dont have an account? <a class="text-light-green" href="{% url 'account:create' %}">Join free today</a>
+        Dont have an account? <a class="text-light-green" href="{% url 'accounts:create' %}">Join free today</a>
       </div>
     </div>
   </form>

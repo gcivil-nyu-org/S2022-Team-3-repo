@@ -7,13 +7,36 @@ Reuse | greenCan
 
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/carousel.css' %}" />
+<link rel="stylesheet" href="{% static 'css/modal.css' %}" />
 <link rel="stylesheet" href="{% static 'modules/owl-carousel-2/css/owl-carousel2.min.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.min.css">
+<style>
+  .has-error .help-block {
+    color: red;
+  }
+  .form-select{
+    outline: none;
+  }
+  .form-select:focus {
+    border-color: #6abe52;
+  }
+</style>
 {% endblock %}
 
 {% block main %}
 
 <div class="d-flex flex-column justify-content-center my-5">
-  <button class="btn-xlg btn-rounded coolBeans mb-md-2 mb-1 mt-3 mx-auto" data-bs-toggle="modal" data-bs-target="#postAd_Modal">POST AN AD</button>
+  <button class="btn-xlg btn-rounded mb-md-2 mb-1 mt-3 mx-auto {% if not user.is_authenticated %}
+  disabled
+  {% else %}
+  coolBeans
+  {% endif %}
+  " data-bs-toggle="modal" data-bs-target="#postAd_Modal" {% if not user.is_authenticated %}
+  disabled
+  {% endif %}>POST AN AD</button>
+  {% if not user.is_authenticated %}
+    <span style="color: red; text-align: center;">Login is requied to post an ad.</span>
+  {% endif %}
   <div class="horizontal-divider">
         <div class="or-container">
             <span class="">OR</span>
@@ -261,6 +284,7 @@ Reuse | greenCan
 
 {% block scripts %}
 <script src="{% static 'modules/owl-carousel-2/js/owl-carousel2.min.js' %}"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
 <script>
   $('.carousel').owlCarousel({
     margin: 10,
@@ -287,55 +311,20 @@ Reuse | greenCan
   $('.shelter-home-card').click(function(){
     window.open($(this).attr('data-url'),'_blank');
   });
-
-
-//img uploading script
-
-//form validation function
-// $(document).ready(function () {
-//   'use strict'
-//   // Fetch all the forms we want to apply custom Bootstrap validation styles to
-//   var forms = document.querySelectorAll('.needs-validation')
-
-//   // Loop over them and prevent submission
-//   Array.prototype.slice.call(forms)
-//     .forEach(function (form) {
-//       form.addEventListener('submit', function (event) {
-//         if (!form.checkValidity()) {
-//           event.preventDefault()
-//           event.stopPropagation()
-//         }
-
-//         form.classList.add('was-validated')
-//       }, false)
-//     })
-// });
 </script>
 
 <!--post ad window-->
-<div style = "position: absolute;
-float: left;
-left: 50%;
-top: 50%;
-width: 70%;
-justify-content: center;
-transform: translate(-50%, -50%);
-background:#ffffff;
-border: 2px solid #00000060;
-border-radius: 10px;
-z-index: 1500;
-/* padding: 20px 40px !important; */
-box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);" class="modal fade" id="postAd_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable px-5 py-3">
+<div class="modal fade" id="postAd_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable px-5 py-3" style="overflow-y: initial !important">
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title" id="exampleModalLabel" style = "text-align: center;">Create an Ad Post</h2>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" style="max-height: 80vh; overflow-x: hidden; overflow-y:auto;">
           <!--information collection form -->
-          <form class="form-container g-3" enctype="multipart/form-data" action="/reuse/create_post" method="POST">
+          <form class="form-container g-3" id = "infoForm" enctype="multipart/form-data" action="/reuse/create_post" method="POST" role="form" style="margin-right:15px">
             <!--img upload-->
-            <div class="upload-image-frame d-flex flex-column align-middle py-auto" id="image-frame">
+            <div class="upload-image-frame d-flex flex-column align-middle py-4" id="image-frame">
               <div class="upload-text" id="show-image-frame">
                 Upload few pictures of the item
               </div>
@@ -354,17 +343,11 @@ box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);" class="modal fade" id="postAd_Moda
             <div class="col-6">
                 <div class="form-group">
                   <label for="validationCustom01" class="form-label"><b>Title:</b></label>
-                  <input type="text" class="form-control" name="title" id="validationCustom01" style = "max-width: 100%;" placeholder="Enter the Title" required>
-                  <!-- <div class="invalid-feedback">
-                    Please enter a title for your item.
-                  </div> -->
+                  <input type="text" class="form-control" name="title" id="validationCustom01" placeholder="Enter the Title" required>
                 </div>
                 <div class="form-group">
                   <label for="validationCustom02" class="form-label"><b>Description:</b></label>
-                <textarea type="text" class="form-control" name="description" id="validationCustom02" style = "max-width: 100%;" placeholder="Enter the Description" required row="30"></textarea>
-                <!-- <div class="invalid-feedback">
-                  Please add some description.
-                </div> -->
+                <textarea type="text" class="form-control" name="description" id="validationCustom02"  placeholder="Enter the Description" required row="30"></textarea>
                 </div>
             </div>
 
@@ -372,37 +355,25 @@ box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);" class="modal fade" id="postAd_Moda
             <div class = "col-6">
               <div class="form-group">
                 <label for="validationCustom03" class="form-label"><b>Category:</b></label>
-              <select class="form-select" id = "validationCustom03" name="category" aria-label="categories" required>
-                <option selected>Select Item Category</option>
-                <option value="Furniture">Furniture</option>
-                <option value="Books">Books</option>
-                <option value="Toys">Toys</option>
-                <option value="Electronics">Electronics</option>
-              </select>
-              <!-- <div class="invalid-feedback">
-                Please select a category.
-              </div> -->
+                <select class="form-select" id = "validationCustom03" name="category" aria-label="categories" required>
+                  <option selected>Select Item Category</option>
+                  <option value="Furniture">Furniture</option>
+                  <option value="Books">Books</option>
+                  <option value="Toys">Toys</option>
+                  <option value="Electronics">Electronics</option>
+                </select>
               </div>
               <div class="form-group">
                 <label for="validationCustom04" class="form-label"><b>Your Contact Number:</b></label>
-                <input type="number" min="1000000000" max="9999999999" class="form-control"  id="validationCustom04" name="number" placeholder="Enter your Contact Number" style = "max-width: 100%;" required>
-                <!-- <div class="invalid-feedback">
-                  Please enter a valid contact number.
-                </div> -->
+                <input type="number" class="form-control"  id="validationCustom04" name="number" placeholder="Enter your Contact Number" style = "max-width: 100%;" required>
               </div>
               <div class="form-group">
-              <label for="validationCustom05" class="form-label"><b>Your E-mail:</b></label>
+                <label for="validationCustom05" class="form-label"><b>Your E-mail:</b></label>
                 <input type="email" class="form-control"  id="validationCustom05" name="email" placeholder="Enter your E-mail" style = "max-width: 100%;" required>
-                <!-- <div class="invalid-feedback">
-                  Please enter a valid email.
-                </div> -->
               </div>
               <div class="form-group">
               <label for="validationCustom06" class="form-label"><b>Zipcode of Pick-up Location:</b></label>
-                <input type="text" class="form-control" pattern="^\d{5}$" id="validationCustom06" name="zipcode" placeholder="Enter the Zipcode of the loaction" style = "max-width: 100%;" required>
-                <!-- <div class="invalid-feedback">
-                  Please enter a valid zipcode.
-                </div> -->
+                <input type="number" class="form-control" id="validationCustom06" name="zipcode" placeholder="Enter the Zipcode of the loaction" style = "max-width: 100%;" required>
               </div>
             </div>
             </div>
@@ -420,20 +391,20 @@ box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);" class="modal fade" id="postAd_Moda
 <!--end of post add modal-->
 <script>
 if (window.File && window.FileList && window.FileReader) {
-      var filesInput = document.getElementById("image-upload");
+      let filesInput = document.getElementById("image-upload");
       filesInput.addEventListener("change", function (event) {
-          var files = event.target.files; //FileList object
-          var output = document.getElementById("show-image-frame");
+          let files = event.target.files; //FileList object
+          let output = document.getElementById("show-image-frame");
           output.innerHTML = "";
-          for (var i = 0; i < files.length; i++) {
-              var file = files[i];
+          for (let i = 0; i < files.length; i++) {
+              let file = files[i];
               //Only pics
               if (!file.type.match('image'))
                   continue;
-              var picReader = new FileReader();
+              let picReader = new FileReader();
               picReader.addEventListener("load", function (event) {
-                  var picFile = event.target;
-                  var div = document.createElement("div");
+                  let picFile = event.target;
+                  let div = document.createElement("div");
                   div.innerHTML = "<img class='thumbnail' src='" + picFile.result + "'" +
                       "title='" + picReader.name + "'/>";
                   output.insertBefore(div, null);
@@ -450,6 +421,80 @@ if (window.File && window.FileList && window.FileReader) {
     $('#image-upload').trigger('click');
   });
 
+  $(document).ready(function() {
+  $('#infoForm').bootstrapValidator({
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+        fields: {
+          title: {
+                validators: {
+                    notEmpty: {
+                        message: 'The title is required and cannot be empty'
+                    },
+                    stringLength: {
+                        max: 50,
+                        message: 'The title should be less than 50 characters long'
+                    }
+                }
+            },
+            description: {
+                validators: {
+                    notEmpty: {
+                        message: 'The description is required and cannot be empty'
+                    },
+                    stringLength: {
+                        max: 200,
+                        message: 'The description must be less than 200 characters long'
+                    }
+                }
+            },
+            category: {
+                validators: {
+                    notEmpty: {
+                        message: 'Please select a category<br>'
+                    }
+                }
+            },
+            email: {
+                validators: {
+                    notEmpty: {
+                        message: 'The email address is required'
+                    },
+                    emailAddress: {
+                        message: 'Please enter a valid email address'
+                    }
+                }
+            },
+            zipcode: {
+                validators: {
+                    notEmpty: {
+                        message: 'The zip code is required'
+                    },
+                    stringLength: {
+                        min:5,
+                        max:5,
+                        message: 'Please enter a valid zip code'
+                    }
+                    
+                }
+            },
+            number: {
+                validators: {
+                    notEmpty: {
+                        message: 'The contact number is required'
+                    },
+                    stringLength: {
+                        min: 10,
+                        max:10,
+                        message: 'Please enter a valid phone number'
+                    }
+                }
+            }
+        }
+    })
+  })
 </script>
-
 {% endblock %}

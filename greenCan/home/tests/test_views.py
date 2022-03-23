@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.test import TestCase
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth import get_user_model
@@ -22,7 +23,7 @@ class TestHomePage(TestCase):
         self.assertNotContains(
             response,
             '<a class="dropdown-item" href="'
-            + reverse("account:logout")
+            + reverse("accounts:logout")
             + '">Logout</a>',
         )
 
@@ -33,7 +34,7 @@ class TestHomePage(TestCase):
             first_name="john",
             last_name="doe",
         )
-        self.client._login(user)
+        self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url)
         self.assertNotContains(
             response, '<span class="slanted-btn-contain">Join Our Community!</span>'
@@ -41,7 +42,7 @@ class TestHomePage(TestCase):
         self.assertContains(
             response,
             '<a class="dropdown-item" href="'
-            + reverse("account:logout")
+            + reverse("accounts:logout")
             + '">Logout</a>',
         )
-        self.assertContains(response, user.get_full_name().title())
+        self.assertContains(response, user.get_full_name())
