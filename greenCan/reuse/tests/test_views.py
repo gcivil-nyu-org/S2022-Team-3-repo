@@ -176,37 +176,33 @@ class TestCreatePost(TestCase):
         images = Image.objects.all()
         self.assertEquals(len(images), 0)
         self.assertRedirects(response, self.redirect_url, 302)
-        
-        
-        
-        
-        
-class TestViews(TestCase):
 
+
+class TestViews(TestCase):
     def setUp(self):
-        self.index_url = reverse('reuse:index')
-        self.donation_page_url = reverse('reuse:donation-page')
-        self.listingPage_url = reverse('reuse:listingPage')
-        self.create_post_url = reverse('reuse:create-post')
+        self.index_url = reverse("reuse:index")
+        self.donation_page_url = reverse("reuse:donation-page")
+        self.listingPage_url = reverse("reuse:listingPage")
+        self.create_post_url = reverse("reuse:create-post")
         self.client = Client()
 
     def test_index_GET(self):
-                
+
         response = self.client.get(self.index_url)
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'reuse_index.html')
+        self.assertTemplateUsed(response, "reuse_index.html")
 
     def test_donationpage_GET(self):
-                
+
         response = self.client.get(self.donation_page_url)
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'reuse/templates/donate-item-page.html')
+        self.assertTemplateUsed(response, "reuse/templates/donate-item-page.html")
 
     def test_listingPage_GET(self):
-                
+
         response = self.client.get(self.listingPage_url)
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, 'listingPage.html')
+        self.assertTemplateUsed(response, "listingPage.html")
