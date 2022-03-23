@@ -25,7 +25,7 @@ class TestSignupView(TestCase):
             first_name="john",
             last_name="doe",
         )
-        self.client.force_login(user,backend=settings.AUTHENTICATION_BACKENDS[0])
+        self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url)
         expected_url = reverse("home:index")
         self.assertRedirects(response, expected_url, 302)
@@ -192,7 +192,7 @@ class TestLoginView(TestCase):
         self.assertEquals(message.message, "Login is required to access.")
 
     def test_unauthenticated_user_is_redirected(self):
-        self.client.force_login(self.user,backend=settings.AUTHENTICATION_BACKENDS[0])
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url)
         expected_url = reverse("home:index")  # change expected_url in your project
         self.assertRedirects(response, expected_url, 302)
@@ -321,7 +321,7 @@ class TestLogoutView(TestCase):
 
     def test_logout(self):
         # auth_user = authenticate('testemail@gmail.com','password1')
-        self.client.force_login(self.user,backend=settings.AUTHENTICATION_BACKENDS[0])
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url)
         expected_url = reverse("accounts:login")
         self.assertRedirects(response, expected_url, 302)

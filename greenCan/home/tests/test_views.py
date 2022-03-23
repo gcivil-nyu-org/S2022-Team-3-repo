@@ -34,7 +34,7 @@ class TestHomePage(TestCase):
             first_name="john",
             last_name="doe",
         )
-        self.client.force_login(user,backend=settings.AUTHENTICATION_BACKENDS[0])
+        self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url)
         self.assertNotContains(
             response, '<span class="slanted-btn-contain">Join Our Community!</span>'
