@@ -176,6 +176,10 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 EMAIL_PORT = 587
 
+FIREBASE_HOST_USER = EMAIL_HOST_USER
+
+FIREBASE_HOST_PASSWORD = EMAIL_HOST_PASSWORD
+
 # Time in seconds after each login attempts
 LOGIN_ATTEMPTS_TIME_LIMIT = 0
 # limit the amount of attempts to which the user will be inactive and password set mail sent
@@ -192,11 +196,17 @@ SITE_ID = 2
 # ACCOUNT_LOGOUT_ON_GET= True
 # ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+
 ACCOUNT_EMAIL_REQUIRED = True
+
 ACCOUNT_USERNAME_REQUIRED = False
+
 ACCOUNT_AUTHENTICATION_METHOD = "email"
+
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = False
+
 SOCIALACCOUNT_LOGIN_ON_GET = True  # bypass the "do you want to login page"
+
 SOCIALACCOUNT_PROVIDERS = {
     "google": {"SCOPE": ["profile", "email"], "AUTH_PARAMS": {"access_type": "online"}}
 }
