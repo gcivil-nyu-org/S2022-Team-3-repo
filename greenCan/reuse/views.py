@@ -42,20 +42,20 @@ then rebuild the data format for frontend view
 
 
 def listing_page(request):
-    template = "listingPage.html"
-    Posts = Post.objects.all().values()
-    Images = Image.objects.all().values()
-    ZipCodes = ZipCode.objects.all().values()
-    for index in range(len(Posts)):
-        # add the url
-        Posts[index]["url"] = Images.filter(post=Posts[index]["id"])[0]["url"]
-        # Posts[index]["url"] = Images.objects.filter(post_id=Posts[index]).first().url
-        temp = ZipCodes.filter(id=Posts[index]["zip_code_id"])[0]
-        Posts[index]["location"] = str(
-            temp["borough"] + ", " + temp["state"] + ", " + temp["zip_code"]
-        )
+    template = "listing-page.html"
+    posts = Post.objects.all()
+    # Images = Image.objects.all().values()
+    # ZipCodes = ZipCode.objects.all().values()
+    # for index in range(len(Posts)):
+    #     # add the url
+    #     Posts[index]["url"] = Images.filter(post=Posts[index]["id"])[0]["url"]
+    #     # Posts[index]["url"] = Images.objects.filter(post_id=Posts[index]).first().url
+    #     temp = ZipCodes.filter(id=Posts[index]["zip_code_id"])[0]
+    #     Posts[index]["location"] = str(
+    #         temp["borough"] + ", " + temp["state"] + ", " + temp["zip_code"]
+    #     )
 
-    context = {"Posts": Posts, "is_reuse": True}
+    context = {"posts": posts, "is_reuse": True}
     return render(request, template, context=context)
 
 
