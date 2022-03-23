@@ -203,4 +203,4 @@ class TestViews(TestCase):
         response = self.client.get(self.listingPage_url)
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, "listingPage.html")
+        self.assertTemplateUsed(response, "listing-page.html")
