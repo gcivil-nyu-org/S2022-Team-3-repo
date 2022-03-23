@@ -25,43 +25,39 @@ class TestModelManager(TestCase):
 
     def test_createuser_method_invalid_email(self):
         with self.assertRaises(ValueError):
-            user = self.User.objects.create_user(
+            self.User.objects.create_user(
                 email="",
                 password=self.password,
                 first_name=self.first_name,
                 last_name=self.last_name,
             )
-            self.assertEquals(user, None)
 
     def test_createuser_method_invalid_password(self):
         with self.assertRaises(ValueError):
-            user = self.User.objects.create_user(
+            self.User.objects.create_user(
                 email=self.email,
                 password="",
                 first_name=self.first_name,
                 last_name=self.last_name,
             )
-            self.assertEquals(user, None)
 
     def test_createuser_method_invalid_first_name(self):
         with self.assertRaises(ValueError):
-            user = self.User.objects.create_user(
+            self.User.objects.create_user(
                 email=self.email,
                 password=self.password,
                 first_name="",
                 last_name=self.last_name,
             )
-            self.assertEquals(user, None)
 
     def test_createuser_method_invalid_last_name(self):
         with self.assertRaises(ValueError):
-            user = self.User.objects.create_user(
+            self.User.objects.create_user(
                 email=self.email,
                 password=self.password,
                 first_name=self.first_name,
                 last_name="",
             )
-            self.assertEquals(user, None)
 
     def test_createstaff_method(self):
         user = self.User.objects.create_staffuser(

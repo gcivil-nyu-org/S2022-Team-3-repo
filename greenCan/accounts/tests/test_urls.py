@@ -67,3 +67,10 @@ class TestUrls(SimpleTestCase):
         self.assertEqual(resolved.func.view_class, PasswordResetView)
         self.assertEqual(resolved.namespace, "accounts")
         self.assertEqual(url, "/accounts/forgot-password/")
+
+    # def test_social_url(self):
+    #     url = reverse("socials:logout")
+    #     resolved = resolve(url)
+    #     self.assertEqual(resolved.func, signup_page)
+    #     self.assertEqual(resolved.namespace, "accounts")
+    #     self.assertEqual(url, "/accounts/create/")
