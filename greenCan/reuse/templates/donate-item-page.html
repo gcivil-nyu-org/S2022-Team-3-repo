@@ -13,7 +13,13 @@ Reuse | greenCan
 <style>
   .has-error .help-block {
     color: red;
-}
+  }
+  .form-select{
+    outline: none;
+  }
+  .form-select:focus {
+    border-color: #6abe52;
+  }
 </style>
 {% endblock %}
 
@@ -318,7 +324,7 @@ Reuse | greenCan
           <!--information collection form -->
           <form class="form-container g-3" id = "infoForm" enctype="multipart/form-data" action="/reuse/create_post" method="POST" role="form" style="margin-right:15px">
             <!--img upload-->
-            <div class="upload-image-frame d-flex flex-column align-middle py-auto" id="image-frame">
+            <div class="upload-image-frame d-flex flex-column align-middle py-4" id="image-frame">
               <div class="upload-text" id="show-image-frame">
                 Upload few pictures of the item
               </div>
@@ -337,11 +343,11 @@ Reuse | greenCan
             <div class="col-6">
                 <div class="form-group">
                   <label for="validationCustom01" class="form-label"><b>Title:</b></label>
-                  <input type="text" class="form-control" name="title" id="validationCustom01" style = "max-width: 100%;" placeholder="Enter the Title" required>
+                  <input type="text" class="form-control" name="title" id="validationCustom01" placeholder="Enter the Title" required>
                 </div>
                 <div class="form-group">
                   <label for="validationCustom02" class="form-label"><b>Description:</b></label>
-                <textarea type="text" class="form-control" name="description" id="validationCustom02" style = "max-width: 100%;" placeholder="Enter the Description" required row="30"></textarea>
+                <textarea type="text" class="form-control" name="description" id="validationCustom02"  placeholder="Enter the Description" required row="30"></textarea>
                 </div>
             </div>
 
