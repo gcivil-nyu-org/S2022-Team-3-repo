@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.test import TestCase
 from django.urls import reverse, reverse_lazy
 from django.contrib.auth import get_user_model
@@ -33,7 +34,7 @@ class TestHomePage(TestCase):
             first_name="john",
             last_name="doe",
         )
-        self.client._login(user)
+        self.client.force_login(user,backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url)
         self.assertNotContains(
             response, '<span class="slanted-btn-contain">Join Our Community!</span>'

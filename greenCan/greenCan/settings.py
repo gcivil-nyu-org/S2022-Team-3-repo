@@ -194,10 +194,7 @@ ACCOUNT_ACTIVATION_DAYS = 7
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
-django_heroku.settings(locals(), test_runner=False)
-
 SITE_ID = 2
-LOGIN_REDIRECT_URL = "/"
 
 # Additional configuration settings
 # SOCIALACCOUNT_QUERY_EMAIL = True
@@ -226,3 +223,5 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 SOCIAL_AUTH_URL_NAMESPACE = "social"
+
+django_heroku.settings(locals(), test_runner=False)

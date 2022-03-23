@@ -25,7 +25,7 @@ class TestSignupView(TestCase):
             first_name="john",
             last_name="doe",
         )
-        self.client._login(user)
+        self.client.force_login(user,backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url)
         expected_url = reverse("home:index")
         self.assertRedirects(response, expected_url, 302)
@@ -59,7 +59,7 @@ class TestSignupView(TestCase):
             mail.outbox[0].body,
             f"\nHi { user.get_full_name() },\n\nWe need to verify that you are the owner of this email address."
             "\n\nPlease click on the link to confirm your registration.\n"
-            "http://testserver/accounts/activate/"
+            "http://example.com/accounts/activate/"
             + str(uid)
             + "/"
             + str(token)
@@ -192,7 +192,7 @@ class TestLoginView(TestCase):
         self.assertEquals(message.message, "Login is required to access.")
 
     def test_unauthenticated_user_is_redirected(self):
-        self.client._login(self.user)
+        self.client.force_login(self.user,backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url)
         expected_url = reverse("home:index")  # change expected_url in your project
         self.assertRedirects(response, expected_url, 302)
@@ -320,7 +320,8 @@ class TestLogoutView(TestCase):
         self.url = reverse("accounts:logout")
 
     def test_logout(self):
-        self.client._login(self.user)
+        # auth_user = authenticate('testemail@gmail.com','password1')
+        self.client.force_login(self.user,backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url)
         expected_url = reverse("accounts:login")
         self.assertRedirects(response, expected_url, 302)
@@ -365,7 +366,7 @@ class TestForgetPassword(TestCase):
                 "email/email-forgot-password.html",
                 {
                     "user": self.user,
-                    "domain": "testserver",
+                    "domain": "example.com",
                     "uid": str(self.uidb64),
                     "token": str(token),
                 },
