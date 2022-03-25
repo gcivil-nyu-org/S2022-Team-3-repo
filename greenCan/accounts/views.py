@@ -194,3 +194,15 @@ def activate_account_page(request, uidb64, token):
 def logout_view(request):
     logout(request)
     return redirect(settings.LOGOUT_REDIRECT_URL)
+
+
+"""
+function: userProfile
+
+set path for userProfile
+"""
+
+@login_required
+def userProfile_page(request):
+    context = {}
+    return render(request,"accounts/templates/userProfile.html", context)
