@@ -179,3 +179,23 @@ class SetPasswordForm(AuthSetPasswordForm):
             msg = _("Password and confirm password do not match.")
             self.add_error("confirm_password", msg)
         return password1
+
+
+class UpdateProfile(forms.ModelForm):
+    first_name = forms.CharField(max_length=100,
+                               required=True,
+                               widget=forms.TextInput(attrs={'class': 'form-control'}))
+    email = forms.EmailField(required=True,
+                             widget=forms.TextInput(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'email']
+    
+    """
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        if commit:
+            user.save()
+        return user
+    """

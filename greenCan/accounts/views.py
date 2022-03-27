@@ -15,7 +15,7 @@ from .decorators import unauthenticated_user
 from .utils import send_user_email
 from django.urls import reverse_lazy
 from django.contrib.auth import views as auth_views
-from .forms import PasswordResetForm, SetPasswordForm
+from .forms import PasswordResetForm, SetPasswordForm, UpdateProfile
 
 
 class PasswordResetView(auth_views.PasswordResetView):
@@ -206,3 +206,22 @@ set path for userProfile
 def userProfile_page(request):
     context = {}
     return render(request,"accounts/templates/userProfile.html", context)
+
+
+@login_required
+def update_profile(request):
+    if request.method == 'POST':
+        print("post!")
+        form = UpdateProfile(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Your Profile has been updated!')
+            print("success!")
+            return redirect('userProfile')
+        else:
+            messages.error(request,'Not working!')
+            print("error")
+    else:
+        form = UpdateProfile(instance=request.user)
+    
+    return render(request, 'accounts/templates/userProfile.html', {'form': form})
