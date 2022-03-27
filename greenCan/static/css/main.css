@@ -456,6 +456,12 @@ body {
     font-size: 12px;
     line-height: 1.42857;
 }
+
+.btn-outline {
+    display: flex;
+    width: 100%;
+}
+
 /* XLarge */
  @media screen and (max-width: 1680px) {
     /* Basic */
@@ -686,6 +692,10 @@ body {
     button, .button {
         display: block;
     }
+
+    .slanted-btn {
+        display: none;
+    }
     
     .horizontal-divider {
         width: 90%;
@@ -707,6 +717,10 @@ body {
     button, .button {
         display: block;
         width: 90vw;
+    }
+
+    .slanted-btn{
+        display: none;
     }
 
 }

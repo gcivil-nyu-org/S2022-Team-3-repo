@@ -4,7 +4,10 @@ from recycle.models import ZipCode
 import pyrebase
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+# from django.db.models import Q
 from django.conf import settings
+from django.core.paginator import Paginator
+from django.contrib.postgres.search import SearchRank, SearchQuery, SearchVector, SearchHeadline
 
 
 """
@@ -15,7 +18,7 @@ set path for reuse page
 
 
 def index(request):
-    template = "reuse_index.html"
+    template = "reuse-index.html"
     context = {"is_reuse": True}
     return render(request, template, context=context)
 
@@ -36,26 +39,43 @@ def donation_view(request):
 """
 function: listing_page
 
-Obtain all posts in database with their images
+Obtain all/searched posts in database with their images
 then rebuild the data format for frontend view
 """
 
 
 def listing_page(request):
     template = "listing-page.html"
-    posts = Post.objects.all()
-    # Images = Image.objects.all().values()
-    # ZipCodes = ZipCode.objects.all().values()
-    # for index in range(len(Posts)):
-    #     # add the url
-    #     Posts[index]["url"] = Images.filter(post=Posts[index]["id"])[0]["url"]
-    #     # Posts[index]["url"] = Images.objects.filter(post_id=Posts[index]).first().url
-    #     temp = ZipCodes.filter(id=Posts[index]["zip_code_id"])[0]
-    #     Posts[index]["location"] = str(
-    #         temp["borough"] + ", " + temp["state"] + ", " + temp["zip_code"]
-    #     )
+    def get_listings():
+        query = request.GET.get('q')
 
-    context = {"posts": posts, "is_reuse": True}
+        if query:
+            search_query = SearchQuery(query)
+            search_vector = SearchVector('search_vector')
+            posts = Post.objects.annotate(
+                headline=SearchHeadline(
+                    'description',
+                    search_query,
+                    start_sel='<mark>',
+                    stop_sel='</mark>',
+                ),
+                rank=SearchRank(search_vector, search_query)
+            ).filter(search_vector=search_query).order_by('-rank','-created_on')
+        else:
+            posts = Post.objects.all().order_by('-created_on')
+
+        # set paginator to limit size of 21 posts per page
+        posts = Paginator(posts, 21)
+        return posts, query
+    
+    posts, query = get_listings()
+    page_number = request.GET.get('page', 1)
+    page_obj = posts.get_page(page_number)
+    context = {"posts": page_obj, "is_reuse": True}
+    
+    if query:
+        context['q'] = query
+
     return render(request, template, context=context)
 
 
