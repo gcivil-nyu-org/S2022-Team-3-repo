@@ -7,12 +7,14 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('reuse', '0004_search_vector_trigger'),
+        ("reuse", "0004_search_vector_trigger"),
     ]
 
     operations = [
         migrations.AddIndex(
-            model_name='post',
-            index=django.contrib.postgres.indexes.GinIndex(fields=['search_vector'], name='reuse_post_search__e3838d_gin'),
+            model_name="post",
+            index=django.contrib.postgres.indexes.GinIndex(
+                fields=["search_vector"], name="reuse_post_search__e3838d_gin"
+            ),
         ),
     ]

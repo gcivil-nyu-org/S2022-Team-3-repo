@@ -4,7 +4,7 @@ from django.db import migrations
 
 def compute_search_vector(apps, schema_editor):
     Post = apps.get_model("reuse", "Post")
-    Post.objects.update(search_vector=SearchVector("title", "description","category"))
+    Post.objects.update(search_vector=SearchVector("title", "description", "category"))
 
 
 class Migration(migrations.Migration):

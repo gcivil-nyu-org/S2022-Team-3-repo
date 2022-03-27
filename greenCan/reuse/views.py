@@ -4,10 +4,16 @@ from recycle.models import ZipCode
 import pyrebase
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
+
 # from django.db.models import Q
 from django.conf import settings
 from django.core.paginator import Paginator
-from django.contrib.postgres.search import SearchRank, SearchQuery, SearchVector, SearchHeadline
+from django.contrib.postgres.search import (
+    SearchRank,
+    SearchQuery,
+    SearchVector,
+    SearchHeadline,
+)
 
 
 """
@@ -46,35 +52,40 @@ then rebuild the data format for frontend view
 
 def listing_page(request):
     template = "listing-page.html"
+
     def get_listings():
-        query = request.GET.get('q')
+        query = request.GET.get("q")
 
         if query:
             search_query = SearchQuery(query)
-            search_vector = SearchVector('search_vector')
-            posts = Post.objects.annotate(
-                headline=SearchHeadline(
-                    'description',
-                    search_query,
-                    start_sel='<mark>',
-                    stop_sel='</mark>',
-                ),
-                rank=SearchRank(search_vector, search_query)
-            ).filter(search_vector=search_query).order_by('-rank','-created_on')
+            search_vector = SearchVector("search_vector")
+            posts = (
+                Post.objects.annotate(
+                    headline=SearchHeadline(
+                        "description",
+                        search_query,
+                        start_sel="<mark>",
+                        stop_sel="</mark>",
+                    ),
+                    rank=SearchRank(search_vector, search_query),
+                )
+                .filter(search_vector=search_query)
+                .order_by("-rank", "-created_on")
+            )
         else:
-            posts = Post.objects.all().order_by('-created_on')
+            posts = Post.objects.all().order_by("-created_on")
 
         # set paginator to limit size of 21 posts per page
         posts = Paginator(posts, 21)
         return posts, query
-    
+
     posts, query = get_listings()
-    page_number = request.GET.get('page', 1)
+    page_number = request.GET.get("page", 1)
     page_obj = posts.get_page(page_number)
     context = {"posts": page_obj, "is_reuse": True}
-    
+
     if query:
-        context['q'] = query
+        context["q"] = query
 
     return render(request, template, context=context)
 

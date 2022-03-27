@@ -7,13 +7,13 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('reuse', '0001_initial'),
+        ("reuse", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='post',
-            name='search_token',
+            model_name="post",
+            name="search_token",
             field=django.contrib.postgres.search.SearchVectorField(null=True),
         ),
     ]
