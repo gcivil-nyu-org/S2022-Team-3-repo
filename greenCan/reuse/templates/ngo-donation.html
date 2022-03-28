@@ -36,15 +36,6 @@ Reuse | greenCan
     </div>
 </div>
 
-<div>
-    <select name="categories" id="categories" onchange = "javascript:filterByCategory(this)">
-        <option value="showing all sites">Showing all sites</option>
-        {% for type in types %}
-            <option value="{{type | lower }}">{{ type | title }}</option>
-        {% endfor %}
-    </select>
-</div>
-
 <div class="row container-fluid px-0 mt-md-2">
     <div class="col-md-8 col-sm-10 col-12 offset-md-0 offset-sm-1 pr-2">
         <div id="map"></div>
@@ -67,7 +58,7 @@ Reuse | greenCan
         clearView();
         let marker;
         $.each(locations, function( key,site ) {
-            marker = L.marker([site["latitude"],site["longitude"]],{icon: colorCategoryMap['public recycle bins']})
+            marker = L.marker([site["latitude"],site["longitude"]],{icon: colorCategoryMap['public recycle bins'][0]});
             marker.bindTooltip(site["street_address"]+'<br/>'+site['state_id']+' '+site['zip_code'], {
                 sticky: true
             }).addTo(map);            
@@ -139,9 +130,9 @@ Reuse | greenCan
       }).addTo(map);
       L.control.scale().addTo(map);
       markersLayer.addTo(map);
-      map.addControl(new customControl());
-      legend.addTo(map);
-      $('.legend').hide();
+    //   map.addControl(new customControl());
+    //   legend.addTo(map);
+    //   $('.legend').hide();
     }
 
     function loadView() {
@@ -200,7 +191,7 @@ Reuse | greenCan
                 if (data['err_flag']==true){
                     makeInvalid();
                 }else{
-                    console.log(data);
+                    // console.log(data);
                     setData(data);
                 }
             }
