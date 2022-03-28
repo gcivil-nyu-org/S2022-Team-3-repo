@@ -1,0 +1,128 @@
+{% extends 'template.html' %}
+{% load static %}
+
+{% block title %}
+user-profile
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/modal.css' %}" />
+<style>
+
+.row-height {
+    height: 650px;
+}
+
+.col-md-5{
+    padding-top: 25px;
+    text-align: center;
+    justify-content: center;
+    background-color:  rgba(196, 196, 196, 0.6);
+    border-radius: 15px;
+}
+@media (min-width: 1000px) {
+    body { 
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block main %}
+<div class ="container-fluid p-0 m-0 rounded bg-white mt-5 mb-5">
+    <div class = "row row-height d-flex">
+        <div class = "col-md-5 col-sm-12">
+            {% if user.avatar %}
+            <img height="100" src="{{user.avatar}}" >
+			{% else %}
+            <img height="100" src="{% static 'images/avatar/avatar.svg' %}" >
+            {% endif %}
+            <br>
+            <div style="text-align: left;padding-left: 150px;">
+                <br>
+                <p><b>Full Name:   </b>  {{user.get_full_name}} </p>
+                <p><b>Email:   </b>  {{user.email}} </p>
+                {% if user.phone_number %}
+                <p><b>Phone:   </b> +1 {{user.phone_number}} </p>
+                {% else %}
+                <p><b>Phone:   </b> UNKNOWN </p>
+                {% endif %}
+                {% if user.phone_number %}
+                <p><b>Location:   </b> {{user.zipcode}} </p>
+                {% else %}
+                <p><b>Location:   </b> UNKNOWN </p>
+                {% endif %}
+            </div>
+            <br>
+            <button type="button" class="btn btn-primary" style="background-color: black !important;" data-bs-toggle="modal" data-bs-target="#edit">Edit Profile</button>
+
+
+            <!--Edit window-->
+            <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable px-5 py-3" style="overflow-y: initial !important">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h3 class="modal-title" id="exampleModalLabel" style = "text-align: center;">Profile</h3>
+                        </div>
+                        <div class="modal-body" style="max-height: 60vh; overflow-x: hidden; overflow-y:auto;">
+                            <div class="form-content" >
+                                <form method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <!-- {{ form.as_p}}-->
+                                    <div class = "container">
+                                        <div class = "row">
+                                        <div class = "col-md-6">
+                                            <div class="form-group">
+                                                <p><label for="avatar" ><b>Choose your avatar: &nbsp&nbsp</b></label>
+                                                    <input id="avatar" type="file" name="avatar" value = {{user.avatar}} class="form-control" accept="image/*"></p>
+                                            </div>
+                                        </div>
+                                    <div class = "col-md-6">
+                                    <div class="form-group">
+                        
+                                    <p><label for="first_name" style="float:left; margin-top: 4px;"><b>First Name: &nbsp&nbsp</b></label>
+                                        <input id="first_name" type="text" name="first_name" value = {{user.first_name}} class="form-control"></p>
+
+                                    <p><label for="last_name" style="float:left; margin-top: 4px;"><b>Last Name:&nbsp&nbsp</b></label>
+                                        <input id="last_name" type="text" name="last_name" value = {{user.last_name}} class="form-control"></p>
+
+                                    <p><label for="phone_number" style="float:left; margin-top: 4px;"><b>Phone Number:&nbsp&nbsp</b></label>
+                                        <input id="phone_number" type="text" name="phone_number" value = {{user.phone_number}} class="form-control"></p>
+                                    <!--
+                                    <p><label for="zipcode" style="float:left; margin-top: 4px;"><b>Zipcode:&nbsp&nbsp</b></label>
+                                        <input id="zipcode" type="text" name="zipcode" value = {{user.zipcode}} class="form-control"></p>
+                                    </div>
+                                    -->
+                    
+                                    </div>
+                                    </div>
+                                    </div>
+                                    </div>
+                                    <button type="submit" class="btn btn-secondary">Save</button>
+                                    <button type="reset" class="btn btn-secondary">reset</button>
+                                </form>
+                            </div>
+
+                            <div class="modal-footer d-flex float-right py-3">
+                                <!--<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id = "closeDetail" >Close</button>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class = "col-md-7 col-sm-12 justify-content">
+            <!--green credits rewards here-->
+        </div>
+    
+    </div>
+</div>
+
+   
+
+
+
+{% endblock %}

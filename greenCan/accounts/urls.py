@@ -2,7 +2,7 @@ from django.urls import path
 from django.contrib.auth.views import PasswordResetDoneView, PasswordResetCompleteView
 from .views import PasswordResetView, PasswordResetConfirmView
 
-from .views import signup_page, login_page, logout_view, activate_account_page, userProfile_page
+from .views import signup_page, login_page, logout_view, activate_account_page, user_profile
 
 app_name = "accounts"
 
@@ -42,5 +42,5 @@ urlpatterns = [
         ),
         name="password-reset-complete",
     ),
-    path("userProfile/", userProfile_page, name = "userProfile")
+    path("user-profile/", user_profile, name = "user-profile")
 ]

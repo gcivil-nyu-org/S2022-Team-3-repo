@@ -197,31 +197,21 @@ def logout_view(request):
 
 
 """
-function: userProfile
+function: user-profile
 
-set path for userProfile
+set path for user-profile
 """
 
-@login_required
-def userProfile_page(request):
-    context = {}
-    return render(request,"accounts/templates/userProfile.html", context)
-
 
 @login_required
-def update_profile(request):
+def user_profile(request):
     if request.method == 'POST':
-        print("post!")
         form = UpdateProfile(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
             messages.success(request,'Your Profile has been updated!')
-            print("success!")
-            return redirect('userProfile')
-        else:
-            messages.error(request,'Not working!')
-            print("error")
+            return redirect(to='accounts:user-profile')
     else:
         form = UpdateProfile(instance=request.user)
     
-    return render(request, 'accounts/templates/userProfile.html', {'form': form})
+    return render(request, 'accounts/templates/user-profile.html', {'form': form})
