@@ -1,6 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, User
 from recycle.models import ZipCode
+from django.conf import settings
 
 
 class UserManager(BaseUserManager):
@@ -94,7 +95,7 @@ class User(AbstractBaseUser):
         verbose_name="Phone number", max_length=17, null=True
     )
     #avatar = models.TextField(verbose_name="Avatar", null=True)
-    avatar = models.ImageField(verbose_name="Avatar", upload_to='Avatars',null=True)
+    avatar = models.ImageField(upload_to='Avatars',null=True)
     is_active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False)
     admin = models.BooleanField(default=False)
@@ -140,6 +141,11 @@ class User(AbstractBaseUser):
 # user = models.OneToOneField(User)
 # then add some other fields e.g. first name, last name, phone number e.t.c.
 
+"""
+class UserProfile(models.Model):
+    user   = models.OneToOneField(User, on_delete=models.CASCADE)
+    avatar = models.ImageField(default='images/avatar/avatar.svg')
+"""
 
 class LoginAttempt(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -148,3 +154,4 @@ class LoginAttempt(models.Model):
 
     def __str__(self):
         return "user: {}, attempts: {}".format(self.user.email, self.login_attempts)
+

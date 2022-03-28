@@ -206,7 +206,7 @@ set path for user-profile
 @login_required
 def user_profile(request):
     if request.method == 'POST':
-        form = UpdateProfile(request.POST, instance=request.user)
+        form = UpdateProfile(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
             messages.success(request,'Your Profile has been updated!')
