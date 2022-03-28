@@ -6,27 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('reuse', '0002_ngolocation'),
+        ("reuse", "0002_ngolocation"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='ngolocation',
-            old_name='street_address',
-            new_name='address',
+            model_name="ngolocation", old_name="street_address", new_name="address",
         ),
-        migrations.RemoveField(
-            model_name='ngolocation',
-            name='name',
-        ),
+        migrations.RemoveField(model_name="ngolocation", name="name",),
         migrations.AddField(
-            model_name='ngolocation',
-            name='hours',
+            model_name="ngolocation",
+            name="hours",
             field=models.CharField(max_length=500, null=True),
         ),
         migrations.AddField(
-            model_name='ngolocation',
-            name='website',
+            model_name="ngolocation",
+            name="website",
             field=models.URLField(max_length=2000, null=True),
         ),
     ]

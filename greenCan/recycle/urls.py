@@ -10,5 +10,5 @@ urlpatterns = [
         "fetch-drop-off-locations",
         views.search_dropoff_locations,
         name="fetch-drop-off-locations",
-    )
+    ),
 ]

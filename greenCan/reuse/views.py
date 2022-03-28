@@ -193,7 +193,7 @@ def get_ngo_locations(centroid):
             "phone_number": phone_number,
             "street_address": street_address,
             "hours": hours,
-            "website": website
+            "website": website,
         }
         sites.append(site)
     return sites
