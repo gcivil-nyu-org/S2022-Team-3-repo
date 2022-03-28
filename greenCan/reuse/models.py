@@ -29,3 +29,19 @@ class Image(models.Model):
 
     def __str__(self):
         return str(self.id)
+
+
+class NGOLocation(models.Model):
+    id = models.BigAutoField(auto_created=True, primary_key=True)
+    zip_code = models.ForeignKey(ZipCode, null=False, on_delete=models.CASCADE)
+    latitude = models.FloatField(null=False)
+    longitude = models.FloatField(null=False)
+    items_accepted = models.TextField(null=True)
+    email = models.EmailField(null=True)
+    phone = models.CharField(max_length=17, null=True)
+    address = models.TextField(null=False)
+    hours = models.CharField(max_length=500, null=True)
+    website = models.URLField(max_length=2000, null=True)
+
+    def __str__(self):
+        return str(self.id)

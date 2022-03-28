@@ -9,4 +9,10 @@ urlpatterns = [
     path("donations", views.donation_view, name="donation-page"),
     path("listings", views.listing_page, name="listingPage"),
     path("create_post", views.create_post, name="create-post"),
+    path("ngo_donation", views.ngo_donation, name="ngo-donation"),
+    path(
+        "fetch-ngo-locations",
+        views.search_ngo_locations,
+        name="fetch-ngo-locations",
+    )
 ]

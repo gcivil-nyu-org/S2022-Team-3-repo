@@ -1,5 +1,8 @@
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
-from .models import Post, Image
+from django.views.decorators.csrf import csrf_exempt
+
+from .models import Post, Image, NGOLocation
 from recycle.models import ZipCode
 import pyrebase
 from django.contrib.auth.decorators import login_required
@@ -44,17 +47,6 @@ then rebuild the data format for frontend view
 def listing_page(request):
     template = "listing-page.html"
     posts = Post.objects.all()
-    # Images = Image.objects.all().values()
-    # ZipCodes = ZipCode.objects.all().values()
-    # for index in range(len(Posts)):
-    #     # add the url
-    #     Posts[index]["url"] = Images.filter(post=Posts[index]["id"])[0]["url"]
-    #     # Posts[index]["url"] = Images.objects.filter(post_id=Posts[index]).first().url
-    #     temp = ZipCodes.filter(id=Posts[index]["zip_code_id"])[0]
-    #     Posts[index]["location"] = str(
-    #         temp["borough"] + ", " + temp["state"] + ", " + temp["zip_code"]
-    #     )
-
     context = {"posts": posts, "is_reuse": True}
     return render(request, template, context=context)
 
@@ -130,3 +122,117 @@ def create_post(request):
             image.save()
 
     return redirect(reverse("reuse:donation-page"))
+
+
+"""
+function: ngo_donation
+
+Set path for ngo donation page
+"""
+
+
+def ngo_donation(request):
+    template = "reuse/templates/ngo-donation.html"
+    locations = NGOLocation.objects.all()
+    context = {"locations": locations}
+    return render(request, template, context=context)
+
+
+"""
+function: get_ngo_locations
+
+Query all NGO drop-off locations from database
+Then reformat each drop-off location data for frontend
+"""
+
+
+def get_ngo_locations(centroid):
+    locations = NGOLocation.objects.raw(
+        f"""
+            SELECT F.ID AS ID,
+            F.LATITUDE AS LATITUDE,
+            F.LONGITUDE AS LONGITUDE,
+            COALESCE(F.ITEMS_ACCEPTED,'') AS ITEMS_ACCEPTED,
+            COALESCE(F.EMAIL,'') AS EMAIL,
+            COALESCE(F.PHONE,'') AS PHONE,
+            COALESCE(F.HOURS,'') AS HOURS,
+            COALESCE(F.WEBSITE,'') AS WEBSITE
+            FROM
+                (
+                    SELECT *,
+                    row_number() over (partition by ITEMS_ACCEPTED order by D.DISTANCE asc) as TYPE_RANK
+                    FROM
+                    (
+                    SELECT *,
+                        calculate_distance({centroid['latitude']}, {centroid['longitude']}, R.LATITUDE, R.LONGITUDE, 'M') AS DISTANCE
+                        FROM REUSE_NGOLOCATION AS R
+                    ) AS D
+                ) AS F
+            WHERE F.TYPE_RANK<11
+            ORDER BY F.DISTANCE;"""
+    ).prefetch_related("zip_code")
+    sites = []
+    for location in locations:
+        zip_code = location.zip_code.zip_code
+        state_id = location.zip_code.state_id
+        latitude = location.latitude
+        longitude = location.longitude
+        items_accepted = location.items_accepted if location.items_accepted else ""
+        email = location.email if location.email else ""
+        phone_number = location.phone if location.phone else ""
+        street_address = location.address
+        hours = location.hours if location.hours else ""
+        website = location.website if location.website else ""
+        site = {
+            "zip_code": zip_code,
+            "state_id": state_id,
+            "latitude": latitude,
+            "longitude": longitude,
+            "item_accepted": items_accepted,
+            "email": email,
+            "phone_number": phone_number,
+            "street_address": street_address,
+            "hours": hours,
+            "website": website
+        }
+        sites.append(site)
+    return sites
+
+
+"""
+function: search_ngo_locations
+
+take user's input zip code from frontend
+then validate this zip code
+if it is valid, then sort all NGO drop-off locations in database
+by the distance from centroid of the zip code to the NGO drop-off location
+otherwise, return an error message
+"""
+
+
+@csrf_exempt
+def search_ngo_locations(request):
+    if request.GET.get("type") == "zipcode":
+        zipcode = request.GET.get("zipcode")
+        zip_location = ZipCode.objects.filter(zip_code=zipcode).first()
+        if zip_location is None:
+            err_flag = True
+            err_msg = "Please enter a valid NYC zip code"
+            return JsonResponse({"err_flag": err_flag, "err_msg": err_msg})
+        else:
+            centroid = {
+                "latitude": zip_location.centroid_latitude,
+                "longitude": zip_location.centroid_longitude,
+            }
+    elif request.GET.get("type") == "live-location":
+        user_lat = request.GET.get("latitude")
+        user_long = request.GET.get("longitude")
+        centroid = {"latitude": user_lat, "longitude": user_long}
+    else:
+        err_msg = "Invalid arguments provided"
+        err_flag = True
+        return JsonResponse({"err_flag": err_flag, "err_msg": err_msg})
+    sites = get_ngo_locations(centroid)
+    search_result = {"centroid": centroid, "sites": sites}
+    search_result["err_flag"] = False
+    return JsonResponse(search_result)
