@@ -9,7 +9,8 @@ from django.forms.widgets import EmailInput
 from django.utils.encoding import force_str as _
 from django.core.validators import RegexValidator
 from django.core.files.images import get_image_dimensions
-#from recycle.models import ZipCode
+
+# from recycle.models import ZipCode
 User = get_user_model()
 
 
@@ -184,17 +185,23 @@ class SetPasswordForm(AuthSetPasswordForm):
 
 
 class UpdateProfile(forms.ModelForm):
-    first_name = forms.CharField(max_length=100,
-                               required=True,
-                               widget=forms.TextInput(attrs={'class': '"form-input"'}))
-    last_name = forms.CharField(max_length=100,
-                               required=True,
-                               widget=forms.TextInput(attrs={'class': '"form-input"'}))
-    phone_number = forms.CharField(error_messages={'incomplete': 'Enter a phone number.'},
-                                validators=[RegexValidator(r'^[0-9]+$', 'Enter a valid phone number.')], 
-                                max_length=10,
-                                required=False,
-                                widget=forms.TextInput(attrs={'class': '"form-input"'}))
+    first_name = forms.CharField(
+        max_length=100,
+        required=True,
+        widget=forms.TextInput(attrs={"class": '"form-input"'}),
+    )
+    last_name = forms.CharField(
+        max_length=100,
+        required=True,
+        widget=forms.TextInput(attrs={"class": '"form-input"'}),
+    )
+    phone_number = forms.CharField(
+        error_messages={"incomplete": "Enter a phone number."},
+        validators=[RegexValidator(r"^[0-9]+$", "Enter a valid phone number.")],
+        max_length=10,
+        required=False,
+        widget=forms.TextInput(attrs={"class": '"form-input"'}),
+    )
     """                            
     zipcode = forms.ZipCode(
                                 required=False,
@@ -203,33 +210,35 @@ class UpdateProfile(forms.ModelForm):
     avatar = forms.ImageField(required=False,
                               widget=forms.FileInput(attrs={'class': 'form-control-file'}))
     """
+
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'phone_number']
-   
+        fields = ["first_name", "last_name", "phone_number"]
+
         def clean_avatar(self):
-            avatar = self.cleaned_data['avatar']
+            avatar = self.cleaned_data["avatar"]
 
             try:
                 w, h = get_image_dimensions(avatar)
 
-                #validate dimensions
+                # validate dimensions
                 max_width = max_height = 100
                 if w > max_width or h > max_height:
                     raise forms.ValidationError(
-                        u'Please use an image that is '
-                        '%s x %s pixels or smaller.' % (max_width, max_height))
+                        "Please use an image that is "
+                        "%s x %s pixels or smaller." % (max_width, max_height)
+                    )
 
-                #validate content type
-                main, sub = avatar.content_type.split('/')
-                if not (main == 'image' and sub in ['jpeg', 'pjpeg', 'gif', 'png']):
-                    raise forms.ValidationError(u'Please use a JPEG, '
-                        'GIF or PNG image.')
-
-                #validate file size
-                if len(avatar) > (20 * 1024):
+                # validate content type
+                main, sub = avatar.content_type.split("/")
+                if not (main == "image" and sub in ["jpeg", "pjpeg", "gif", "png"]):
                     raise forms.ValidationError(
-                        u'Avatar file size may not exceed 20k.')
+                        "Please use a JPEG, " "GIF or PNG image."
+                    )
+
+                # validate file size
+                if len(avatar) > (20 * 1024):
+                    raise forms.ValidationError("Avatar file size may not exceed 20k.")
 
             except AttributeError:
                 """

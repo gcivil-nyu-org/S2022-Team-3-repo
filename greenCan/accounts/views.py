@@ -205,13 +205,13 @@ set path for user-profile
 
 @login_required
 def user_profile(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = UpdateProfile(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            messages.success(request,'Your Profile has been updated!')
-            return redirect(to='accounts:user-profile')
+            messages.success(request, "Your Profile has been updated!")
+            return redirect(to="accounts:user-profile")
     else:
         form = UpdateProfile(instance=request.user)
-    
-    return render(request, 'accounts/templates/user-profile.html', {'form': form})
+
+    return render(request, "accounts/templates/user-profile.html", {"form": form})

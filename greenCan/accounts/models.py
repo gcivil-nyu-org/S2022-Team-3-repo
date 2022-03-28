@@ -94,8 +94,8 @@ class User(AbstractBaseUser):
     phone_number = models.CharField(
         verbose_name="Phone number", max_length=17, null=True
     )
-    #avatar = models.TextField(verbose_name="Avatar", null=True)
-    avatar = models.ImageField(upload_to='Avatars',null=True)
+    # avatar = models.TextField(verbose_name="Avatar", null=True)
+    avatar = models.ImageField(upload_to="Avatars", null=True)
     is_active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False)
     admin = models.BooleanField(default=False)
@@ -147,6 +147,7 @@ class UserProfile(models.Model):
     avatar = models.ImageField(default='images/avatar/avatar.svg')
 """
 
+
 class LoginAttempt(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     login_attempts = models.IntegerField(default=0)
@@ -154,4 +155,3 @@ class LoginAttempt(models.Model):
 
     def __str__(self):
         return "user: {}, attempts: {}".format(self.user.email, self.login_attempts)
-

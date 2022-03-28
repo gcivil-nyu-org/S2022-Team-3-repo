@@ -6,16 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0004_remove_user_avatar_userprofile'),
+        ("accounts", "0004_remove_user_avatar_userprofile"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='avatar',
-            field=models.ImageField(null=True, upload_to='Avatars'),
+            model_name="user",
+            name="avatar",
+            field=models.ImageField(null=True, upload_to="Avatars"),
         ),
         migrations.DeleteModel(
-            name='UserProfile',
+            name="UserProfile",
         ),
     ]
