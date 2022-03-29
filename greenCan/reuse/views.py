@@ -133,8 +133,7 @@ Set path for ngo donation page
 
 def ngo_donation(request):
     template = "reuse/templates/ngo-donation.html"
-    locations = NGOLocation.objects.all()
-    context = {"locations": locations}
+    context = {"is_reuse": True}
     return render(request, template, context=context)
 
 
@@ -160,7 +159,7 @@ def get_ngo_locations(centroid):
             FROM
                 (
                     SELECT *,
-                    row_number() over (partition by ITEMS_ACCEPTED order by D.DISTANCE asc) as TYPE_RANK
+                    row_number() over (order by D.DISTANCE asc) as TYPE_RANK
                     FROM
                     (
                     SELECT *,
@@ -168,13 +167,15 @@ def get_ngo_locations(centroid):
                         FROM REUSE_NGOLOCATION AS R
                     ) AS D
                 ) AS F
-            WHERE F.TYPE_RANK<11
+            WHERE F.TYPE_RANK<40
             ORDER BY F.DISTANCE;"""
     ).prefetch_related("zip_code")
+    
     sites = []
     for location in locations:
         zip_code = location.zip_code.zip_code
         state_id = location.zip_code.state_id
+        borough = location.zip_code.borough
         latitude = location.latitude
         longitude = location.longitude
         items_accepted = location.items_accepted if location.items_accepted else ""
@@ -192,8 +193,9 @@ def get_ngo_locations(centroid):
             "email": email,
             "phone_number": phone_number,
             "street_address": street_address,
-            "hours": hours,
+            "hours": hours.replace(', ',', <i class="fa fa-clock"></i> <span class="text-black">').replace(',',',</span>').replace(',','<br>'),
             "website": website,
+            "borough": borough
         }
         sites.append(site)
     return sites
