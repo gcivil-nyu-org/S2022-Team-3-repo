@@ -401,11 +401,9 @@ class TestPasswordResetSent(TestCase):
         )
         self.assertEquals(response.status_code, 200)
 
-
+"""
 # testing profile
-
-
-class ProfileViewTest(TestCase):
+class TestUserProfile(TestCase):
     def setUp(self):
         self.user1 = User.objects.create_user(
             first_name="user1_first",
@@ -434,3 +432,7 @@ class ProfileViewTest(TestCase):
         )
         # Check we got the profile of the current user
         self.assertEqual(response.context["user"], self.user1)
+
+
+class TestUserProfileAvatar(TestCase):
+"""
