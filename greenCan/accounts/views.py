@@ -15,7 +15,8 @@ from .decorators import unauthenticated_user
 from .utils import send_user_email
 from django.urls import reverse_lazy
 from django.contrib.auth import views as auth_views
-from .forms import PasswordResetForm, SetPasswordForm, UpdateProfile
+from .forms import PasswordResetForm, SetPasswordForm
+from recycle.models import ZipCode
 
 
 class PasswordResetView(auth_views.PasswordResetView):
@@ -206,12 +207,45 @@ set path for user-profile
 @login_required
 def user_profile(request):
     if request.method == "POST":
-        form = UpdateProfile(request.POST, request.FILES, instance=request.user)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Your Profile has been updated!")
-            return redirect(to="accounts:user-profile")
-    else:
-        form = UpdateProfile(instance=request.user)
+        user = request.user
+        first_name = request.POST.get("first_name")
+        if first_name:
+            user.first_name = first_name
+        else:
+            messages.error(request, "first name is required")
 
-    return render(request, "accounts/templates/user-profile.html", {"form": form})
+        last_name = request.POST.get("last_name")
+
+        if last_name:
+            user.last_name = last_name
+        else:
+            messages.error(request, "last name is required")
+
+        phone_number = request.POST.get("phone_number")
+        if phone_number:
+            user.phone_number = phone_number
+
+        zipcode = request.POST.get("zipcode")
+        zip_code = ZipCode.objects.filter(zip_code=zipcode)
+        if len(zip_code) == 0:
+            zip_code = None
+        else:
+            zip_code = zip_code[0]
+            user.zipcode = zip_code
+
+        user.save()
+
+    return render(request, "accounts/templates/user-profile.html", {})
+
+
+@login_required
+def user_profile_avatar(request):
+    if request.method == "POST":
+        user = request.user
+        avatar = request.POST.get("avatar")
+        if avatar:
+            user.avatar = avatar
+        else:
+            user.avatar = None
+        user.save()
+    return render(request, "accounts/templates/user-profile.html", {})

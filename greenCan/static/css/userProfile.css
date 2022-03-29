@@ -1,0 +1,52 @@
+.row-height {
+    height: 650px;
+}
+
+.col-md-5{
+    padding-top: 25px;
+    text-align: center;
+    justify-content: center;
+    background-color:  rgba(196, 196, 196, 0.6);
+}
+
+/*the avatar and edit button*/
+.avatarContainer{
+  width: 150px;
+  height: 150px;
+  display: inline-block;
+  margin: auto;
+  position: relative;
+  
+}
+
+.editAvatarBtn {
+  background-color:rgba(196, 196, 196, 0.6)!important;
+  border-radius:10%;
+  padding: 9px;
+  padding-left: 12px;
+  padding-right: 12px;
+  align-items: center;
+  position: absolute;
+  bottom:0;
+  right: 0;
+}
+
+button.editAvatarBtn > .fas{
+    font-size: small; 
+    color: white !important;
+} 
+button.editAvatarBtn:hover > .fas{
+  color: black !important;
+}
+
+button.avatarBtn{
+    background-color: transparent;
+    padding: 10px;
+    border-radius: 10%;
+}
+button.avatarBtn:hover{
+    background-color:rgba(196, 196, 196, 0.6)!important;
+}
+button.avatarBtn:focus{
+    background-color: rgba(196, 196, 196, 0.6)!important;
+}

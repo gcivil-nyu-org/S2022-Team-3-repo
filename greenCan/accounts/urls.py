@@ -8,6 +8,7 @@ from .views import (
     logout_view,
     activate_account_page,
     user_profile,
+    user_profile_avatar,
 )
 from django.conf import settings
 from django.conf.urls.static import static
@@ -51,4 +52,5 @@ urlpatterns = [
         name="password-reset-complete",
     ),
     path("user-profile/", user_profile, name="user-profile"),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path("user-profile-avatar/", user_profile_avatar, name="user-profile-avatar"),
+]
