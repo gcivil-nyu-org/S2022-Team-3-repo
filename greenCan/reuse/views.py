@@ -170,7 +170,7 @@ def get_ngo_locations(centroid):
             WHERE F.TYPE_RANK<40
             ORDER BY F.DISTANCE;"""
     ).prefetch_related("zip_code")
-    
+
     sites = []
     for location in locations:
         zip_code = location.zip_code.zip_code
@@ -193,9 +193,13 @@ def get_ngo_locations(centroid):
             "email": email,
             "phone_number": phone_number,
             "street_address": street_address,
-            "hours": hours.replace(', ',', <i class="fa fa-clock"></i> <span class="text-black">').replace(',',',</span>').replace(',','<br>'),
+            "hours": hours.replace(
+                ", ", ', <i class="fa fa-clock"></i> <span class="text-black">'
+            )
+            .replace(",", ",</span>")
+            .replace(",", "<br>"),
             "website": website,
-            "borough": borough
+            "borough": borough,
         }
         sites.append(site)
     return sites

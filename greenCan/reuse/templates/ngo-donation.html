@@ -17,6 +17,7 @@ Reuse | greenCan
 <div class="d-flex justify-content-md-center justify-content-sm-start">
     <h1 class="h1">Search for NGO Donation Sites</h1>
 </div>
+
 <div class="my-md-4 my-2 d-flex container-fluid justify-content-center pb-3 mx-auto">
     <div class="row justify-content-center">
         <div class="col-md-7 col-12 justify-content-center mb-1">
@@ -67,25 +68,25 @@ Reuse | greenCan
                 <div class="address-wrapper text-green"> \
                     '+site['street_address']+', '+site['borough']+',<br> '+ site['state_id'] + ' ' + site['zip_code'] +' \
                 </div>';
-                if (site['phone_number']!=null && site['phone_number']!='' && site['phone_number']!=undefined){
+                if (site['phone_number'] != null && site['phone_number'] != '' && site['phone_number'] != undefined){
                     card+= '<div class="item-wrapper"> \
                             <i class="fa fa-phone"></i> <span class="text-black">+1 '+site['phone_number']+'</span> \
                         </div>';
                 }
 
-                if (site['email']!=null && site['email']!='' && site['email']!=undefined){
+                if (site['email'] != null && site['email'] != '' && site['email'] != undefined){
                     card += '<div class="item-wrapper"> \
                             <i class="fa fa-envelope"></i> <span class="text-black">'+site['email']+'</span> \
                         </div>';
                 }
 
-                if (site['website']!=null && site['website']!='' && site['website']!=undefined){
+                if (site['website'] != null && site['website'] != '' && site['website'] != undefined){
                     card += '<div class="item-wrapper"> \
                             <i class="fa fa-globe"></i> <span class="text-black"> <a target="_blank" href="'+site['website']+'">'+site['website']+'</a></span> \
                         </div>';
                 }
 
-                if (site['hours']!=null && site['hours']!='' && site['hours']!=undefined){
+                if (site['hours'] != null && site['hours'] != '' && site['hours'] != undefined){
                     card += '<div class="item-wrapper"> \
                             <i class="fa fa-clock"></i> <span class="text-black">'+site['hours']+'</span> \
                         </div>';
@@ -95,7 +96,6 @@ Reuse | greenCan
                         </div>';
             $('#listings').append($(card));
             markersLayer.addLayer(marker);
-            // You card DOM over here
         });
     }
     
@@ -171,7 +171,6 @@ Reuse | greenCan
                 if (data['err_flag']==true){
                     makeInvalid();
                 }else{
-                    // console.log(data);
                     setData(data);
                 }
             }
@@ -221,9 +220,6 @@ Reuse | greenCan
                 selector: '[data-toggle=tooltip]', 
                 container: '.wrapper'
             });
-            // $('[data-toggle="tooltip"]').tooltip({
-            //     container: '.wrapper'
-            // });
         });
 
         $('[data-href]').click(function(){
