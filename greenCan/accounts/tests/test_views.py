@@ -10,6 +10,8 @@ from accounts.token import account_activation_token
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.template.loader import render_to_string
 
+from recycle.models import ZipCode
+
 
 User = get_user_model()
 
@@ -414,6 +416,18 @@ class TestUserProfile(TestCase):
         )
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         self.url = reverse("accounts:user-profile")
+        self.data = {"first_name": "first2", "last_name": "last2"}
+        zipcode = ZipCode(
+            zip_code="10001",
+            state_id="NY",
+            state="New York",
+            borough="Manhattan",
+            centroid_latitude=40.75021293296376,
+            centroid_longitude=-73.99692994900218,
+            polygon="",
+        )
+        zipcode.save()
+        self.zipcode = zipcode
 
     def test_returns_200(self):
         response = self.client.get(self.url)
@@ -424,9 +438,101 @@ class TestUserProfile(TestCase):
         self.assertTemplateUsed(response, "accounts/templates/user-profile.html")
 
     def test_info_changed_after_edit_profile(self):
-        self.client.post(self.url, {"first_name": "first2"}, follow=True)
+        response = self.client.post(self.url, self.data, follow=True)
         user1 = get_user(self.client)
         self.assertEquals(user1.first_name, "first2")
+        self.assertEquals(user1.last_name, "last2")
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "success")
+        self.assertEquals(
+            message.message, "Your details have been updated successfully"
+        )
+        self.assertRedirects(response, self.url, 302)
+
+    def test_info_changed_after_edit_profile_wrong_details_firstname(self):
+        data = self.data.copy()
+        data["first_name"] = ""
+        response = self.client.post(self.url, data, follow=True)
+        user1 = get_user(self.client)
+        self.assertEquals(user1.first_name, "first1")
+        self.assertEquals(user1.last_name, "last1")
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "error")
+        self.assertEquals(message.message, "First name is required")
+        self.assertRedirects(response, self.url, 302)
+
+    def test_info_changed_after_edit_profile_wrong_details_lastname(self):
+        data = self.data.copy()
+        data["last_name"] = ""
+        response = self.client.post(self.url, data, follow=True)
+        user1 = get_user(self.client)
+        self.assertEquals(user1.first_name, "first1")
+        self.assertEquals(user1.last_name, "last1")
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "error")
+        self.assertEquals(message.message, "Last name is required")
+        self.assertRedirects(response, self.url, 302)
+
+    def test_info_changed_after_edit_profile_valid_zipcode(self):
+        data = self.data.copy()
+        data["zipcode"] = self.zipcode.zip_code
+        response = self.client.post(self.url, data, follow=True)
+        user1 = get_user(self.client)
+        self.assertEquals(user1.first_name, "first2")
+        self.assertEquals(user1.last_name, "last2")
+        self.assertEquals(user1.zipcode, self.zipcode)
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "success")
+        self.assertEquals(
+            message.message, "Your details have been updated successfully"
+        )
+        self.assertRedirects(response, self.url, 302)
+
+    def test_info_changed_after_edit_profile_invalid_zipcode(self):
+        data = self.data.copy()
+        data["zipcode"] = "9oi0"
+        response = self.client.post(self.url, data, follow=True)
+        user1 = get_user(self.client)
+        self.assertEquals(user1.first_name, "first1")
+        self.assertEquals(user1.last_name, "last1")
+        self.assertEquals(user1.zipcode, None)
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "error")
+        self.assertEquals(message.message, "Please enter a valid 5 digit NYC zipcode")
+        self.assertRedirects(response, self.url, 302)
+
+    def test_info_changed_after_edit_profile_invalid_phone_number(self):
+        data = self.data.copy()
+        data["phone_number"] = "89hiuu9yp]["
+        response = self.client.post(self.url, data, follow=True)
+        user1 = get_user(self.client)
+        self.assertEquals(user1.first_name, "first1")
+        self.assertEquals(user1.last_name, "last1")
+        self.assertEquals(user1.phone_number, None)
+        self.assertEquals(user1.zipcode, None)
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "error")
+        self.assertEquals(
+            message.message,
+            "Please enter a valid 10 digit phone number. Just include numbers without country code or any special symbols.",
+        )
+        self.assertRedirects(response, self.url, 302)
+
+    def test_info_changed_after_edit_profile_valid_phone_number(self):
+        data = self.data.copy()
+        data["phone_number"] = "8887776665"
+        response = self.client.post(self.url, data, follow=True)
+        user1 = get_user(self.client)
+        self.assertEquals(user1.first_name, "first2")
+        self.assertEquals(user1.last_name, "last2")
+        self.assertEquals(user1.phone_number, data["phone_number"])
+        self.assertEquals(user1.zipcode, None)
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "success")
+        self.assertEquals(
+            message.message, "Your details have been updated successfully"
+        )
+        self.assertRedirects(response, self.url, 302)
 
     def test_csrf_token(self):
         response = self.client.get(self.url)
@@ -447,15 +553,14 @@ class TestUserProfileAvatar(TestCase):
         self.url1 = reverse("accounts:user-profile")
         self.url2 = reverse("accounts:user-profile-avatar")
 
-    def test_template_used(self):
+    def test_returns_302(self):
         response = self.client.get(self.url2)
-        self.assertTemplateUsed(response, "accounts/templates/user-profile.html")
+        self.assertRedirects(response, self.url1, 302)
 
     def test_info_changed_after_edit_profile_avatar(self):
-        self.client.post(self.url2, {"avatar": "2.svg"}, follow=True)
+        response = self.client.post(self.url2, {"avatar": "2.svg"}, follow=True)
         user2 = get_user(self.client)
         self.assertEquals(user2.avatar, "2.svg")
-
-    def test_csrf_token(self):
-        response = self.client.get(self.url2)
-        self.assertContains(response, "csrfmiddlewaretoken")
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "success")
+        self.assertEquals(message.message, "Your avatar has been updated.")

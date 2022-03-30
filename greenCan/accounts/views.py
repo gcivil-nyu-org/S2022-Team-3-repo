@@ -212,29 +212,43 @@ def user_profile(request):
         if first_name:
             user.first_name = first_name
         else:
-            messages.error(request, "first name is required")
+            messages.error(request, "First name is required")
+            return redirect("accounts:user-profile")
 
         last_name = request.POST.get("last_name")
 
         if last_name:
             user.last_name = last_name
         else:
-            messages.error(request, "last name is required")
+            messages.error(request, "Last name is required")
+            return redirect("accounts:user-profile")
 
         phone_number = request.POST.get("phone_number")
         if phone_number:
-            user.phone_number = phone_number
+            if len(phone_number) != 10 or not phone_number.isdigit():
+                messages.error(
+                    request,
+                    "Please enter a valid 10 digit phone number. Just include numbers without country code or any special symbols.",
+                )
+                return redirect("accounts:user-profile")
+        else:
+            phone_number = None
+        user.phone_number = phone_number
 
         zipcode = request.POST.get("zipcode")
         zip_code = ZipCode.objects.filter(zip_code=zipcode)
-        if len(zip_code) == 0:
-            zip_code = None
+        if zipcode == "" or zipcode is None:
+            zipcode = None
+        elif len(zip_code) == 0:
+            messages.error(request, "Please enter a valid 5 digit NYC zipcode")
+            return redirect("accounts:user-profile")
         else:
             zip_code = zip_code[0]
             user.zipcode = zip_code
 
         user.save()
-
+        messages.success(request, "Your details have been updated successfully")
+        return redirect("accounts:user-profile")
     return render(request, "accounts/templates/user-profile.html", {})
 
 
@@ -248,4 +262,5 @@ def user_profile_avatar(request):
         else:
             user.avatar = None
         user.save()
-    return render(request, "accounts/templates/user-profile.html", {})
+        messages.success(request, "Your avatar has been updated.")
+    return redirect("accounts:user-profile")

@@ -1,5 +1,5 @@
 .row-height {
-    height: 650px;
+    height: 100vh;
 }
 
 .col-md-5{
@@ -15,13 +15,14 @@
   height: 150px;
   display: inline-block;
   margin: auto;
-  position: relative;
-  
+  position: relative; 
 }
 
 .editAvatarBtn {
-  background-color:rgba(196, 196, 196, 0.6)!important;
-  border-radius:10%;
+  background-color: #21212d !important;
+  color: #fff;
+  border: #C4C4C4 4px solid !important;
+  border-radius:50px;
   padding: 9px;
   padding-left: 12px;
   padding-right: 12px;
@@ -36,8 +37,9 @@ button.editAvatarBtn > .fas{
     font-size: small; 
     color: white !important;
 } 
-button.editAvatarBtn:hover > .fas{
+button.editAvatarBtn:hover{
   color: black !important;
+  background-color: #6ABE52 !important;
 }
 
 button.avatarBtn{
@@ -51,6 +53,28 @@ button.avatarBtn:hover{
 button.avatarBtn:focus{
     background-color: rgba(196, 196, 196, 0.6)!important;
 }
-.form-control {
+
+input.form-control {
     text-align: center !important;
+    width: 90%;
+    font-size: 1.1em;
+    padding: auto;
+}
+
+.form-group {
+    text-align: left !important;
+}
+
+.form-group label {
+    left: 20px !important;
+    font-size: 1.1em;
+    padding-bottom: 20px !important;
+}
+
+.text-danger {
+    color: red;
+}
+
+.text-success {
+    color: green;
 }

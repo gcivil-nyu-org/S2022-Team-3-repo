@@ -9,6 +9,8 @@ from six import BytesIO
 from recycle.models import ZipCode
 from reuse.models import Image, Post
 
+from reuse.models import NGOLocation
+
 User = get_user_model()
 
 
@@ -182,7 +184,32 @@ class TestViews(TestCase):
         self.donation_page_url = reverse("reuse:donation-page")
         self.listing_page_url = reverse("reuse:listing-page")
         self.create_post_url = reverse("reuse:create-post")
+        self.search_ngo_locations_url = reverse("reuse:fetch-ngo-locations")
         self.client = Client()
+        zipcode = ZipCode(
+            zip_code="10001",
+            state_id="NY",
+            state="New York",
+            borough="Manhattan",
+            centroid_latitude=40.75021293296376,
+            centroid_longitude=-73.99692994900218,
+            polygon="",
+        )
+        zipcode.save()
+        self.zipcode = zipcode
+        ngo_location = NGOLocation(
+            zip_code=zipcode,
+            latitude=40.75021293296376,
+            longitude=-73.99692994900218,
+            items_accepted="Food",
+            email="tandon@nyu.edu",
+            phone="2121112011",
+            address="101 Willoughby street",
+            hours="Open on everyday",
+            website="www.recycle.com",
+        )
+        ngo_location.save()
+        self.ngo_location = ngo_location
 
     def test_index_GET(self):
 
@@ -220,3 +247,19 @@ class TestViews(TestCase):
         """
         response = self.client.get("%s?q=%s" % (reverse("reuse:listing-page"), "book"))
         assert len(response.context["posts"]) >= 0
+    def test_ngo_locations1(self):
+
+        response = self.client.get(
+            self.search_ngo_locations_url
+            + "?type=live-location&latitude=40.7362&longitude=-74.0422"
+        )
+
+        self.assertEquals(response.status_code, 200)
+
+    def test_ngo_locations2(self):
+
+        response = self.client.get(
+            self.search_ngo_locations_url + "?type=zipcode&zipcode=10004"
+        )
+
+        self.assertEquals(response.status_code, 200)

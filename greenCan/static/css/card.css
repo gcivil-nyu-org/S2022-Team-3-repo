@@ -1,10 +1,41 @@
+.location-card {
+  width: 100%;
+  min-height: 7em;
+  border-radius: 5px;
+  border: #21212D 2px dotted;
+  box-shadow: none;
+  outline: none;
+  padding: 10px 30px;
+}
+
+.address-wrapper {
+  font-size: larger;
+  font-weight: 600;
+  color: #c4c4c4;
+  text-overflow: ellipsis;
+}
+
+.text-green {
+  color: #6ABE52;
+}
+
+.item-wrapper {
+  font-size: 14px;
+  font-weight: normal;
+  color: #c4c4c4;
+}
+
+.text-black {
+  color: black;
+}
+
 .card_frame{
     position: absolute;
     height: 70vh;
     width: 30vw;
     overflow-y: auto;
     overflow-x: hidden;
-  }
+}
 
 .border_rectangle1{
   position: relative;

@@ -263,6 +263,15 @@ button, .button {
     text-align: center;
 }
 
+.btn-outline {
+    border: 1px solid #21212d !important;
+    background-color: transparent;
+    color: #21212D;
+    border-radius: 50px;
+    padding: 10px 10px;
+    font-size: 12px;
+}
+
 
 ul {
     list-style: disc;

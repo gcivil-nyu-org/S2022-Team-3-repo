@@ -104,9 +104,7 @@ DATABASES = {
         "PASSWORD": env("DATABASE_PASSWORD"),
         "HOST": env("DATABASE_HOST"),
         "PORT": "5432",
-        "TEST": {
-            "NAME": env("TEST_DATABASE_NAME"),
-        },
+        "TEST": {"NAME": env("TEST_DATABASE_NAME")},
     }
 }
 
@@ -124,9 +122,7 @@ if "test" in sys.argv:
         "PASSWORD": env("TEST_DATABASE_PASSWORD"),
         "HOST": env("TEST_DATABASE_HOST"),
         "PORT": "5432",
-        "TEST": {
-            "NAME": env("TEST_DATABASE_NAME"),
-        },
+        "TEST": {"NAME": env("TEST_DATABASE_NAME")},
     }
 
 
