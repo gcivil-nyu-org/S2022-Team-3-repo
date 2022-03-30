@@ -84,7 +84,7 @@ class TestUrls(SimpleTestCase):
         self.assertEqual(resolved.func, user_profile)
         self.assertEqual(resolved.namespace, "accounts")
         self.assertEqual(url, "/accounts/user-profile/")
-    
+
     def test_user_profile_avatar_url(self):
         url = reverse("accounts:user-profile-avatar")
         resolved = resolve(url)

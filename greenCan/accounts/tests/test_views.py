@@ -408,13 +408,13 @@ class TestUserProfile(TestCase):
         user = User.objects.create(
             first_name="first1",
             last_name="last1",
-            email="user1@gmail.com", 
+            email="user1@gmail.com",
             password="password1",
             is_active=True,
         )
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         self.url = reverse("accounts:user-profile")
-    
+
     def test_returns_200(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
@@ -424,7 +424,7 @@ class TestUserProfile(TestCase):
         self.assertTemplateUsed(response, "accounts/templates/user-profile.html")
 
     def test_info_changed_after_edit_profile(self):
-        response = self.client.post(self.url, {'first_name': 'first2'}, follow=True)
+        response = self.client.post(self.url, {"first_name": "first2"}, follow=True)
         user1 = get_user(self.client)
         self.assertEquals(user1.first_name, "first2")
 
@@ -438,9 +438,9 @@ class TestUserProfileAvatar(TestCase):
         user = User.objects.create(
             first_name="first2",
             last_name="last2",
-            email="user2@gmail.com", 
+            email="user2@gmail.com",
             password="password2",
-            avatar = "1.svg",
+            avatar="1.svg",
             is_active=True,
         )
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
@@ -452,7 +452,7 @@ class TestUserProfileAvatar(TestCase):
         self.assertTemplateUsed(response, "accounts/templates/user-profile.html")
 
     def test_info_changed_after_edit_profile_avatar(self):
-        response = self.client.post(self.url2, {'avatar': '2.svg'}, follow=True)
+        response = self.client.post(self.url2, {"avatar": "2.svg"}, follow=True)
         user2 = get_user(self.client)
         self.assertEquals(user2.avatar, "2.svg")
 
