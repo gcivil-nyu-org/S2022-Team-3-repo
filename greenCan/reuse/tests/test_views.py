@@ -180,7 +180,7 @@ class TestViews(TestCase):
     def setUp(self):
         self.index_url = reverse("reuse:index")
         self.donation_page_url = reverse("reuse:donation-page")
-        self.listingPage_url = reverse("reuse:listingPage")
+        self.listing_page_url = reverse("reuse:listing-page")
         self.create_post_url = reverse("reuse:create-post")
         self.client = Client()
 
@@ -189,7 +189,7 @@ class TestViews(TestCase):
         response = self.client.get(self.index_url)
 
         self.assertEquals(response.status_code, 200)
-        self.assertTemplateUsed(response, "reuse_index.html")
+        self.assertTemplateUsed(response, "reuse-index.html")
 
     def test_donationpage_GET(self):
 
@@ -198,9 +198,9 @@ class TestViews(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, "reuse/templates/donate-item-page.html")
 
-    def test_listingPage_GET(self):
+    def test_listing_page_GET(self):
 
-        response = self.client.get(self.listingPage_url)
+        response = self.client.get(self.listing_page_url)
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, "listing-page.html")

@@ -52,7 +52,7 @@ class TestSignupView(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, "Activate your account")
         self.assertEqual(
-            mail.outbox[0].from_email, settings.EMAIL_HOST_USER
+            mail.outbox[0].from_email, settings.DEFAULT_FROM_EMAIL
         )  # change to your email <youremail>
         self.assertEqual(mail.outbox[0].to, ["testuser@gmail.com"])  # self.user.email
         self.assertEqual(

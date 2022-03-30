@@ -14,16 +14,16 @@ class TestUrls(SimpleTestCase):
         url = reverse("reuse:donation-page")
         self.assertEquals(resolve(url).func, donation_view)
         self.assertEquals(resolve(url).namespace, "reuse")
-        self.assertEquals(url, "/reuse/donations")
+        self.assertEquals(url, "/reuse/donations/")
 
     def test_listingPage_url_is_resolved(self):
-        url = reverse("reuse:listingPage")
+        url = reverse("reuse:listing-page")
         self.assertEquals(resolve(url).func, listing_page)
         self.assertEquals(resolve(url).namespace, "reuse")
-        self.assertEquals(url, "/reuse/listings")
+        self.assertEquals(url, "/reuse/listings/")
 
     def test_createpost_url_is_resolved(self):
         url = reverse("reuse:create-post")
         self.assertEquals(resolve(url).func, create_post)
         self.assertEquals(resolve(url).namespace, "reuse")
-        self.assertEquals(url, "/reuse/create_post")
+        self.assertEquals(url, "/reuse/create_post/")

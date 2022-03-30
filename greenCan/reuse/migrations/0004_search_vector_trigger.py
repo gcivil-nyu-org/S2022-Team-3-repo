@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
         migrations.RunSQL(
             sql="""
             CREATE TRIGGER search_vector_trigger
-            BEFORE INSERT,UPDATE OF title, description, category, search_vector
+            BEFORE INSERT OR UPDATE OF title, description, category, search_vector
             ON reuse_post
             FOR EACH ROW EXECUTE PROCEDURE
             tsvector_update_trigger(

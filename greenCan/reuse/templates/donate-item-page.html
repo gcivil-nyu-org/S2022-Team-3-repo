@@ -7,6 +7,7 @@ Reuse | greenCan
 
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/carousel.css' %}" />
+<link rel="stylesheet" href="{% static 'css/form.css' %}" />
 <link rel="stylesheet" href="{% static 'css/modal.css' %}" />
 <link rel="stylesheet" href="{% static 'modules/owl-carousel-2/css/owl-carousel2.min.css' %}" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.min.css">
@@ -322,7 +323,7 @@ Reuse | greenCan
         </div>
         <div class="modal-body" style="max-height: 80vh; overflow-x: hidden; overflow-y:auto;">
           <!--information collection form -->
-          <form class="form-container g-3" id = "infoForm" enctype="multipart/form-data" action="/reuse/create_post" method="POST" role="form" style="margin-right:15px">
+          <form class="form-container g-3" id = "infoForm" enctype="multipart/form-data" action="/reuse/create_post/" method="POST" role="form" style="margin-right:15px">
             <!--img upload-->
             <div class="upload-image-frame d-flex flex-column align-middle py-4" id="image-frame">
               <div class="upload-text" id="show-image-frame">
