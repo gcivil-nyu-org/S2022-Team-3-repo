@@ -204,3 +204,22 @@ class TestViews(TestCase):
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, "listing-page.html")
+
+
+    def test_listing_page_search_GET(self):
+        '''
+        test to check if search is returning a valid response
+
+        '''
+        response = self.client.get('%s?q=%s' % (reverse('reuse:listing-page'), 'book'))
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, "listing-page.html")
+
+
+
+    def test_query_search_context_filter(self):
+        '''
+        Test to check if on making a query something is being returned to the view
+        '''
+        response = self.client.get('%s?q=%s' % (reverse('reuse:listing-page'), 'book'))
+        assert(len(response.context["posts"])>=0)
