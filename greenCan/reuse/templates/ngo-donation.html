@@ -92,7 +92,7 @@ Reuse | greenCan
                         </div>';
                 }
 
-                card += '<button class="btn btn-primary btn-outline mt-2" data-href="https://www.google.com/maps?saddr=My+Location&daddr='+site['latitude'].toString()+','+site['longitude'].toString()+'" target="_blank"> Get Directions</button> \
+                card += '<button class="btn btn-primary btn-outline mt-2" onclick="window.open($(this).attr(\'data-href\'),\'_blank\');" data-href="https://www.google.com/maps?saddr=My+Location&daddr='+site['latitude'].toString()+','+site['longitude'].toString()+'" target="_blank"> Get Directions</button> \
                         </div>';
             $('#listings').append($(card));
             markersLayer.addLayer(marker);
@@ -216,15 +216,9 @@ Reuse | greenCan
         });
     });
         $(function(){
-            $("body").tooltip({ 
-                selector: '[data-toggle=tooltip]', 
+            $("[data-toggle='tooltip']").tooltip({ 
                 container: '.wrapper'
             });
-        });
-
-        $('[data-href]').click(function(){
-            console.log('hey');
-            window.open($(this).attr('data-href'),'_blank');
         });
         
         $('#main').addClass('my-3 mb-5 pb-5');
