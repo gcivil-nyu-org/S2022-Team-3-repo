@@ -182,7 +182,19 @@ class TestViews(TestCase):
         self.donation_page_url = reverse("reuse:donation-page")
         self.listingPage_url = reverse("reuse:listingPage")
         self.create_post_url = reverse("reuse:create-post")
+        self.search_ngo_locations_url = reverse("reuse:fetch-ngo-locations")
         self.client = Client()
+        zipcode = ZipCode(
+            zip_code="10001",
+            state_id="NY",
+            state="New York",
+            borough="Manhattan",
+            centroid_latitude=40.75021293296376,
+            centroid_longitude=-73.99692994900218,
+            polygon="",
+        )
+        zipcode.save()
+        self.zipcode = zipcode
 
     def test_index_GET(self):
 
@@ -204,3 +216,9 @@ class TestViews(TestCase):
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, "listing-page.html")
+
+    def test_ngo_locations1(self):
+        print(self.zipcode.id)
+        response = self.client.get(self.search_ngo_locations_url + "?type=live-location&latitude=40.7362&longitude=-74.0422")
+
+        self.assertEquals(response.status_code, 200)
