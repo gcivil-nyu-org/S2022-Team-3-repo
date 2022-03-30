@@ -7,8 +7,6 @@ def compute_search_vector(apps, schema_editor):
     Post.objects.update(search_vector=SearchVector("title", "description", "category"))
 
 
-
-
 class Migration(migrations.Migration):
 
     dependencies = [

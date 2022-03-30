@@ -105,7 +105,7 @@ DATABASES = {
         "PORT": "5432",
         "TEST": {
             "NAME": env("TEST_DATABASE_NAME"),
-        }
+        },
     }
 }
 
@@ -125,7 +125,7 @@ if "test" in sys.argv:
         "PORT": "5432",
         "TEST": {
             "NAME": env("TEST_DATABASE_NAME"),
-        }
+        },
     }
 
 

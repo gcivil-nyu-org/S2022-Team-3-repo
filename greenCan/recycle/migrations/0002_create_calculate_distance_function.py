@@ -9,7 +9,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RunSQL(
-            sql = """
+            sql="""
         CREATE FUNCTION calculate_distance(lat1 float, lon1 float, lat2 float, lon2 float, units varchar)
         RETURNS float AS $dist$
             DECLARE
@@ -41,10 +41,9 @@ class Migration(migrations.Migration):
                 END IF;
             END;
         $dist$ LANGUAGE plpgsql;
-        """, 
-        reverse_sql="""
+        """,
+            reverse_sql="""
             DROP FUNCTION IF EXISTS calculate_distance;
             """,
         ),
-        
     ]
