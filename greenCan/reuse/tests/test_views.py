@@ -186,6 +186,14 @@ class TestViews(TestCase):
         self.create_post_url = reverse("reuse:create-post")
         self.search_ngo_locations_url = reverse("reuse:fetch-ngo-locations")
         self.client = Client()
+        user = User.objects.create(
+            email="testemail@gmail.com",
+            password="password1",
+            first_name="john",
+            last_name="doe",
+        )
+        self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
+
         zipcode = ZipCode(
             zip_code="10001",
             state_id="NY",
@@ -196,6 +204,16 @@ class TestViews(TestCase):
             polygon="",
         )
         zipcode.save()
+        post = Post(
+            title="Apple",
+            category="Books",
+            phone_number="9175185345",
+            email="pb2640@nyu.edu",
+            zip_code=zipcode,
+            description=" Book on apple",
+            user=user,
+        )
+        post.save()
         self.zipcode = zipcode
         ngo_location = NGOLocation(
             zip_code=zipcode,
@@ -246,7 +264,24 @@ class TestViews(TestCase):
         Test to check if on making a query something is being returned to the view
         """
         response = self.client.get("%s?q=%s" % (reverse("reuse:listing-page"), "book"))
-        assert len(response.context["posts"]) >= 0
+        self.assertTrue(len(response.context["posts"]) >= 0)
+
+    def test_query_search_returns(self):
+        """
+        Test to check if I search for an item which is present, it should return something
+        """
+        response = self.client.get("%s?q=%s" % (reverse("reuse:listing-page"), "book"))
+        self.assertTrue(len(response.context["posts"]) >= 1)
+
+    def test_query_search_does_not_return(self):
+        """
+        Test to check if I search for an item which is not present, it should return nothing
+        """
+        response = self.client.get(
+            "%s?q=%s" % (reverse("reuse:listing-page"), "veryrandomstring")
+        )
+        self.assertTrue(len(response.context["posts"]) == 0)
+
     def test_ngo_locations1(self):
 
         response = self.client.get(
