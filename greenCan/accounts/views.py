@@ -16,6 +16,7 @@ from .utils import send_user_email
 from django.urls import reverse_lazy
 from django.contrib.auth import views as auth_views
 from .forms import PasswordResetForm, SetPasswordForm
+from recycle.models import ZipCode
 
 
 class PasswordResetView(auth_views.PasswordResetView):
@@ -194,3 +195,72 @@ def activate_account_page(request, uidb64, token):
 def logout_view(request):
     logout(request)
     return redirect(settings.LOGOUT_REDIRECT_URL)
+
+
+"""
+function: user-profile
+
+set path for user-profile
+"""
+
+
+@login_required
+def user_profile(request):
+    if request.method == "POST":
+        user = request.user
+        first_name = request.POST.get("first_name")
+        if first_name:
+            user.first_name = first_name
+        else:
+            messages.error(request, "First name is required")
+            return redirect("accounts:user-profile")
+
+        last_name = request.POST.get("last_name")
+
+        if last_name:
+            user.last_name = last_name
+        else:
+            messages.error(request, "Last name is required")
+            return redirect("accounts:user-profile")
+
+        phone_number = request.POST.get("phone_number")
+        if phone_number:
+            if len(phone_number) != 10 or not phone_number.isdigit():
+                messages.error(
+                    request,
+                    "Please enter a valid 10 digit phone number. Just include numbers without country code or any special symbols.",
+                )
+                return redirect("accounts:user-profile")
+        else:
+            phone_number = None
+        user.phone_number = phone_number
+
+        zipcode = request.POST.get("zipcode")
+        zip_code = ZipCode.objects.filter(zip_code=zipcode)
+        if zipcode == "" or zipcode is None:
+            zipcode = None
+        elif len(zip_code) == 0:
+            messages.error(request, "Please enter a valid 5 digit NYC zipcode")
+            return redirect("accounts:user-profile")
+        else:
+            zip_code = zip_code[0]
+            user.zipcode = zip_code
+
+        user.save()
+        messages.success(request, "Your details have been updated successfully")
+        return redirect("accounts:user-profile")
+    return render(request, "accounts/templates/user-profile.html", {})
+
+
+@login_required
+def user_profile_avatar(request):
+    if request.method == "POST":
+        user = request.user
+        avatar = request.POST.get("avatar")
+        if avatar:
+            user.avatar = avatar
+        else:
+            user.avatar = None
+        user.save()
+        messages.success(request, "Your avatar has been updated.")
+    return redirect("accounts:user-profile")

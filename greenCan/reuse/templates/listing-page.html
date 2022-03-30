@@ -7,7 +7,8 @@ reuse | greenCan
 
 {% block style %}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="{% static 'css/donationCard.css' %}" >
+<link rel="stylesheet" href="{% static 'css/donation-card.css' %}" >
+<link rel="stylesheet" href="{% static 'css/pagination.css' %}" >
 <link rel="stylesheet" href="{% static 'css/modal.css' %}" />
 <link rel="stylesheet" href="{% static 'css/picSlider.css' %}" />
 <link rel="stylesheet" href="{% static 'modules/owl-carousel-2/css/owl-carousel2.min.css' %}" />
@@ -17,24 +18,29 @@ reuse | greenCan
 {% endblock %}
 
 {% block main %}
-
-<div class="input-group" style="margin-top:40px;margin-bottom:15px;">
-    <input type="text" class="form-control" placeholder="Searching an item for donation" style="float:left;"/>
-    <button class="btn btn-circle btn-search" style="margin-left: 1.5vh; margin-top:3px;"> <i class="fa fa-search"></i></button>
-</div>
+<form>
+    <div class="input-group" style="margin-top:40px;margin-bottom:15px;">
+        <input type="text" class="form-control" name="q" value="{% if q %}{{ q }}{% endif %}" placeholder="Searching an item for donation" style="float:left;"/>
+        <button type="submit" class="btn btn-circle btn-search coolBeans" style="height: 40px; width: 40px; border-radius: 20px; margin-left: 1.5vh; margin-top:3px;"> <i class="fa fa-search"></i></button>
+    </div>
+</form>
 <div class = "container">
     <div class="row mb-5" id = "wholeCard">
 {% for post in posts %}
         <div class="col-lg-4 col-md-6 col-sm-8 col-xs-8 pt-3">
             <div class="card">
-                <img src={{post.image_set.first.url}} class="card-img-top img-fluid">
+                <img src="{{post.image_set.first.url}}" class="card-img-top img-fluid">
                 <div class="row" id = "cardInfo">
-                    <div class="col-6">
-                        <h3>{{post.title|title}}</h3>
+                    <div class="col-xl-9 col-md-7 col-sm-12">
+                        <p style="margin-bottom: 0 !important;font-size: 1em;">
+                            <strong>
+                                {{post.title | title | truncatechars:30 }}
+                            </strong>
+                        </p>
                         <i class="fa fa-map-marker" id = "positionIcon"><p class="card-text">{{ post.zip_code.borough }}, {{ post.zip_code.state_id }}</p></i>
                     </div>
-                    <div class = "col-6">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#details_Model{{post.id}}">Details</button>
+                    <div class="col-xl-3 col-md-5 col-sm-12 mt-auto mx-md-0 mx-auto pl-sm-1 pt-sm-1" style="padding-left: 0px;">
+                        <button type="button" class="btn btn-outline mr-md-3 mx-auto" data-bs-toggle="modal" data-bs-target="#details_Model{{post.id}}">Details</button>
                     </div>         
                 </div>
 
@@ -42,13 +48,12 @@ reuse | greenCan
         </div>
 <!-- pop-up window -->
 <div class="modal fade" id="details_Model{{post.id}}" tabindex="-1" aria-labelledby="exampleModalLabel" hidden="true">
-    <!-- <div class="details_Model" id="details_Model" tabindex="-1" aria-labelledby="exampleModalLabel" hidden="true"></div> -->
     <div class="modal-dialog modal-dialog-scrollable px-5 py-3" style="overflow-y: initial !important">
       <div class="modal-content">
         <div class="modal-header">
           <h3 class="modal-title" id="exampleModalLabel" style = "text-align: center;">ITEM DETAILS</h3>
         </div>
-        <div class="modal-body" style="max-height: 60vh; overflow-x: hidden; overflow-y:auto;">
+        <div class="modal-body" style="max-height: 60vh; overflow-y:auto;overflow-x: wrap; overflow-wrap: break-word;">
             <div class = "container">
                 <div class = "row">
                     <!-- slides of item pictures -->
@@ -57,13 +62,13 @@ reuse | greenCan
                             {% for img in post.image_set.all %}
                                 <div class="item"><img src={{img.url}} style="width:100%"/></div>
                             {% endfor %}
-                            <!-- <div class="item"><img src={{post.url}} style="width:100%"/></div> -->
                         </div>
                     </div>
                     <!-- slides of item pictures -->
                     <div class = "col-md-6">
+                        <p><b>Rank:</b> {{post.rank}} </p>
                         <p><b>&#128151 Category:   </b>  {{post.category}}</p>
-                        <p><b>&#x1f4e6 Item description:   </b>  {{post.description}} </p>
+                        <p><b>&#x1f4e6 Item description:   </b>  {{post.headline | safe }} </p>
                         <p><b>&#128231 Email :   </b>   {{post.email}}</p>
                         <p><b>&#128241 Phone number:</b> {{post.phone_number}}</p>
                         <p><b>&#x1F4CD Pick-up location:   </b>   {{ post.zip_code.borough }}, {{ post.zip_code.state_id }} - {{ post.zip_code.zip_code }}</p>
@@ -78,24 +83,48 @@ reuse | greenCan
     </div>
 </div>
 {% endfor %}
+<div class="col-12 my-5">
+    <nav class="pagination-container d-flex justify-content-center">
+		<div class="pagination">
+            {% if posts.has_previous %}
+                <a class="pagination-newer" href="?page=1&q={{ q }}">&laquo; FIRST</a>
+            {% endif %}
+            <span class="pagination-inner">
+                {% if posts.has_previous %}
+                    <a href="?page={{ posts.previous_page_number }}&q={{ q }}">{{ posts.previous_page_number }}</a>
+                {% endif %}
+                <a class="pagination-active" href="?page={{ posts.number }}&q={{ q }}">{{ posts.number }}</a>
+                {% if posts.has_next %}
+                    <a href="?page={{ posts.next_page_number }}&q={{ q }}">{{ posts.next_page_number }}</a>
+                {% endif %}
+            </span>
+            {% if posts.has_next %}
+                <a class="pagination-older" href="?page={{ posts.paginator.num_pages }}&q={{ q }}">LAST &raquo;</a>
+            {% endif %}
+        </div>
+    </nav>
 </div>
+</div>
+
 </div>
 
 {% endblock %}
 
 {% block scripts %}
+<script src="{% static 'js/pagination.js' %}"></script>
 <script src="{% static 'modules/owl-carousel-2/js/owl-carousel2.min.js' %}"></script>
 <script>
   $(document).ready(function() {
     let owl = $('.owl-carousel');
-    //init default carousel
     owl.owlCarousel({
+        margin: 20,
+        loop: true,
+        autoplay: true,
+        autoplayTimeout: 2800,
+        autoplayHoverpause: true,
         items: 1,
-        margin:40,
-        nav:true,
-        stagePadding: 30,
-        smartSpeed: 450,
-        navText : ["<i class='fas fa-chevron-left'></i>","<i class='fas fa-chevron-right'></i>"]
+        nav: true,
+        navText : ["<i class='fas fa-chevron-left ml-0'></i>","<i class='fas fa-chevron-right mr-0'></i>"]
     });
 
 }); 
