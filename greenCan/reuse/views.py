@@ -7,10 +7,24 @@ from django.urls import reverse
 from django.conf import settings
 
 
+"""
+function: index
+
+set path for reuse page
+"""
+
+
 def index(request):
     template = "reuse_index.html"
     context = {"is_reuse": True}
     return render(request, template, context=context)
+
+
+"""
+function: donation_view
+
+set path for donation view page
+"""
 
 
 def donation_view(request):
@@ -19,22 +33,40 @@ def donation_view(request):
     return render(request, template, context=context)
 
 
-def listingPage(request):
-    template = "listingPage.html"
-    Posts = Post.objects.all().values()
-    Images = Image.objects.all().values()
-    ZipCodes = ZipCode.objects.all().values()
-    for index in range(len(Posts)):
-        # add the url
-        Posts[index]["url"] = Images.filter(post=Posts[index]["id"])[0]["url"]
-        # Posts[index]["url"] = Images.objects.filter(post_id=Posts[index]).first().url
-        temp = ZipCodes.filter(id=Posts[index]["zip_code_id"])[0]
-        Posts[index]["location"] = str(
-            temp["borough"] + ", " + temp["state"] + ", " + temp["zip_code"]
-        )
+"""
+function: listing_page
 
-    context = {"Posts": Posts, "is_reuse": True}
+Obtain all posts in database with their images
+then rebuild the data format for frontend view
+"""
+
+
+def listing_page(request):
+    template = "listing-page.html"
+    posts = Post.objects.all()
+    # Images = Image.objects.all().values()
+    # ZipCodes = ZipCode.objects.all().values()
+    # for index in range(len(Posts)):
+    #     # add the url
+    #     Posts[index]["url"] = Images.filter(post=Posts[index]["id"])[0]["url"]
+    #     # Posts[index]["url"] = Images.objects.filter(post_id=Posts[index]).first().url
+    #     temp = ZipCodes.filter(id=Posts[index]["zip_code_id"])[0]
+    #     Posts[index]["location"] = str(
+    #         temp["borough"] + ", " + temp["state"] + ", " + temp["zip_code"]
+    #     )
+
+    context = {"posts": posts, "is_reuse": True}
     return render(request, template, context=context)
+
+
+"""
+function: create_post
+
+Firstly, set configuration for Google firebase cloud storage
+then obtain post data and images from frontend
+save the images to firebase and get urls
+create Post object and Images object for this user's post and save into database
+"""
 
 
 @login_required
@@ -68,9 +100,11 @@ def create_post(request):
     number = request.POST.get("number")
     email = request.POST.get("email")
     zipcode = request.POST.get("zipcode")
-
     user = request.user
     zip_code = ZipCode.objects.filter(zip_code=zipcode)
+
+    if len(zip_code) == 0:
+        zip_code = None
 
     if (
         title is not None

@@ -49,7 +49,7 @@ Recycle | greenCan
     <div class="col-md-8 col-sm-10 col-12 offset-md-0 offset-sm-1 pr-2">
         <div id="map"></div>
     </div>
-    <div class="col-md-4 col-sm-10 col-12 offset-md-0 offset-sm-1">
+    <div class="col-md-4 col-sm-10 col-12 offset-md-0 offset-sm-1" >
         <div id="listings" class="mt-2 card_frame">
         </div>
     </div>
@@ -61,11 +61,11 @@ Recycle | greenCan
 <script src="{% static 'js/maps.js' %}"></script>
 <script>
 
-    var result = {};
-    var locations = {};
+    let result = {};
+    let locations = {};
     function markPoints(locations){
         clearView();
-        var marker;
+        let marker;
         $.each(locations, function( key,site ) {
             marker = L.marker([site["latitude"],site["longitude"]],{icon: colorCategoryMap[site['type'].toLowerCase()][0]})
             marker.bindTooltip('<b>'+site["name"]+'</b><br/>'+site["street_address"]+'<br/>'+site['state_id']+' '+site['zip_code'], {
@@ -247,7 +247,7 @@ Recycle | greenCan
     });
     
     function filterByCategory(obj){
-        var selectedCat = $(obj).val();
+        let selectedCat = $(obj).val();
         if(selectedCat == 'showing all sites'){
             locations = result.map(([key, value]) => value);
         }

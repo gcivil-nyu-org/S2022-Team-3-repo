@@ -10,3 +10,6 @@ pyrebase
 datetime
 django-crispy-forms
 pyyaml
+django-allauth
+pillow
+model_bakery
