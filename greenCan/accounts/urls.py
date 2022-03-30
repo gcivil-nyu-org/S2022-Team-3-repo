@@ -10,8 +10,6 @@ from .views import (
     user_profile,
     user_profile_avatar,
 )
-from django.conf import settings
-from django.conf.urls.static import static
 
 app_name = "accounts"
 

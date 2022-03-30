@@ -424,7 +424,7 @@ class TestUserProfile(TestCase):
         self.assertTemplateUsed(response, "accounts/templates/user-profile.html")
 
     def test_info_changed_after_edit_profile(self):
-        response = self.client.post(self.url, {"first_name": "first2"}, follow=True)
+        self.client.post(self.url, {"first_name": "first2"}, follow=True)
         user1 = get_user(self.client)
         self.assertEquals(user1.first_name, "first2")
 
@@ -452,7 +452,7 @@ class TestUserProfileAvatar(TestCase):
         self.assertTemplateUsed(response, "accounts/templates/user-profile.html")
 
     def test_info_changed_after_edit_profile_avatar(self):
-        response = self.client.post(self.url2, {"avatar": "2.svg"}, follow=True)
+        self.client.post(self.url2, {"avatar": "2.svg"}, follow=True)
         user2 = get_user(self.client)
         self.assertEquals(user2.avatar, "2.svg")
 

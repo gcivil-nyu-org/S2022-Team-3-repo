@@ -7,10 +7,6 @@ from django.contrib.auth.forms import (
 )
 from django.forms.widgets import EmailInput
 from django.utils.encoding import force_str as _
-from django.core.validators import RegexValidator
-from django.core.files.images import get_image_dimensions
-
-from recycle.models import ZipCode
 
 User = get_user_model()
 
