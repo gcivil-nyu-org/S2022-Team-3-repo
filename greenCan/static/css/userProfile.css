@@ -51,3 +51,6 @@ button.avatarBtn:hover{
 button.avatarBtn:focus{
     background-color: rgba(196, 196, 196, 0.6)!important;
 }
+.form-control {
+    text-align: center !important;
+}
