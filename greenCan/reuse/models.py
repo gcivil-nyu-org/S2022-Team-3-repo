@@ -1,6 +1,8 @@
 from django.db import models
 from recycle.models import ZipCode
 from django.conf import settings
+from django.contrib.postgres.search import SearchVectorField
+from django.contrib.postgres.indexes import GinIndex
 
 
 class Post(models.Model):
@@ -17,9 +19,15 @@ class Post(models.Model):
     approved = models.BooleanField(null=True, default=False)
     still_available = models.BooleanField(null=True, default=True)
     created_on = models.DateTimeField(auto_now_add=True, null=False)
+    search_vector = SearchVectorField(null=True)
 
     def __str__(self):
         return str(self.id)
+
+    class Meta:
+        indexes = [
+            GinIndex(fields=["search_vector"]),
+        ]
 
 
 class Image(models.Model):

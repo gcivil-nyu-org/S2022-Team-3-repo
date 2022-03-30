@@ -21,7 +21,7 @@ class TestModelManager(TestCase):
         self.assertEquals(user.is_active, True)
         self.assertEquals(user.is_staff, False)
         self.assertEquals(user.is_admin, False)
-        self.assertEquals(self.User.objects.get(id=1), user)
+        self.assertEquals(self.User.objects.get(id=user.id), user)
 
     def test_createuser_method_invalid_email(self):
         with self.assertRaises(ValueError):
@@ -69,7 +69,7 @@ class TestModelManager(TestCase):
         self.assertEquals(user.is_active, True)
         self.assertEquals(user.is_staff, True)
         self.assertEquals(user.is_admin, False)
-        self.assertEquals(self.User.objects.get(id=1), user)
+        self.assertEquals(self.User.objects.get(id=user.id), user)
 
     def test_createsuperuser_method(self):
         user = self.User.objects.create_superuser(
@@ -81,7 +81,7 @@ class TestModelManager(TestCase):
         self.assertEquals(user.is_active, True)
         self.assertEquals(user.is_staff, True)
         self.assertEquals(user.is_admin, True)
-        self.assertEquals(self.User.objects.get(id=1), user)
+        self.assertEquals(self.User.objects.get(id=user.id), user)
 
 
 class TestUserModel(TestCase):

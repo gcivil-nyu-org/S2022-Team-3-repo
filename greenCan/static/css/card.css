@@ -37,222 +37,169 @@
     overflow-x: hidden;
 }
 
-    .border_rectangle1{
-      position: relative;
-      height: 10em;
-      background: #FFFFFF;
-      border: 1px solid #21212D;
-      box-sizing: border-box;
-      border-radius: 5px;
-        margin-bottom: 5px;
-    }
-      
-      .info_circle_icon_frame{      
-        position: absolute;
-        width: 24px;
-        height: 24px;
-        right: 6px;
-        top: 4px;
-      
-        
-        /* blend - pass through ; 
-          // While hovering
-          // Open overlay: "i - donation site cards";
-          // Animate: Dissolve;
-          animation-timing-function: ease-out;
-          animation-duration: 300ms;
-        */
-      }
-      
-        .overlay{
-          display: none;
-          position: absolute;
-          width: 220px;
-          text-overflow: ellipsis;
-          height: 24px;
-          /* left: -300px; */
-          right: 30px;
-          top: 0px;
-          font-family: 'Roboto', sans-serif;
-          font-style: normal;
-          font-weight: 300;
-          font-size: 12px;
-          line-height: 21px;
-          padding: 2px 5px;
-          vertical-align: middle;
-          align-items: center;
-          color: #fff;
-          background-color: #000000cc;
-          border-radius: 12px;
-        }
-        
-        .info_circle_icon:hover .overlay{
-          display: block;
-          transition: all 3s ease-in-out; 
-          opacity: 2;        
-          /*
-          position: absolute;
-          left: 8.33%;
-          right: 8.33%;
-          top: 8.33%;
-          bottom: 8.33%;
-          background: #C4C4C4;
-          */
-        }
-        
-      
-      .dhs_donation_site{
-        position: absolute;
-        width: 199px;
-        height: 21px;
-        left: 10px;
-        top: 37px;
-        font-family: 'Roboto', sans-serif;
-        font-style: normal;
-        font-weight: 600;
-        font-size: 18px;
-        line-height: 21px;
-        /* identical to box height */
-        display: flex;
-        align-items: center;
-        color: #21212D;
-      }
-      .map_marker_icon_frame{
-        position: absolute;
-        width: 19px;
-        height: 19px;
-        left: 10px;
-        top: 66px;
-      }
-        /*
-        .map_marker_icon{
-          
-          position: absolute;
-          left: 18.75%;
-          right: 18.75%;
-          top: 8.33%;
-          bottom: 8.33%;
-          background: #C4C4C4;
-          
-        }
-        */
-      
-      .address{
-        position: absolute;
-        width: 402px;
-        height: 18px;
-        left: 31px;
-        top: 67px;
-        font-family: 'Roboto', sans-serif;
-        font-style: normal;
-        font-weight: 300;
-        font-size: 14px;
-        line-height: 16px;
-        display: flex;
-        align-items: center;
-        color: #6ABE52;
-      }
-      .phone_icon_frame{
-        position: absolute;
-        width: 19px;
-        height: 19px;
-        left: 10px;
-        top: 89px;
-      }
-        /*
-        .phone_icon{
-          position: absolute;
-          left: 8.33%;
-          right: 8.33%;
-          top: 8.33%;
-          bottom: 8.33%;
-          background: #C4C4C4;
-        }
-        */
-      
-      .phone_number{
-        position: absolute;
-        width: 300px;
-        height: 14px;
-        left: 31px;
-        top: 93px;
-        font-family: 'Roboto', sans-serif;
-        font-style: normal;
-        font-weight: 300;
-        font-size: 12px;
-        line-height: 14px;
-        /* identical to box height */
-        display: flex;
-        align-items: center;
-        color: #000000;
-      }
-      .mail_icon_frame{
-        position: absolute;
-        width: 24px;
-        height: 19px;
-        left: 10px;
-        top: 113px;
-        
-      }
-        /*
-        .mail_icon{
-          position: absolute;
-          left: 8.33%;
-          right: 8.33%;
-          top: 18.75%;
-          bottom: 18.75%;
-          background: #C4C4C4;
-        }
-        */
-      
-      .email{
-        position: absolute;
-        width: 300px;
-        height: 14px;
-        left: 39px;
-        top: 118px;
-        font-family: 'Roboto', sans-serif;
-        font-style: normal;
-        font-weight: 300;
-        font-size: 12px;
-        line-height: 14px;
-        /* identical to box height */
-        display: flex;
-        align-items: center;
-        color: #000000;
-      }
-      .direction_frame{
-        position: absolute;
-        width: fit-content;
-        height: 38px;
-        right: 8px;
-        bottom: 7px;
-      }
-        .direction_border{
-          position: absolute;
-          width: 150px;
-          height: 38px;
-          right: 0px;
-          bottom: 0px;
-          border: 1px solid #21212D;
-          box-sizing: border-box;
-          border-radius: 19px;
-        }
-        .get_direction{
-          position: absolute;
-          width: 120px;
-          height: 19px;
-          right: 10px;
-          bottom: 10px;
-          font-family: 'Roboto', sans-serif;
-          font-style: normal;
-          font-weight: 300;
-          font-size: 16px;
-          line-height: 19px;
-          /* identical to box height */
-          display: flex;
-          align-items: center;
-          text-align: center;
-          color: #21212D;
-        }
+.border_rectangle1{
+  position: relative;
+  height: 10em;
+  background: #FFFFFF;
+  border: 1px solid #21212D;
+  box-sizing: border-box;
+  border-radius: 5px;
+    margin-bottom: 5px;
+}
+  
+.info_circle_icon_frame{      
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  right: 6px;
+  top: 4px;
+
+}
+  
+.overlay{
+  display: none;
+  position: absolute;
+  width: 220px;
+  text-overflow: ellipsis;
+  height: 24px;
+  right: 30px;
+  top: 0px;
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 21px;
+  padding: 2px 5px;
+  vertical-align: middle;
+  align-items: center;
+  color: #fff;
+  background-color: #000000cc;
+  border-radius: 12px;
+}
+
+.info_circle_icon:hover .overlay{
+  display: block;
+  transition: all 3s ease-in-out; 
+  opacity: 2;
+}
+  
+
+.dhs_donation_site{
+  position: absolute;
+  width: 199px;
+  height: 21px;
+  left: 10px;
+  top: 37px;
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 21px;
+  /* identical to box height */
+  display: flex;
+  align-items: center;
+  color: #21212D;
+}
+.map_marker_icon_frame{
+  position: absolute;
+  width: 19px;
+  height: 19px;
+  left: 10px;
+  top: 66px;
+}
+.address{
+  position: absolute;
+  width: 402px;
+  height: 18px;
+  left: 31px;
+  top: 67px;
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 16px;
+  display: flex;
+  align-items: center;
+  color: #6ABE52;
+}
+.phone_icon_frame{
+  position: absolute;
+  width: 19px;
+  height: 19px;
+  left: 10px;
+  top: 89px;
+}
+  
+.phone_number{
+  position: absolute;
+  width: 300px;
+  height: 14px;
+  left: 31px;
+  top: 93px;
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 14px;
+  /* identical to box height */
+  display: flex;
+  align-items: center;
+  color: #000000;
+}
+.mail_icon_frame{
+  position: absolute;
+  width: 24px;
+  height: 19px;
+  left: 10px;
+  top: 113px;
+  
+}
+.email{
+  position: absolute;
+  width: 300px;
+  height: 14px;
+  left: 39px;
+  top: 118px;
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 14px;
+  display: flex;
+  align-items: center;
+  color: #000000;
+}
+.direction_frame{
+  position: absolute;
+  width: fit-content;
+  height: 38px;
+  right: 8px;
+  bottom: 7px;
+}
+.direction_border{
+  position: absolute;
+  width: 150px;
+  height: 38px;
+  right: 0px;
+  bottom: 0px;
+  border: 1px solid #21212D;
+  box-sizing: border-box;
+  border-radius: 19px;
+}
+.get_direction{
+  position: absolute;
+  width: 120px;
+  height: 19px;
+  right: 10px;
+  bottom: 10px;
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 19px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #21212D;
+}
   

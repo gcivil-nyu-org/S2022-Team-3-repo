@@ -1,0 +1,289 @@
+{% extends 'template.html' %}
+{% load static %}
+
+{% block title %}
+user-profile
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/modal.css' %}" />
+<link rel="stylesheet" href="{% static 'css/userProfile.css' %}" />
+{% endblock %}
+
+{% block main %}
+<div class ="container-fluid p-0 m-0">
+    <div class = "row row-height d-flex">
+        <div class = "col-md-5 col-sm-12">
+            <div class="avatarContainer">
+                  <div class = "userAvatar">
+                    {% if user.avatar %}
+                    <img height="150" src="{{user.avatar}}" >
+                    {% else %}
+                    <img height="150" src="{% static 'images/avatar/avatar.svg' %}" >
+                    {% endif %}
+                  </div>
+                 <button type="button" class = "editAvatarBtn" data-bs-toggle="modal" data-bs-target="#editAvatar"><i class="fas fa-pencil-alt"></i></button>
+              </div>
+           
+            <p style="font-size:x-large;"><b>{{user.get_full_name}}</b> </p>
+            <div style="text-align: center;">
+            <div style="display: inline-block; text-align: left;">
+                <p><b>Email:   </b>  {{user.email}} </p>
+                {% if user.phone_number %}
+                <p><b>Phone:   </b> +1 {{user.phone_number}} </p>
+                {% else %}
+                <p><b>Phone:   </b> UNKNOWN </p>
+                {% endif %}
+                {% if user.phone_number %}
+                <p><b>Location:   </b> {{user.zipcode.borough}}, {{user.zipcode.state_id}} </p>
+                {% else %}
+                <p><b>Location:   </b> UNKNOWN </p>
+                {% endif %}
+                <br>
+            </div>
+            </div>
+            <button type="button" class="btn btn-primary" style="background-color: black !important;" data-bs-toggle="modal" data-bs-target="#edit">Edit Profile</button>
+
+            <!--Edit information window-->
+            <div class="modal fade" id="edit" tabindex="-1" aria-labelledby="exampleModalLabel" style = "width: min-content;" hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable px-5 py-5" style="overflow-y: initial !important">
+                    <div class="modal-content">
+                        <button type="button" class="close" data-bs-dismiss="modal" style = "background-color: transparent!important; color:#777!important;position: absolute;right: 0;top:0;">&times;</button>
+                        <div class="modal-header">
+                        <h2 class="modal-title" id="exampleModalLabel" >&#128394 Edit Profile</h2>
+                        </div>
+                        <div class="modal-body"  style="max-height: 80vh; overflow-x: hidden; overflow-y:auto;">
+                            <div class="form-content" >
+                                <form method="POST"  action="{% url 'accounts:user-profile' %}" >
+                                    {% csrf_token %}
+                                    <div class="form-group">
+                                        <p><label for="first_name" style="float:left;  margin-top: 4px;"><b>First Name: &nbsp&nbsp</b></label>
+                                            <input id="first_name" type="text" name="first_name" value = {{user.first_name}} class="form-control"></p>
+                                        <p><label for="last_name" style="float:left; margin-top: 4px;"><b>Last Name:&nbsp&nbsp</b></label>
+                                            <input id="last_name" type="text" name="last_name" value = {{user.last_name}} class="form-control"></p>
+                                        <p><label for="phone_number" style="float:left; margin-top: 4px;"><b>Phone Number:&nbsp&nbsp</b></label>
+                                            <input id="phone_number" type="text" name="phone_number" value = {{user.phone_number}} class="form-control"></p>
+                                        <p><label for="zipcode" style="float:left; margin-top: 4px;"><b>Zipcode:&nbsp&nbsp</b></label>
+                                            <input id="zipcode" type="text" name="zipcode" value = {{user.zipcode}} class="form-control"></p>
+                                    </div>
+                                    <br>
+                                    <button type="submit" class="btn btn-secondary " >Save</button>
+                                    <button type="reset" class="btn btn-secondary my-4" style="background-color: #008080 !important;">reset</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color: #777 !important;">Close</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                  <!--Edit information window-->
+            <div class="modal fade" id="editAvatar" tabindex="-1" aria-labelledby="exampleModalLabel2" hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable px-5 py-3" style="overflow-y: initial !important">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h2 class="modal-title" id="exampleModalLabel2" >&#128512 Profile Image</h2>
+                        </div>
+                        <div class="modal-body" style="max-height: 80vh; overflow-x: hidden; overflow-y:auto;">
+                            <div class="form-content">
+                                <form  method="POST" action = "{% url 'accounts:user-profile-avatar' %}"  >
+                                    {% csrf_token %}
+                                    <!-- {{ form.as_p}}-->
+                                    <div class="form-group">
+                                        <p><input id="avatar" type="hidden" name="avatar" value ="" hidden class="form-control"></p>
+                                        <div class = "container-fluid">
+                                        <div class = "row mr-1">
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/1.svg' %}" >
+                                                    <img style="max-height: 50px;" src ="{% static 'images/avatar/1.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/2.svg' %}" >
+                                                    <img style="max-height: 50px;" src ="{% static 'images/avatar/2.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/3.svg' %}" >
+                                                    <img style="max-height: 50px;" src ="{% static 'images/avatar/3.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/4.svg' %}" >
+                                                    <img style="max-height: 50px;" src ="{% static 'images/avatar/4.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/5.svg' %}" >
+                                                    <img style="max-height: 50px;" src ="{% static 'images/avatar/5.svg' %}">
+                                                </button>
+                                            </div>
+
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/6.svg' %}" >
+                                                    <img style="max-height: 50px;" src ="{% static 'images/avatar/6.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/7.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/7.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/8.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/8.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/9.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/9.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/10.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/10.svg' %}">
+                                                </button>
+                                            </div>
+
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/11.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/11.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/12.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/12.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/13.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/13.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/14.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/14.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/15.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/15.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/16.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/16.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/17.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/17.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/18.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/18.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/19.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/19.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/20.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/20.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/21.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/21.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/22.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/22.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/23.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/23.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/24.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/24.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/25.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/25.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/26.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/26.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/27.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/27.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/28.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/28.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/29.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/29.svg' %}">
+                                                </button>
+                                            </div>
+                                            <div class="col-md-2 col-sm-4">
+                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/30.svg' %}" >
+                                                    <img height="50" src ="{% static 'images/avatar/30.svg' %}">
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                    <div class="d-flex float-right py-3">
+                                        <button type="button" class="btn btn-rounded"  style="background-color: #777 !important;" data-bs-dismiss="modal">Close</button>
+                                        <span class="text-white">&nbsp&nbsp</span>
+                                        <button class="btn btn-rounded" type="submit">Save</button>
+                                      </div>
+                                    </div>
+                        
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+
+
+        <div class = "col-md-7 col-sm-12 justify-content">
+            <!--green credits rewards here-->
+        </div>
+    
+    </div>
+</div>
+
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+$('.avatarBtn').on('click',function(){
+    console.log("before");
+    $('#avatar').val($(this).attr('data-url'));
+    console.log("after");
+    console.log($('#avatar').val());
+});
+
+$('#main').removeClass( "container-md mx-md-auto mx-1" ).addClass("container-fluid p-0");
+</script>
+{% endblock %}
