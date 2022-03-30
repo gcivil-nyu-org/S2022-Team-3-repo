@@ -8,6 +8,8 @@ from accounts.views import (
     activate_account_page,
     PasswordResetView,
     PasswordResetConfirmView,
+    user_profile,
+    user_profile_avatar,
 )
 
 
@@ -74,3 +76,18 @@ class TestUrls(SimpleTestCase):
     #     self.assertEqual(resolved.func, signup_page)
     #     self.assertEqual(resolved.namespace, "accounts")
     #     self.assertEqual(url, "/accounts/create/")
+
+    # testing profile urls
+    def test_user_profile_url(self):
+        url = reverse("accounts:user-profile")
+        resolved = resolve(url)
+        self.assertEqual(resolved.func, user_profile)
+        self.assertEqual(resolved.namespace, "accounts")
+        self.assertEqual(url, "/accounts/user-profile/")
+
+    def test_user_profile_avatar_url(self):
+        url = reverse("accounts:user-profile-avatar")
+        resolved = resolve(url)
+        self.assertEqual(resolved.func, user_profile_avatar)
+        self.assertEqual(resolved.namespace, "accounts")
+        self.assertEqual(url, "/accounts/user-profile-avatar/")
