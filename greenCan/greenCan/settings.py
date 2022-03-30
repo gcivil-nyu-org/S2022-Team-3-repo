@@ -100,14 +100,29 @@ DATABASES = {
         "PASSWORD": env("DATABASE_PASSWORD"),
         "HOST": env("DATABASE_HOST"),
         "PORT": "5432",
+        "TEST": {
+            "NAME": env("TEST_DATABASE_NAME"),
+        }
     }
 }
 
 
 if "test" in sys.argv:
+    # DATABASES["default"] = {
+    #     "ENGINE": "django.db.backends.sqlite3",
+    #     "NAME": "mydatabase",
+    # }
+
     DATABASES["default"] = {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": "mydatabase",
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": env("TEST_DATABASE_NAME"),
+        "USER": env("TEST_DATABASE_USER"),
+        "PASSWORD": env("TEST_DATABASE_PASSWORD"),
+        "HOST": env("TEST_DATABASE_HOST"),
+        "PORT": "5432",
+        "TEST": {
+            "NAME": env("TEST_DATABASE_NAME"),
+        }
     }
 
 
