@@ -468,7 +468,7 @@ body {
 
 .btn-outline {
     display: flex;
-    width: 100%;
+    /* width: 100%; */
 }
 
 /* XLarge */
