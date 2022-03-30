@@ -4,6 +4,7 @@
 		$body = $('body'),
 		$nav = $('#nav');
 
+
 		// Breakpoints.
 		breakpoints({
 			xlarge:  [ '1281px',  '1680px' ],
@@ -21,7 +22,6 @@
 		});
 
 		$('#scrollToTopBtn').hide();
-
 		
 		$('#scrollToTopBtn').click(function() {
 			$('html, body').animate({scrollTop : 0},700);

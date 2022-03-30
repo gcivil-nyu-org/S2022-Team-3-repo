@@ -52,7 +52,7 @@ class TestSignupView(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, "Activate your account")
         self.assertEqual(
-            mail.outbox[0].from_email, settings.EMAIL_HOST_USER
+            mail.outbox[0].from_email, settings.DEFAULT_FROM_EMAIL
         )  # change to your email <youremail>
         self.assertEqual(mail.outbox[0].to, ["testuser@gmail.com"])  # self.user.email
         self.assertEqual(
@@ -151,7 +151,7 @@ class TestActivateAccountView(TestCase):
             message.message, "Thank you for confirming your email. You can now login."
         )
 
-        user = User.objects.get(id=1)
+        user = User.objects.get(id=self.user.id)
 
         self.assertTrue(user.is_active)  # user status updated to active
 
@@ -280,7 +280,7 @@ class TestLoginView(TestCase):
         self.client.post(self.url, data, follow=True)
         login_attempt = LoginAttempt.objects.get(user=self.user)
         self.assertEquals(login_attempt.login_attempts, 5)
-        user = User.objects.get(id=1)  # is same as self.user
+        user = User.objects.get(id=self.user.id)  # is same as self.user
         self.assertFalse(user.is_active)
 
     def test_email_sent_on_maximum_reach(self):
@@ -326,7 +326,7 @@ class TestLogoutView(TestCase):
         expected_url = reverse("accounts:login")
         self.assertRedirects(response, expected_url, 302)
 
-        user = User.objects.get(id=1)
+        user = User.objects.get(id=self.user.id)
         self.assertNotIn(
             user.id, self.client.session
         )  # user does not have an active session i.e. is logged out

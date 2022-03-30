@@ -1,45 +1,40 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from model_bakery import baker
-import math
-from django.db import connection
+
+from recycle.models import ZipCode, DropOffLocation
 
 
 class TestViews(TestCase):
     def setUp(self):
         self.index_url = reverse("recycle:index")
         self.url = reverse("recycle:fetch-drop-off-locations")
-        self.zipcode = baker.make("recycle.ZipCode")
         self.dropoffloc = baker.make("recycle.DropOffLocation")
-
-        # define user defined function
-        def calc_distance(lat1, lon1, lat2, lon2, unit):
-            if (lat1 == lat2) and (lon1 == lon2):
-                return 0
-            else:
-                radlat1 = math.pi * lat1 / 180
-                radlat2 = math.pi * lat2 / 180
-                theta = lon1 - lon2
-                radtheta = math.pi * theta / 180
-                dist = math.sin(radlat1) * math.sin(radlat2) + math.cos(
-                    radlat1
-                ) * math.cos(radlat2) * math.cos(radtheta)
-                if dist > 1:
-                    dist = 1
-                dist = math.acos(dist)
-                dist = dist * 180 / math.pi
-                dist = dist * 60 * 1.1515
-                if unit == "K":
-                    dist = dist * 1.609344
-                if unit == "N":
-                    dist = dist * 0.8684
-                return dist
-
-        calc_distance(12, 23, 30, 40, "K")
-        # create the user defined function
-        connection.connection.create_function("calculate_distance", 5, calc_distance)
-
         self.client = Client()
+        zipcode = ZipCode(
+            zip_code="10001",
+            state_id="NY",
+            state="New York",
+            borough="Manhattan",
+            centroid_latitude=40.75021293296376,
+            centroid_longitude=-73.99692994900218,
+            polygon="",
+        )
+        zipcode.save()
+        self.zipcode = zipcode
+        drop_off_location = DropOffLocation(
+            name="Drop-Off-1",
+            zip_code=zipcode,
+            latitude=40.75021293296376,
+            longitude=-73.99692994900218,
+            items_accepted="Food",
+            type="public recycle",
+            public_email="tandon@nyu.edu",
+            phone_number="2121112011",
+            street_address="101 Willoughby street",
+        )
+        drop_off_location.save()
+        self.drop_off_location = drop_off_location
 
     def test_index_GET(self):
 
@@ -48,16 +43,16 @@ class TestViews(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, "recycle/templates/index.html")
 
-    # def test_searchdropofflocations1(self):
+    def test_searchdropofflocations1(self):
 
-    #     print(self.zipcode.id)
+        response = self.client.get(
+            self.url + "?type=live-location&latitude=40.7362&longitude=-74.0422"
+        )
 
-    #     response = self.client.get(self.url + "?type=live-location&latitude=40.7362&longitude=-74.0422")
+        self.assertEquals(response.status_code, 200)
 
-    #     self.assertEquals(response.status_code, 200)
+    def test_searchdropofflocations2(self):
 
-    # def test_searchdropofflocations2(self):
+        response = self.client.get(self.url + "?type=zipcode&zipcode=10004")
 
-    #     response = self.client.get(self.url + "?type=zipcode&zipcode=10004")
-
-    #     self.assertEquals(response.status_code, 200)
+        self.assertEquals(response.status_code, 200)
