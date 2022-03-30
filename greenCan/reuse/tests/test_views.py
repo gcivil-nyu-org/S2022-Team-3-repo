@@ -9,6 +9,8 @@ from six import BytesIO
 from recycle.models import ZipCode
 from reuse.models import Image, Post
 
+from reuse.models import NGOLocation
+
 User = get_user_model()
 
 
@@ -195,6 +197,19 @@ class TestViews(TestCase):
         )
         zipcode.save()
         self.zipcode = zipcode
+        ngo_location = NGOLocation(
+            zip_code=zipcode,
+            latitude=40.75021293296376,
+            longitude=-73.99692994900218,
+            items_accepted="Food",
+            email="tandon@nyu.edu",
+            phone="2121112011",
+            address="101 Willoughby street",
+            hours="Open on everyday",
+            website="www.recycle.com",
+        )
+        ngo_location.save()
+        self.ngo_location = ngo_location
 
     def test_index_GET(self):
 
@@ -218,7 +233,18 @@ class TestViews(TestCase):
         self.assertTemplateUsed(response, "listing-page.html")
 
     def test_ngo_locations1(self):
-        print(self.zipcode.id)
-        response = self.client.get(self.search_ngo_locations_url + "?type=live-location&latitude=40.7362&longitude=-74.0422")
+
+        response = self.client.get(
+            self.search_ngo_locations_url
+            + "?type=live-location&latitude=40.7362&longitude=-74.0422"
+        )
+
+        self.assertEquals(response.status_code, 200)
+
+    def test_ngo_locations2(self):
+
+        response = self.client.get(
+            self.search_ngo_locations_url + "?type=zipcode&zipcode=10004"
+        )
 
         self.assertEquals(response.status_code, 200)
