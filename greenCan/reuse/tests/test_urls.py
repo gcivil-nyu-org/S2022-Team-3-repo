@@ -27,4 +27,3 @@ class TestUrls(SimpleTestCase):
         self.assertEquals(resolve(url).func, create_post)
         self.assertEquals(resolve(url).namespace, "reuse")
         self.assertEquals(url, "/reuse/create_post/")
-    
