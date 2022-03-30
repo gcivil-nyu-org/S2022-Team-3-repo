@@ -25,6 +25,7 @@
   padding: 9px;
   padding-left: 12px;
   padding-right: 12px;
+  max-width: 50px;
   align-items: center;
   position: absolute;
   bottom:0;
