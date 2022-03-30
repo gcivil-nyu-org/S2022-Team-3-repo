@@ -10,6 +10,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.RunSQL(
             sql="""
+            DROP FUNCTION IF EXISTS calculate_distance;
         CREATE FUNCTION calculate_distance(lat1 float, lon1 float, lat2 float, lon2 float, units varchar)
         RETURNS float AS $dist$
             DECLARE
