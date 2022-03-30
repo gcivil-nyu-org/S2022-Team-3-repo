@@ -24,14 +24,14 @@ reuse | greenCan
 </div>
 <div class = "container">
     <div class="row mb-5" id = "wholeCard">
-{% for post in Posts %}
+{% for post in posts %}
         <div class="col-lg-4 col-md-6 col-sm-8 col-xs-8 pt-3">
             <div class="card">
-                <img src={{post.url}} class="card-img-top img-fluid">
+                <img src={{post.image_set.first.url}} class="card-img-top img-fluid">
                 <div class="row" id = "cardInfo">
                     <div class="col-6">
                         <h3>{{post.title|title}}</h3>
-                        <i class="fa fa-map-marker" id = "positionIcon"><p class="card-text">{{post.location }}</p></i>
+                        <i class="fa fa-map-marker" id = "positionIcon"><p class="card-text">{{ post.zip_code.borough }}, {{ post.zip_code.state_id }}</p></i>
                     </div>
                     <div class = "col-6">
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#details_Model{{post.id}}">Details</button>
@@ -54,8 +54,10 @@ reuse | greenCan
                     <!-- slides of item pictures -->
                     <div class = "col-md-6">
                         <div class="owl-carousel owl-theme">
-                            <div class="item"><img src={{post.url}} style="width:100%"/></div>
-                            <div class="item"><img src={{post.url}} style="width:100%"/></div>
+                            {% for img in post.image_set.all %}
+                                <div class="item"><img src={{img.url}} style="width:100%"/></div>
+                            {% endfor %}
+                            <!-- <div class="item"><img src={{post.url}} style="width:100%"/></div> -->
                         </div>
                     </div>
                     <!-- slides of item pictures -->
@@ -64,7 +66,7 @@ reuse | greenCan
                         <p><b>&#x1f4e6 Item description:   </b>  {{post.description}} </p>
                         <p><b>&#128231 Email :   </b>   {{post.email}}</p>
                         <p><b>&#128241 Phone number:</b> {{post.phone_number}}</p>
-                        <p><b>&#x1F4CD Pick-up location:   </b>   {{post.location}}</p>
+                        <p><b>&#x1F4CD Pick-up location:   </b>   {{ post.zip_code.borough }}, {{ post.zip_code.state_id }} - {{ post.zip_code.zip_code }}</p>
                     </div>
                 </div>
             </div>
