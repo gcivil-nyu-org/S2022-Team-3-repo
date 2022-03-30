@@ -401,38 +401,61 @@ class TestPasswordResetSent(TestCase):
         )
         self.assertEquals(response.status_code, 200)
 
-"""
+
 # testing profile
 class TestUserProfile(TestCase):
     def setUp(self):
-        self.user1 = User.objects.create_user(
-            first_name="user1_first",
-            last_name="user1_last",
-            email="user1@gmail.com",
-            password="1234",
+        user = User.objects.create(
+            first_name="first1",
+            last_name="last1",
+            email="user1@gmail.com", 
+            password="password1",
+            is_active=True,
         )
-        self.user2 = User.objects.create_user(
-            first_name="user2_first",
-            last_name="user2_last",
-            email="user2@gmail.com",
-            password="1234",
-        )
-
+        self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        self.url = reverse("accounts:user-profile")
+    
     def test_returns_200(self):
-        self.client.login(email="user1@gmail.com", password="1234")
-        response = self.client.get(
-            reverse("accounts:user-profile", kwargs=({"email": self.user1.email}))
-        )
+        response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
 
-    def test_view_returns_profile_of_current_user(self):
-        self.client.login(email="user1@gmail.com", password="1234")
-        response = self.client.get(
-            reverse("accounts:user-profile", kwargs=({"email": self.user1.email}))
-        )
-        # Check we got the profile of the current user
-        self.assertEqual(response.context["user"], self.user1)
+    def test_template_used(self):
+        response = self.client.get(self.url)
+        self.assertTemplateUsed(response, "accounts/templates/user-profile.html")
+
+    def test_info_changed_after_edit_profile(self):
+        response = self.client.post(self.url, {'first_name': 'first2'}, follow=True)
+        user1 = get_user(self.client)
+        self.assertEquals(user1.first_name, "first2")
+
+    def test_csrf_token(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, "csrfmiddlewaretoken")
 
 
 class TestUserProfileAvatar(TestCase):
-"""
+    def setUp(self):
+        user = User.objects.create(
+            first_name="first2",
+            last_name="last2",
+            email="user2@gmail.com", 
+            password="password2",
+            avatar = "1.svg",
+            is_active=True,
+        )
+        self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        self.url1 = reverse("accounts:user-profile")
+        self.url2 = reverse("accounts:user-profile-avatar")
+
+    def test_template_used(self):
+        response = self.client.get(self.url2)
+        self.assertTemplateUsed(response, "accounts/templates/user-profile.html")
+
+    def test_info_changed_after_edit_profile_avatar(self):
+        response = self.client.post(self.url2, {'avatar': '2.svg'}, follow=True)
+        user2 = get_user(self.client)
+        self.assertEquals(user2.avatar, "2.svg")
+
+    def test_csrf_token(self):
+        response = self.client.get(self.url2)
+        self.assertContains(response, "csrfmiddlewaretoken")
