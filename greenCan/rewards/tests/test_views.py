@@ -19,12 +19,19 @@ class TestIndex(TestCase):
         self.url = reverse("rewards:index")
 
     def test_index_authenticated_GET(self):
+        """
+        test to verify only authenticated user can access the rewards index page
+        """
         self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url)
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, "rewards/templates/index.html")
 
     def test_index_not_authenticated_GET(self):
+        """
+        test to verify only authenticated user can access the rewards index page
+        unauthenticated user must be redirected to the login page
+        """
         response = self.client.get(self.url)
         self.assertRedirects(
             response, reverse("accounts:login") + "?next=" + self.url, 302
@@ -43,12 +50,19 @@ class TestEarnRewards(TestCase):
         self.url = reverse("rewards:earn-rewards")
 
     def test_earn_rewards_authenticated_GET(self):
+        """
+        test to verify only authenticated user can access the rewards earn page
+        """
         self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url)
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, "rewards/templates/earn-rewards.html")
 
     def test_earn_rewards_not_authenticated_GET(self):
+        """
+        test to verify only authenticated user can access the rewards earn page
+        unauthenticated user must be redirected to the login page
+        """
         response = self.client.get(self.url)
         self.assertRedirects(
             response, reverse("accounts:login") + "?next=" + self.url, 302

@@ -329,3 +329,15 @@ class TestViews(TestCase):
         )
 
         self.assertEquals(response.status_code, 200)
+
+    def test_ngo_locations_invalid_data(self):
+        """
+        test to check if searching by user's current location is returning a valid response
+        """
+
+        response = self.client.get(
+            self.search_ngo_locations_url + "?type=somerandomstring"
+        )
+
+        self.assertEquals(response.status_code, 200)
+        self.assertContains(response.json, {'err_flg': True, 'err_msg':'Invalid arguments provided'})

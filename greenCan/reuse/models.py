@@ -3,6 +3,7 @@ from recycle.models import ZipCode
 from django.conf import settings
 from django.contrib.postgres.search import SearchVectorField
 from django.contrib.postgres.indexes import GinIndex
+from datetime import datetime
 
 
 class Post(models.Model):
@@ -16,9 +17,10 @@ class Post(models.Model):
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE
     )
-    approved = models.BooleanField(null=True, default=False)
+    approved = models.BooleanField(null=True, default=None)
     still_available = models.BooleanField(null=True, default=True)
     created_on = models.DateTimeField(auto_now_add=True, null=False)
+    updated_on = models.DateTimeField(auto_now=True, null=False)
     search_vector = SearchVectorField(null=True)
 
     def __str__(self):
