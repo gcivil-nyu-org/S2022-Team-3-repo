@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('reuse', '0006_merge_20220330_0049'),
+        ("reuse", "0006_merge_20220330_0049"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='post',
-            name='updated_on',
+            model_name="post",
+            name="updated_on",
             field=models.DateTimeField(auto_now=True),
         ),
         migrations.AlterField(
-            model_name='post',
-            name='approved',
+            model_name="post",
+            name="approved",
             field=models.BooleanField(default=None, null=True),
         ),
     ]

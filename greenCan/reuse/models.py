@@ -3,7 +3,6 @@ from recycle.models import ZipCode
 from django.conf import settings
 from django.contrib.postgres.search import SearchVectorField
 from django.contrib.postgres.indexes import GinIndex
-from datetime import datetime
 
 
 class Post(models.Model):

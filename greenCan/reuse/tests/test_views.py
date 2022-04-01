@@ -340,4 +340,6 @@ class TestViews(TestCase):
         )
 
         self.assertEquals(response.status_code, 200)
-        self.assertContains(response.json, {'err_flg': True, 'err_msg':'Invalid arguments provided'})
+        self.assertContains(
+            response.json, {"err_flg": True, "err_msg": "Invalid arguments provided"}
+        )
