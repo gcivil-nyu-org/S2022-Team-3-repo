@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "accounts",
     "reuse",
     "recycle",
+    "rewards",
     "crispy_forms",
     "allauth",
     "allauth.account",
