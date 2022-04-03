@@ -1,0 +1,160 @@
+{% extends 'template.html' %}
+{% load static %}
+
+{% block title %}
+Reuse | greenCan
+{% endblock %}
+
+{% block style %}
+<style>
+    .td {
+      text-align: center;
+    }
+    .peddingBtn{
+      background-color: #FFA500 !important;
+    }
+    .listedBtn{
+      background-color: #008000 !important;
+    }
+    .removedBtn{
+      background-color: #FF0000 !important;
+    }
+    .NABtn{
+      background-color: #C4C4C4 !important;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+    
+    .switch input { 
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+    
+    input:checked + .slider {
+      background-color:#6ABE52;
+    }
+    
+    input:focus + .slider {
+      box-shadow: 0 0 1px #6ABE52;
+    }
+    
+    input:checked + .slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+    
+    /* Rounded sliders */
+    .slider.round {
+      border-radius: 34px;
+    }
+    
+    .slider.round:before {
+      border-radius: 50%;
+    }
+
+    .trimTitle{
+            max-width: 100px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            text-align: center;
+    }
+    </style>
+{% endblock %}
+
+{% block main %}
+<div class = "container">
+    <div class = "row">
+        <div class = "col-md-12" style="text-align: center;">
+            <table style="width:100%; text-align: center; margin-top: 50px; margin-left: 30px;">
+            <tr>
+                <th><h2>Title</h2></th>
+                <th><h2>Created on</h2></th>
+                <th><h2>Updated on</h2></th>
+                <th><h2>Status</h2></th>
+                <th><h2>Availability</h2></th>
+            </tr>
+            {% for post in user_posts %}
+                <tr>
+                    <td><h3 class = "trimTitle">{{post.title}}</h3></td>
+                    <td>{{post.created_on}}</td>
+                    <td>N/A</td>
+                    {% if post.approved == None and post.still_available == True %}
+                        <td><button type = "button" class = "peddingBtn btn-rounded">Pending</button></td>
+                    {% endif %}
+                    {% if post.approved == False %}
+                        <td><button type = "button" class = "removedBtn btn-rounded">Removed</button></td>
+                    {% endif %}
+                    {% if post.approved == True and post.still_available == True %}
+                        <td><button type = "button" class = "listedBtn btn-rounded">Listed</button></td>
+                    {% endif %}
+
+                    {% if post.still_available == False %}
+                        <td><button type = "button" class = "NABtn btn-rounded">Not avaliable</button></td>
+                    {% endif %}
+
+      
+                    <td><label class="switch">
+                            <input type="checkbox" class = "availableCheck" id = {{post.id}} {% if post.still_available %} checked {% endif %}>
+                            <span class="slider round"></span>
+                        </label></td>
+            
+                </tr>
+            {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+$(document).ready(function() {
+  console.log("changed");
+  $(".availableCheck").on("change", function() {
+      console.log("changed");
+      $.ajax({
+              url: "{% url 'reuse:post-availability' %}",
+              data: {
+                  id: this.id,
+                  csrfmiddlewaretoken: "{{ csrf_token }}",
+                  still_available: this.checked, // true if checked else false
+              },
+              type: "POST",
+              dataType : "json",
+      });
+  });
+});
+</script>
+{% endblock %}

@@ -285,3 +285,26 @@ def search_ngo_locations(request):
     search_result = {"centroid": centroid, "sites": sites}
     search_result["err_flag"] = False
     return JsonResponse(search_result)
+
+
+@login_required
+def my_posts(request):
+    template = "reuse/templates/my-posts.html"
+    user = request.user
+    user_posts=Post.objects.filter(user=request.user)
+
+    context = {"user": user, "user_posts": user_posts, "is_reuse": True}
+
+    return render(request, template, context=context)
+
+@login_required
+def post_availability(request):
+    if request.is_ajax() and request.method=='POST':
+        post = Post.objects.get(id = request.POST.get('id'))
+        checked = request.POST.get('still_available')
+        if checked == "true":
+            post.still_available = True
+        else:
+            post.still_available = False
+        post.save()
+    return redirect("reuse:my-posts")

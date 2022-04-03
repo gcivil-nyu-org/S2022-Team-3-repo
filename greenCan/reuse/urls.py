@@ -13,4 +13,6 @@ urlpatterns = [
     path(
         "fetch-ngo-locations/", views.search_ngo_locations, name="fetch-ngo-locations"
     ),
+    path("my-posts/", views.my_posts, name = "my-posts"),
+    path("post-availability/", views.post_availability, name = "post-availability"),
 ]
