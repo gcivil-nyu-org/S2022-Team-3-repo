@@ -12,8 +12,8 @@ before_script:
   - python ./greenCan/manage.py migrate
 
 script:
-  - python -m black . --check
-  - python -m flake8 --max-line-length=150
+  - python -m black . --check --line-lenght=99
+  - python -m flake8 --exclude=migrations --max-line-length=99
   - python greenCan/manage.py collectstatic
   - cd greenCan && python -m coverage run --source=accounts,home,reuse,recycle,rewards manage.py test --keepdb
 

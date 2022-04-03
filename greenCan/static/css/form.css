@@ -4,7 +4,7 @@ textarea.form-control {
 }
 
 .form-control {
-    height: 30px !important;
+    height: 40px !important;
 }
 
 .form-select{
@@ -54,8 +54,8 @@ textarea.form-control {
 }
   
 .upload-text img {
-    width: 60px;
-    height: 60px;
+    width: 60px !important;
+    height: 60px !important;
     object-fit: fill;
-    margin: 2px;
+    margin: 2px !important;
 }

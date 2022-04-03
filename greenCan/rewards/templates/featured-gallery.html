@@ -1,0 +1,102 @@
+{% extends 'template.html' %}
+{% load static %}
+
+{% block title %}
+Rewards | greenCan
+{% endblock %}
+
+{% block style %}
+<style>
+    .overlay {
+        position: absolute;
+        bottom: 0;
+        background: rgb(0, 0, 0);
+        background: rgba(0, 0, 0, 0.5); /* Black see-through */
+        color: #f1f1f1;
+        width: 100%;
+        transition: .5s ease;
+        opacity:0;
+        color: white;
+        font-size: 20px;
+        padding: 20px;
+        bottom: 10px;
+        text-align: center;
+    }
+
+    /* When you mouse over the container, fade in the overlay title */
+    .grid-item:hover .overlay {
+        opacity: 1;
+    }
+</style>
+{% endblock %}
+
+{% block main %}
+<div class="grid my-5 container d-flex justify-content-center">
+    {% for image in images %}
+    <div class="grid-item">
+        <img src="{{image.image}}" alt="{{image.event}}">
+            <div class="overlay">{{ image.description }}</div>
+    </div>
+    {% endfor %}
+
+    {% if not images %}
+         Noting to show
+    {% endif %}
+
+    <!-- <div class="grid-item">
+        <img src="https://i.imgur.com/kXUHDn5.jpg" alt="image1">
+        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
+    </div>
+    <div class="grid-item">
+        <img src="https://i.imgur.com/Qmz61wo.jpg" alt="image1">
+        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
+    </div>
+    <div class="grid-item">
+        <img src="https://i.imgur.com/EpYbuG7.jpg" alt="image1">
+        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
+    </div>
+    <div class="grid-item">
+        <img src="https://i.imgur.com/kXUHDn5.jpg" alt="image1">
+        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
+    </div>
+    <div class="grid-item">
+        <img src="https://i.imgur.com/Qmz61wo.jpg" alt="image1">
+        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
+    </div>
+    <div class="grid-item">
+        <img src="https://i.imgur.com/EpYbuG7.jpg" alt="image1">
+        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
+    </div>
+    <div class="grid-item">
+        <img src="https://i.imgur.com/kXUHDn5.jpg" alt="image1">
+        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
+    </div>
+    <div class="grid-item">
+        <img src="https://i.imgur.com/Qmz61wo.jpg" alt="image1">
+        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
+    </div> -->
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'modules/masonry/js/masonry.pkgd.min.js' %}"></script>
+<script src="{% static 'modules/infinite-scroll/js/infinite-scroll.pkgd.min.js' %}"></script>
+<script>
+    let grid = $('.grid').masonry({
+        itemSelector: '.grid-item',
+        gutter: 10,
+        fitWidth: true,
+    });
+
+    $('.grid').infiniteScroll({
+        path: function() {
+            let pageNumber = ( this.loadCount + 1 );
+            console.log(pageNumber);
+            return '/rewards/gallery/?page=${pageNumber}';
+        },
+        append: '.grid-item',
+        history: false,
+        outlayer: grid.data('masonry'),
+    });
+</script>
+{% endblock %}

@@ -20,7 +20,8 @@ class TestIndex(TestCase):
 
     def test_index_authenticated_GET(self):
         """
-        test to verify only authenticated user can access the rewards index page
+        test to verify only authenticated user
+        can access the rewards index page
         """
         self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url)
@@ -29,13 +30,12 @@ class TestIndex(TestCase):
 
     def test_index_not_authenticated_GET(self):
         """
-        test to verify only authenticated user can access the rewards index page
-        unauthenticated user must be redirected to the login page
+        test to verify only authenticated user can access
+        the rewards index page unauthenticated user must
+        be redirected to the login page
         """
         response = self.client.get(self.url)
-        self.assertRedirects(
-            response, reverse("accounts:login") + "?next=" + self.url, 302
-        )
+        self.assertRedirects(response, reverse("accounts:login") + "?next=" + self.url, 302)
 
 
 class TestEarnRewards(TestCase):
@@ -51,7 +51,8 @@ class TestEarnRewards(TestCase):
 
     def test_earn_rewards_authenticated_GET(self):
         """
-        test to verify only authenticated user can access the rewards earn page
+        test to verify only authenticated user
+        can access the rewards earn page
         """
         self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url)
@@ -64,6 +65,17 @@ class TestEarnRewards(TestCase):
         unauthenticated user must be redirected to the login page
         """
         response = self.client.get(self.url)
-        self.assertRedirects(
-            response, reverse("accounts:login") + "?next=" + self.url, 302
-        )
+        self.assertRedirects(response, reverse("accounts:login") + "?next=" + self.url, 302)
+
+
+class TestFeaturedGallery(TestCase):
+    def setUp(self):
+        self.url = reverse("rewards:featured-image-gallery")
+
+    def test_featured_image_gallery_GET(self):
+        """
+        test to verify the gallery page is accessible and using right template
+        """
+        response = self.client.get(self.url)
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, "rewards/templates/featured-gallery.html")

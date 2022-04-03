@@ -18,9 +18,7 @@ class Image(models.Model):
     category = models.ManyToManyField(Category)
     event_type = models.ForeignKey(Event, null=False, on_delete=models.CASCADE)
     image = models.URLField(max_length=2000, null=False, unique=True)
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE
-    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE)
     location = models.ForeignKey(ZipCode, null=True, on_delete=models.CASCADE)
     caption = models.CharField(max_length=150, null=True)
     consent = models.BooleanField(default=False)

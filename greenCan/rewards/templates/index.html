@@ -4,4 +4,11 @@
 Rewards | greenCan
 {% endblock %}
 
+{% block main %}
 
+<div class="m-5">
+    <a class="button btn-primary btn-rounded" href="{% url 'rewards:earn-rewards' %}">Earn Rewards</a>
+    <a class="button btn-primary btn-rounded mt-3" href="{% url 'rewards:featured-image-gallery' %}">Gallery</a>
+</div>
+
+{% endblock %}
