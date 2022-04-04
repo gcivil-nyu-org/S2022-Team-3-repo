@@ -241,9 +241,7 @@ def get_ngo_locations(centroid):
             "email": email,
             "phone_number": phone_number,
             "street_address": street_address,
-            "hours": hours.replace(
-                ", ", ', <i class="fa fa-clock"></i> <span class="text-black">'
-            )
+            "hours": hours.replace(", ", ', <i class="fa fa-clock"></i> <span class="text-black">')
             .replace(",", ",</span>")
             .replace(",", "<br>"),
             "website": website,
