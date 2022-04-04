@@ -6,91 +6,7 @@ Reuse | greenCan
 {% endblock %}
 
 {% block style %}
-<style>
-    .td {
-      text-align: center;
-    }
-    .peddingBtn{
-      background-color: #FFA500 !important;
-    }
-    .listedBtn{
-      background-color: #008000 !important;
-    }
-    .removedBtn{
-      background-color: #FF0000 !important;
-    }
-    .NABtn{
-      background-color: #C4C4C4 !important;
-    }
-
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 60px;
-      height: 34px;
-    }
-    
-    .switch input { 
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-    
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: #ccc;
-      -webkit-transition: .4s;
-      transition: .4s;
-    }
-    
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 26px;
-      width: 26px;
-      left: 4px;
-      bottom: 4px;
-      background-color: white;
-      -webkit-transition: .4s;
-      transition: .4s;
-    }
-    
-    input:checked + .slider {
-      background-color:#6ABE52;
-    }
-    
-    input:focus + .slider {
-      box-shadow: 0 0 1px #6ABE52;
-    }
-    
-    input:checked + .slider:before {
-      -webkit-transform: translateX(26px);
-      -ms-transform: translateX(26px);
-      transform: translateX(26px);
-    }
-    
-    /* Rounded sliders */
-    .slider.round {
-      border-radius: 34px;
-    }
-    
-    .slider.round:before {
-      border-radius: 50%;
-    }
-
-    .trimTitle{
-            max-width: 100px;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            text-align: center;
-    }
-    </style>
+<link rel="stylesheet" href="{% static 'css/userPosts.css' %}" />
 {% endblock %}
 
 {% block main %}
@@ -111,17 +27,17 @@ Reuse | greenCan
                     <td>{{post.created_on}}</td>
                     <td>{{post.updated_on}}</td>
                     {% if post.approved == None and post.still_available == True %}
-                        <td><button type = "button" class = "peddingBtn btn-rounded">Pending</button></td>
+                        <td><button type = "button" class = "peddingBtn btn-round">Pending</button></td>
                     {% endif %}
                     {% if post.approved == False %}
-                        <td><button type = "button" class = "removedBtn btn-rounded">Removed</button></td>
+                        <td><button type = "button" class = "removedBtn btn-round">Removed</button></td>
                     {% endif %}
                     {% if post.approved == True and post.still_available == True %}
-                        <td><button type = "button" class = "listedBtn btn-rounded">Listed</button></td>
+                        <td><button type = "button" class = "listedBtn btn-round">Listed</button></td>
                     {% endif %}
 
                     {% if post.approved != False and post.still_available == False %}
-                        <td><button type = "button" class = "NABtn btn-rounded">Not avaliable</button></td>
+                        <td><button type = "button" class = "NABtn btn-round">Not avaliable</button></td>
                     {% endif %}
 
       
