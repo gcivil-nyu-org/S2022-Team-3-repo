@@ -47,6 +47,9 @@ def signup_page(request):
             messages.error(request, "Email is required")
         elif not password:
             messages.error(request, "Password is required")
+        elif User.objects.get(email=email):
+            messages.error(request, "User already exists")
+            # Unable to find a user, this is fine
         else:
             try:
                 user = User(
@@ -90,6 +93,17 @@ def signup_page(request):
                     user.delete()
     context = {}
     return render(request, "accounts/templates/signup.html", context)
+
+
+def account_exists(request):
+
+    """
+    Users trying to login using Gauth but the email already exists as registered
+    """
+    messages.error(request, "Email already exists, please login using default login")
+
+    context = {}
+    return render(request, "accounts/templates/login.html", context)
 
 
 @unauthenticated_user
@@ -193,7 +207,9 @@ def activate_account_page(request, uidb64, token):
 
 @login_required
 def logout_view(request):
+
     logout(request)
+    messages.success(request, "You have been logged out.")
     return redirect(settings.LOGOUT_REDIRECT_URL)
 
 

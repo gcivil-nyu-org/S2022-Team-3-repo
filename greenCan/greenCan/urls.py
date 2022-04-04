@@ -13,9 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import include, path
-
+from accounts import views
 
 urlpatterns = [
     path("", include("home.urls")),
@@ -23,5 +24,7 @@ urlpatterns = [
     path("recycle/", include("recycle.urls")),
     path("reuse/", include("reuse.urls")),
     path("accounts/", include("accounts.urls")),
+    # path("social/", include("allauth.urls"), name="social"),
+    path("social/social/signup/", views.account_exists, name="socialaccount_signup"),
     path("social/", include("allauth.urls"), name="social"),
 ]
