@@ -26,5 +26,6 @@ urlpatterns = [
     path("accounts/", include("accounts.urls")),
     # path("social/", include("allauth.urls"), name="social"),
     path("social/social/signup/", views.account_exists, name="socialaccount_signup"),
+    path("rewards/", include("rewards.urls")),
     path("social/", include("allauth.urls"), name="social"),
 ]

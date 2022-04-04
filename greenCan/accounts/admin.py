@@ -1,5 +1,7 @@
 from django.contrib import admin
-from django.contrib.auth import get_user_model  # can also do from.models import User
+from django.contrib.auth import (
+    get_user_model,
+)  # can also do from.models import User
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .forms import UserAdminCreationForm, UserAdminChangeForm
@@ -32,12 +34,16 @@ class UserAdmin(BaseUserAdmin):
         (
             "Personal info",
             {"fields": ()},
-        ),  # if you have any personal info fields e.g. names, include them as strings in the empty tuple.
+        ),
+        # if you have any personal info fields e.g. names,
+        # include them as strings in the empty tuple.
         ("Permissions", {"fields": ("admin", "staff", "is_active")}),
     )
     """
-    add_fieldsets is not a standard ModelAdmin attribute. UserAdmin overides get_fieldsets
-    to use this attribute when creating a user. """
+    add_fieldsets is not a standard ModelAdmin attribute.
+    UserAdmin overides get_fieldsets
+    to use this attribute when creating a user.
+    """
     add_fieldsets = (
         (
             None,

@@ -4,7 +4,7 @@ textarea.form-control {
 }
 
 .form-control {
-    height: 30px !important;
+    height: 40px !important;
 }
 
 .form-select{
@@ -18,7 +18,12 @@ textarea.form-control {
     display: block;
     width: 30vw;
     min-width: 200px;
-    height: 30px !important;
+    height: 40px !important;
+}
+
+.form-select:focus {
+    outline: none;
+    border-color: #6ABE52;
 }
   
 .upload-image-frame {
@@ -34,7 +39,8 @@ textarea.form-control {
     border-radius: 15px;
 }
   
-.upload-image-frame .upload-text {
+.upload-image-frame .upload-text,
+.upload-image-frame .upload-text-subheading {
     color: #c4c4c4;
     font-size: 1.2em;
     font-weight: normal;
@@ -42,7 +48,12 @@ textarea.form-control {
     margin-bottom: 38px;
     display: flex;
     flex-wrap: wrap;
-  }
+}
+
+.upload-image-frame .upload-text-subheading{
+    font-size: .5em;
+    font-weight: lighter;
+}
   
 .upload-image-frame .upload-btn {
     color: #fff;
@@ -54,8 +65,8 @@ textarea.form-control {
 }
   
 .upload-text img {
-    width: 60px;
-    height: 60px;
+    width: 60px !important;
+    height: 60px !important;
     object-fit: fill;
-    margin: 2px;
+    margin: 2px !important;
 }
