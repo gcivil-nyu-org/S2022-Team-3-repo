@@ -343,3 +343,59 @@ class TestViews(TestCase):
         self.assertContains(
             response.json, {"err_flg": True, "err_msg": "Invalid arguments provided"}
         )
+
+class TestUserPostsViews(TestCase):
+    def setUp(self):
+        self.my_posts_url = reverse("reuse:my-posts")
+        self.post_availability_url = reverse("reuse:post-availability")
+        user = User.objects.create(
+            first_name="first1",
+            last_name="last1",
+            email="user1@gmail.com",
+            password="password1",
+            is_active=True,
+        )
+        self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        zipcode = ZipCode(
+            zip_code="10001",
+            state_id="NY",
+            state="New York",
+            borough="Manhattan",
+            centroid_latitude=40.75021293296376,
+            centroid_longitude=-73.99692994900218,
+            polygon="",
+        )
+        zipcode.save()
+        post = Post(
+            title="Apple",
+            category="Books",
+            phone_number="9175185345",
+            email="pb2640@nyu.edu",
+            zip_code=zipcode,
+            description=" Book on apple",
+            user=user,
+        )
+        post.save()
+        self.zipcode = zipcode
+    
+    def test_my_posts_GET(self):
+        """
+        test to check if user posts page is returning a valid response
+        """
+
+        response = self.client.get(self.my_posts_url)
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, "reuse/templates/my-posts.html")
+
+    def test_post_availability_redirect(self):
+        """
+        test to check if the change of post availability is returning a valid response
+        """
+        response = self.client.get(self.post_availability_url)
+        self.assertRedirects(response, self.my_posts_url, 302)
+     
+    def test_info_changed_after_change_availability(self):
+        response = self.client.post(self.post_availability_url, {"still_available": False}, follow=True)
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "success")
+        self.assertEquals(message.message, "Item avaliability has been changed.")

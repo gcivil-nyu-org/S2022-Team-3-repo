@@ -308,4 +308,5 @@ def post_availability(request):
         else:
             post.still_available = False
         post.save()
+        messages.success(request, "Item avaliability has been changed.")
     return redirect("reuse:my-posts")
