@@ -40,11 +40,19 @@ def get_dropoff_locations(centroid):
             FROM
                 (
                     SELECT *,
-                    row_number() over (partition by TYPE order by D.DISTANCE asc) as TYPE_RANK
+                    row_number() over (
+                        partition by TYPE order by D.DISTANCE asc
+                        ) as TYPE_RANK
                     FROM
                     (
                     SELECT *,
-                        calculate_distance({centroid['latitude']}, {centroid['longitude']}, R.LATITUDE, R.LONGITUDE, 'M') AS DISTANCE
+                        calculate_distance(
+                            {centroid['latitude']},
+                            {centroid['longitude']},
+                            R.LATITUDE,
+                            R.LONGITUDE,
+                            'M'
+                        ) AS DISTANCE
                         FROM RECYCLE_DROPOFFLOCATION AS R
                     ) AS D
                 ) AS F

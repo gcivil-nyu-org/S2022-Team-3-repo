@@ -15,7 +15,8 @@ class UserManager(BaseUserManager):
         is_staff=False,
         is_admin=False,
         is_active=True,
-    ):  # may look repetitive adding staff, admin and active status, but it simplifies the
+    ):  # may look repetitive adding staff, admin and active status,
+        # but it simplifies the
         # work when using create_staffuser() and create_superuser()
         if not email:
             raise ValueError("User must have an email address")
@@ -90,9 +91,7 @@ class User(AbstractBaseUser):
     zipcode = models.ForeignKey(
         ZipCode, verbose_name="Zipcode", on_delete=models.CASCADE, null=True
     )
-    phone_number = models.CharField(
-        verbose_name="Phone number", max_length=17, null=True
-    )
+    phone_number = models.CharField(verbose_name="Phone number", max_length=17, null=True)
     avatar = models.TextField(verbose_name="Avatar", null=True)
     # avatar = models.ImageField(upload_to="Avatars", null=True)
     is_active = models.BooleanField(default=True)
@@ -100,11 +99,15 @@ class User(AbstractBaseUser):
     admin = models.BooleanField(default=False)
     timestamp = models.DateTimeField(auto_now_add=True)
 
-    USERNAME_FIELD = "email"  # this now over rides the username field and now email is the default field
+    USERNAME_FIELD = "email"
+    # this now over rides the username
+    # field and now email is the default field
     REQUIRED_FIELDS = [
         "first_name",
         "last_name",
-    ]  # if you add another field and need it to be required, include it in the list
+    ]
+    # if you add another field and need it to be required,
+    # include it in the list
 
     objects = UserManager()
 
