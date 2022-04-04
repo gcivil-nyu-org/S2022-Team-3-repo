@@ -35,7 +35,9 @@ class TestIndex(TestCase):
         be redirected to the login page
         """
         response = self.client.get(self.url)
-        self.assertRedirects(response, reverse("accounts:login") + "?next=" + self.url, 302)
+        self.assertRedirects(
+            response, reverse("accounts:login") + "?next=" + self.url, 302
+        )
 
 
 class TestEarnRewards(TestCase):
@@ -65,7 +67,9 @@ class TestEarnRewards(TestCase):
         unauthenticated user must be redirected to the login page
         """
         response = self.client.get(self.url)
-        self.assertRedirects(response, reverse("accounts:login") + "?next=" + self.url, 302)
+        self.assertRedirects(
+            response, reverse("accounts:login") + "?next=" + self.url, 302
+        )
 
 
 class TestFeaturedGallery(TestCase):

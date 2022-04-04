@@ -30,5 +30,7 @@ class Migration(migrations.Migration):
             ON reuse_post;
             """,
         ),
-        migrations.RunPython(compute_search_vector, reverse_code=migrations.RunPython.noop),
+        migrations.RunPython(
+            compute_search_vector, reverse_code=migrations.RunPython.noop
+        ),
     ]

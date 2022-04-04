@@ -1,6 +1,13 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-from reuse.views import index, donation_view, listing_page, create_post, my_posts, post_availability
+from reuse.views import (
+    index,
+    donation_view,
+    listing_page,
+    create_post,
+    my_posts,
+    post_availability,
+)
 
 
 class TestUrls(SimpleTestCase):

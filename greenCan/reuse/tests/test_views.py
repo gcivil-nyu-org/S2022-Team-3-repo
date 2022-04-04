@@ -14,7 +14,9 @@ from reuse.models import NGOLocation
 User = get_user_model()
 
 
-def create_image(storage, filename, size=(100, 100), image_mode="RGB", image_format="PNG"):
+def create_image(
+    storage, filename, size=(100, 100), image_mode="RGB", image_format="PNG"
+):
     """
     Generate a test image, returning the filename that it was saved as.
 
@@ -299,7 +301,9 @@ class TestViews(TestCase):
         Test to check if I search for an item which is not present, it should return nothing
         """
 
-        response = self.client.get("%s?q=%s" % (reverse("reuse:listing-page"), "veryrandomstring"))
+        response = self.client.get(
+            "%s?q=%s" % (reverse("reuse:listing-page"), "veryrandomstring")
+        )
 
         self.assertTrue(len(response.context["posts"]) == 0)
 
@@ -320,7 +324,9 @@ class TestViews(TestCase):
         test to check if searching by user's current location is returning a valid response
         """
 
-        response = self.client.get(self.search_ngo_locations_url + "?type=zipcode&zipcode=10004")
+        response = self.client.get(
+            self.search_ngo_locations_url + "?type=zipcode&zipcode=10004"
+        )
 
         self.assertEquals(response.status_code, 200)
 
@@ -329,13 +335,16 @@ class TestViews(TestCase):
         test to check if searching by user's current location is returning a valid response
         """
 
-        response = self.client.get(self.search_ngo_locations_url + "?type=somerandomstring")
+        response = self.client.get(
+            self.search_ngo_locations_url + "?type=somerandomstring"
+        )
 
         self.assertEquals(response.status_code, 200)
         self.assertJSONEqual(
             force_str(response.content),
             {"err_flag": True, "err_msg": "Invalid arguments provided"},
         )
+
 
 class TestUserPostsViews(TestCase):
     def setUp(self):
@@ -359,7 +368,7 @@ class TestUserPostsViews(TestCase):
             polygon="",
         )
         zipcode.save()
-        post = Post(
+        self.post = Post(
             title="Apple",
             category="Books",
             phone_number="9175185345",
@@ -368,9 +377,9 @@ class TestUserPostsViews(TestCase):
             description=" Book on apple",
             user=user,
         )
-        post.save()
+        self.post.save()
         self.zipcode = zipcode
-    
+
     def test_my_posts_GET(self):
         """
         test to check if user posts page is returning a valid response
@@ -386,9 +395,17 @@ class TestUserPostsViews(TestCase):
         """
         response = self.client.get(self.post_availability_url)
         self.assertRedirects(response, self.my_posts_url, 302)
-     
+
+    def test_csrf_token(self):
+        response = self.client.get(self.my_posts_url)
+        self.assertContains(response, "csrfmiddlewaretoken")
+
     def test_info_changed_after_change_availability(self):
-        response = self.client.post(self.post_availability_url, {"still_available": False}, follow=True)
+        response = self.client.post(
+            self.post_availability_url,
+            {"id": self.post.id, "still_available": False},
+            follow=True,
+        )
         message = list(response.context.get("messages"))[0]
         self.assertEquals(message.tags, "success")
         self.assertEquals(message.message, "Item avaliability has been changed.")

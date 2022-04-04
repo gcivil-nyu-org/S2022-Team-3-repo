@@ -116,7 +116,8 @@ def login_page(request):
             )  # get the user's login attempt
             now = timezone.now()
             if (
-                login_attempt.timestamp + timedelta(seconds=settings.LOGIN_ATTEMPTS_TIME_LIMIT)
+                login_attempt.timestamp
+                + timedelta(seconds=settings.LOGIN_ATTEMPTS_TIME_LIMIT)
             ) <= now:
                 if not _user.is_active:
                     messages.error(request, "Please verify your email first.")

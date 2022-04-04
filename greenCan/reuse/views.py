@@ -6,6 +6,7 @@ from .models import Post, Image, NGOLocation
 from recycle.models import ZipCode
 import pyrebase
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.urls import reverse
 
 # from django.db.models import Q
@@ -240,7 +241,9 @@ def get_ngo_locations(centroid):
             "email": email,
             "phone_number": phone_number,
             "street_address": street_address,
-            "hours": hours.replace(", ", ', <i class="fa fa-clock"></i> <span class="text-black">')
+            "hours": hours.replace(
+                ", ", ', <i class="fa fa-clock"></i> <span class="text-black">'
+            )
             .replace(",", ",</span>")
             .replace(",", "<br>"),
             "website": website,

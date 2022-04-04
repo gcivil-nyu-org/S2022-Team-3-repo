@@ -8,7 +8,9 @@ from django.utils.http import urlsafe_base64_encode
 from .token import account_activation_token
 
 
-def send_user_email(user, mail_subject, to_email, current_site, template, template_no_style):
+def send_user_email(
+    user, mail_subject, to_email, current_site, template, template_no_style
+):
     message_no_style = render_to_string(
         template_no_style,
         {

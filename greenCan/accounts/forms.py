@@ -57,11 +57,15 @@ class UserAdminChangeForm(forms.ModelForm):
 class LoginForm(forms.Form):
     email = forms.EmailField(
         label="Email",
-        widget=forms.EmailInput(attrs={"class": "form-input", "placeholder": "Enter email"}),
+        widget=forms.EmailInput(
+            attrs={"class": "form-input", "placeholder": "Enter email"}
+        ),
     )
     password = forms.CharField(
         label="Password",
-        widget=forms.PasswordInput(attrs={"class": "form-input", "placeholder": "Enter password"}),
+        widget=forms.PasswordInput(
+            attrs={"class": "form-input", "placeholder": "Enter password"}
+        ),
     )
 
 
@@ -71,7 +75,9 @@ class RegistrationForm(forms.ModelForm):
 
     password1 = forms.CharField(
         label="Password",
-        widget=forms.PasswordInput(attrs={"class": "form-input", "placeholder": "Enter password"}),
+        widget=forms.PasswordInput(
+            attrs={"class": "form-input", "placeholder": "Enter password"}
+        ),
     )
     password2 = forms.CharField(
         label="Confirm Password",
@@ -84,7 +90,9 @@ class RegistrationForm(forms.ModelForm):
         model = User
         fields = ["email", "first_name", "last_name"]
         widgets = {
-            "email": forms.EmailInput(attrs={"class": "form-input", "placeholder": "Enter Email"}),
+            "email": forms.EmailInput(
+                attrs={"class": "form-input", "placeholder": "Enter Email"}
+            ),
             "first_name": forms.TextInput(
                 attrs={
                     "class": "form-input",
