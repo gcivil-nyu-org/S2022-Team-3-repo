@@ -96,8 +96,8 @@ Reuse | greenCan
 {% block main %}
 <div class = "container">
     <div class = "row">
-        <div class = "col-md-12" style="text-align: center;">
-            <table style="width:100%; text-align: center; margin-top: 50px; margin-left: 30px;">
+        <div class = "offset-md-1 col-md-10" style="text-align: center;">
+            <table style="width:100%; text-align: center; margin-top: 60px;">
             <tr>
                 <th><h2>Title</h2></th>
                 <th><h2>Created on</h2></th>
@@ -109,7 +109,7 @@ Reuse | greenCan
                 <tr>
                     <td><h3 class = "trimTitle">{{post.title}}</h3></td>
                     <td>{{post.created_on}}</td>
-                    <td>N/A</td>
+                    <td>{{post.updated_on}}</td>
                     {% if post.approved == None and post.still_available == True %}
                         <td><button type = "button" class = "peddingBtn btn-rounded">Pending</button></td>
                     {% endif %}
@@ -139,6 +139,7 @@ Reuse | greenCan
 {% endblock %}
 
 {% block scripts %}
+<!--a function to handle the situation if the user click the checkbox-->
 <script type="text/javascript">
 $(document).ready(function() {
   $(".availableCheck").on("change", function() {

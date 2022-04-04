@@ -291,17 +291,18 @@ def search_ngo_locations(request):
 def my_posts(request):
     template = "reuse/templates/my-posts.html"
     user = request.user
-    user_posts=Post.objects.filter(user=request.user)
+    user_posts = Post.objects.filter(user=request.user)
 
     context = {"user": user, "user_posts": user_posts, "is_reuse": True}
 
     return render(request, template, context=context)
 
+
 @login_required
 def post_availability(request):
-    if request.method=='POST':
-        post = Post.objects.get(id = request.POST.get('id'))
-        checked = request.POST.get('still_available')
+    if request.method == "POST":
+        post = Post.objects.get(id=request.POST.get("id"))
+        checked = request.POST.get("still_available")
         if checked == "true":
             post.still_available = True
         else:
