@@ -299,7 +299,7 @@ def my_posts(request):
 
 @login_required
 def post_availability(request):
-    if request.is_ajax() and request.method=='POST':
+    if request.method=='POST':
         post = Post.objects.get(id = request.POST.get('id'))
         checked = request.POST.get('still_available')
         if checked == "true":

@@ -120,13 +120,13 @@ Reuse | greenCan
                         <td><button type = "button" class = "listedBtn btn-rounded">Listed</button></td>
                     {% endif %}
 
-                    {% if post.still_available == False %}
+                    {% if post.approved != False and post.still_available == False %}
                         <td><button type = "button" class = "NABtn btn-rounded">Not avaliable</button></td>
                     {% endif %}
 
       
                     <td><label class="switch">
-                            <input type="checkbox" class = "availableCheck" id = {{post.id}} {% if post.still_available %} checked {% endif %}>
+                            <input type="checkbox" class = "availableCheck" id = {{post.id}}  {% if post.still_available %} checked {% endif %}>
                             <span class="slider round"></span>
                         </label></td>
             
@@ -138,23 +138,31 @@ Reuse | greenCan
 </div>
 {% endblock %}
 
-{% block script %}
+{% block scripts %}
 <script type="text/javascript">
 $(document).ready(function() {
-  console.log("changed");
   $(".availableCheck").on("change", function() {
-      console.log("changed");
-      $.ajax({
-              url: "{% url 'reuse:post-availability' %}",
-              data: {
-                  id: this.id,
-                  csrfmiddlewaretoken: "{{ csrf_token }}",
-                  still_available: this.checked, // true if checked else false
-              },
-              type: "POST",
-              dataType : "json",
-      });
+      if (window.confirm("Are you sure you want to change the availability of this item ?")) {
+        $.ajax({
+                url: "{% url 'reuse:post-availability' %}",
+                data: {
+                    id: this.id,
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    still_available: this.checked, // true if checked else false
+                },
+                type: "POST",
+                dataType : "json",
+                
+        });
+      
+    }
+    else{
+      this.checked = !this.checked;
+    }
   });
+});
+$(document).ajaxStop(function(){
+    window.location.reload();
 });
 </script>
 {% endblock %}
