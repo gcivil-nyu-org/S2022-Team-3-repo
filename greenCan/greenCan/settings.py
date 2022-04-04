@@ -36,7 +36,11 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["127.0.0.1", "greencan.herokuapp.com", "greencan-dev.herokuapp.com"]
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "greencan.herokuapp.com",
+    "greencan-dev.herokuapp.com",
+]
 
 
 # Application definition
@@ -49,11 +53,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.postgres",
-    "django.contrib.sites",  # imperative to configure auth to external sites
+    "django.contrib.sites",
     "home",
     "accounts",
     "reuse",
     "recycle",
+    "rewards",
     "crispy_forms",
     "allauth",
     "allauth.account",
@@ -220,7 +225,10 @@ ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = False
 SOCIALACCOUNT_LOGIN_ON_GET = True  # bypass the "do you want to login page"
 
 SOCIALACCOUNT_PROVIDERS = {
-    "google": {"SCOPE": ["profile", "email"], "AUTH_PARAMS": {"access_type": "online"}}
+    "google": {
+        "SCOPE": ["profile", "email"],
+        "AUTH_PARAMS": {"access_type": "online"},
+    }
 }
 
 AUTHENTICATION_BACKENDS = [
