@@ -1,5 +1,6 @@
 {% url 'recycle:index' as recycle_base_url %}
 {% url 'reuse:index' as reuse_base_url %}
+{% url 'reduce:index' as reduce_base_url %}
 {% url 'home:index' as home_base_url %}
 
 {% load static %}
@@ -41,7 +42,9 @@
 						{% if request.path == home_base_url %}
 						current
 						{% endif %} nav-link"><a href="{{ home_base_url }}">Home</a></li>
-						<li class="nav-link"><a href="#">Reduce</a></li>
+						<li class="{% if request.path == reduce_base_url or is_reduce %}
+						current
+						{% endif %} nav-link"><a href="{{ reduce_base_url }}">Reduce</a></li>
 						<li class="
 						{% if request.path == reuse_base_url or is_reuse %}
 						current
