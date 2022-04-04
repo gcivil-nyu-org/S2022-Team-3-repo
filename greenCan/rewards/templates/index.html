@@ -1,7 +1,22 @@
 {% extends 'template.html' %}
+{% load static %}
 
 {% block title %}
 Rewards | greenCan
 {% endblock %}
 
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/earn-credits-banner.css' %}">
+{% endblock %}
 
+{% block main %}
+
+<div class="mt-5 mb-3">
+    {% include 'rewards/templates/earn-credits-banner.html' %}
+</div>
+
+<div class="mb-5">
+    <a class="button btn-primary btn-rounded mt-3" href="{% url 'rewards:featured-image-gallery' %}">Green Wall</a>
+</div>
+
+{% endblock %}

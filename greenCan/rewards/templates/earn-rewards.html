@@ -1,1 +1,135 @@
+
 {% extends 'template.html' %}
+{% load static %}
+
+{% block title %}
+Rewards | greenCan
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}"></link>
+<link rel="stylesheet" href="{% static 'modules/multiselect/css/jquery.multiselect.css' %}"></link>
+<style>
+    .heading-wrapper {
+        width: fit-content;
+    }
+    .heading, .subheading {
+        display: flex;
+        flex-wrap: wrap;
+    }
+</style>
+{% endblock %}
+
+{% block main %}
+<div class="heading-wrapper mb-3">
+    <h1 class="heading mb-0 h1">Have you taken part in ____ event recently?</h1>
+    <p class="subheading">You can upload your participation proof image to redeem it.</p>
+</div>
+<div class="d-flex container-fluid justify-content-center pb-3 mx-auto mb-md-5">
+    <form class="form-container g-3 justify-content-center" id = "proof-upload-form" enctype="multipart/form-data" method="POST" role="form">
+        <!--img upload-->
+        {% include 'messages.html' %}
+        
+        <div class="upload-image-frame d-flex flex-column align-middle py-4" id="image-frame">
+            <div class="upload-text mx-5" id="show-image-frame">
+            You can choose to upload multiple image(s).
+            </div>
+            <div class="upload-btn">
+            <i class="fa fa-plus"></i>
+            <span>
+                ADD PICTURES
+            </span>
+            </div>
+        </div>
+        <input type="file" name="file[]" class="d-none" id="image-upload" accept="image/*" multiple="multiple" >
+        <br>
+        {% csrf_token %}
+        <div class="row container-fluid">
+            <div class="col-md-10 mx-auto">
+                <div class="form-group">
+                    <label for="caption" class="form-label"><b>Caption:</b></label>
+                    <input type="text" class="form-control" name="caption" id="caption" placeholder="Enter the caption" maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label for="location" class="form-label"><b>Location:</b></label>
+                    <input type="text" class="form-control" name="location" id="location" placeholder="Enter the area zipcode" pattern="^{\d}(5)$">
+                </div>
+                <div class="form-group">
+                    <label for="event" class="form-label"><b>Event:</b></label>
+                    <select class="form-select" id = "event" name="event" aria-label="Event" required>
+                        {% for event in events %}
+                            <option value={{ event.id }}>{{ event.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="event" class="form-label"><b>Category:</b></label>
+                    <select name="categories[]" multiple class="3col active form-select d-none">
+                        {% for category in categories %}
+                            <option value={{ category.id }}>{{ category.name }}</option>
+                        {% endfor %}
+                    </select>                    
+                </div>
+                <div class="form-group">
+                    <input type="checkbox" name="consent" value="consent">
+                    I allow greenCan to feature these images on Green Wall.
+                </div>
+                <div class="form-group mt-4">
+                    <button class="button btn-rounded" type="submit">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{% static 'modules/multiselect/js/jquery.multiselect.js' %}"></script>
+<script>
+    if (window.File && window.FileList && window.FileReader) {
+        let filesInput = document.getElementById("image-upload");
+        filesInput.addEventListener("change", function (event) {
+            let files = event.target.files; //FileList object
+            let output = document.getElementById("show-image-frame");
+            output.innerHTML = "";
+            for (let i = 0; i < files.length; i++) {
+                let file = files[i];
+                //Only pics
+                if (!file.type.match('image'))
+                    continue;
+                let picReader = new FileReader();
+                picReader.addEventListener("load", function (event) {
+                    let picFile = event.target;
+                    let div = document.createElement("div");
+                    div.innerHTML = "<img class='thumbnail' src='" + picFile.result + "'" +
+                        "title='" + picReader.name + "'/>";
+                    output.insertBefore(div, null);
+                });
+                //Read the image
+                picReader.readAsDataURL(file);
+            }
+        });
+    } else {
+        console.log("Your browser does not support File API");
+    }
+
+    $('#image-frame').click(function(){
+        $('#image-upload').trigger('click');
+    });
+    
+    $('select[multiple].active.3col').multiselect({
+	  columns: 2,
+	  placeholder: 'Select Applicable Categories',
+	  search: true,
+	  searchOptions: {
+	      'default': 'Other'
+	  },
+	  selectAll: true,
+	});
+
+    $('.ms-options-wrap button').addClass('form-select');
+</script>
+{% endblock %}

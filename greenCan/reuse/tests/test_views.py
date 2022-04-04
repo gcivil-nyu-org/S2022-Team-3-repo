@@ -8,15 +8,13 @@ from PIL import Image as Img
 from six import BytesIO
 from recycle.models import ZipCode
 from reuse.models import Image, Post
-
+from django.utils.encoding import force_str
 from reuse.models import NGOLocation
 
 User = get_user_model()
 
 
-def create_image(
-    storage, filename, size=(100, 100), image_mode="RGB", image_format="PNG"
-):
+def create_image(storage, filename, size=(100, 100), image_mode="RGB", image_format="PNG"):
     """
     Generate a test image, returning the filename that it was saved as.
 
@@ -301,9 +299,7 @@ class TestViews(TestCase):
         Test to check if I search for an item which is not present, it should return nothing
         """
 
-        response = self.client.get(
-            "%s?q=%s" % (reverse("reuse:listing-page"), "veryrandomstring")
-        )
+        response = self.client.get("%s?q=%s" % (reverse("reuse:listing-page"), "veryrandomstring"))
 
         self.assertTrue(len(response.context["posts"]) == 0)
 
@@ -324,9 +320,7 @@ class TestViews(TestCase):
         test to check if searching by user's current location is returning a valid response
         """
 
-        response = self.client.get(
-            self.search_ngo_locations_url + "?type=zipcode&zipcode=10004"
-        )
+        response = self.client.get(self.search_ngo_locations_url + "?type=zipcode&zipcode=10004")
 
         self.assertEquals(response.status_code, 200)
 
@@ -335,13 +329,12 @@ class TestViews(TestCase):
         test to check if searching by user's current location is returning a valid response
         """
 
-        response = self.client.get(
-            self.search_ngo_locations_url + "?type=somerandomstring"
-        )
+        response = self.client.get(self.search_ngo_locations_url + "?type=somerandomstring")
 
         self.assertEquals(response.status_code, 200)
-        self.assertContains(
-            response.json, {"err_flg": True, "err_msg": "Invalid arguments provided"}
+        self.assertJSONEqual(
+            force_str(response.content),
+            {"err_flag": True, "err_msg": "Invalid arguments provided"},
         )
 
 class TestUserPostsViews(TestCase):
