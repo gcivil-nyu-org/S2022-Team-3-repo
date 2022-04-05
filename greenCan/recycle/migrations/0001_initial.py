@@ -16,7 +16,9 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "id",
-                    models.AutoField(auto_created=True, primary_key=True, serialize=False),
+                    models.AutoField(
+                        auto_created=True, primary_key=True, serialize=False
+                    ),
                 ),
                 ("zip_code", models.CharField(max_length=5)),
                 ("state_id", models.CharField(max_length=2)),
@@ -32,7 +34,9 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "id",
-                    models.BigAutoField(auto_created=True, primary_key=True, serialize=False),
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False
+                    ),
                 ),
                 ("name", models.CharField(max_length=250)),
                 ("latitude", models.FloatField()),

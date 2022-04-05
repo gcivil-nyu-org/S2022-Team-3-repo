@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
-
+from django.contrib import messages
 from .models import Post, Image, NGOLocation
 from recycle.models import ZipCode
 import pyrebase
@@ -163,6 +163,7 @@ def create_post(request):
         for url in urls:
             image = Image(url=url, post=post)
             image.save()
+        messages.success(request, "Post created succesfully")
 
     return redirect(reverse("reuse:donation-page"))
 
@@ -240,7 +241,9 @@ def get_ngo_locations(centroid):
             "email": email,
             "phone_number": phone_number,
             "street_address": street_address,
-            "hours": hours.replace(", ", ', <i class="fa fa-clock"></i> <span class="text-black">')
+            "hours": hours.replace(
+                ", ", ', <i class="fa fa-clock"></i> <span class="text-black">'
+            )
             .replace(",", ",</span>")
             .replace(",", "<br>"),
             "website": website,

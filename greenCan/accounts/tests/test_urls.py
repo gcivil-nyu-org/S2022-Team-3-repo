@@ -4,6 +4,7 @@ from django.contrib.auth.views import (
     PasswordResetDoneView,
     PasswordResetCompleteView,
 )
+from accounts.views import account_exists
 from accounts.views import (
     signup_page,
     login_page,
@@ -94,3 +95,9 @@ class TestUrls(SimpleTestCase):
         self.assertEqual(resolved.func, user_profile_avatar)
         self.assertEqual(resolved.namespace, "accounts")
         self.assertEqual(url, "/accounts/user-profile-avatar/")
+
+    def test_social_profile_url(self):
+        url = reverse("socialaccount_signup")
+        resolved = resolve(url)
+        self.assertEqual(resolved.func, account_exists)
+        self.assertEqual(url, "/social/social/signup/")

@@ -32,7 +32,9 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "last_login",
-                    models.DateTimeField(blank=True, null=True, verbose_name="last login"),
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="last login"
+                    ),
                 ),
                 ("email", models.EmailField(max_length=255, unique=True)),
                 (
@@ -45,7 +47,9 @@ class Migration(migrations.Migration):
                 ),
                 (
                     "phone_number",
-                    models.CharField(max_length=17, null=True, verbose_name="Phone number"),
+                    models.CharField(
+                        max_length=17, null=True, verbose_name="Phone number"
+                    ),
                 ),
                 ("avatar", models.TextField(null=True, verbose_name="Avatar")),
                 ("is_active", models.BooleanField(default=True)),

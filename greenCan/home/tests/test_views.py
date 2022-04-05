@@ -23,7 +23,9 @@ class TestHomePage(TestCase):
         )
         self.assertNotContains(
             response,
-            '<a class="dropdown-item" href="' + reverse("accounts:logout") + '">Logout</a>',
+            '<a class="dropdown-item" href="'
+            + reverse("accounts:logout")
+            + '">Logout</a>',
         )
 
     def test_authenticated_user(self):
@@ -41,6 +43,8 @@ class TestHomePage(TestCase):
         )
         self.assertContains(
             response,
-            '<a class="dropdown-item" href="' + reverse("accounts:logout") + '">Logout</a>',
+            '<a class="dropdown-item" href="'
+            + reverse("accounts:logout")
+            + '">Logout</a>',
         )
         self.assertContains(response, user.get_full_name())
