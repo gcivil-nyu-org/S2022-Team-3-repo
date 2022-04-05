@@ -392,10 +392,20 @@ class TestUserPostsViews(TestCase):
         response = self.client.get(self.my_posts_url)
         self.assertContains(response, "csrfmiddlewaretoken")
 
-    def test_info_changed_after_change_availability(self):
+    def test_info_changed_after_change_availability_to_False(self):
         response = self.client.post(
             self.post_availability_url,
             {"id": self.post.id, "still_available": False},
+            follow=True,
+        )
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "success")
+        self.assertEquals(message.message, "Item avaliability has been changed.")
+
+    def test_info_changed_after_change_availability_to_True(self):
+        response = self.client.post(
+            self.post_availability_url,
+            {"id": self.post.id, "still_available": True},
             follow=True,
         )
         message = list(response.context.get("messages"))[0]
