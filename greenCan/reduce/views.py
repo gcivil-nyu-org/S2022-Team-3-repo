@@ -46,7 +46,7 @@ def get_retailer_locations(centroid):
                         FROM REDUCE_RETAILERLOCATION AS R
                     ) AS D
                 ) AS F
-            WHERE F.TYPE_RANK<40
+            WHERE F.TYPE_RANK<25
             ORDER BY F.DISTANCE;"""
     ).prefetch_related("zip_code")
 
