@@ -17,9 +17,7 @@ class ImageMeta(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
     category = models.ManyToManyField(Category)
     event_type = models.ForeignKey(Event, null=False, on_delete=models.CASCADE)
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE
-    )
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE)
     location = models.ForeignKey(ZipCode, null=True, on_delete=models.CASCADE)
     caption = models.CharField(max_length=150, null=True)
     consent = models.BooleanField(default=False)

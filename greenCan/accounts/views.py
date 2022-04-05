@@ -102,9 +102,7 @@ def account_exists(request):
     """
     Users trying to login using Gauth but the email already exists as registered
     """
-    messages.error(
-        request, "Email already exists, please login using Login now button below"
-    )
+    messages.error(request, "Email already exists, please login using Login now button below")
 
     context = {}
     return render(request, "accounts/templates/login.html", context)
@@ -132,8 +130,7 @@ def login_page(request):
             )  # get the user's login attempt
             now = timezone.now()
             if (
-                login_attempt.timestamp
-                + timedelta(seconds=settings.LOGIN_ATTEMPTS_TIME_LIMIT)
+                login_attempt.timestamp + timedelta(seconds=settings.LOGIN_ATTEMPTS_TIME_LIMIT)
             ) <= now:
                 if not _user.is_active:
                     messages.error(request, "Please verify your email first.")

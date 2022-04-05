@@ -73,7 +73,7 @@ def earn_rewards(request):
                 image = Image(image=url, meta=meta)
                 image.save()
             messages.success(request, "Request processed successfully.")
-            return redirect(reverse("rewards:index"))
+            return redirect(reverse("rewards:earn-rewards"))
         except Exception as e:
             print(e)
             if meta is not None:
