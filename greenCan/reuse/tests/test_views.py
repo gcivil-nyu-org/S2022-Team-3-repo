@@ -8,15 +8,13 @@ from PIL import Image as Img
 from six import BytesIO
 from recycle.models import ZipCode
 from reuse.models import Image, Post
-
+from django.utils.encoding import force_str
 from reuse.models import NGOLocation
 
 User = get_user_model()
 
 
-def create_image(
-    storage, filename, size=(100, 100), image_mode="RGB", image_format="PNG"
-):
+def create_image(storage, filename, size=(100, 100), image_mode="RGB", image_format="PNG"):
     """
     Generate a test image, returning the filename that it was saved as.
 
@@ -301,9 +299,7 @@ class TestViews(TestCase):
         Test to check if I search for an item which is not present, it should return nothing
         """
 
-        response = self.client.get(
-            "%s?q=%s" % (reverse("reuse:listing-page"), "veryrandomstring")
-        )
+        response = self.client.get("%s?q=%s" % (reverse("reuse:listing-page"), "veryrandomstring"))
 
         self.assertTrue(len(response.context["posts"]) == 0)
 
@@ -324,8 +320,84 @@ class TestViews(TestCase):
         test to check if searching by user's current location is returning a valid response
         """
 
-        response = self.client.get(
-            self.search_ngo_locations_url + "?type=zipcode&zipcode=10004"
-        )
+        response = self.client.get(self.search_ngo_locations_url + "?type=zipcode&zipcode=10004")
 
         self.assertEquals(response.status_code, 200)
+
+    def test_ngo_locations_invalid_data(self):
+        """
+        test to check if searching by user's current location is returning a valid response
+        """
+
+        response = self.client.get(self.search_ngo_locations_url + "?type=somerandomstring")
+
+        self.assertEquals(response.status_code, 200)
+        self.assertJSONEqual(
+            force_str(response.content),
+            {"err_flag": True, "err_msg": "Invalid arguments provided"},
+        )
+
+
+class TestUserPostsViews(TestCase):
+    def setUp(self):
+        self.my_posts_url = reverse("reuse:my-posts")
+        self.post_availability_url = reverse("reuse:post-availability")
+        user = User.objects.create(
+            first_name="first1",
+            last_name="last1",
+            email="user1@gmail.com",
+            password="password1",
+            is_active=True,
+        )
+        self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        zipcode = ZipCode(
+            zip_code="10001",
+            state_id="NY",
+            state="New York",
+            borough="Manhattan",
+            centroid_latitude=40.75021293296376,
+            centroid_longitude=-73.99692994900218,
+            polygon="",
+        )
+        zipcode.save()
+        self.post = Post(
+            title="Apple",
+            category="Books",
+            phone_number="9175185345",
+            email="pb2640@nyu.edu",
+            zip_code=zipcode,
+            description=" Book on apple",
+            user=user,
+        )
+        self.post.save()
+        self.zipcode = zipcode
+
+    def test_my_posts_GET(self):
+        """
+        test to check if user posts page is returning a valid response
+        """
+
+        response = self.client.get(self.my_posts_url)
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, "reuse/templates/my-posts.html")
+
+    def test_post_availability_redirect(self):
+        """
+        test to check if the change of post availability is returning a valid response
+        """
+        response = self.client.get(self.post_availability_url)
+        self.assertRedirects(response, self.my_posts_url, 302)
+
+    def test_csrf_token(self):
+        response = self.client.get(self.my_posts_url)
+        self.assertContains(response, "csrfmiddlewaretoken")
+
+    def test_info_changed_after_change_availability(self):
+        response = self.client.post(
+            self.post_availability_url,
+            {"id": self.post.id, "still_available": False},
+            follow=True,
+        )
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "success")
+        self.assertEquals(message.message, "Item avaliability has been changed.")

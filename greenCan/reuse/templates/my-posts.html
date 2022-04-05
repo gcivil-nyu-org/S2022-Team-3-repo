@@ -1,0 +1,85 @@
+{% extends 'template.html' %}
+{% load static %}
+
+{% block title %}
+Reuse | greenCan
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/userPosts.css' %}" />
+{% endblock %}
+
+{% block main %}
+<div class = "container">
+    <div class = "row">
+        <div class = "offset-md-1 col-md-10" style="text-align: center;">
+            <table style="width:100%; text-align: center; margin-top: 60px;">
+            <tr>
+                <th><h2>Title</h2></th>
+                <th><h2>Created on</h2></th>
+                <th><h2>Updated on</h2></th>
+                <th><h2>Status</h2></th>
+                <th><h2>Availability</h2></th>
+            </tr>
+            {% for post in user_posts %}
+                <tr>
+                    <td><h3 class = "trimTitle">{{post.title}}</h3></td>
+                    <td>{{post.created_on}}</td>
+                    <td>{{post.updated_on}}</td>
+                    {% if post.approved == None and post.still_available == True %}
+                        <td><button type = "button" class = "peddingBtn btn-round">Pending</button></td>
+                    {% endif %}
+                    {% if post.approved == False %}
+                        <td><button type = "button" class = "removedBtn btn-round">Removed</button></td>
+                    {% endif %}
+                    {% if post.approved == True and post.still_available == True %}
+                        <td><button type = "button" class = "listedBtn btn-round">Listed</button></td>
+                    {% endif %}
+
+                    {% if post.approved != False and post.still_available == False %}
+                        <td><button type = "button" class = "NABtn btn-round">Not avaliable</button></td>
+                    {% endif %}
+
+      
+                    <td><label class="switch">
+                            <input type="checkbox" class = "availableCheck" id = {{post.id}}  {% if post.still_available %} checked {% endif %}>
+                            <span class="slider round"></span>
+                        </label></td>
+            
+                </tr>
+            {% endfor %}
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!--a function to handle the situation if the user click the checkbox-->
+<script type="text/javascript">
+$(document).ready(function() {
+  $(".availableCheck").on("change", function() {
+      if (window.confirm("Are you sure you want to change the availability of this item ?")) {
+        $.ajax({
+                url: "{% url 'reuse:post-availability' %}",
+                data: {
+                    id: this.id,
+                    csrfmiddlewaretoken: "{{ csrf_token }}",
+                    still_available: this.checked, // true if checked else false
+                },
+                type: "POST",
+                dataType : "json",
+                
+        });
+      
+    }
+    else{
+      this.checked = !this.checked;
+    }
+  });
+});
+$(document).ajaxStop(function(){
+    window.location.reload();
+});
+</script>
+{% endblock %}

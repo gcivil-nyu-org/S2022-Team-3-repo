@@ -13,12 +13,11 @@ class Post(models.Model):
     email = models.EmailField(null=True)
     zip_code = models.ForeignKey(ZipCode, null=False, on_delete=models.CASCADE)
     description = models.TextField(null=False)
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE
-    )
-    approved = models.BooleanField(null=True, default=False)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE)
+    approved = models.BooleanField(null=True, default=None)
     still_available = models.BooleanField(null=True, default=True)
     created_on = models.DateTimeField(auto_now_add=True, null=False)
+    updated_on = models.DateTimeField(auto_now=True, null=False)
     search_vector = SearchVectorField(null=True)
 
     def __str__(self):

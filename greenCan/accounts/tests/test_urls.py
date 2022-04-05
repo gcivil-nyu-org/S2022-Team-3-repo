@@ -1,6 +1,9 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-from django.contrib.auth.views import PasswordResetDoneView, PasswordResetCompleteView
+from django.contrib.auth.views import (
+    PasswordResetDoneView,
+    PasswordResetCompleteView,
+)
 from accounts.views import (
     signup_page,
     login_page,

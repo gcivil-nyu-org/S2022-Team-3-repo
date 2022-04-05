@@ -68,7 +68,8 @@
 						  
 							<div class="dropdown-menu d-none" id="dropdown-menu" aria-labelledby="dropdownMenuLink">
 							  <a class="dropdown-item" href="{% url 'accounts:user-profile' %}">My Profile</a>
-							  <a class="dropdown-item" href="#">Green Credits</a>
+							  <a class="dropdown-item" href="{% url 'reuse:my-posts' %}">My Posts</a>
+							  <a class="dropdown-item" href="{% url 'rewards:index' %}">Green Credits</a>
 							  <a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a>
 							</div>
 						  </div>
