@@ -6,7 +6,6 @@ from .models import Post, Image, NGOLocation
 from recycle.models import ZipCode
 import pyrebase
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 from django.urls import reverse
 
 # from django.db.models import Q
