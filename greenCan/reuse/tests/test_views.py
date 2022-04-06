@@ -430,7 +430,7 @@ class TestUserPostsViews(TestCase):
         self.assertJSONEqual(force_str(response.content), {"message": "Error"})
 
     def test_info_removed(self):
-        self.post.approved=False
+        self.post.approved = False
         self.post.save()
         response = self.client.post(
             self.post_availability_url,
