@@ -86,10 +86,7 @@ class RegistrationForm(forms.ModelForm):
         widgets = {
             "email": forms.EmailInput(attrs={"class": "form-input", "placeholder": "Enter Email"}),
             "first_name": forms.TextInput(
-                attrs={
-                    "class": "form-input",
-                    "placeholder": "Enter First Name",
-                }
+                attrs={"class": "form-input", "placeholder": "Enter First Name"}
             ),
             "last_name": forms.TextInput(
                 attrs={"class": "form-input", "placeholder": "Enter Last Name"}
