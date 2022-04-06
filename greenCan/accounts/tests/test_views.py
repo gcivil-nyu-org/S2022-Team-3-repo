@@ -119,7 +119,7 @@ class TestSignupView(TestCase):
         response = self.client.post(self.url, data, follow=True)
         message = list(response.context.get("messages"))[0]
         self.assertEquals(message.tags, "error")
-        # self.assertEquals(message.message, "Password is required")
+        self.assertEquals(message.message, "Password is required")
 
     def test_post_method_with_duplicate_email(self):
 
