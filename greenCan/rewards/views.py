@@ -17,6 +17,7 @@ def index(request):
     context = {}
     return render(request, template_name, context)
 
+
 @login_required
 def earn_rewards(request):
     if request.method == "POST":
