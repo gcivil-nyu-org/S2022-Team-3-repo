@@ -8,65 +8,12 @@ Rewards | greenCan
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/image-gallery.css' %}">
 <link rel="stylesheet" href="{% static 'css/earn-credits-banner.css' %}">
-<style>
-    #grallery {
-   /* Prevent vertical gaps */
-   line-height: 0;
-   
-   -webkit-column-count: 5;
-   -webkit-column-gap:   0px;
-   -moz-column-count:    5;
-   -moz-column-gap:      0px;
-   column-count:         5;
-   column-gap:           0px;
-}
-
-#grallery img {
-  /* Just in case there are inline attributes */
-  width: 100% !important;
-  height: auto !important;
-}
-
-@media (max-width: 1200px) {
-  #grallery {
-  -moz-column-count:    4;
-  -webkit-column-count: 4;
-  column-count:         4;
-  }
-}
-@media (max-width: 1000px) {
-  #grallery {
-  -moz-column-count:    3;
-  -webkit-column-count: 3;
-  column-count:         3;
-  }
-}
-@media (max-width: 800px) {
-  #grallery {
-  -moz-column-count:    2;
-  -webkit-column-count: 2;
-  column-count:         2;
-  }
-}
-@media (max-width: 400px) {
-  #grallery {
-  -moz-column-count:    1;
-  -webkit-column-count: 1;
-  column-count:         1;
-  }
-}
-
-body {
-  margin: 0;
-  padding: 0;
-}
-</style>
 {% endblock %}
 
 {% block main %}
 {% if first %}
 <div class="container justify-content-center d-flex my-3">
-    <h1 class="h1">Green Wall  {{ next_page }}</h1>
+    <h1 class="h1">Green Wall</h1>
 </div>
 {% endif %}
 <div class="grid mb-5 effect-5 container d-flex justify-content-center" id="gallery">
@@ -111,45 +58,67 @@ body {
         <img src="https://i.imgur.com/Qmz61wo.jpg" alt="image1">
         <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
     </div> -->
-</div>
+<!-- </div> -->
 <div class="page-load-status my-3">
-    {% if images.has_next %}
-        <div class="infinite-scroll-request loader-wheel">
-            <i><i><i><i><i><i><i><i><i><i><i><i>
-            </i></i></i></i></i></i></i></i></i></i></i></i>
-        </div>
-    {% else %}
-            {% if show_banner %}
-                {% include 'rewards/templates/earn-credits-banner.html' %}
-            {% else %}
-                <p class="infinite-scroll-last">
-                    End of content
-                </p>
-                <p class="infinite-scroll-error">No more images to load</p>
-            {% endif %}
-    {% endif %}
+    <div class="infinite-scroll-request loader-wheel">
+        <i><i><i><i><i><i><i><i><i><i><i><i>
+        </i></i></i></i></i></i></i></i></i></i></i></i>
+    </div>
+    {% include 'rewards/templates/earn-credits-banner.html' %}    
+    <p class="infinite-scroll-error">
+        No more images to load
+    </p>
 </div>
 {% endblock %}
 
 {% block scripts %}
-<script src="{% static 'modules/masonry/js/masonry.pkgd.min.js' %}"></script>
+<!-- <script src="{% static 'modules/masonry/js/masonry.pkgd.min.js' %}"></script> -->
 <script src="{% static 'modules/infinite-scroll/js/infinite-scroll.pkgd.min.js' %}"></script>
+<script src="{% static 'modules/justified/js/jquery.justified.min.js' %}"></script>
 <script>
-    let $grid = $('.grid').masonry({
-        itemSelector: '.grid-item',
-        columnWidth: '.grid-item',
-        percentPosition: true,
-        gutter: 10,
-        fitWidth: true
+
+    $('.image-container').empty().justifiedImages({
+        images : photos,
+        rowHeight: 200,
+        maxRowHeight: 400,
+        thumbnailPath: function(photo, width, height){
+            var purl = photo.url_s;
+            if( photo.url_n && (width > photo.width_s * 1.2 || height > photo.height_s * 1.2) ) purl = photo.url_n;
+            if( photo.url_m && (width > photo.width_n * 1.2 || height > photo.height_n * 1.2) ) purl = photo.url_m;
+            if( photo.url_z && (width > photo.width_m * 1.2 || height > photo.height_m * 1.2) ) purl = photo.url_z;
+            if( photo.url_l && (width > photo.width_z * 1.2 || height > photo.height_z * 1.2) ) purl = photo.url_l;
+            return purl;
+        },
+        getSize: function(photo){
+            return {width: photo.width_s, height: photo.height_s};
+        },
+        margin: 1
     });
 
-    $('.grid').infiniteScroll({
-        path: function() {
-            return '?page={{ next_page }}'
-        },
-        append: '.grid-item.animate',
-        outlayer: $grid.data('masonry'),
-        status: '.page-load-status',
-    });
+    // let $grid = $('.grid').masonry({
+    //     itemSelector: '.grid-item',
+    //     columnWidth: '.grid-item',
+    //     percentPosition: true,
+    //     gutter: 10,
+    //     fitWidth: true,
+    // });
+
+    // $grid.imagesLoaded().progress(function() {
+    //     $grid.masonry();
+    // });
+
+
+    // $('.grid').infiniteScroll({
+    //     path: function() {
+    //         var max_page = {{ images.paginator.num_pages }};
+    //         if(max_page != false && this.loadCount + 1 >= max_page){
+    //             return `?page=${this.loadCount + 1}`;
+    //         }
+    //     },
+    //     append: '.grid-item.animate',
+    //     outlayer: $grid.data('masonry'),
+    //     history: false,
+    //     status: '.page-load-status',
+    // });
 </script>
 {% endblock %}

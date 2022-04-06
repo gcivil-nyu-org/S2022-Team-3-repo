@@ -1,15 +1,13 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
-
 from .models import Post, Image, NGOLocation
 from recycle.models import ZipCode
 import pyrebase
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.urls import reverse
-
-# from django.db.models import Q
+from uuid import uuid4
 from django.conf import settings
 from django.core.paginator import Paginator
 from django.contrib.postgres.search import (
@@ -122,13 +120,9 @@ def create_post(request):
     auth = firebase.auth()
     auth_email = settings.FIREBASE_HOST_USER
     auth_pswd = settings.FIREBASE_HOST_PASSWORD
-    user = auth.sign_in_with_email_and_password(auth_email, auth_pswd)
+    firebase_user = auth.sign_in_with_email_and_password(auth_email, auth_pswd)
     storage = firebase.storage()
     urls = []
-    for image in images:
-        storage.child(image.name).put(image)
-        url = storage.child(image.name).get_url(user["idToken"])
-        urls.append(url)
 
     title = request.POST.get("title")
     description = request.POST.get("description")
@@ -150,6 +144,12 @@ def create_post(request):
         and email is not None
         and zip_code is not None
     ):
+
+        for image in images:
+            image_name = str(uuid4().int) + "." + image.name.split(".")[-1]
+            storage.child("posts/" + image_name).put(image)
+            url = storage.child("posts/" + image_name).get_url(firebase_user["idToken"])
+            urls.append(url)
         post = Post(
             title=title,
             category=category,
