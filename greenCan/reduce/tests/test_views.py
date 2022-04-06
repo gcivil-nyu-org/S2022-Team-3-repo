@@ -43,7 +43,7 @@ class TestViews(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, "reduce/templates/reduce-index.html")
 
-    def test_retailerlocations1(self):
+    def test_retailer_locations1(self):
         """
         test to check if searching by zip code is returning a valid response
         """
@@ -54,7 +54,7 @@ class TestViews(TestCase):
 
         self.assertEquals(response.status_code, 200)
 
-    def test_retailerlocations2(self):
+    def test_retailer_locations2(self):
         """
         test to check if searching by zip code is returning a valid response
         """
