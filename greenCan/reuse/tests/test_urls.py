@@ -1,6 +1,13 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-from reuse.views import index, donation_view, listing_page, create_post
+from reuse.views import (
+    index,
+    donation_view,
+    listing_page,
+    create_post,
+    my_posts,
+    post_availability,
+)
 
 
 class TestUrls(SimpleTestCase):
@@ -33,9 +40,29 @@ class TestUrls(SimpleTestCase):
 
     def test_createpost_url_is_resolved(self):
         """
-        test create post page url is resolved
+        test my posts page url is resolved
         """
         url = reverse("reuse:create-post")
         self.assertEquals(resolve(url).func, create_post)
         self.assertEquals(resolve(url).namespace, "reuse")
         self.assertEquals(url, "/reuse/create_post/")
+
+    def test_my_posts_url(self):
+        """
+        test create post page url is resolved
+        """
+        url = reverse("reuse:my-posts")
+        resolved = resolve(url)
+        self.assertEqual(resolved.func, my_posts)
+        self.assertEqual(resolved.namespace, "reuse")
+        self.assertEqual(url, "/reuse/my-posts/")
+
+    def test_post_availability_url(self):
+        """
+        test create post availability url is resolved
+        """
+        url = reverse("reuse:post-availability")
+        resolved = resolve(url)
+        self.assertEqual(resolved.func, post_availability)
+        self.assertEqual(resolved.namespace, "reuse")
+        self.assertEqual(url, "/reuse/post-availability/")
