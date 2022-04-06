@@ -8,16 +8,7 @@ Rewards | greenCan
 
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/form.css' %}"></link>
-<link rel="stylesheet" href="{% static 'modules/multiselect/css/jquery.multiselect.css' %}"></link>
-<style>
-    .heading-wrapper {
-        width: fit-content;
-    }
-    .heading, .subheading {
-        display: flex;
-        flex-wrap: wrap;
-    }
-</style>
+<link rel="stylesheet" href="{% static 'modules/select2/css/select2.min.css' %}"></link>
 {% endblock %}
 
 {% block main %}
@@ -41,41 +32,43 @@ Rewards | greenCan
             </span>
             </div>
         </div>
-        <input type="file" name="file[]" class="d-none" id="image-upload" accept="image/*" multiple="multiple" >
+        <input type="file" name="file[]" class="d-none" id="image-upload" accept="image/*" multiple="multiple" required>
         <br>
         {% csrf_token %}
         <div class="row container-fluid">
-            <div class="col-md-10 mx-auto">
-                <div class="form-group">
+            <div class="col-md-12">
+                <div class="form-group mb-1">
                     <label for="caption" class="form-label"><b>Caption:</b></label>
                     <input type="text" class="form-control" name="caption" id="caption" placeholder="Enter the caption" maxlength="100">
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-1">
                     <label for="location" class="form-label"><b>Location:</b></label>
                     <input type="text" class="form-control" name="location" id="location" placeholder="Enter the area zipcode" pattern="^{\d}(5)$">
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-1">
                     <label for="event" class="form-label"><b>Event:</b></label>
                     <select class="form-select" id = "event" name="event" aria-label="Event" required>
+                        <option value="" disabled selected>Select an Event</option>
                         {% for event in events %}
                             <option value={{ event.id }}>{{ event.name }}</option>
                         {% endfor %}
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="event" class="form-label"><b>Category:</b></label>
-                    <select name="categories[]" multiple class="3col active form-select d-none">
+                <div class="form-group mb-3">
+                    <label for="select2Control" class="form-label"><b>Category:</b></label>
+                    <select name="categories[]" multiple id="select2Control" class="select2Control form-control">
                         {% for category in categories %}
                             <option value={{ category.id }}>{{ category.name }}</option>
                         {% endfor %}
                     </select>                    
                 </div>
-                <div class="form-group">
-                    <input type="checkbox" name="consent" value="consent">
-                    I allow greenCan to feature these images on Green Wall.
+                <button type="button" id="show-cat">Show</button>
+                <div class="custom-control custom-checkbox mb-3">
+                    <input type="checkbox" class="custom-control-input" id="consent" name="consent" value="consent">
+                    <label class="custom-control-label" for="consent">I allow greenCan to feature these images on Green Wall.</label>
                 </div>
-                <div class="form-group mt-4">
-                    <button class="button btn-rounded" type="submit">
+                <div class="form-group mt-4 d-flex justify-content-center">
+                    <button class="button btn-rounded" type="submit" id="submit-btn">
                         Submit
                     </button>
                 </div>
@@ -87,7 +80,9 @@ Rewards | greenCan
 
 
 {% block scripts %}
-<script src="{% static 'modules/multiselect/js/jquery.multiselect.js' %}"></script>
+<script src="{% static 'modules/select2/js/select2.min.js' %}"></script>
+<script src="{% static 'modules/attrchange/js/attrchange.min.js' %}"></script>
+<script src="{% static 'js/select2-config.js' %}"></script>
 <script>
     if (window.File && window.FileList && window.FileReader) {
         let filesInput = document.getElementById("image-upload");
@@ -120,16 +115,5 @@ Rewards | greenCan
         $('#image-upload').trigger('click');
     });
     
-    $('select[multiple].active.3col').multiselect({
-	  columns: 2,
-	  placeholder: 'Select Applicable Categories',
-	  search: true,
-	  searchOptions: {
-	      'default': 'Other'
-	  },
-	  selectAll: true,
-	});
-
-    $('.ms-options-wrap button').addClass('form-select');
 </script>
 {% endblock %}

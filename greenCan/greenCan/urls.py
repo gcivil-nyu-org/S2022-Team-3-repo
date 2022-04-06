@@ -22,6 +22,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("recycle/", include("recycle.urls")),
     path("reuse/", include("reuse.urls")),
+    path("reduce/", include("reduce.urls")),
     path("accounts/", include("accounts.urls")),
     path("rewards/", include("rewards.urls")),
     path("social/", include("allauth.urls"), name="social"),
