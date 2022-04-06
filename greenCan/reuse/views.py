@@ -97,7 +97,7 @@ function: create_post
 
 Firstly, set configuration for Google firebase cloud storage
 then obtain post data and images from frontend
-save the images to firebase and get url
+save the images to firebase and get urls
 create Post object and Images object for this user's
 post and save into database
 """

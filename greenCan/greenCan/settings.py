@@ -58,7 +58,6 @@ INSTALLED_APPS = [
     "accounts",
     "reuse",
     "recycle",
-    "reduce",
     "rewards",
     "crispy_forms",
     "allauth",
@@ -136,7 +135,9 @@ if "test" in sys.argv:
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
-    {"NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator"},
+    {
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+    },
     {"NAME": "django.contrib.auth.password_validation.MinimumLengthValidator"},
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
@@ -196,7 +197,7 @@ FIREBASE_HOST_USER = EMAIL_HOST_USER
 
 FIREBASE_HOST_PASSWORD = EMAIL_HOST_PASSWORD
 
-# Time in seconds after each login attempt
+# Time in seconds after each login attempts
 LOGIN_ATTEMPTS_TIME_LIMIT = 0
 # limit the amount of attempts to which the user will be inactive and password set mail sent
 MAX_LOGIN_ATTEMPTS = 5
@@ -224,7 +225,10 @@ ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = False
 SOCIALACCOUNT_LOGIN_ON_GET = True  # bypass the "do you want to login page"
 
 SOCIALACCOUNT_PROVIDERS = {
-    "google": {"SCOPE": ["profile", "email"], "AUTH_PARAMS": {"access_type": "online"}}
+    "google": {
+        "SCOPE": ["profile", "email"],
+        "AUTH_PARAMS": {"access_type": "online"},
+    }
 }
 
 AUTHENTICATION_BACKENDS = [

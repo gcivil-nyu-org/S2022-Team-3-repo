@@ -317,7 +317,7 @@ class TestViews(TestCase):
 
     def test_ngo_locations2(self):
         """
-        test to check if searching by zip code is returning a valid response
+        test to check if searching by user's current location is returning a valid response
         """
 
         response = self.client.get(self.search_ngo_locations_url + "?type=zipcode&zipcode=10004")
