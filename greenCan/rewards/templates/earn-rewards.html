@@ -13,6 +13,10 @@ Rewards | greenCan
     .heading-wrapper .subheading {
         text-align: center;
     }
+
+    .text-danger {
+        color: red;
+    }
 </style>
 {% endblock %}
 
@@ -29,7 +33,7 @@ Rewards | greenCan
         
         <div class="upload-image-frame d-flex flex-column align-middle py-4" id="image-frame">
             <div class="upload-text mx-5" id="show-image-frame">
-            You can choose to upload multiple images*
+            You can choose to upload multiple images<span class="text-danger">*</span>
             </div>
             <div class="upload-btn">
             <i class="fa fa-plus"></i>
@@ -52,7 +56,7 @@ Rewards | greenCan
                     <input type="text" class="form-control" name="location" id="location" placeholder="Enter the area zipcode" pattern="^{\d}(5)$">
                 </div>
                 <div class="form-group mb-1">
-                    <label for="event" class="form-label"><b>Event:</b></label>
+                    <label for="event" class="form-label"><b>Event:<span class="text-danger">*</span></b></label>
                     <select class="form-select" id = "event" name="event" aria-label="Event" required>
                         <option value="" disabled selected>Select an Event</option>
                         {% for event in events %}
