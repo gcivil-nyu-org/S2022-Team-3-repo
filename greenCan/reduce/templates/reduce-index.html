@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-Recycle | greenCan
+Reduce | greenCan
 {% endblock %}
 
 {% block style %}
@@ -15,8 +15,9 @@ Recycle | greenCan
 
 {% block main %}
 <div class="d-flex justify-content-md-center justify-content-sm-start">
-    <h1 class="h1">Search for Drop-off Sites</h1>
+    <h1 class="h1">Search for Paper-Bag Retailer</h1>
 </div>
+
 <div class="my-md-4 my-2 d-flex container-fluid justify-content-center pb-3 mx-auto">
     <div class="row justify-content-center">
         <div class="col-md-7 col-12 justify-content-center mb-1">
@@ -36,21 +37,12 @@ Recycle | greenCan
     </div>
 </div>
 
-<div>
-    <select name="categories" id="categories" onchange = "javascript:filterByCategory(this)">
-        <option value="showing all sites">Showing all sites</option>
-        {% for type in types %}
-            <option value="{{type | lower }}">{{ type | title }}</option>
-        {% endfor %}
-    </select>
-</div>
-
 <div class="row container-fluid px-0 mt-md-2">
     <div class="col-md-8 col-sm-10 col-12 offset-md-0 offset-sm-1 pr-2">
         <div id="map"></div>
     </div>
     <div class="col-md-4 col-sm-10 col-12 offset-md-0 offset-sm-1" >
-        <div id="listings" class="mt-2 card_frame">
+        <div id="listings" class="card_frame">
         </div>
     </div>
 </div>
@@ -66,11 +58,11 @@ Recycle | greenCan
     function markPoints(locations){
         clearView();
         let marker;
-        $.each(locations, function( key,site ) {
-            marker = L.marker([site["latitude"],site["longitude"]],{icon: colorCategoryMap[site['type'].toLowerCase()][0]})
+        $.each(locations, function(key, site) {
+            marker = L.marker([site["latitude"],site["longitude"]],{icon: colorCategoryMap['public recycle bins'][0]})
             marker.bindTooltip('<b>'+site["name"]+'</b><br/>'+site["street_address"]+'<br/>'+site['state_id']+' '+site['zip_code'], {
                 sticky: true
-            }).addTo(map);            
+            }).addTo(map);
             var card = '<div class="border_rectangle1" onclick="focusOn('+site['latitude'].toString()+','+site['longitude'].toString()+')"> \
                     <div class="info_circle_icon_frame"> \
                       <div class="info_circle_icon"> \
@@ -100,17 +92,6 @@ Recycle | greenCan
                     </div>';
               }
 
-              if (site['email']!=null && site['email']!='' && site['email']!=undefined){
-                  card +=     '<div class="mail_icon_frame"> \
-                      <div class="mail_icon"> \
-                        <i class="fa fa-envelope" style="color: #C4C4C4"></i> \
-                      </div> \
-                    </div> \
-                    <div class="email"> \
-                      '+site['email']+' \
-                    </div>';
-              }     
-                
                 card += '<a class="direction_frame" href="https://www.google.com/maps?saddr=My+Location&daddr='+site['latitude'].toString()+','+site['longitude'].toString()+'" target="_blank"> \
                       <div class="direction_border"> \
                       </div> \
@@ -123,7 +104,7 @@ Recycle | greenCan
             markersLayer.addLayer(marker);
         });
     }
-    
+
     function clearView() {
         if (map){
             markersLayer.clearLayers();
@@ -138,13 +119,10 @@ Recycle | greenCan
       }).addTo(map);
       L.control.scale().addTo(map);
       markersLayer.addTo(map);
-      map.addControl(new customControl());
-      legend.addTo(map);
-      $('.legend').hide();
     }
 
     function loadView() {
-        setMap();   
+        setMap();
     }
 
     window.onload = function() {loadView()}
@@ -152,8 +130,8 @@ Recycle | greenCan
     function focusOn(lat,long){
         map.flyTo(new L.LatLng(lat, long));
     }
-    
-    var curr_zipcode=''; 
+
+    var curr_zipcode='';
 
     $('#zipcode').keyup(function (event) {
         if (event.keyCode==189 || event.keyCode==190 || event.keyCode==107 || event.keyCode==109)
@@ -163,7 +141,7 @@ Recycle | greenCan
             if(curr_zipcode!==zipcode){
                 makeValid();
                 curr_zipcode=zipcode;
-                getDropOffSitesZipcode(zipcode);
+                getRetailerSitesZipcode(zipcode);
             }
         }
     });
@@ -185,10 +163,10 @@ Recycle | greenCan
         markPoints(locations);
     }
 
-    function getDropOffSitesZipcode(zipcode){
+    function getRetailerSitesZipcode(zipcode){
         clearView();
         $.ajax({
-            url: "{% url 'recycle:fetch-drop-off-locations' %}",
+            url: "{% url 'reduce:fetch-retailer-locations' %}",
             type: "GET",
             async: false,
             data: {
@@ -199,7 +177,8 @@ Recycle | greenCan
                 if (data['err_flag']==true){
                     makeInvalid();
                 }else{
-                    setData(data);   
+                    console.log(data);
+                    setData(data);
                 }
             }
         });
@@ -215,10 +194,10 @@ Recycle | greenCan
         $('#zipcode-feedback').addClass('d-none');
     }
 
-    function getDropOffSitesLocations(latitude,longitude){
+    function getRetailerSitesLocations(latitude,longitude){
         clearView();
         $.ajax({
-            url: "{% url 'recycle:fetch-drop-off-locations' %}",
+            url: "{% url 'reduce:fetch-retailer-locations' %}",
             type: "GET",
             async: false,
             data: {
@@ -227,6 +206,7 @@ Recycle | greenCan
                 "longitude": longitude
             },
             success: function (data) {
+                console.log(data);
                 setData(data);
             }
         });
@@ -239,23 +219,17 @@ Recycle | greenCan
           url: 'https://get.geojs.io/v1/ip/geo.json',
           type: 'GET',
           success: function (data) {
-              getDropOffSitesLocations(data['latitude'],data['longitude']);
+              getRetailerSitesLocations(data['latitude'],data['longitude']);
           }
         });
     });
-    
-    function filterByCategory(obj){
-        let selectedCat = $(obj).val();
-        if(selectedCat == 'showing all sites'){
-            locations = result.map(([key, value]) => value);
-        }
-        else{
-            locations = result.filter(([key, value]) => value.type.toLowerCase() === selectedCat).map(([key, value]) => value);
-        }
-        markPoints(locations);
-    }
-    
-    $('#main').addClass('my-3 mb-5 pb-5');
+        $(function(){
+            $("[data-toggle='tooltip']").tooltip({
+                container: '.wrapper'
+            });
+        });
+
+        $('#main').addClass('my-3 mb-5 pb-5');
 
 </script>
 {% endblock %}
