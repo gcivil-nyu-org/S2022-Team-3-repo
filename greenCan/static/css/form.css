@@ -1,6 +1,7 @@
 textarea.form-control {
     min-height: 150px !important;
     border-radius: 20px !important;
+    font-family: 'Roboto',sans-serif;
 }
 
 .form-control {

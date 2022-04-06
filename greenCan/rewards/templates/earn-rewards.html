@@ -1,4 +1,3 @@
-
 {% extends 'template.html' %}
 {% load static %}
 
@@ -19,11 +18,10 @@ Rewards | greenCan
 <div class="d-flex container-fluid justify-content-center pb-3 mx-auto mb-md-5">
     <form class="form-container g-3 justify-content-center" id = "proof-upload-form" enctype="multipart/form-data" method="POST" role="form">
         <!--img upload-->
-        {% include 'messages.html' %}
         
         <div class="upload-image-frame d-flex flex-column align-middle py-4" id="image-frame">
             <div class="upload-text mx-5" id="show-image-frame">
-            You can choose to upload multiple image(s).
+            You can choose to upload multiple images
             </div>
             <div class="upload-btn">
             <i class="fa fa-plus"></i>
@@ -80,6 +78,9 @@ Rewards | greenCan
 
 
 {% block scripts %}
+
+{% include 'sweetalert2.html' %}
+
 <script src="{% static 'modules/select2/js/select2.min.js' %}"></script>
 <script src="{% static 'modules/attrchange/js/attrchange.min.js' %}"></script>
 <script src="{% static 'js/select2-config.js' %}"></script>
