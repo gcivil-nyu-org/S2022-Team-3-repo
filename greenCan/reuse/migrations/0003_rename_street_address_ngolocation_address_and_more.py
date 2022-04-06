@@ -9,9 +9,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RenameField(
-            model_name="ngolocation",
-            old_name="street_address",
-            new_name="address",
+            model_name="ngolocation", old_name="street_address", new_name="address",
         ),
         migrations.RemoveField(model_name="ngolocation", name="name"),
         migrations.AddField(

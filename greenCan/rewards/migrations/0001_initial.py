@@ -20,7 +20,9 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "id",
-                    models.BigAutoField(auto_created=True, primary_key=True, serialize=False),
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False
+                    ),
                 ),
                 ("name", models.CharField(max_length=100, unique=True)),
             ],
@@ -30,7 +32,9 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "id",
-                    models.BigAutoField(auto_created=True, primary_key=True, serialize=False),
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False
+                    ),
                 ),
                 ("name", models.CharField(max_length=100, unique=True)),
             ],
@@ -40,22 +44,20 @@ class Migration(migrations.Migration):
             fields=[
                 (
                     "id",
-                    models.BigAutoField(auto_created=True, primary_key=True, serialize=False),
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False
+                    ),
                 ),
                 ("image", models.URLField(max_length=2000, unique=True)),
                 ("caption", models.CharField(max_length=150, null=True)),
                 ("consent", models.BooleanField(default=False)),
                 ("approved", models.BooleanField(default=False)),
                 ("uploaded_on", models.DateTimeField(auto_now_add=True)),
-                (
-                    "category",
-                    models.ManyToManyField(null=True, to="rewards.Category"),
-                ),
+                ("category", models.ManyToManyField(null=True, to="rewards.Category"),),
                 (
                     "event_type",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE,
-                        to="rewards.event",
+                        on_delete=django.db.models.deletion.CASCADE, to="rewards.event",
                     ),
                 ),
                 (

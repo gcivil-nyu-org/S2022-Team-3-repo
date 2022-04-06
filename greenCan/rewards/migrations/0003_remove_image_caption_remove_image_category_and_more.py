@@ -14,36 +14,20 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name="image",
-            name="caption",
-        ),
-        migrations.RemoveField(
-            model_name="image",
-            name="category",
-        ),
-        migrations.RemoveField(
-            model_name="image",
-            name="consent",
-        ),
-        migrations.RemoveField(
-            model_name="image",
-            name="event_type",
-        ),
-        migrations.RemoveField(
-            model_name="image",
-            name="location",
-        ),
-        migrations.RemoveField(
-            model_name="image",
-            name="user",
-        ),
+        migrations.RemoveField(model_name="image", name="caption",),
+        migrations.RemoveField(model_name="image", name="category",),
+        migrations.RemoveField(model_name="image", name="consent",),
+        migrations.RemoveField(model_name="image", name="event_type",),
+        migrations.RemoveField(model_name="image", name="location",),
+        migrations.RemoveField(model_name="image", name="user",),
         migrations.CreateModel(
             name="ImageMeta",
             fields=[
                 (
                     "id",
-                    models.BigAutoField(auto_created=True, primary_key=True, serialize=False),
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False
+                    ),
                 ),
                 ("caption", models.CharField(max_length=150, null=True)),
                 ("consent", models.BooleanField(default=False)),

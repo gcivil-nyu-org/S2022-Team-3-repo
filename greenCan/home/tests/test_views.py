@@ -18,12 +18,13 @@ class TestHomePage(TestCase):
     def test_unauthenticated_user(self):
         response = self.client.get(self.url)
         self.assertContains(
-            response,
-            '<span class="slanted-btn-contain">Join Our Community!</span>',
+            response, '<span class="slanted-btn-contain">Join Our Community!</span>',
         )
         self.assertNotContains(
             response,
-            '<a class="dropdown-item" href="' + reverse("accounts:logout") + '">Logout</a>',
+            '<a class="dropdown-item" href="'
+            + reverse("accounts:logout")
+            + '">Logout</a>',
         )
 
     def test_authenticated_user(self):
@@ -36,11 +37,12 @@ class TestHomePage(TestCase):
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url)
         self.assertNotContains(
-            response,
-            '<span class="slanted-btn-contain">Join Our Community!</span>',
+            response, '<span class="slanted-btn-contain">Join Our Community!</span>',
         )
         self.assertContains(
             response,
-            '<a class="dropdown-item" href="' + reverse("accounts:logout") + '">Logout</a>',
+            '<a class="dropdown-item" href="'
+            + reverse("accounts:logout")
+            + '">Logout</a>',
         )
         self.assertContains(response, user.get_full_name())

@@ -42,7 +42,11 @@ def get_retailer_locations(centroid):
                     FROM
                     (
                     SELECT *,
-                        calculate_distance({centroid['latitude']}, {centroid['longitude']}, R.LATITUDE, R.LONGITUDE, 'M') AS DISTANCE
+                        calculate_distance(
+                            {centroid['latitude']},
+                            {centroid['longitude']},
+                            R.LATITUDE, R.LONGITUDE, 'M'
+                        ) AS DISTANCE
                         FROM REDUCE_RETAILERLOCATION AS R
                     ) AS D
                 ) AS F

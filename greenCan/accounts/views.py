@@ -116,7 +116,8 @@ def login_page(request):
             )  # get the user's login attempt
             now = timezone.now()
             if (
-                login_attempt.timestamp + timedelta(seconds=settings.LOGIN_ATTEMPTS_TIME_LIMIT)
+                login_attempt.timestamp
+                + timedelta(seconds=settings.LOGIN_ATTEMPTS_TIME_LIMIT)
             ) <= now:
                 if not _user.is_active:
                     messages.error(request, "Please verify your email first.")
@@ -185,8 +186,7 @@ def activate_account_page(request, uidb64, token):
             messages.success(request, "Account restored, you can now proceed to login")
         else:
             messages.success(
-                request,
-                "Thank you for confirming your email. You can now login.",
+                request, "Thank you for confirming your email. You can now login.",
             )
         return redirect(settings.LOGIN_URL)
     else:

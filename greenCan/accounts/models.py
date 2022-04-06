@@ -91,7 +91,9 @@ class User(AbstractBaseUser):
     zipcode = models.ForeignKey(
         ZipCode, verbose_name="Zipcode", on_delete=models.CASCADE, null=True
     )
-    phone_number = models.CharField(verbose_name="Phone number", max_length=17, null=True)
+    phone_number = models.CharField(
+        verbose_name="Phone number", max_length=17, null=True
+    )
     avatar = models.TextField(verbose_name="Avatar", null=True)
     # avatar = models.ImageField(upload_to="Avatars", null=True)
     is_active = models.BooleanField(default=True)
