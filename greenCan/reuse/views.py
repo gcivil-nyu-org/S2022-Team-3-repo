@@ -307,7 +307,7 @@ def post_availability(request):
     if request.method == "POST":
         try:
             post = Post.objects.get(id=request.POST.get("id"))
-            if post.user != request.user or not post.approved:
+            if post.user != request.user or post.approved is False:
                 raise Exception("Only the owner can change the status")
             checked = request.POST.get("still_available")
             if checked == "true":
