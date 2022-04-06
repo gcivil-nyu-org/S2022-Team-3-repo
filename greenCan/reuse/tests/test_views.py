@@ -403,9 +403,7 @@ class TestUserPostsViews(TestCase):
         )
         post = Post.objects.filter(id=self.post.id)[0]
         self.assertEquals(post.still_available, False)
-        message = list(response.context.get("messages"))[0]
-        self.assertEquals(message.tags, "success")
-        self.assertEquals(message.message, "Item avaliability has been changed.")
+        self.assertJSONEqual(force_str(response.content), {"message": "Success"})
 
     def test_info_changed_after_change_availability_to_True(self):
         response = self.client.post(
@@ -418,6 +416,28 @@ class TestUserPostsViews(TestCase):
         )
         post = Post.objects.filter(id=self.post.id)[0]
         self.assertEquals(post.still_available, True)
-        message = list(response.context.get("messages"))[0]
-        self.assertEquals(message.tags, "success")
-        self.assertEquals(message.message, "Item avaliability has been changed.")
+        self.assertJSONEqual(force_str(response.content), {"message": "Success"})
+
+    def test_info_Invalid_Id(self):
+        response = self.client.post(
+            self.post_availability_url,
+            {
+                "id": 20,
+                "still_available": "true",
+            },
+            follow=True,
+        )
+        self.assertJSONEqual(force_str(response.content), {"message": "Error"})
+
+    def test_info_removed(self):
+        self.post.approved=False
+        self.post.save()
+        response = self.client.post(
+            self.post_availability_url,
+            {
+                "id": self.post.id,
+                "still_available": "true",
+            },
+            follow=True,
+        )
+        self.assertJSONEqual(force_str(response.content), {"message": "Error"})

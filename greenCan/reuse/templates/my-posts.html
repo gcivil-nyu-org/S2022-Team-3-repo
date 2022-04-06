@@ -64,61 +64,71 @@ Reuse | greenCan
 <script type="text/javascript">
 $(document).ready(function() {
   $(".availableCheck").on("change", function(e) {
-    e.preventDefault();
-    Swal.fire({
-      title: 'Are you sure?',
-      text: "You want to toggle the availability of this item?",
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes, switch it!'
- }).then((result) =>{
-    if (result.isConfirmed) {
-        var val = false;
-        $.ajax({
-                url: "{% url 'reuse:post-availability' %}",
-                data: {
-                    id: this.id,
-                    csrfmiddlewaretoken: "{{ csrf_token }}",
-                    still_available: this.checked, // true if checked else false
-                },
-                type: "POST",
-                dataType : "json",
-                success: function(e) {
-                    val = true;
-    
-                }, 
+        e.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to toggle the availability of this item?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, switch it!'
+        }).then((result) =>{
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{% url 'reuse:post-availability' %}",
+                    data: {
+                        id: this.id,
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        still_available: this.checked, // true if checked else false
+                    },
+                    type: "POST",
+                    dataType : "json",
+                    success: function(e) {
+                        if(e.message == "Success"){
+                            Swal.fire(
+                                'Nice!',
+                                'Your have toggled the availability of this item.',
+                                'success'
+                            ).then(function(){
+                                window.location.reload();
+                            });
+                        } else{
+                            Swal.fire(
+                                'Error!',
+                                'Something went wrong, please try again.',
+                                'error'
+                            ).then(function(){
+                                window.location.reload();
+                            });
+                        }
+                    }, 
+                    error: function(e) {
+                        Swal.fire(
+                                'Error!',
+                                'Something went wrong, please try again.',
+                                'error'
+                            );   
+                        setTimeout(function() { 
+                            window.location.reload();
+                        },2000);
+                    }
+                });
+
+            } else{
+                this.checked = !this.checked;
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Cancel',
+                    text: 'Your action has been canceled',
+                    });
+            }
         });
-
-        if(val == true){
-            Swal.fire(
-                    'Nice!',
-                    'Your have toggled the availability of this item.',
-                    'success'
-                    );
-        } else{
-            Swal.fire(
-                        'Error!',
-                        'Something went wrong, please try again.',
-                        'error'
-                        );
-        }
-
-   } else{
-       this.checked = !this.checked;
-       Swal.fire({
-        icon: 'info',
-        title: 'Cancel',
-        text: 'Your action has been canceled',
-        })
-   }
-})
-    return false
- });
+        return false;
+    });
 });
-$(document).ajaxStop(function(){
-    window.location.reload();
-});
+// $(document).ajaxStop(function(){
+//     window.location.reload();
+// });
 </script>
 {% endblock %}
