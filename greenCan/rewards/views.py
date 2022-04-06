@@ -21,7 +21,7 @@ def index(request):
 @login_required
 def earn_rewards(request):
     if request.method == "POST":
-        categories = request.POST.get("categories[]", None)
+        categories = request.POST.getlist("categories[]", None)
         event = request.POST.get("event", None)
         caption = request.POST.get("caption")
         location = request.POST.get("location", None)
@@ -90,9 +90,11 @@ def earn_rewards(request):
             )
             meta.save()
             if categories:
-                for category in categories:
-                    meta.category.add(category)
-                meta.save()
+                for cat_id in categories:
+                    cat_id = int(cat_id)
+                    if Category.objects.get(pk=cat_id):
+                        meta.category.add(cat_id)
+                        meta.save()
             for url in urls:
                 image = Image(image=url, meta=meta)
                 image.save()
@@ -119,17 +121,25 @@ def featured_image_gallery(request):
         page_number = request.POST.get("page", 1)
         if page_number == "":
             page_number = 1
-
         page = images.get_page(page_number)
+        page_data = []
+        for p in page:
+            page_data.append(
+                {
+                    "image": p.image,
+                    "description": p.meta.caption if p.meta.caption else "",
+                    "event": p.meta.event_type.name,
+                }
+            )
         data = {
-            "images": page,
+            "images": page_data,
         }
         if not page.has_next():
-            data["has_next"] = False
+            data["has_next"] = 0
         else:
             data["next_page_number"] = page.next_page_number()
-            data["has_next"] = True
-        return JsonResponse(request, data)
+            data["has_next"] = 1
+        return JsonResponse(data)
 
     template_name = "rewards/templates/featured-gallery.html"
     context = {}

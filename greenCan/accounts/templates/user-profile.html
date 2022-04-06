@@ -4,6 +4,7 @@
 {% block title %}
 user-profile
 {% endblock %}
+<!-- <script src="sweetalert2.all.min.js"></script> -->
 
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/modal.css' %}" />
@@ -14,17 +15,6 @@ user-profile
 <div class ="container-fluid p-0 m-0">
     <div class = "row row-height d-flex">
         <div class = "col-md-5 col-sm-12">
-            {% if messages %}
-                <ul style="text-align:left;">
-                {% for message in messages %}
-                    {% if message.tags == 'success' %}
-                        <li class="text-success"> {{ message }} </li>
-                    {% else %}
-                        <li class="text-danger"> {{ message }} </li>
-                    {% endif %}
-                {% endfor %}
-                </ul>
-            {% endif %}
             <div class="avatarContainer">
                   <div class = "userAvatar">
                     {% if user.avatar %}
@@ -103,7 +93,7 @@ user-profile
                                             </div>
                                     </div>
                                     <br>
-                                    <button type="submit" class="btn btn-secondary" >Save</button>
+                                    <button type="submit" id="sweetalert" class="btn btn-secondary">Save</button>
                                     <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color: #777 !important;">Close</button>
                                 </form>
                             </div>
@@ -307,9 +297,11 @@ user-profile
 </div>
 
 
+
 {% endblock %}
 
 {% block scripts %}
+{% include 'sweetalert2.html' %}
 <script>
 $('.avatarBtn').on('click',function(){
     console.log("before");
@@ -319,5 +311,6 @@ $('.avatarBtn').on('click',function(){
 });
 
 $('#main').removeClass( "container-md mx-md-auto mx-1" ).addClass("container-fluid p-0");
+
 </script>
 {% endblock %}

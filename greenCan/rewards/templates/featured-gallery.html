@@ -6,119 +6,107 @@ Rewards | greenCan
 {% endblock %}
 
 {% block style %}
-<link rel="stylesheet" href="{% static 'css/image-gallery.css' %}">
+<link rel="stylesheet" href="{% static 'css/image-grid.css' %}">
 <link rel="stylesheet" href="{% static 'css/earn-credits-banner.css' %}">
 {% endblock %}
 
 {% block main %}
-{% if first %}
 <div class="container justify-content-center d-flex my-3">
     <h1 class="h1">Green Wall</h1>
 </div>
-{% endif %}
 <div class="grid mb-5 effect-5 container d-flex justify-content-center" id="gallery">
-    {% for image in images %}
-    <div class="grid-item animate">
-        <img src="{{ image.image }}" alt="{{ image.event }}" class="img-fuild">
-        {% if image.description %}
-        <div class="overlay">{{ image.description }}</div>
-        {% endif %}
-    </div>
-    {% endfor %}
-
-    <!-- <div class="grid-item animate">
-        <img src="https://i.imgur.com/kXUHDn5.jpg" alt="image1">
-        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
-    </div>
-    <div class="grid-item  animate">
-        <img src="https://i.imgur.com/Qmz61wo.jpg" alt="image1">
-        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
-    </div>
-    <div class="grid-item animate">
-        <img src="https://i.imgur.com/EpYbuG7.jpg" alt="image1">
-        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
-    </div>
-    <div class="grid-item animate">
-        <img src="https://i.imgur.com/kXUHDn5.jpg" alt="image1">
-        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
-    </div>
-    <div class="grid-item animate">
-        <img src="https://i.imgur.com/Qmz61wo.jpg" alt="image1">
-        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
-    </div>
-    <div class="grid-item animate">
-        <img src="https://i.imgur.com/EpYbuG7.jpg" alt="image1">
-        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
-    </div>
-    <div class="grid-item animate">
-        <img src="https://i.imgur.com/kXUHDn5.jpg" alt="image1">
-        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
-    </div>
-    <div class="grid-item animate">
-        <img src="https://i.imgur.com/Qmz61wo.jpg" alt="image1">
-        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
-    </div> -->
-<!-- </div> -->
-<div class="page-load-status my-3">
-    <div class="infinite-scroll-request loader-wheel">
-        <i><i><i><i><i><i><i><i><i><i><i><i>
-        </i></i></i></i></i></i></i></i></i></i></i></i>
-    </div>
-    {% include 'rewards/templates/earn-credits-banner.html' %}    
-    <p class="infinite-scroll-error">
-        No more images to load
-    </p>
+    <div class="grid-col animate" id="grid-col0"></div>
+    <div class="grid-col animate" id="grid-col1"></div>
+    <div class="grid-col animate" id="grid-col2"></div>
+    <div class="grid-col animate" id="grid-col3"></div>
 </div>
+<div class="loader mb-5"></div>
+<button class="load-more">Load More</button>
+{% include 'rewards/templates/earn-credits-banner.html' %}
+
+
 {% endblock %}
 
 {% block scripts %}
-<!-- <script src="{% static 'modules/masonry/js/masonry.pkgd.min.js' %}"></script> -->
-<script src="{% static 'modules/infinite-scroll/js/infinite-scroll.pkgd.min.js' %}"></script>
-<script src="{% static 'modules/justified/js/jquery.justified.min.js' %}"></script>
 <script>
+    
+    $(document).ready(function(){
+        var page = 1;
+        var hasNext = true;
+        $('.load-more').click(function(){
+            put_more_data();
+        });
 
-    $('.image-container').empty().justifiedImages({
-        images : photos,
-        rowHeight: 200,
-        maxRowHeight: 400,
-        thumbnailPath: function(photo, width, height){
-            var purl = photo.url_s;
-            if( photo.url_n && (width > photo.width_s * 1.2 || height > photo.height_s * 1.2) ) purl = photo.url_n;
-            if( photo.url_m && (width > photo.width_n * 1.2 || height > photo.height_n * 1.2) ) purl = photo.url_m;
-            if( photo.url_z && (width > photo.width_m * 1.2 || height > photo.height_m * 1.2) ) purl = photo.url_z;
-            if( photo.url_l && (width > photo.width_z * 1.2 || height > photo.height_z * 1.2) ) purl = photo.url_l;
-            return purl;
-        },
-        getSize: function(photo){
-            return {width: photo.width_s, height: photo.height_s};
-        },
-        margin: 1
+        function get_one_image_dom(image) {
+            if(image==null){
+                return '';
+            }
+            image_dom = '<div class="grid-item animate">'
+                        + `<img src="${image['image']}" alt="${image['event']}" class="img-fuild">`;
+            
+            if(image['description']){
+                image_dom += `<div class="overlay">${image['description']}</div>`
+            }
+            image_dom += '</div>';
+            return image_dom;
+        }
+
+        function auto_adjust_height() {
+            min_height_elem = -1;
+            max_height_elem = -1;
+            for(i = 0; i<4; i++){
+                curr_elem = $('#grid-col'+i.toString());
+                if (min_height_elem === -1 || min_height_elem.height() > curr_elem.height()) {
+                    min_height_elem = curr_elem;
+                }
+                if (max_height_elem === -1 || max_height_elem.height() < curr_elem.height()) {
+                    max_height_elem = curr_elem;
+                }
+            }
+            
+            console.log(max_height_elem);
+            console.log(min_height_elem);
+
+            if(max_height_elem.height() > min_height_elem.height()+200){    
+                child = max_height_elem.children().last().empty();
+                console.log(child);
+                min_height_elem.append(child);
+            }
+        }
+
+        function put_more_data() {
+            $('.loader').show();
+            if(hasNext){
+                $.ajax({
+                    url: "{% url 'rewards:featured-image-gallery' %}",
+                    dataType: 'json',
+                    method: 'POST',
+                    data: {
+                        "csrfmiddlewaretoken": "{{ csrf_token }}",
+                        "page": page
+                    },
+                    success: function(data) {
+                        for(i=0; i<data.images.length; i++){
+                            $('#grid-col'+(i%4).toString()).append(get_one_image_dom(data.images[i]));
+                        }
+                        if(data.has_next!=hasNext){
+                            $('.load-more').toggle();
+                            hasNext = data.has_next
+                        }
+                        if(hasNext){
+                            page = data.next_page_number   
+                        }
+                        $('.loader').hide();
+                    },
+                    error : function() {
+                        alert("Some Error occured please try again later.");
+                    }
+                });
+            }
+        }
+
+        put_more_data();
     });
 
-    // let $grid = $('.grid').masonry({
-    //     itemSelector: '.grid-item',
-    //     columnWidth: '.grid-item',
-    //     percentPosition: true,
-    //     gutter: 10,
-    //     fitWidth: true,
-    // });
-
-    // $grid.imagesLoaded().progress(function() {
-    //     $grid.masonry();
-    // });
-
-
-    // $('.grid').infiniteScroll({
-    //     path: function() {
-    //         var max_page = {{ images.paginator.num_pages }};
-    //         if(max_page != false && this.loadCount + 1 >= max_page){
-    //             return `?page=${this.loadCount + 1}`;
-    //         }
-    //     },
-    //     append: '.grid-item.animate',
-    //     outlayer: $grid.data('masonry'),
-    //     history: false,
-    //     status: '.page-load-status',
-    // });
 </script>
 {% endblock %}

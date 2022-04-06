@@ -1,11 +1,11 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib import messages
 from .models import Post, Image, NGOLocation
 from recycle.models import ZipCode
 import pyrebase
 from django.contrib.auth.decorators import login_required
-from django.contrib import messages
 from django.urls import reverse
 from uuid import uuid4
 from django.conf import settings
@@ -71,11 +71,11 @@ def listing_page(request):
                     ),
                     rank=SearchRank(search_vector, search_query),
                 )
-                .filter(search_vector=search_query)
+                .filter(search_vector=search_query, still_available=True)
                 .order_by("-rank", "-created_on")
             )
         else:
-            posts = Post.objects.all().order_by("-created_on")
+            posts = Post.objects.filter(still_available=True).order_by("-created_on")
 
         # set paginator to limit size of 21 posts per page
         posts = Paginator(posts, 21)
@@ -164,6 +164,7 @@ def create_post(request):
         for url in urls:
             image = Image(url=url, post=post)
             image.save()
+        messages.success(request, "Post created succesfully")
 
     return redirect(reverse("reuse:donation-page"))
 
