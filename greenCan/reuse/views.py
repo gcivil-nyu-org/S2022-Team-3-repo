@@ -73,11 +73,11 @@ def listing_page(request):
                     ),
                     rank=SearchRank(search_vector, search_query),
                 )
-                .filter(search_vector=search_query)
+                .filter(search_vector=search_query, still_available=True)
                 .order_by("-rank", "-created_on")
             )
         else:
-            posts = Post.objects.all().order_by("-created_on")
+            posts = Post.objects.filter(still_available=True).order_by("-created_on")
 
         # set paginator to limit size of 21 posts per page
         posts = Paginator(posts, 21)

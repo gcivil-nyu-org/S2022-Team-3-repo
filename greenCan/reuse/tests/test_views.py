@@ -364,7 +364,7 @@ class TestUserPostsViews(TestCase):
             title="Apple",
             category="Books",
             phone_number="9175185345",
-            email="pb2640@nyu.edu",
+            email="user1@gmail.com",
             zip_code=zipcode,
             description=" Book on apple",
             user=user,
@@ -395,9 +395,11 @@ class TestUserPostsViews(TestCase):
     def test_info_changed_after_change_availability_to_False(self):
         response = self.client.post(
             self.post_availability_url,
-            {"id": self.post.id, "still_available": False},
+            {"id": self.post.id, "still_available": False,},
             follow=True,
         )
+        post = Post.objects.filter(id=self.post.id)[0]
+        self.assertEquals(post.still_available, False)
         message = list(response.context.get("messages"))[0]
         self.assertEquals(message.tags, "success")
         self.assertEquals(message.message, "Item avaliability has been changed.")
@@ -405,9 +407,11 @@ class TestUserPostsViews(TestCase):
     def test_info_changed_after_change_availability_to_True(self):
         response = self.client.post(
             self.post_availability_url,
-            {"id": self.post.id, "still_available": True},
+            {"id": self.post.id, "still_available": True,},
             follow=True,
         )
+        post = Post.objects.filter(id=self.post.id)[0]
+        self.assertEquals(post.still_available, True)
         message = list(response.context.get("messages"))[0]
         self.assertEquals(message.tags, "success")
         self.assertEquals(message.message, "Item avaliability has been changed.")
