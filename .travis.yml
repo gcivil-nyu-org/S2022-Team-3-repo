@@ -15,7 +15,7 @@ script:
   - python -m black . --check --line-length=99
   - python -m flake8 --exclude=migrations --max-line-length=99
   - python greenCan/manage.py collectstatic
-  - cd greenCan && python -m coverage run --source=accounts,home,reuse,recycle,rewards manage.py test --keepdb
+  - cd greenCan && python -m coverage run --source=accounts,home,reuse,recycle,rewards,reduce manage.py test --keepdb
 
 after_success:
   - python -m coveralls
