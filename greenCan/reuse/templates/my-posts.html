@@ -39,7 +39,6 @@ Reuse | greenCan
                     {% if post.approved != False and post.still_available == False %}
                         <td><button type = "button" class = "NABtn btn-round">Not avaliable</button></td>
                     {% endif %}
-
       
                     <td><label class="switch">
                             <input type="checkbox" class = "availableCheck" id = {{post.id}}  {% if post.still_available %} checked {% endif %}>
