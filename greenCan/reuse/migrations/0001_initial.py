@@ -18,12 +18,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="Post",
             fields=[
-                (
-                    "id",
-                    models.BigAutoField(
-                        auto_created=True, primary_key=True, serialize=False
-                    ),
-                ),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False),),
                 ("title", models.CharField(max_length=250)),
                 ("category", models.CharField(max_length=200)),
                 ("phone_number", models.CharField(max_length=17, null=True)),
@@ -35,15 +30,13 @@ class Migration(migrations.Migration):
                 (
                     "user",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE,
-                        to=settings.AUTH_USER_MODEL,
+                        on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL,
                     ),
                 ),
                 (
                     "zip_code",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE,
-                        to="recycle.zipcode",
+                        on_delete=django.db.models.deletion.CASCADE, to="recycle.zipcode",
                     ),
                 ),
             ],
@@ -51,12 +44,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="Image",
             fields=[
-                (
-                    "id",
-                    models.AutoField(
-                        auto_created=True, primary_key=True, serialize=False
-                    ),
-                ),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False),),
                 ("url", models.URLField(max_length=2000)),
                 (
                     "post",

@@ -20,36 +20,20 @@ class Migration(migrations.Migration):
                 (
                     "id",
                     models.BigAutoField(
-                        auto_created=True,
-                        primary_key=True,
-                        serialize=False,
-                        verbose_name="ID",
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID",
                     ),
                 ),
-                (
-                    "password",
-                    models.CharField(max_length=128, verbose_name="password"),
-                ),
+                ("password", models.CharField(max_length=128, verbose_name="password"),),
                 (
                     "last_login",
-                    models.DateTimeField(
-                        blank=True, null=True, verbose_name="last login"
-                    ),
+                    models.DateTimeField(blank=True, null=True, verbose_name="last login"),
                 ),
                 ("email", models.EmailField(max_length=255, unique=True)),
-                (
-                    "first_name",
-                    models.CharField(max_length=100, verbose_name="First name"),
-                ),
-                (
-                    "last_name",
-                    models.CharField(max_length=100, verbose_name="Last name"),
-                ),
+                ("first_name", models.CharField(max_length=100, verbose_name="First name"),),
+                ("last_name", models.CharField(max_length=100, verbose_name="Last name"),),
                 (
                     "phone_number",
-                    models.CharField(
-                        max_length=17, null=True, verbose_name="Phone number"
-                    ),
+                    models.CharField(max_length=17, null=True, verbose_name="Phone number"),
                 ),
                 ("avatar", models.TextField(null=True, verbose_name="Avatar")),
                 ("is_active", models.BooleanField(default=True)),
@@ -74,10 +58,7 @@ class Migration(migrations.Migration):
                 (
                     "id",
                     models.BigAutoField(
-                        auto_created=True,
-                        primary_key=True,
-                        serialize=False,
-                        verbose_name="ID",
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID",
                     ),
                 ),
                 ("login_attempts", models.IntegerField(default=0)),
@@ -85,8 +66,7 @@ class Migration(migrations.Migration):
                 (
                     "user",
                     models.OneToOneField(
-                        on_delete=django.db.models.deletion.CASCADE,
-                        to=settings.AUTH_USER_MODEL,
+                        on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL,
                     ),
                 ),
             ],

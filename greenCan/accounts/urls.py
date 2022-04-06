@@ -18,9 +18,7 @@ app_name = "accounts"
 
 urlpatterns = [
     path("create/", signup_page, name="create"),
-    path(
-        "activate/<slug:uidb64>/<slug:token>/", activate_account_page, name="activate",
-    ),
+    path("activate/<slug:uidb64>/<slug:token>/", activate_account_page, name="activate",),
     path("login/", login_page, name="login"),
     path("logout/", logout_view, name="logout"),
     path(
@@ -40,9 +38,7 @@ urlpatterns = [
     ),
     path(
         "reset/<uidb64>/<token>/",
-        PasswordResetConfirmView.as_view(
-            template_name="accounts/templates/reset-password.html"
-        ),
+        PasswordResetConfirmView.as_view(template_name="accounts/templates/reset-password.html"),
         name="password-reset",
     ),
     path(

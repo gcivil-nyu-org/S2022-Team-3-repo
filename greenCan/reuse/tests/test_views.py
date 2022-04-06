@@ -14,9 +14,7 @@ from reuse.models import NGOLocation
 User = get_user_model()
 
 
-def create_image(
-    storage, filename, size=(100, 100), image_mode="RGB", image_format="PNG"
-):
+def create_image(storage, filename, size=(100, 100), image_mode="RGB", image_format="PNG"):
     """
     Generate a test image, returning the filename that it was saved as.
 
@@ -73,10 +71,7 @@ class TestCreatePost(TestCase):
     def test_auth_valid_form(self):
         data = self.data.copy()
         user = User.objects.create(
-            email="testemail@gmail.com",
-            password="password1",
-            first_name="john",
-            last_name="doe",
+            email="testemail@gmail.com", password="password1", first_name="john", last_name="doe",
         )
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.post(self.url, data=data, follow=True)
@@ -91,10 +86,7 @@ class TestCreatePost(TestCase):
         data = self.data.copy()
         del data["title"]
         user = User.objects.create(
-            email="testemail@gmail.com",
-            password="password1",
-            first_name="john",
-            last_name="doe",
+            email="testemail@gmail.com", password="password1", first_name="john", last_name="doe",
         )
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.post(self.url, data=data, follow=True)
@@ -109,10 +101,7 @@ class TestCreatePost(TestCase):
         data = self.data.copy()
         del data["description"]
         user = User.objects.create(
-            email="testemail@gmail.com",
-            password="password1",
-            first_name="john",
-            last_name="doe",
+            email="testemail@gmail.com", password="password1", first_name="john", last_name="doe",
         )
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.post(self.url, data=data, follow=True)
@@ -127,10 +116,7 @@ class TestCreatePost(TestCase):
         data = self.data.copy()
         del data["zipcode"]
         user = User.objects.create(
-            email="testemail@gmail.com",
-            password="password1",
-            first_name="john",
-            last_name="doe",
+            email="testemail@gmail.com", password="password1", first_name="john", last_name="doe",
         )
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.post(self.url, data=data, follow=True)
@@ -145,10 +131,7 @@ class TestCreatePost(TestCase):
         data = self.data.copy()
         del data["category"]
         user = User.objects.create(
-            email="testemail@gmail.com",
-            password="password1",
-            first_name="john",
-            last_name="doe",
+            email="testemail@gmail.com", password="password1", first_name="john", last_name="doe",
         )
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.post(self.url, data=data, follow=True)
@@ -163,10 +146,7 @@ class TestCreatePost(TestCase):
         data = self.data.copy()
         data["zipcode"] = "10002"
         user = User.objects.create(
-            email="testemail@gmail.com",
-            password="password1",
-            first_name="john",
-            last_name="doe",
+            email="testemail@gmail.com", password="password1", first_name="john", last_name="doe",
         )
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.post(self.url, data=data, follow=True)
@@ -188,10 +168,7 @@ class TestViews(TestCase):
         self.search_ngo_locations_url = reverse("reuse:fetch-ngo-locations")
         self.client = Client()
         user = User.objects.create(
-            email="testemail@gmail.com",
-            password="password1",
-            first_name="john",
-            last_name="doe",
+            email="testemail@gmail.com", password="password1", first_name="john", last_name="doe",
         )
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
 
@@ -301,9 +278,7 @@ class TestViews(TestCase):
         Test to check if I search for an item which is not present, it should return nothing
         """
 
-        response = self.client.get(
-            "%s?q=%s" % (reverse("reuse:listing-page"), "veryrandomstring")
-        )
+        response = self.client.get("%s?q=%s" % (reverse("reuse:listing-page"), "veryrandomstring"))
 
         self.assertTrue(len(response.context["posts"]) == 0)
 
@@ -324,9 +299,7 @@ class TestViews(TestCase):
         test to check if searching by zip code is returning a valid response
         """
 
-        response = self.client.get(
-            self.search_ngo_locations_url + "?type=zipcode&zipcode=10004"
-        )
+        response = self.client.get(self.search_ngo_locations_url + "?type=zipcode&zipcode=10004")
 
         self.assertEquals(response.status_code, 200)
 
@@ -335,9 +308,7 @@ class TestViews(TestCase):
         test to check if searching by user's current location is returning a valid response
         """
 
-        response = self.client.get(
-            self.search_ngo_locations_url + "?type=somerandomstring"
-        )
+        response = self.client.get(self.search_ngo_locations_url + "?type=somerandomstring")
 
         self.assertEquals(response.status_code, 200)
         self.assertJSONEqual(

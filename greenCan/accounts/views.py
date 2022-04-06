@@ -50,9 +50,7 @@ def signup_page(request):
         else:
             try:
                 user = User(
-                    email=email,
-                    first_name=first_name.title(),
-                    last_name=last_name.title(),
+                    email=email, first_name=first_name.title(), last_name=last_name.title(),
                 )
                 user.set_password(password)
                 user.is_active = False
@@ -85,8 +83,7 @@ def signup_page(request):
                     user.delete()
             except Exception:
                 messages.error(
-                    request,
-                    "An error occurred. Please ensure you have good internet connection.",
+                    request, "An error occurred. Please ensure you have good internet connection.",
                 )
                 if user:
                     user.delete()
@@ -116,8 +113,7 @@ def login_page(request):
             )  # get the user's login attempt
             now = timezone.now()
             if (
-                login_attempt.timestamp
-                + timedelta(seconds=settings.LOGIN_ATTEMPTS_TIME_LIMIT)
+                login_attempt.timestamp + timedelta(seconds=settings.LOGIN_ATTEMPTS_TIME_LIMIT)
             ) <= now:
                 if not _user.is_active:
                     messages.error(request, "Please verify your email first.")

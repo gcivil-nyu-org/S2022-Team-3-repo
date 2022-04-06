@@ -16,12 +16,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="RetailerLocation",
             fields=[
-                (
-                    "id",
-                    models.BigAutoField(
-                        auto_created=True, primary_key=True, serialize=False
-                    ),
-                ),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False),),
                 ("latitude", models.FloatField()),
                 ("longitude", models.FloatField()),
                 ("phone", models.CharField(max_length=17, null=True)),
@@ -31,8 +26,7 @@ class Migration(migrations.Migration):
                 (
                     "zip_code",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE,
-                        to="recycle.zipcode",
+                        on_delete=django.db.models.deletion.CASCADE, to="recycle.zipcode",
                     ),
                 ),
             ],

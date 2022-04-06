@@ -14,12 +14,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="ZipCode",
             fields=[
-                (
-                    "id",
-                    models.AutoField(
-                        auto_created=True, primary_key=True, serialize=False
-                    ),
-                ),
+                ("id", models.AutoField(auto_created=True, primary_key=True, serialize=False),),
                 ("zip_code", models.CharField(max_length=5)),
                 ("state_id", models.CharField(max_length=2)),
                 ("state", models.CharField(max_length=100)),
@@ -32,12 +27,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="DropOffLocation",
             fields=[
-                (
-                    "id",
-                    models.BigAutoField(
-                        auto_created=True, primary_key=True, serialize=False
-                    ),
-                ),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False),),
                 ("name", models.CharField(max_length=250)),
                 ("latitude", models.FloatField()),
                 ("longitude", models.FloatField()),
@@ -49,8 +39,7 @@ class Migration(migrations.Migration):
                 (
                     "zip_code",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE,
-                        to="recycle.zipcode",
+                        on_delete=django.db.models.deletion.CASCADE, to="recycle.zipcode",
                     ),
                 ),
             ],

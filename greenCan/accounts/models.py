@@ -42,13 +42,7 @@ class UserManager(BaseUserManager):
         return user_obj
 
     def create_staffuser(
-        self,
-        email,
-        first_name,
-        last_name,
-        zipcode=None,
-        phone_number=None,
-        password=None,
+        self, email, first_name, last_name, zipcode=None, phone_number=None, password=None,
     ):
         user = self.create_user(
             email=email,
@@ -62,13 +56,7 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(
-        self,
-        email,
-        first_name,
-        last_name,
-        zipcode=None,
-        phone_number=None,
-        password=None,
+        self, email, first_name, last_name, zipcode=None, phone_number=None, password=None,
     ):
         user = self.create_user(
             email=email,
@@ -91,9 +79,7 @@ class User(AbstractBaseUser):
     zipcode = models.ForeignKey(
         ZipCode, verbose_name="Zipcode", on_delete=models.CASCADE, null=True
     )
-    phone_number = models.CharField(
-        verbose_name="Phone number", max_length=17, null=True
-    )
+    phone_number = models.CharField(verbose_name="Phone number", max_length=17, null=True)
     avatar = models.TextField(verbose_name="Avatar", null=True)
     # avatar = models.ImageField(upload_to="Avatars", null=True)
     is_active = models.BooleanField(default=True)

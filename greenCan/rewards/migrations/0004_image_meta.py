@@ -15,9 +15,7 @@ class Migration(migrations.Migration):
             model_name="image",
             name="meta",
             field=models.ForeignKey(
-                default=1,
-                on_delete=django.db.models.deletion.CASCADE,
-                to="rewards.imagemeta",
+                default=1, on_delete=django.db.models.deletion.CASCADE, to="rewards.imagemeta",
             ),
             preserve_default=False,
         ),

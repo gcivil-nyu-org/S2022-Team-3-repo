@@ -44,19 +44,13 @@ class TestModelManager(TestCase):
     def test_createuser_method_invalid_first_name(self):
         with self.assertRaises(ValueError):
             self.User.objects.create_user(
-                email=self.email,
-                password=self.password,
-                first_name="",
-                last_name=self.last_name,
+                email=self.email, password=self.password, first_name="", last_name=self.last_name,
             )
 
     def test_createuser_method_invalid_last_name(self):
         with self.assertRaises(ValueError):
             self.User.objects.create_user(
-                email=self.email,
-                password=self.password,
-                first_name=self.first_name,
-                last_name="",
+                email=self.email, password=self.password, first_name=self.first_name, last_name="",
             )
 
     def test_createstaff_method(self):
@@ -103,8 +97,7 @@ class TestUserModel(TestCase):
 
     def test_get_full_name(self):
         self.assertEquals(
-            self.user.get_full_name(),
-            self.first_name.title() + " " + self.last_name.title(),
+            self.user.get_full_name(), self.first_name.title() + " " + self.last_name.title(),
         )
 
     def test_has_perm(self):

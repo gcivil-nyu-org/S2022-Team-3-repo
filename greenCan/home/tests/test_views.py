@@ -22,17 +22,12 @@ class TestHomePage(TestCase):
         )
         self.assertNotContains(
             response,
-            '<a class="dropdown-item" href="'
-            + reverse("accounts:logout")
-            + '">Logout</a>',
+            '<a class="dropdown-item" href="' + reverse("accounts:logout") + '">Logout</a>',
         )
 
     def test_authenticated_user(self):
         user = User.objects.create(
-            email="testemail@gmail.com",
-            password="password1",
-            first_name="john",
-            last_name="doe",
+            email="testemail@gmail.com", password="password1", first_name="john", last_name="doe",
         )
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url)
@@ -41,8 +36,6 @@ class TestHomePage(TestCase):
         )
         self.assertContains(
             response,
-            '<a class="dropdown-item" href="'
-            + reverse("accounts:logout")
-            + '">Logout</a>',
+            '<a class="dropdown-item" href="' + reverse("accounts:logout") + '">Logout</a>',
         )
         self.assertContains(response, user.get_full_name())
