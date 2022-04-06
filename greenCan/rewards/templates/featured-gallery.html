@@ -6,150 +6,107 @@ Rewards | greenCan
 {% endblock %}
 
 {% block style %}
-<link rel="stylesheet" href="{% static 'css/image-gallery.css' %}">
+<link rel="stylesheet" href="{% static 'css/image-grid.css' %}">
 <link rel="stylesheet" href="{% static 'css/earn-credits-banner.css' %}">
-<style>
-    #grallery {
-   /* Prevent vertical gaps */
-   line-height: 0;
-   
-   -webkit-column-count: 5;
-   -webkit-column-gap:   0px;
-   -moz-column-count:    5;
-   -moz-column-gap:      0px;
-   column-count:         5;
-   column-gap:           0px;
-}
-
-#grallery img {
-  /* Just in case there are inline attributes */
-  width: 100% !important;
-  height: auto !important;
-}
-
-@media (max-width: 1200px) {
-  #grallery {
-  -moz-column-count:    4;
-  -webkit-column-count: 4;
-  column-count:         4;
-  }
-}
-@media (max-width: 1000px) {
-  #grallery {
-  -moz-column-count:    3;
-  -webkit-column-count: 3;
-  column-count:         3;
-  }
-}
-@media (max-width: 800px) {
-  #grallery {
-  -moz-column-count:    2;
-  -webkit-column-count: 2;
-  column-count:         2;
-  }
-}
-@media (max-width: 400px) {
-  #grallery {
-  -moz-column-count:    1;
-  -webkit-column-count: 1;
-  column-count:         1;
-  }
-}
-
-body {
-  margin: 0;
-  padding: 0;
-}
-</style>
 {% endblock %}
 
 {% block main %}
-{% if first %}
 <div class="container justify-content-center d-flex my-3">
-    <h1 class="h1">Green Wall  {{ next_page }}</h1>
+    <h1 class="h1">Green Wall</h1>
 </div>
-{% endif %}
 <div class="grid mb-5 effect-5 container d-flex justify-content-center" id="gallery">
-    {% for image in images %}
-    <div class="grid-item animate">
-        <img src="{{ image.image }}" alt="{{ image.event }}" class="img-fuild">
-        {% if image.description %}
-        <div class="overlay">{{ image.description }}</div>
-        {% endif %}
-    </div>
-    {% endfor %}
+    <div class="grid-col animate" id="grid-col0"></div>
+    <div class="grid-col animate" id="grid-col1"></div>
+    <div class="grid-col animate" id="grid-col2"></div>
+    <div class="grid-col animate" id="grid-col3"></div>
+</div>
+<div class="loader mb-5"></div>
+<button class="load-more">Load More</button>
+{% include 'rewards/templates/earn-credits-banner.html' %}
 
-    <!-- <div class="grid-item animate">
-        <img src="https://i.imgur.com/kXUHDn5.jpg" alt="image1">
-        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
-    </div>
-    <div class="grid-item  animate">
-        <img src="https://i.imgur.com/Qmz61wo.jpg" alt="image1">
-        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
-    </div>
-    <div class="grid-item animate">
-        <img src="https://i.imgur.com/EpYbuG7.jpg" alt="image1">
-        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
-    </div>
-    <div class="grid-item animate">
-        <img src="https://i.imgur.com/kXUHDn5.jpg" alt="image1">
-        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
-    </div>
-    <div class="grid-item animate">
-        <img src="https://i.imgur.com/Qmz61wo.jpg" alt="image1">
-        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
-    </div>
-    <div class="grid-item animate">
-        <img src="https://i.imgur.com/EpYbuG7.jpg" alt="image1">
-        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
-    </div>
-    <div class="grid-item animate">
-        <img src="https://i.imgur.com/kXUHDn5.jpg" alt="image1">
-        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
-    </div>
-    <div class="grid-item animate">
-        <img src="https://i.imgur.com/Qmz61wo.jpg" alt="image1">
-        <div class="overlay">Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m</div>
-    </div> -->
-</div>
-<div class="page-load-status my-3">
-    {% if images.has_next %}
-        <div class="infinite-scroll-request loader-wheel">
-            <i><i><i><i><i><i><i><i><i><i><i><i>
-            </i></i></i></i></i></i></i></i></i></i></i></i>
-        </div>
-    {% else %}
-            {% if show_banner %}
-                {% include 'rewards/templates/earn-credits-banner.html' %}
-            {% else %}
-                <p class="infinite-scroll-last">
-                    End of content
-                </p>
-                <p class="infinite-scroll-error">No more images to load</p>
-            {% endif %}
-    {% endif %}
-</div>
+
 {% endblock %}
 
 {% block scripts %}
-<script src="{% static 'modules/masonry/js/masonry.pkgd.min.js' %}"></script>
-<script src="{% static 'modules/infinite-scroll/js/infinite-scroll.pkgd.min.js' %}"></script>
 <script>
-    let $grid = $('.grid').masonry({
-        itemSelector: '.grid-item',
-        columnWidth: '.grid-item',
-        percentPosition: true,
-        gutter: 10,
-        fitWidth: true
+    
+    $(document).ready(function(){
+        var page = 1;
+        var hasNext = true;
+        $('.load-more').click(function(){
+            put_more_data();
+        });
+
+        function get_one_image_dom(image) {
+            if(image==null){
+                return '';
+            }
+            image_dom = '<div class="grid-item animate">'
+                        + `<img src="${image['image']}" alt="${image['event']}" class="img-fuild">`;
+            
+            if(image['description']){
+                image_dom += `<div class="overlay">${image['description']}</div>`
+            }
+            image_dom += '</div>';
+            return image_dom;
+        }
+
+        function auto_adjust_height() {
+            min_height_elem = -1;
+            max_height_elem = -1;
+            for(i = 0; i<4; i++){
+                curr_elem = $('#grid-col'+i.toString());
+                if (min_height_elem === -1 || min_height_elem.height() > curr_elem.height()) {
+                    min_height_elem = curr_elem;
+                }
+                if (max_height_elem === -1 || max_height_elem.height() < curr_elem.height()) {
+                    max_height_elem = curr_elem;
+                }
+            }
+            
+            console.log(max_height_elem);
+            console.log(min_height_elem);
+
+            if(max_height_elem.height() > min_height_elem.height()+200){    
+                child = max_height_elem.children().last().empty();
+                console.log(child);
+                min_height_elem.append(child);
+            }
+        }
+
+        function put_more_data() {
+            $('.loader').show();
+            if(hasNext){
+                $.ajax({
+                    url: "{% url 'rewards:featured-image-gallery' %}",
+                    dataType: 'json',
+                    method: 'POST',
+                    data: {
+                        "csrfmiddlewaretoken": "{{ csrf_token }}",
+                        "page": page
+                    },
+                    success: function(data) {
+                        for(i=0; i<data.images.length; i++){
+                            $('#grid-col'+(i%4).toString()).append(get_one_image_dom(data.images[i]));
+                        }
+                        if(data.has_next!=hasNext){
+                            $('.load-more').toggle();
+                            hasNext = data.has_next
+                        }
+                        if(hasNext){
+                            page = data.next_page_number   
+                        }
+                        $('.loader').hide();
+                    },
+                    error : function() {
+                        alert("Some Error occured please try again later.");
+                    }
+                });
+            }
+        }
+
+        put_more_data();
     });
 
-    $('.grid').infiniteScroll({
-        path: function() {
-            return '?page={{ next_page }}'
-        },
-        append: '.grid-item.animate',
-        outlayer: $grid.data('masonry'),
-        status: '.page-load-status',
-    });
 </script>
 {% endblock %}
