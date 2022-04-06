@@ -15,7 +15,7 @@ class TestIndex(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
             email="testemail@gmail.com",
-            password="password1",
+            password="password12",
             first_name="john",
             last_name="doe",
             is_active=True,
