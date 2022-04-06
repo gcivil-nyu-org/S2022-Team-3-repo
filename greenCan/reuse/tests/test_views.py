@@ -342,14 +342,22 @@ class TestUserPostsViews(TestCase):
     def setUp(self):
         self.my_posts_url = reverse("reuse:my-posts")
         self.post_availability_url = reverse("reuse:post-availability")
-        user = User.objects.create(
+        self.user = User.objects.create(
             first_name="first1",
             last_name="last1",
             email="user1@gmail.com",
             password="password1",
             is_active=True,
         )
-        self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
+
+        self.user2 = User.objects.create(
+            first_name="first2",
+            last_name="last2",
+            email="user2@gmail.com",
+            password="password2",
+            is_active=True,
+        )
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
         zipcode = ZipCode(
             zip_code="10001",
             state_id="NY",
@@ -367,7 +375,7 @@ class TestUserPostsViews(TestCase):
             email="user1@gmail.com",
             zip_code=zipcode,
             description=" Book on apple",
-            user=user,
+            user=self.user,
         )
         self.post.save()
         self.zipcode = zipcode
@@ -403,9 +411,7 @@ class TestUserPostsViews(TestCase):
         )
         post = Post.objects.filter(id=self.post.id)[0]
         self.assertEquals(post.still_available, False)
-        message = list(response.context.get("messages"))[0]
-        self.assertEquals(message.tags, "success")
-        self.assertEquals(message.message, "Item avaliability has been changed.")
+        self.assertJSONEqual(force_str(response.content), {"message": "Success"})
 
     def test_info_changed_after_change_availability_to_True(self):
         response = self.client.post(
@@ -418,6 +424,58 @@ class TestUserPostsViews(TestCase):
         )
         post = Post.objects.filter(id=self.post.id)[0]
         self.assertEquals(post.still_available, True)
-        message = list(response.context.get("messages"))[0]
-        self.assertEquals(message.tags, "success")
-        self.assertEquals(message.message, "Item avaliability has been changed.")
+        self.assertJSONEqual(force_str(response.content), {"message": "Success"})
+
+    def test_info_Invalid_Id(self):
+        response = self.client.post(
+            self.post_availability_url,
+            {
+                "id": 20,
+                "still_available": "true",
+            },
+            follow=True,
+        )
+        self.assertJSONEqual(force_str(response.content), {"message": "Error"})
+
+    def test_info_removed(self):
+        post = Post(
+            title="Apple",
+            category="Books",
+            phone_number="9175185345",
+            email="user1@gmail.com",
+            zip_code=self.zipcode,
+            description=" Book on apple",
+            user=self.user,
+            approved=False,
+        )
+        post.save()
+        response = self.client.post(
+            self.post_availability_url,
+            {
+                "id": post.id,
+                "still_available": "true",
+            },
+            follow=True,
+        )
+        self.assertJSONEqual(force_str(response.content), {"message": "Error"})
+
+    def test_info_cannot_be_changed_by_other_user(self):
+        post = Post(
+            title="Apple",
+            category="Books",
+            phone_number="9175185345",
+            email="user1@gmail.com",
+            zip_code=self.zipcode,
+            description=" Book on apple",
+            user=self.user2,
+        )
+        post.save()
+        response = self.client.post(
+            self.post_availability_url,
+            {
+                "id": post.id,
+                "still_available": "true",
+            },
+            follow=True,
+        )
+        self.assertJSONEqual(force_str(response.content), {"message": "Error"})
