@@ -196,7 +196,7 @@ FIREBASE_HOST_USER = EMAIL_HOST_USER
 
 FIREBASE_HOST_PASSWORD = EMAIL_HOST_PASSWORD
 
-# Time in seconds after each login attempts
+# Time in seconds after each login attempt
 LOGIN_ATTEMPTS_TIME_LIMIT = 0
 # limit the amount of attempts to which the user will be inactive and password set mail sent
 MAX_LOGIN_ATTEMPTS = 5
