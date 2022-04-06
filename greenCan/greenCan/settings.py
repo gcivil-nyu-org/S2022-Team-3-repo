@@ -220,8 +220,13 @@ ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = False
+# Attempt to bypass the signup form by using fields (e.g. username, email)
+SOCIALACCOUNT_AUTO_SIGNUP = True
 
 SOCIALACCOUNT_LOGIN_ON_GET = True  # bypass the "do you want to login page"
+
+# add max Gauth login attempts
+# ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 5
 
 SOCIALACCOUNT_PROVIDERS = {
     "google": {"SCOPE": ["profile", "email"], "AUTH_PARAMS": {"access_type": "online"}}

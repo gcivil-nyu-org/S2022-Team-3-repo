@@ -121,6 +121,24 @@ class TestSignupView(TestCase):
         self.assertEquals(message.tags, "error")
         self.assertEquals(message.message, "Password is required")
 
+    def test_post_method_with_duplicate_email(self):
+
+        """
+        Test to check if a user tries to register with a duplicate
+        email the message should say user already exists
+        """
+        data = {
+            "email": "nyc.greencan@gmail.com",
+            "password": "random",
+            "first-name": "john",
+            "last-name": "doe",
+        }
+        response = self.client.post(self.url, data, follow=True)
+        response = self.client.post(self.url, data, follow=True)
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "error")
+        self.assertEquals(message.message, "User already exists")
+
     def test_csrf_token(self):
         response = self.client.get(self.url)
         self.assertContains(response, "csrfmiddlewaretoken")

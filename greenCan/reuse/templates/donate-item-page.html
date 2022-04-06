@@ -284,6 +284,7 @@ Reuse | greenCan
 {% endblock %}
 
 {% block scripts %}
+{% include 'sweetalert2.html' %}
 <script src="{% static 'modules/owl-carousel-2/js/owl-carousel2.min.js' %}"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
 <script>
@@ -357,7 +358,7 @@ Reuse | greenCan
               <div class="form-group">
                 <label for="validationCustom03" class="form-label"><b>Category:</b></label>
                 <select class="form-select" id = "validationCustom03" name="category" aria-label="categories" required>
-                  <option selected>Select Item Category</option>
+                  <option value="" disabled selected>Select your option</option>
                   <option value="Furniture">Furniture</option>
                   <option value="Books">Books</option>
                   <option value="Toys">Toys</option>
