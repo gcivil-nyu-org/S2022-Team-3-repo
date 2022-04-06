@@ -11,6 +11,8 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RenameField(
-            model_name="post", old_name="search_token", new_name="search_vector",
+            model_name="post",
+            old_name="search_token",
+            new_name="search_vector",
         ),
     ]

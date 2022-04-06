@@ -50,7 +50,9 @@ def signup_page(request):
         else:
             try:
                 user = User(
-                    email=email, first_name=first_name.title(), last_name=last_name.title(),
+                    email=email,
+                    first_name=first_name.title(),
+                    last_name=last_name.title(),
                 )
                 user.set_password(password)
                 user.is_active = False
@@ -83,7 +85,8 @@ def signup_page(request):
                     user.delete()
             except Exception:
                 messages.error(
-                    request, "An error occurred. Please ensure you have good internet connection.",
+                    request,
+                    "An error occurred. Please ensure you have good internet connection.",
                 )
                 if user:
                     user.delete()
@@ -182,7 +185,8 @@ def activate_account_page(request, uidb64, token):
             messages.success(request, "Account restored, you can now proceed to login")
         else:
             messages.success(
-                request, "Thank you for confirming your email. You can now login.",
+                request,
+                "Thank you for confirming your email. You can now login.",
             )
         return redirect(settings.LOGIN_URL)
     else:

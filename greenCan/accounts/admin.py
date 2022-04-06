@@ -29,7 +29,10 @@ class UserAdmin(BaseUserAdmin):
 
     fieldsets = (
         (None, {"fields": ("email", "password", "first_name", "last_name")}),
-        ("Personal info", {"fields": ()},),
+        (
+            "Personal info",
+            {"fields": ()},
+        ),
         # if you have any personal info fields e.g. names,
         # include them as strings in the empty tuple.
         ("Permissions", {"fields": ("admin", "staff", "is_active")}),
@@ -44,7 +47,13 @@ class UserAdmin(BaseUserAdmin):
             None,
             {
                 "classes": ("wide",),
-                "fields": ("email", "first_name", "last_name", "password1", "password2",),
+                "fields": (
+                    "email",
+                    "first_name",
+                    "last_name",
+                    "password1",
+                    "password2",
+                ),
             },
         ),
     )

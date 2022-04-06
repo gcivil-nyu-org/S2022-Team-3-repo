@@ -42,7 +42,13 @@ class UserManager(BaseUserManager):
         return user_obj
 
     def create_staffuser(
-        self, email, first_name, last_name, zipcode=None, phone_number=None, password=None,
+        self,
+        email,
+        first_name,
+        last_name,
+        zipcode=None,
+        phone_number=None,
+        password=None,
     ):
         user = self.create_user(
             email=email,
@@ -56,7 +62,13 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(
-        self, email, first_name, last_name, zipcode=None, phone_number=None, password=None,
+        self,
+        email,
+        first_name,
+        last_name,
+        zipcode=None,
+        phone_number=None,
+        password=None,
     ):
         user = self.create_user(
             email=email,

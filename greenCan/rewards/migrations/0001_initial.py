@@ -18,31 +18,44 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="Category",
             fields=[
-                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False),),
+                (
+                    "id",
+                    models.BigAutoField(auto_created=True, primary_key=True, serialize=False),
+                ),
                 ("name", models.CharField(max_length=100, unique=True)),
             ],
         ),
         migrations.CreateModel(
             name="Event",
             fields=[
-                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False),),
+                (
+                    "id",
+                    models.BigAutoField(auto_created=True, primary_key=True, serialize=False),
+                ),
                 ("name", models.CharField(max_length=100, unique=True)),
             ],
         ),
         migrations.CreateModel(
             name="Image",
             fields=[
-                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False),),
+                (
+                    "id",
+                    models.BigAutoField(auto_created=True, primary_key=True, serialize=False),
+                ),
                 ("image", models.URLField(max_length=2000, unique=True)),
                 ("caption", models.CharField(max_length=150, null=True)),
                 ("consent", models.BooleanField(default=False)),
                 ("approved", models.BooleanField(default=False)),
                 ("uploaded_on", models.DateTimeField(auto_now_add=True)),
-                ("category", models.ManyToManyField(null=True, to="rewards.Category"),),
+                (
+                    "category",
+                    models.ManyToManyField(null=True, to="rewards.Category"),
+                ),
                 (
                     "event_type",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to="rewards.event",
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="rewards.event",
                     ),
                 ),
                 (
@@ -56,7 +69,8 @@ class Migration(migrations.Migration):
                 (
                     "user",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
                     ),
                 ),
             ],

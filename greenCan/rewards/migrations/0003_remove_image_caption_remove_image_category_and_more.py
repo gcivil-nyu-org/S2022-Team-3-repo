@@ -14,16 +14,37 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(model_name="image", name="caption",),
-        migrations.RemoveField(model_name="image", name="category",),
-        migrations.RemoveField(model_name="image", name="consent",),
-        migrations.RemoveField(model_name="image", name="event_type",),
-        migrations.RemoveField(model_name="image", name="location",),
-        migrations.RemoveField(model_name="image", name="user",),
+        migrations.RemoveField(
+            model_name="image",
+            name="caption",
+        ),
+        migrations.RemoveField(
+            model_name="image",
+            name="category",
+        ),
+        migrations.RemoveField(
+            model_name="image",
+            name="consent",
+        ),
+        migrations.RemoveField(
+            model_name="image",
+            name="event_type",
+        ),
+        migrations.RemoveField(
+            model_name="image",
+            name="location",
+        ),
+        migrations.RemoveField(
+            model_name="image",
+            name="user",
+        ),
         migrations.CreateModel(
             name="ImageMeta",
             fields=[
-                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False),),
+                (
+                    "id",
+                    models.BigAutoField(auto_created=True, primary_key=True, serialize=False),
+                ),
                 ("caption", models.CharField(max_length=150, null=True)),
                 ("consent", models.BooleanField(default=False)),
                 ("category", models.ManyToManyField(to="rewards.Category")),
@@ -44,7 +65,8 @@ class Migration(migrations.Migration):
                 (
                     "user",
                     models.ForeignKey(
-                        on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to=settings.AUTH_USER_MODEL,
                     ),
                 ),
             ],

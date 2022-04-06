@@ -71,7 +71,10 @@ class TestCreatePost(TestCase):
     def test_auth_valid_form(self):
         data = self.data.copy()
         user = User.objects.create(
-            email="testemail@gmail.com", password="password1", first_name="john", last_name="doe",
+            email="testemail@gmail.com",
+            password="password1",
+            first_name="john",
+            last_name="doe",
         )
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.post(self.url, data=data, follow=True)
@@ -86,7 +89,10 @@ class TestCreatePost(TestCase):
         data = self.data.copy()
         del data["title"]
         user = User.objects.create(
-            email="testemail@gmail.com", password="password1", first_name="john", last_name="doe",
+            email="testemail@gmail.com",
+            password="password1",
+            first_name="john",
+            last_name="doe",
         )
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.post(self.url, data=data, follow=True)
@@ -101,7 +107,10 @@ class TestCreatePost(TestCase):
         data = self.data.copy()
         del data["description"]
         user = User.objects.create(
-            email="testemail@gmail.com", password="password1", first_name="john", last_name="doe",
+            email="testemail@gmail.com",
+            password="password1",
+            first_name="john",
+            last_name="doe",
         )
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.post(self.url, data=data, follow=True)
@@ -116,7 +125,10 @@ class TestCreatePost(TestCase):
         data = self.data.copy()
         del data["zipcode"]
         user = User.objects.create(
-            email="testemail@gmail.com", password="password1", first_name="john", last_name="doe",
+            email="testemail@gmail.com",
+            password="password1",
+            first_name="john",
+            last_name="doe",
         )
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.post(self.url, data=data, follow=True)
@@ -131,7 +143,10 @@ class TestCreatePost(TestCase):
         data = self.data.copy()
         del data["category"]
         user = User.objects.create(
-            email="testemail@gmail.com", password="password1", first_name="john", last_name="doe",
+            email="testemail@gmail.com",
+            password="password1",
+            first_name="john",
+            last_name="doe",
         )
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.post(self.url, data=data, follow=True)
@@ -146,7 +161,10 @@ class TestCreatePost(TestCase):
         data = self.data.copy()
         data["zipcode"] = "10002"
         user = User.objects.create(
-            email="testemail@gmail.com", password="password1", first_name="john", last_name="doe",
+            email="testemail@gmail.com",
+            password="password1",
+            first_name="john",
+            last_name="doe",
         )
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.post(self.url, data=data, follow=True)
@@ -168,7 +186,10 @@ class TestViews(TestCase):
         self.search_ngo_locations_url = reverse("reuse:fetch-ngo-locations")
         self.client = Client()
         user = User.objects.create(
-            email="testemail@gmail.com", password="password1", first_name="john", last_name="doe",
+            email="testemail@gmail.com",
+            password="password1",
+            first_name="john",
+            last_name="doe",
         )
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
 

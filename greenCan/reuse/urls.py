@@ -10,7 +10,11 @@ urlpatterns = [
     path("listings/", views.listing_page, name="listing-page"),
     path("create_post/", views.create_post, name="create-post"),
     path("ngo_donation/", views.ngo_donation, name="ngo-donation"),
-    path("fetch-ngo-locations/", views.search_ngo_locations, name="fetch-ngo-locations",),
+    path(
+        "fetch-ngo-locations/",
+        views.search_ngo_locations,
+        name="fetch-ngo-locations",
+    ),
     path("my-posts/", views.my_posts, name="my-posts"),
     path("post-availability/", views.post_availability, name="post-availability"),
 ]

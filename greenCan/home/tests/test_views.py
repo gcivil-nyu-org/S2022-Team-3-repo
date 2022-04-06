@@ -18,7 +18,8 @@ class TestHomePage(TestCase):
     def test_unauthenticated_user(self):
         response = self.client.get(self.url)
         self.assertContains(
-            response, '<span class="slanted-btn-contain">Join Our Community!</span>',
+            response,
+            '<span class="slanted-btn-contain">Join Our Community!</span>',
         )
         self.assertNotContains(
             response,
@@ -27,12 +28,16 @@ class TestHomePage(TestCase):
 
     def test_authenticated_user(self):
         user = User.objects.create(
-            email="testemail@gmail.com", password="password1", first_name="john", last_name="doe",
+            email="testemail@gmail.com",
+            password="password1",
+            first_name="john",
+            last_name="doe",
         )
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url)
         self.assertNotContains(
-            response, '<span class="slanted-btn-contain">Join Our Community!</span>',
+            response,
+            '<span class="slanted-btn-contain">Join Our Community!</span>',
         )
         self.assertContains(
             response,

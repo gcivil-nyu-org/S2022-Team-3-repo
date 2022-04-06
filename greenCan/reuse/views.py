@@ -66,7 +66,10 @@ def listing_page(request):
             posts = (
                 Post.objects.annotate(
                     headline=SearchHeadline(
-                        "description", search_query, start_sel="<mark>", stop_sel="</mark>",
+                        "description",
+                        search_query,
+                        start_sel="<mark>",
+                        stop_sel="</mark>",
                     ),
                     rank=SearchRank(search_vector, search_query),
                 )

@@ -11,9 +11,13 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AddField(
-            model_name="post", name="updated_on", field=models.DateTimeField(auto_now=True),
+            model_name="post",
+            name="updated_on",
+            field=models.DateTimeField(auto_now=True),
         ),
         migrations.AlterField(
-            model_name="post", name="approved", field=models.BooleanField(default=None, null=True),
+            model_name="post",
+            name="approved",
+            field=models.BooleanField(default=None, null=True),
         ),
     ]
