@@ -8,12 +8,24 @@ Rewards | greenCan
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/form.css' %}"></link>
 <link rel="stylesheet" href="{% static 'modules/select2/css/select2.min.css' %}"></link>
+<style>
+    .heading-wrapper .heading,
+    .heading-wrapper .subheading {
+        text-align: center;
+    }
+
+    .text-danger {
+        color: red;
+    }
+</style>
 {% endblock %}
 
 {% block main %}
-<div class="heading-wrapper mb-3">
-    <h1 class="heading mb-0 h1">Have you taken part in ____ event recently?</h1>
-    <p class="subheading">You can upload your participation proof image to redeem it.</p>
+<div class="heading-wrapper mb-3 align-middle">
+    <h1 class="heading mb-0 h1">Did you helped save our planet recently?</h1>
+    <p class="subheading">
+        If so, you can upload the participation image(s) and earn credits for it. By doing so you can also help us create awareness among others.
+    </p>
 </div>
 <div class="d-flex container-fluid justify-content-center pb-3 mx-auto mb-md-5">
     <form class="form-container g-3 justify-content-center" id = "proof-upload-form" enctype="multipart/form-data" method="POST" role="form">
@@ -21,7 +33,7 @@ Rewards | greenCan
         
         <div class="upload-image-frame d-flex flex-column align-middle py-4" id="image-frame">
             <div class="upload-text mx-5" id="show-image-frame">
-            You can choose to upload multiple images
+            You can choose to upload multiple images<span class="text-danger">*</span>
             </div>
             <div class="upload-btn">
             <i class="fa fa-plus"></i>
@@ -44,7 +56,7 @@ Rewards | greenCan
                     <input type="text" class="form-control" name="location" id="location" placeholder="Enter the area zipcode" pattern="^{\d}(5)$">
                 </div>
                 <div class="form-group mb-1">
-                    <label for="event" class="form-label"><b>Event:</b></label>
+                    <label for="event" class="form-label"><b>Event:</b><span class="text-danger">*</span></label>
                     <select class="form-select" id = "event" name="event" aria-label="Event" required>
                         <option value="" disabled selected>Select an Event</option>
                         {% for event in events %}
@@ -60,7 +72,6 @@ Rewards | greenCan
                         {% endfor %}
                     </select>                    
                 </div>
-                <button type="button" id="show-cat">Show</button>
                 <div class="custom-control custom-checkbox mb-3">
                     <input type="checkbox" class="custom-control-input" id="consent" name="consent" value="consent">
                     <label class="custom-control-label" for="consent">I allow greenCan to feature these images on Green Wall.</label>

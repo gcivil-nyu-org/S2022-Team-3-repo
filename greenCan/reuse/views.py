@@ -305,12 +305,17 @@ def my_posts(request):
 @login_required
 def post_availability(request):
     if request.method == "POST":
-        post = Post.objects.get(id=request.POST.get("id"))
-        checked = request.POST.get("still_available")
-        if checked == "true":
-            post.still_available = True
-        else:
-            post.still_available = False
-        post.save()
-        messages.success(request, "Item avaliability has been changed.")
+        try:
+            post = Post.objects.get(id=request.POST.get("id"))
+            if post.user != request.user or post.approved is False:
+                raise Exception("Only the owner can change the status")
+            checked = request.POST.get("still_available")
+            if checked == "true":
+                post.still_available = True
+            else:
+                post.still_available = False
+            post.save()
+            return JsonResponse({"message": "Success"})
+        except Exception:
+            return JsonResponse({"message": "Error"})
     return redirect("reuse:my-posts")

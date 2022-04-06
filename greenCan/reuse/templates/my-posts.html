@@ -29,9 +29,6 @@ Reuse | greenCan
                     {% if post.approved == None and post.still_available == True %}
                         <td><button type = "button" class = "peddingBtn btn-round">Pending</button></td>
                     {% endif %}
-                    {% if post.approved == False %}
-                        <td><button type = "button" class = "removedBtn btn-round">Removed</button></td>
-                    {% endif %}
                     {% if post.approved == True and post.still_available == True %}
                         <td><button type = "button" class = "listedBtn btn-round">Listed</button></td>
                     {% endif %}
@@ -39,11 +36,19 @@ Reuse | greenCan
                     {% if post.approved != False and post.still_available == False %}
                         <td><button type = "button" class = "NABtn btn-round">Not avaliable</button></td>
                     {% endif %}
-      
+                    
+                    {% if post.approved == False %}
+                    <td><button type = "button" class = "removedBtn btn-round">Removed</button></td>
                     <td><label class="switch">
-                            <input type="checkbox" class = "availableCheck" id = {{post.id}}  {% if post.still_available %} checked {% endif %}>
-                            <span class="slider round"></span>
-                        </label></td>
+                        <input type="checkbox" class = "availableCheck" id = {{post.id}} disabled>
+                        <span class="slider round"></span>
+                    </label></td>
+                    {% else %}
+                    <td><label class="switch">
+                        <input type="checkbox" class = "availableCheck" id = {{post.id}}  {% if post.still_available %} checked {% endif %}>
+                        <span class="slider round"></span>
+                    </label></td>
+                    {% endif %}
             
                 </tr>
             {% endfor %}
@@ -54,31 +59,76 @@ Reuse | greenCan
 {% endblock %}
 
 {% block scripts %}
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!--a function to handle the situation if the user click the checkbox-->
 <script type="text/javascript">
 $(document).ready(function() {
-  $(".availableCheck").on("change", function() {
-      if (window.confirm("Are you sure you want to change the availability of this item ?")) {
-        $.ajax({
-                url: "{% url 'reuse:post-availability' %}",
-                data: {
-                    id: this.id,
-                    csrfmiddlewaretoken: "{{ csrf_token }}",
-                    still_available: this.checked, // true if checked else false
-                },
-                type: "POST",
-                dataType : "json",
-                
+  $(".availableCheck").on("change", function(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to toggle the availability of this item?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, switch it!'
+        }).then((result) =>{
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{% url 'reuse:post-availability' %}",
+                    data: {
+                        id: this.id,
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                        still_available: this.checked, // true if checked else false
+                    },
+                    type: "POST",
+                    dataType : "json",
+                    success: function(e) {
+                        if(e.message == "Success"){
+                            Swal.fire(
+                                'Nice!',
+                                'Your have toggled the availability of this item.',
+                                'success'
+                            ).then(function(){
+                                window.location.reload();
+                            });
+                        } else{
+                            Swal.fire(
+                                'Error!',
+                                'Something went wrong, please try again.',
+                                'error'
+                            ).then(function(){
+                                window.location.reload();
+                            });
+                        }
+                    }, 
+                    error: function(e) {
+                        Swal.fire(
+                                'Error!',
+                                'Something went wrong, please try again.',
+                                'error'
+                            );   
+                        setTimeout(function() { 
+                            window.location.reload();
+                        },2000);
+                    }
+                });
+
+            } else{
+                this.checked = !this.checked;
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Cancel',
+                    text: 'Your action has been canceled',
+                    });
+            }
         });
-      
-    }
-    else{
-      this.checked = !this.checked;
-    }
-  });
+        return false;
+    });
 });
-$(document).ajaxStop(function(){
-    window.location.reload();
-});
+// $(document).ajaxStop(function(){
+//     window.location.reload();
+// });
 </script>
 {% endblock %}
