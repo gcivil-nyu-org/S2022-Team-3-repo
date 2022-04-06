@@ -1,7 +1,6 @@
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
-from django.contrib import messages
 from .models import Post, Image, NGOLocation
 from recycle.models import ZipCode
 import pyrebase
