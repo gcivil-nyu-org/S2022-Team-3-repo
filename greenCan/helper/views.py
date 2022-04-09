@@ -1,38 +1,64 @@
 from django.shortcuts import render
 
 
-def error400(request):
+ERROR_PAGE_TEMPLATE = 'helper/templates/error-page-template.html'
+
+def error_400(request,  *args, **argv):
     context = {
         'title': 'Bad Request',
         'code': 400,
-        'errortitle': 'OPPS! Something went wrong.',
+        'errortitle': 'OPPS! Something Went Wrong.',
         'errortext': 'Your reqeust was not processed.'
     }
-    return render(request, 'helper/templates/error-page-template.html', context)
+    response = render(request, template_name=ERROR_PAGE_TEMPLATE, context=context, status=context['code'])
+    return response
 
-def error404(request):
+def error_403(request,  *args, **argv):
+    context = {
+        'title': 'Permission Denied',
+        'code': 403,
+        'errortitle': 'UH OH! You\'re lost.',
+        'errortext': 'You cannot access this page.'
+    }
+    response = render(request, template_name=ERROR_PAGE_TEMPLATE, context=context, status=context['code'])
+    return response
+
+def error_404(request, *args, **argv):
     context = {
         'title': 'Page Not Found',
         'code': 404,
         'errortitle': 'UH OH! You\'re lost.',
         'errortext': 'The page you are looking for does not exist.'
     }
-    return render(request, 'helper/templates/error-page-template.html', context)
+    response = render(request, template_name=ERROR_PAGE_TEMPLATE, context=context, status=context['code'])
+    return response
 
-def error500(request):
+def error_405(request,  *args, **argv):
     context = {
-        'title': 'Page Not Found',
-        'code': 400,
-        'errortitle': '',
+        'title': 'Method Not Allowed',
+        'code': 405,
+        'errortitle': 'UH OH! You\'re lost.',
         'errortext': ''
     }
-    return render(request, 'helper/templates/error-page-template.html', context)
+    response = render(request, template_name=ERROR_PAGE_TEMPLATE, context=context, status=context['code'])
+    return response
 
-def error505(request):
+def error_500(request,  *args, **argv):
     context = {
-        'title': 'Page Not Found',
-        'code': 400,
-        'errortitle': '',
+        'title': 'Internal Server Error',
+        'code': 500,
+        'errortitle': 'OPPS! Something Went Wrong',
         'errortext': ''
     }
-    return render(request, 'helper/templates/error-page-template.html', context)
+    response = render(request, template_name=ERROR_PAGE_TEMPLATE, context=context, status=context['code'])
+    return response
+
+def error_502(request,  *args, **argv):
+    context = {
+        'title': 'Bad Gateway',
+        'code': 502,
+        'errortitle': 'UH OH! You\'re lost.',
+        'errortext': ''
+    }
+    response = render(request, template_name=ERROR_PAGE_TEMPLATE, context=context, status=context['code'])
+    return response

@@ -387,4 +387,3 @@ class TestFeaturedGallery(TestCase):
                 "has_next": 0,
             },
         )
-    
