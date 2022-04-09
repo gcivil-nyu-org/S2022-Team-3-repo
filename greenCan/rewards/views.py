@@ -103,7 +103,8 @@ def earn_rewards(request):
             if meta is not None:
                 meta.delete()
             messages.error(
-                request, "Sorry, your request was not processed properly, please try again!"
+                request,
+                "Sorry, your request was not processed properly, please try again!",
             )
         return redirect(reverse("rewards:earn-rewards"))
 

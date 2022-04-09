@@ -34,7 +34,7 @@ environ.Env.read_env(BASE_DIR / ".env-dev")
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG") == "True"
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     "recycle",
     "reduce",
     "rewards",
+    "helper",
     "crispy_forms",
     "allauth",
     "allauth.account",

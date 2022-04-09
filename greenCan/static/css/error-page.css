@@ -1,0 +1,101 @@
+@import url('/static/fonts/google-fonts.css');
+html,
+body {
+  height: 100%;
+  font-family: 'Roboto', sans-serif;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Nunito Sans";
+  color: #21212d;
+  font-size: 1em;
+}
+
+button {
+  font-family: "Roboto", sans-serif;
+}
+
+ul {
+  list-style-type: none;
+  -webkit-padding-start: 35px;
+          padding-inline-start: 35px;
+}
+
+svg {
+  width: 100%;
+  visibility: hidden;
+}
+
+h1 {
+  font-size: 7.5em;
+  margin: 15px 0px;
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+}
+
+h2 {
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+}
+
+p {
+  font-family: 'Roboto', sans-serif;
+}
+
+.btn {
+  z-index: 1;
+  overflow: hidden;
+  background: transparent;
+  position: relative;
+  padding: 8px 50px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 1em;
+  letter-spacing: 2px;
+  transition: 0.2s ease;
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  margin: 5px 0px;
+}
+
+.btn:focus {
+    box-shadow: 0 0 0 0.2rem rgb(106 190 82 / 25%);
+}
+
+.btn.green {
+  border: 4px solid #6ABE52;
+  color: #21212d;
+}
+.btn.green:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0%;
+  height: 100%;
+  background: #6ABE52;
+  z-index: -1;
+  transition: 0.2s ease;
+}
+.btn.green:hover {
+  color: #fff;
+  background: #6ABE52;
+  transition: 0.2s ease;
+}
+.btn.green:hover:before {
+  width: 100%;
+}
+
+@media screen and (max-width: 768px) {
+  body {
+    display: block;
+  }
+
+  .container {
+    margin-top: 70px;
+    margin-bottom: 70px;
+  }
+}
