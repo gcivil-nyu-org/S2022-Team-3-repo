@@ -1,6 +1,6 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-from reuse.views import index
+from moderation.views import index
 
 
 class TestUrls(SimpleTestCase):
