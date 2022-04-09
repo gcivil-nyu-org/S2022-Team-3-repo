@@ -51,6 +51,7 @@ Reuse | greenCan
 
 {% block scripts %}
 <script src="{% static 'js/maps.js' %}"></script>
+{% include 'sweetalert2.html' %}
 <script>
 
     let result = {};
@@ -187,7 +188,9 @@ Reuse | greenCan
         $('#zipcode-feedback').addClass('d-none');
     }
 
-    function getNGOSitesLocations(latitude,longitude){
+    function getNGOSitesLocations(position){
+        let latitude = position.coords.latitude;
+        let longitude = position.coords.longitude;
         clearView();
         $.ajax({
             url: "{% url 'reuse:fetch-ngo-locations' %}",
@@ -207,14 +210,21 @@ Reuse | greenCan
     $('#btn-locate-me').click(function(){
         $('#zipcode').val('');
         makeValid();
-        $.ajax({
-          url: 'https://get.geojs.io/v1/ip/geo.json',
-          type: 'GET',
-          success: function (data) {
-              getNGOSitesLocations(data['latitude'],data['longitude']);
-          }
-        });
+        getLocation();
     });
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(getDropOffSitesLocations);
+        } else { 
+            Swal.fire(
+                    'Error!',
+                    'Geolocation is not supported by this browser.',
+                    'error'
+                );
+        }
+    }
+
         $(function(){
             $("[data-toggle='tooltip']").tooltip({ 
                 container: '.wrapper'
