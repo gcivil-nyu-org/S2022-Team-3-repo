@@ -59,6 +59,7 @@ Recycle | greenCan
 
 {% block scripts %}
 <script src="{% static 'js/maps.js' %}"></script>
+{% include 'sweetalert2.html' %}
 <script>
 
     let result = {};
@@ -215,7 +216,9 @@ Recycle | greenCan
         $('#zipcode-feedback').addClass('d-none');
     }
 
-    function getDropOffSitesLocations(latitude,longitude){
+    function getDropOffSitesLocations(position){
+        let latitude = position.coords.latitude;
+        let longitude = position.coords.longitude;
         clearView();
         $.ajax({
             url: "{% url 'recycle:fetch-drop-off-locations' %}",
@@ -235,14 +238,20 @@ Recycle | greenCan
     $('#btn-locate-me').click(function(){
         $('#zipcode').val('');
         makeValid();
-        $.ajax({
-          url: 'https://get.geojs.io/v1/ip/geo.json',
-          type: 'GET',
-          success: function (data) {
-              getDropOffSitesLocations(data['latitude'],data['longitude']);
-          }
-        });
+        getLocation();
     });
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(getDropOffSitesLocations);
+        } else { 
+            Swal.fire(
+                    'Error!',
+                    'Geolocation is not supported by this browser.',
+                    'error'
+                );
+        }
+    }
     
     function filterByCategory(obj){
         let selectedCat = $(obj).val();
