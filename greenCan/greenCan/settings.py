@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
+    "moderation",
 ]
 
 
@@ -238,5 +239,7 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 SOCIAL_AUTH_URL_NAMESPACE = "social"
+
+MODERATION_MODERATORS = [('parth647@gmail.com')]
 
 django_heroku.settings(locals(), test_runner=False)
