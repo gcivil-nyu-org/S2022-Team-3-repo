@@ -3,9 +3,113 @@
 
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/home.css' %}"/>
+<link rel="stylesheet" href="{% static 'modules/owl-carousel-2/css/owl-carousel2.min.css' %}" />
+<style>
+   .owl-carousel {
+  position: relative;
+}
+.owl-next, .owl-prev {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+}
+.owl-next {
+  right: 0;
+  display: flex;
+}
+.owl-prev{
+  left: 0;
+  display: flex;
+}
+.fas{
+    color: #6ABE52;
+    border-color: #6ABE52!important;
+}
+.btn-rounded{
+    padding: 15px;
+}
+
+</style>
+
 {% endblock %}
 
 {% block main %}
+<div class = "anniversary-container" style="background-color: black; width: 100%;">
+    <div class = "row" style = "margin: 10vh;">
+        <div class="col-md-12">
+            <div class="owl-carousel owl-theme py-10">
+                <div class="item m-5" style="color: aliceblue; text-align: left;">
+                    <div class = "container">
+                        <div class = "row">
+                            <div class = "col-6">
+                                <p style="color: #6ABE52;font-size:xx-large;"><b>RECYCLE</b> </p>
+                    <hr style="width:10%;background-color: #6ABE52;border-color:#6ABE52;margin-left: 0%; border-width: 3px;">
+                    <br>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
+                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                        Excepteur sint occaecat cupidatat non proident, 
+                        sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                        <br>
+                    <button type="button" class="btn btn-rounded" style="font-size: small!important; font-weight:200 !important;">READ MORE</button>
+                            </div>
+                            <div class = "col-6">
+                                <img style = "max-width: fit-content; height: auto; margin-left: auto;" src ="{% static 'images/homePage/recycle.jpg' %}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="item m-5" style="color: aliceblue; text-align: left;">
+                    <div class = "container">
+                        <div class = "row">
+                            <div class = "col-6">
+                                <p style="color: #6ABE52;font-size:xx-large;"><b>REUSE</b> </p>
+                                <hr style="width:10%;background-color: #6ABE52;border-color:#6ABE52;margin-left: 0%; border-width: 3px;">
+                                <br>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
+                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                        Excepteur sint occaecat cupidatat non proident, 
+                        sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                        <br>
+                    <button type="button" class="btn btn-rounded" style="font-size: small!important; font-weight:200 !important;">READ MORE</button>
+                            </div>
+                            <div class = "col-6">
+                                <img style = "max-width: fit-content; height: auto; margin-left: auto;" src ="{% static 'images/homePage/recycle.jpg' %}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item m-5" style="color: aliceblue; text-align: left;">
+                    <div class = "container">
+                        <div class = "row">
+                            <div class = "col-6">
+                                <p style="color: #6ABE52;font-size:xx-large;"><b>REDUCE</b> </p>
+                                <hr style="width:10%;background-color: #6ABE52;border-color:#6ABE52;margin-left: 0%; border-width: 3px;">
+                                <br>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
+                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
+                        Excepteur sint occaecat cupidatat non proident, 
+                        sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+                        <br>
+                    <button type="button" class="btn btn-rounded" style="font-size: small!important; font-weight:200 !important;">READ MORE</button>
+                            </div>
+                            <div class = "col-6">
+                                <img style = "max-width: fit-content; height: auto; margin-left: auto;" src ="{% static 'images/homePage/recycle.jpg' %}">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+    </div>
+</div>
+</div>
 
 {% include 'home/templates/developers-corner.html' %}
 
@@ -14,6 +118,7 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="{% static 'modules/owl-carousel-2/js/owl-carousel2.min.js' %}"></script>
 <script>
 
     // Add profile enlarge animation
@@ -26,5 +131,23 @@
         window.open($(this).attr('data-href'),'_blank');
     });
 
+    //remove padding and marigin of main
+    $('#main').removeClass( "container-md mx-md-auto mx-1" ).addClass("anniversary-container p-0 m-0");
+
+    //carousel js
+    $(document).ready(function() {
+    let owl = $('.owl-carousel');
+    owl.owlCarousel({
+        margin: 20,
+        loop: true,
+        autoplay: true,
+        autoplayTimeout: 28000,
+        autoplayHoverpause: true,
+        items: 1,
+        nav: true,
+        navText : ["<i class='fas fa-chevron-left ml-0'></i>","<i class='fas fa-chevron-right mr-0'></i>"]
+    });
+
+}); 
 </script>
 {% endblock %}
