@@ -173,7 +173,7 @@
             margin: 20,
             loop: true,
             autoplay: true,
-            autoplayTimeout: 28000,
+            autoplayTimeout: 20000,
             autoplayHoverpause: true,
             items: 1,
             nav: true,
@@ -181,9 +181,11 @@
         });
     });
 
+    //scroll down to read more section
     $('.read_more_btn').click(function(){
         document.getElementById('read_more').scrollIntoView({
-            behavior: "smooth"
+            behavior: "smooth",
+            block: "center",
         });
     });
 </script>
