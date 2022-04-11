@@ -26,12 +26,13 @@
     color: #6ABE52;
     border-color: #6ABE52!important;
 }
+
 </style>
 
 {% endblock %}
 
 {% block main %}
-<div class = "container m-0" style="background-color: black; width: 100%;">
+<div class = "anniversary-container" style="background-color: black; width: 100%;">
     <div class = "row" style = "margin: 10vh;">
         <div class="col-md-12">
             <div class="owl-carousel owl-theme py-10">
@@ -122,7 +123,7 @@
     });
 
     //remove padding and marigin of main
-    $('#main').removeClass( "container-md mx-md-auto mx-1" ).addClass("container p-0 m-0");
+    $('#main').removeClass( "container-md mx-md-auto mx-1" ).addClass("anniversary-container p-0 m-0");
 
     //carousel js
     $(document).ready(function() {
