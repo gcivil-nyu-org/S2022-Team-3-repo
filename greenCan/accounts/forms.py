@@ -7,6 +7,7 @@ from django.contrib.auth.forms import (
 )
 from django.forms.widgets import EmailInput
 from django.utils.encoding import force_str as _
+from allauth.account.models import EmailAddress
 
 User = get_user_model()
 
@@ -57,11 +58,15 @@ class UserAdminChangeForm(forms.ModelForm):
 class LoginForm(forms.Form):
     email = forms.EmailField(
         label="Email",
-        widget=forms.EmailInput(attrs={"class": "form-input", "placeholder": "Enter email"}),
+        widget=forms.EmailInput(
+            attrs={"class": "form-input", "placeholder": "Enter email"}
+        ),
     )
     password = forms.CharField(
         label="Password",
-        widget=forms.PasswordInput(attrs={"class": "form-input", "placeholder": "Enter password"}),
+        widget=forms.PasswordInput(
+            attrs={"class": "form-input", "placeholder": "Enter password"}
+        ),
     )
 
 
@@ -71,7 +76,9 @@ class RegistrationForm(forms.ModelForm):
 
     password1 = forms.CharField(
         label="Password",
-        widget=forms.PasswordInput(attrs={"class": "form-input", "placeholder": "Enter password"}),
+        widget=forms.PasswordInput(
+            attrs={"class": "form-input", "placeholder": "Enter password"}
+        ),
     )
     password2 = forms.CharField(
         label="Confirm Password",
@@ -84,7 +91,9 @@ class RegistrationForm(forms.ModelForm):
         model = User
         fields = ["email", "first_name", "last_name"]
         widgets = {
-            "email": forms.EmailInput(attrs={"class": "form-input", "placeholder": "Enter Email"}),
+            "email": forms.EmailInput(
+                attrs={"class": "form-input", "placeholder": "Enter Email"}
+            ),
             "first_name": forms.TextInput(
                 attrs={"class": "form-input", "placeholder": "Enter First Name"}
             ),
@@ -129,6 +138,11 @@ class PasswordResetForm(AuthPasswordResetForm):
         email = self.cleaned_data["email"]
         if not User.objects.filter(email=email, is_active=True).exists():
             msg = _("There is no user registered with the specified E-Mail address.")
+            self.add_error("email", msg)
+        # if the email address used to trigger forget password belongs to gauth registered email then it should give an error message
+        if EmailAddress.objects.filter(email=email).exists():
+
+            msg = _("This user is registered using google")
             self.add_error("email", msg)
         return email
 
