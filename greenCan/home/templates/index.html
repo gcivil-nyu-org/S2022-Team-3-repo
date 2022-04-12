@@ -3,6 +3,7 @@
 
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/home.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/modal.css' %}" />
 <link rel="stylesheet" href="{% static 'modules/owl-carousel-2/css/owl-carousel2.min.css' %}" />
 <style>
 .owl-carousel {
@@ -41,6 +42,7 @@
     right:0;
     top: 40%;
     border-radius: 50px 0px 0px 50px!important;
+    text-decoration: none;
 }
 
 #video-play::before{
@@ -118,8 +120,8 @@
         });
     });
 
-    $('#video-btn').click(function(){
-        window.open("https://www.youtube.com/watch?v=S758wEniU0c&t=66s");
-    });
+    // $('#video-btn').click(function(){
+    //     window.open("https://www.youtube.com/watch?v=S758wEniU0c&t=66s");
+    // });
 </script>
 {% endblock %}
