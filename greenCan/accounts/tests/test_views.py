@@ -62,11 +62,7 @@ class TestSignupView(TestCase):
             f"\nHi { user.get_full_name() },\n\nWe need to verify that you "
             "are the owner of this email address."
             "\n\nPlease click on the link to confirm your registration.\n"
-            "http://example.com/accounts/activate/"
-            + str(uid)
-            + "/"
-            + str(token)
-            + "/\n\n",
+            "http://example.com/accounts/activate/" + str(uid) + "/" + str(token) + "/\n\n",
         )
 
         message = list(response.context.get("messages"))[0]
@@ -336,9 +332,7 @@ class TestLoginView(TestCase):
 
 class TestLogoutView(TestCase):
     def setUp(self):
-        self.user = User.objects.create(
-            email="testemail@gmail.com", password="password1"
-        )
+        self.user = User.objects.create(email="testemail@gmail.com", password="password1")
         self.url = reverse("accounts:logout")
 
     def test_logout(self):
@@ -418,9 +412,7 @@ class TestPasswordResetSent(TestCase):
     def test_template_used(self):
         url = reverse_lazy("accounts:password-reset-sent")
         response = self.client.get(url)
-        self.assertTemplateUsed(
-            response, "accounts/templates/forget-password-done.html"
-        )
+        self.assertTemplateUsed(response, "accounts/templates/forget-password-done.html")
         self.assertEquals(response.status_code, 200)
 
 
@@ -464,9 +456,7 @@ class TestUserProfile(TestCase):
         self.assertEquals(user1.last_name, "last2")
         message = list(response.context.get("messages"))[0]
         self.assertEquals(message.tags, "success")
-        self.assertEquals(
-            message.message, "Your details have been updated successfully"
-        )
+        self.assertEquals(message.message, "Your details have been updated successfully")
         self.assertRedirects(response, self.url, 302)
 
     def test_info_changed_after_edit_profile_wrong_details_firstname(self):
@@ -503,9 +493,7 @@ class TestUserProfile(TestCase):
         self.assertEquals(user1.zipcode, self.zipcode)
         message = list(response.context.get("messages"))[0]
         self.assertEquals(message.tags, "success")
-        self.assertEquals(
-            message.message, "Your details have been updated successfully"
-        )
+        self.assertEquals(message.message, "Your details have been updated successfully")
         self.assertRedirects(response, self.url, 302)
 
     def test_info_changed_after_edit_profile_invalid_zipcode(self):
@@ -550,9 +538,7 @@ class TestUserProfile(TestCase):
         self.assertEquals(user1.zipcode, None)
         message = list(response.context.get("messages"))[0]
         self.assertEquals(message.tags, "success")
-        self.assertEquals(
-            message.message, "Your details have been updated successfully"
-        )
+        self.assertEquals(message.message, "Your details have been updated successfully")
         self.assertRedirects(response, self.url, 302)
 
     def test_csrf_token(self):

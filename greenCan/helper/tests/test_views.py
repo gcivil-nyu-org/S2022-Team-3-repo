@@ -15,9 +15,7 @@ from greenCan import urls
 
 class TestErrorPages(TestCase):
     def test_template_used(self):
-        self.assertAlmostEquals(
-            ERROR_PAGE_TEMPLATE, "helper/templates/error-page-template.html"
-        )
+        self.assertAlmostEquals(ERROR_PAGE_TEMPLATE, "helper/templates/error-page-template.html")
 
     def test_error_handlers_in_urls(self):
         self.assertTrue(urls.handler400.endswith(".error_400"))

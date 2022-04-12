@@ -46,9 +46,7 @@ def earn_rewards(request):
         urls = []
 
         if len(images) == 0:
-            messages.error(
-                request, "You need to upload at least one image to earn credits."
-            )
+            messages.error(request, "You need to upload at least one image to earn credits.")
             return redirect(reverse("rewards:earn-rewards"))
 
         if event is not None:
@@ -81,9 +79,7 @@ def earn_rewards(request):
             for image in images:
                 image_name = str(uuid4().int) + "." + image.name.split(".")[-1]
                 storage.child("green-wall/" + image_name).put(image)
-                url = storage.child("green-wall/" + image_name).get_url(
-                    firebase_user["idToken"]
-                )
+                url = storage.child("green-wall/" + image_name).get_url(firebase_user["idToken"])
                 urls.append(url)
             meta = ImageMeta(
                 consent=is_consent,
