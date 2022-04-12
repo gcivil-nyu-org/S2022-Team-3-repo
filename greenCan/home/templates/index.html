@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{% static 'css/home.css' %}"/>
 <link rel="stylesheet" href="{% static 'modules/owl-carousel-2/css/owl-carousel2.min.css' %}" />
 <style>
-   .owl-carousel {
+.owl-carousel {
   position: relative;
 }
 .owl-next, .owl-prev {
@@ -63,6 +63,8 @@
 
 {% include 'home/templates/recycle-read-more.html' %}
 
+{% include 'home/templates/contribution.html' %}
+
 {% include 'home/templates/developers-corner.html' %}
 
 {% include 'home/templates/made-possible-by.html' %}
@@ -104,6 +106,20 @@
     //scroll down to read more section
     $('.read_more_btn').click(function(){
         document.getElementById('read_more').scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+        });
+    });
+
+    $('.read_more_btn').click(function(){
+        document.getElementById('read_more').scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+        });
+    });
+
+    $('.contribution_btn').click(function(){
+        document.getElementById('contribution').scrollIntoView({
             behavior: "smooth",
             block: "center",
         });
