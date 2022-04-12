@@ -139,7 +139,8 @@ class PasswordResetForm(AuthPasswordResetForm):
         if not User.objects.filter(email=email, is_active=True).exists():
             msg = _("There is no user registered with the specified E-Mail address.")
             self.add_error("email", msg)
-        # if the email address used to trigger forget password belongs to gauth registered email then it should give an error message
+        # if the email address used to trigger forget password belongs to
+        # gauth registered email then it should give an error message
         if EmailAddress.objects.filter(email=email).exists():
 
             msg = _("This user is registered using google")
