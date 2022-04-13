@@ -7,6 +7,7 @@ from django.contrib.auth.forms import (
 )
 from django.forms.widgets import EmailInput
 from django.utils.encoding import force_str as _
+from allauth.account.models import EmailAddress
 
 User = get_user_model()
 
@@ -129,6 +130,12 @@ class PasswordResetForm(AuthPasswordResetForm):
         email = self.cleaned_data["email"]
         if not User.objects.filter(email=email, is_active=True).exists():
             msg = _("There is no user registered with the specified E-Mail address.")
+            self.add_error("email", msg)
+        # if the email address used to trigger forget password belongs to
+        # gauth registered email then it should give an error message
+        if EmailAddress.objects.filter(email=email).exists():
+
+            msg = _("This user is registered using google")
             self.add_error("email", msg)
         return email
 
