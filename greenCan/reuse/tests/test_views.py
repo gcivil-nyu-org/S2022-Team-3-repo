@@ -85,9 +85,7 @@ class TestCreatePost(TestCase):
         self.assertEquals(len(images), 2)
         message = list(response.context.get("messages"))[0]
         self.assertEquals(message.tags, "success")
-        self.assertEquals(
-            message.message, "Post created succesfully"
-        )
+        self.assertEquals(message.message, "Post created succesfully")
         self.assertRedirects(response, self.redirect_url, 302)
 
     def test_auth_invalid_form_1(self):
@@ -110,8 +108,8 @@ class TestCreatePost(TestCase):
         self.assertEquals(message.tags, "error")
         self.assertEquals(
             message.message,
-            "Failed to create the post. Please make sure you fill" + \
-            " in all the details along with images to post an ad."
+            "Failed to create the post. Please make sure you fill"
+            + " in all the details along with images to post an ad.",
         )
         self.assertRedirects(response, self.redirect_url, 302)
 
@@ -135,8 +133,8 @@ class TestCreatePost(TestCase):
         self.assertEquals(message.tags, "error")
         self.assertEquals(
             message.message,
-            "Failed to create the post. Please make sure you fill"  + \
-            " in all the details along with images to post an ad."
+            "Failed to create the post. Please make sure you fill"
+            + " in all the details along with images to post an ad.",
         )
         self.assertRedirects(response, self.redirect_url, 302)
 
@@ -160,8 +158,8 @@ class TestCreatePost(TestCase):
         self.assertEquals(message.tags, "error")
         self.assertEquals(
             message.message,
-            "Failed to create the post. Please make sure you fill" + \
-            " in all the details along with images to post an ad."
+            "Failed to create the post. Please make sure you fill"
+            + " in all the details along with images to post an ad.",
         )
         self.assertRedirects(response, self.redirect_url, 302)
 
@@ -185,8 +183,8 @@ class TestCreatePost(TestCase):
         self.assertEquals(message.tags, "error")
         self.assertEquals(
             message.message,
-            "Failed to create the post. Please make sure you fill"  + \
-            " in all the details along with images to post an ad."
+            "Failed to create the post. Please make sure you fill"
+            + " in all the details along with images to post an ad.",
         )
         self.assertRedirects(response, self.redirect_url, 302)
 
@@ -210,14 +208,14 @@ class TestCreatePost(TestCase):
         self.assertEquals(message.tags, "error")
         self.assertEquals(
             message.message,
-            "Failed to create the post. Please make sure you fill"  + \
-            " in all the details along with images to post an ad."
+            "Failed to create the post. Please make sure you fill"
+            + " in all the details along with images to post an ad.",
         )
         self.assertRedirects(response, self.redirect_url, 302)
 
     def test_auth_invalid_form_7(self):
         data = self.data.copy()
-        del data['file[]']
+        del data["file[]"]
         user = User.objects.create(
             email="testemail@gmail.com",
             password="password1",
@@ -235,8 +233,8 @@ class TestCreatePost(TestCase):
         self.assertEquals(message.tags, "error")
         self.assertEquals(
             message.message,
-            "Failed to create the post. Please make sure you fill"  + \
-            " in all the details along with images to post an ad."
+            "Failed to create the post. Please make sure you fill"
+            + " in all the details along with images to post an ad.",
         )
         self.assertRedirects(response, self.redirect_url, 302)
 
