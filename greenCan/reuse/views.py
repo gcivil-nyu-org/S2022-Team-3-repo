@@ -134,7 +134,7 @@ def create_post(request):
 
     if len(zip_code) == 0:
         zip_code = None
-    if len(images)==0:
+    if len(images) == 0:
         images = None
     if (
         title is not None
@@ -156,7 +156,7 @@ def create_post(request):
             user=user,
         )
         post.save()
-        
+
         for image in images:
             image_name = str(uuid4().int) + "." + image.name.split(".")[-1]
             storage.child("posts/" + image_name).put(image)
@@ -165,7 +165,12 @@ def create_post(request):
             image.save()
         messages.success(request, "Post created succesfully")
     else:
-        messages.error(request,"Failed to create the post. Please make sure you fill in all the details along with images to post an ad.")
+        messages.error(
+            request,
+            "Failed to create the post. Please make sure" +
+            "you fill in all the details along with images to post an ad."
+        )
+
     return redirect(reverse("reuse:donation-page"))
 
 

@@ -110,7 +110,7 @@ class TestCreatePost(TestCase):
         self.assertEquals(message.tags, "error")
         self.assertEquals(
             message.message,
-            "Failed to create the post. Please make sure you fill" + \
+            "Failed to create the post. Please make sure you fill" +
             " in all the details along with images to post an ad."
         )
         self.assertRedirects(response, self.redirect_url, 302)
@@ -135,7 +135,7 @@ class TestCreatePost(TestCase):
         self.assertEquals(message.tags, "error")
         self.assertEquals(
             message.message,
-            "Failed to create the post. Please make sure you fill"  + \
+            "Failed to create the post. Please make sure you fill" +
             " in all the details along with images to post an ad."
         )
         self.assertRedirects(response, self.redirect_url, 302)
@@ -160,7 +160,7 @@ class TestCreatePost(TestCase):
         self.assertEquals(message.tags, "error")
         self.assertEquals(
             message.message,
-            "Failed to create the post. Please make sure you fill" + \
+            "Failed to create the post. Please make sure you fill" +
             " in all the details along with images to post an ad."
         )
         self.assertRedirects(response, self.redirect_url, 302)
@@ -185,7 +185,7 @@ class TestCreatePost(TestCase):
         self.assertEquals(message.tags, "error")
         self.assertEquals(
             message.message,
-            "Failed to create the post. Please make sure you fill"  + \
+            "Failed to create the post. Please make sure you fill" +
             " in all the details along with images to post an ad."
         )
         self.assertRedirects(response, self.redirect_url, 302)
@@ -210,7 +210,7 @@ class TestCreatePost(TestCase):
         self.assertEquals(message.tags, "error")
         self.assertEquals(
             message.message,
-            "Failed to create the post. Please make sure you fill"  + \
+            "Failed to create the post. Please make sure you fill" +
             " in all the details along with images to post an ad."
         )
         self.assertRedirects(response, self.redirect_url, 302)
@@ -235,7 +235,7 @@ class TestCreatePost(TestCase):
         self.assertEquals(message.tags, "error")
         self.assertEquals(
             message.message,
-            "Failed to create the post. Please make sure you fill"  + \
+            "Failed to create the post. Please make sure you fill" +
             " in all the details along with images to post an ad."
         )
         self.assertRedirects(response, self.redirect_url, 302)
