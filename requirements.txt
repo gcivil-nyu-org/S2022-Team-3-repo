@@ -6,7 +6,7 @@ flake8
 black
 coverage
 coveralls
-pyrebase==3.0.27
+pyrebase>=3.0.27
 datetime
 django-crispy-forms
 pyyaml
