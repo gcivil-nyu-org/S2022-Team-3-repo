@@ -1,0 +1,53 @@
+{% load static %}
+
+<!-- Recycle Read More Section -->
+<section id = "read_more" class = "anniversary-container" style="width: 100%;">
+    <div class = "row" style = "margin: 10vh;">
+        <div class = "col-md-5" style="position: relative; overflow:hidden; padding:0%;">
+            <img style = "object-fit: cover; height: 100%; width: 100%; margin-left: auto;border-radius: 10px;" src ="{% static 'images/homePage/nyc-waste-image.webp' %}">
+            <div id="video-btn" class="d-flex row align-items-center js-overlay-start start" data-url="https://www.youtube.com/embed/S758wEniU0c">
+                <div class="col-3 py-auto" id="video-play">
+                    <span><i class="fas fa-play-circle" style="color: white; font-size: 3.2em;"></i></span>
+                </div>
+                <div class="col-9">
+                    <b> What Happens To NYC's 3.2 Million Tons Of Trash?</b>
+                </div>
+            </div>
+
+            <div class="overlay-video">
+                <div class="videoWrapperExt">
+                    <div class="videoWrapper">
+                        <div class="close">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <iframe id="player" width="853" height="480" src="" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class = "col-md-6" style="margin-left: 2%;">
+            <p style="color: #6ABE52; font-size: large;">ABOUT US</p>
+            <div class="section-title" style="margin-left: 0px;">
+                <h1 class="title-text" style="text-align: left;">We are Taking Small Steps to Make Earth Better Planet</h1>
+                <span class="title-seprator title-separator separator-border theme-color-bg" style="text-align: left;"></span>
+            </div>
+            <p style="color: #888888;">
+               One of the serious issues faced by our modern world is environmental pollution, and it is 
+               one the most significant challenges that the world is facing in our day. Environmental pollution 
+               has existed for centuries.
+            </p>
+            <div class = "row" style="margin-top: 4%;">
+                <p style="color: #888888;"><i class="fas fa-plus-circle"></i> &nbsp Protect and enhance environment for future generations.</p>
+            </div>
+            <div class = "row">
+                <p style="color: #888888;"><i class="fas fa-plus-circle"></i> &nbsp Ecosystems are imperative to maintaining a healthy planet.</p>
+            </div>
+            <div class = "row" style="margin-bottom: 5%;">
+                <p style="color: #888888;"><i class="fas fa-plus-circle"></i> &nbsp Help protect the environment and sustain its natural resources.</p>
+            </div>
+            <button type="button" class="btn btn-rounded contribution_btn" style="font-size: large!important; font-weight:200 !important; height: 65px; width: 175px;"><b>STATISTICS</b></button>
+        </div>
+    </div>
+</section>
+<!-- Recycle Read More Section -->

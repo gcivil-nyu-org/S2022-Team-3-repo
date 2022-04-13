@@ -3,31 +3,134 @@
 
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/home.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/modal.css' %}" />
 <link rel="stylesheet" href="{% static 'modules/owl-carousel-2/css/owl-carousel2.min.css' %}" />
+
 <style>
-   .owl-carousel {
-  position: relative;
+.owl-carousel {
+    position: relative;
 }
 .owl-next, .owl-prev {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  -webkit-transform: translateY(-50%);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
 }
 .owl-next {
-  right: 0;
-  display: flex;
+    right: 0;
+    display: flex;
 }
 .owl-prev{
-  left: 0;
-  display: flex;
+    left: 0;
+    display: flex;
 }
 .fas{
-    color: #6ABE52;
+     color: #6ABE52;
     border-color: #6ABE52!important;
 }
 .btn-rounded{
     padding: 15px;
+}
+
+#video-btn{
+    background-color: #6ABE52;
+    color: aliceblue;
+    font-size: large !important;
+    font-weight:200 !important;
+    height: 95px;
+    width: 300px;
+    position: absolute;
+    right:0;
+    top: 40%;
+    border-radius: 50px 0px 0px 50px!important;
+    text-decoration: none;
+}
+
+#video-btn span::before {
+    content: "";
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    z-index: 0;
+    background-color: white;
+    animation-delay: 0.2s;
+    animation: ripple 1.5s ease-out infinite;
+}
+
+@keyframes ripple {
+    from {
+        opacity: 1;
+        transform: scale(0);
+    }
+    to {
+        opacity: 0;
+        transform: scale(1.7);
+    }
+}
+
+.overlay-video {
+    display: none;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    opacity: 0;
+    -ms-transition: opacity 600ms ease-in;
+    transition: opacity 600ms ease-in;
+    -ms-transition: opacity .6s;
+    transition: opacity .6s;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, .7);
+    z-index: 999999;
+}
+
+.o1 {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    opacity: 1;
+    -ms-transition: opacity 600ms ease-out;
+    transition: opacity 600ms ease-out;
+    -ms-transition: opacity .6s;
+    transition: opacity .6s;
+}
+
+.videoWrapperExt {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    max-width: 982px;
+    padding: 0 20px;
+}
+
+.videoWrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+}
+
+.videoWrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.close {
+    position: absolute;
+    top: -50px;
+    right: 0px;
+    cursor: pointer;
+    z-index: 9999;
+    height: 40px;
+    width: 40px;
+    background-size: 40px;
+    @media (max-width: 767px) and (orientation: landscape) {
+        display: none;
+    }
 }
 
 </style>
@@ -35,81 +138,12 @@
 {% endblock %}
 
 {% block main %}
-<div class = "anniversary-container" style="background-color: black; width: 100%;">
-    <div class = "row" style = "margin: 10vh;">
-        <div class="col-md-12">
-            <div class="owl-carousel owl-theme py-10">
-                <div class="item m-5" style="color: aliceblue; text-align: left;">
-                    <div class = "container">
-                        <div class = "row">
-                            <div class = "col-6">
-                                <p style="color: #6ABE52;font-size:xx-large;"><b>RECYCLE</b> </p>
-                    <hr style="width:10%;background-color: #6ABE52;border-color:#6ABE52;margin-left: 0%; border-width: 3px;">
-                    <br>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
-                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                        Excepteur sint occaecat cupidatat non proident, 
-                        sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        <br>
-                    <button type="button" class="btn btn-rounded" style="font-size: small!important; font-weight:200 !important;">READ MORE</button>
-                            </div>
-                            <div class = "col-6">
-                                <img style = "max-width: fit-content; height: auto; margin-left: auto;" src ="{% static 'images/homePage/recycle.jpg' %}">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="item m-5" style="color: aliceblue; text-align: left;">
-                    <div class = "container">
-                        <div class = "row">
-                            <div class = "col-6">
-                                <p style="color: #6ABE52;font-size:xx-large;"><b>REUSE</b> </p>
-                                <hr style="width:10%;background-color: #6ABE52;border-color:#6ABE52;margin-left: 0%; border-width: 3px;">
-                                <br>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
-                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                        Excepteur sint occaecat cupidatat non proident, 
-                        sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        <br>
-                    <button type="button" class="btn btn-rounded" style="font-size: small!important; font-weight:200 !important;">READ MORE</button>
-                            </div>
-                            <div class = "col-6">
-                                <img style = "max-width: fit-content; height: auto; margin-left: auto;" src ="{% static 'images/homePage/recycle.jpg' %}">
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="item m-5" style="color: aliceblue; text-align: left;">
-                    <div class = "container">
-                        <div class = "row">
-                            <div class = "col-6">
-                                <p style="color: #6ABE52;font-size:xx-large;"><b>REDUCE</b> </p>
-                                <hr style="width:10%;background-color: #6ABE52;border-color:#6ABE52;margin-left: 0%; border-width: 3px;">
-                                <br>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod 
-                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, 
-                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-                        Excepteur sint occaecat cupidatat non proident, 
-                        sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-                        <br>
-                    <button type="button" class="btn btn-rounded" style="font-size: small!important; font-weight:200 !important;">READ MORE</button>
-                            </div>
-                            <div class = "col-6">
-                                <img style = "max-width: fit-content; height: auto; margin-left: auto;" src ="{% static 'images/homePage/recycle.jpg' %}">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        </div>
-    </div>
-</div>
-</div>
+{% include 'home/templates/carousel-section.html' %}
+
+{% include 'home/templates/recycle-read-more.html' %}
+
+{% include 'home/templates/contribution.html' %}
 
 {% include 'home/templates/developers-corner.html' %}
 
@@ -136,18 +170,67 @@
 
     //carousel js
     $(document).ready(function() {
-    let owl = $('.owl-carousel');
-    owl.owlCarousel({
-        margin: 20,
-        loop: true,
-        autoplay: true,
-        autoplayTimeout: 28000,
-        autoplayHoverpause: true,
-        items: 1,
-        nav: true,
-        navText : ["<i class='fas fa-chevron-left ml-0'></i>","<i class='fas fa-chevron-right mr-0'></i>"]
+        let owl = $('.owl-carousel');
+        owl.owlCarousel({
+            margin: 20,
+            loop: true,
+            autoplay: true,
+            autoplayTimeout: 20000,
+            autoplayHoverpause: true,
+            items: 1,
+            nav: true,
+            navText : ["<i class='fas fa-chevron-left ml-0'></i>","<i class='fas fa-chevron-right mr-0'></i>"]
+        });
     });
 
-}); 
+    //scroll down to read more section
+    $('.read_more_btn').click(function(){
+        document.getElementById('read_more').scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+        });
+    });
+
+    //scroll down to statistics section
+    $('.contribution_btn').click(function(){
+        document.getElementById('contribution').scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+        });
+    });
+
+    //add click event for playing video
+    $(".js-overlay-start").unbind("click").bind("click", function(e) {
+	    e.preventDefault();
+	    var src = $(this).attr("data-url");
+	    $(".overlay-video").show();
+	    setTimeout(function() {
+		    $(".overlay-video").addClass("o1");
+		    $("#player").attr("src", src);
+	    }, 100);
+    });
+
+    //video overlayer: close video if you click outside of the modal
+    $(".overlay-video").click(function(event) {
+	    if (!$(event.target).closest(".videoWrapperExt").length) {
+		    var PlayingVideoSrc = $("#player").attr("src").replace("&autoplay=1", "");
+		    $("#player").attr("src", PlayingVideoSrc);
+		    $(".overlay-video").removeClass("o1");
+		    setTimeout(function() {
+		    	$(".overlay-video").hide();
+		    }, 600);
+	    }
+    });
+
+    //video overlayer: close video via the close icon
+    $(".close").click(function(event) {
+		var PlayingVideoSrc = $("#player").attr("src").replace("&autoplay=1", "");
+		$("#player").attr("src", PlayingVideoSrc);
+		$(".overlay-video").removeClass("o1");
+		setTimeout(function() {
+			$(".overlay-video").hide();
+		}, 600);
+    });
+
 </script>
 {% endblock %}

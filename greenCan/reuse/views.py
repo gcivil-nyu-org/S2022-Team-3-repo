@@ -122,7 +122,6 @@ def create_post(request):
     auth_pswd = settings.FIREBASE_HOST_PASSWORD
     firebase_user = auth.sign_in_with_email_and_password(auth_email, auth_pswd)
     storage = firebase.storage()
-    urls = []
 
     title = request.POST.get("title")
     description = request.POST.get("description")
@@ -135,7 +134,8 @@ def create_post(request):
 
     if len(zip_code) == 0:
         zip_code = None
-
+    if len(images) == 0:
+        images = None
     if (
         title is not None
         and description is not None
@@ -143,13 +143,9 @@ def create_post(request):
         and number is not None
         and email is not None
         and zip_code is not None
+        and images is not None
     ):
 
-        for image in images:
-            image_name = str(uuid4().int) + "." + image.name.split(".")[-1]
-            storage.child("posts/" + image_name).put(image)
-            url = storage.child("posts/" + image_name).get_url(firebase_user["idToken"])
-            urls.append(url)
         post = Post(
             title=title,
             category=category,
@@ -161,10 +157,19 @@ def create_post(request):
         )
         post.save()
 
-        for url in urls:
+        for image in images:
+            image_name = str(uuid4().int) + "." + image.name.split(".")[-1]
+            storage.child("posts/" + image_name).put(image)
+            url = storage.child("posts/" + image_name).get_url(firebase_user["idToken"])
             image = Image(url=url, post=post)
             image.save()
         messages.success(request, "Post created succesfully")
+    else:
+        messages.error(
+            request,
+            "Failed to create the post. Please make sure you"
+            + " fill in all the details along with images to post an ad.",
+        )
 
     return redirect(reverse("reuse:donation-page"))
 
