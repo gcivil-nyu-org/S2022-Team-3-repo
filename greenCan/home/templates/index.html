@@ -68,39 +68,72 @@
   }
 }
 
-
-#show-video {
-	position: fixed;
-	top: 0;
-	bottom: 0;
-	right: 0;
-	left: 0;
-	z-index: 999 !important;
-	background: rgba(0, 0, 0, .25);
-	display: none;
+.overlay-video {
+    display: none;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    opacity: 0;
+    -ms-transition: opacity 600ms ease-in;
+    transition: opacity 600ms ease-in;
+    -ms-transition: opacity .6s;
+    transition: opacity .6s;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, .7);
+    z-index: 999999;
 }
 
-.video-close {
-	width: 45px;
-	height: 45px;
-	color: #211d1e;
-	position: absolute;
-	right: 118px;
-	top: 113px;
-	z-index: 999;
-	cursor: pointer;
+.o1 {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    opacity: 1;
+    -ms-transition: opacity 600ms ease-out;
+    transition: opacity 600ms ease-out;
+    -ms-transition: opacity .6s;
+    transition: opacity .6s;
 }
 
-#show-video video {
-	outline: none;
-	max-width: 85%;
-	max-height: 70vh;
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-	box-shadow: 0 20px 40px rgb(0 0 0 / 50%);
+.videoWrapperExt {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    max-width: 982px;
+    padding: 0 20px;
 }
+
+.videoWrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    /* 16:9 */
+    height: 0;
+}
+
+.videoWrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.close {
+    /* background-image:url(http://djit.ac/assets/images/news/mark.png); */
+    position: absolute;
+    top: -50px;
+    right: 0px;
+    cursor: pointer;
+    z-index: 9999;
+    height: 40px;
+    width: 40px;
+    background-size: 40px;
+    @media (max-width: 767px) and (orientation: landscape) {
+        display: none;
+    }
+}
+
 </style>
 
 {% endblock %}
@@ -167,17 +200,38 @@
         });
     });
 
-    // $('#video-btn').click(function(){
-    //     window.open("https://youtu.be/S758wEniU0c");
-    // });
+    //add click event for playing video
+    $(".js-overlay-start").unbind("click").bind("click", function(e) {
+	    e.preventDefault();
+	    var src = $(this).attr("data-url");
+	    $(".overlay-video").show();
+	    setTimeout(function() {
+		    $(".overlay-video").addClass("o1");
+		    $("#player").attr("src", src);
+	    }, 100);
+    });
 
-    $(function() {
-		$("#video-btn").click(function() {
-			$("#show-video").show();
-		});
-		$(".video-close").click(function() {
-			$("#show-video").hide();
-		});
-	});
+    // video overlayer: close it if you click outside of the modal
+    $(".overlay-video").click(function(event) {
+	    if (!$(event.target).closest(".videoWrapperExt").length) {
+		    var PlayingVideoSrc = $("#player").attr("src").replace("&autoplay=1", "");
+		    $("#player").attr("src", PlayingVideoSrc);
+		    $(".overlay-video").removeClass("o1");
+		    setTimeout(function() {
+		    	$(".overlay-video").hide();
+		    }, 600);
+	    }
+    });
+
+    // video overlayer: close it via the X icon
+    $(".close").click(function(event) {
+		var PlayingVideoSrc = $("#player").attr("src").replace("&autoplay=1", "");
+		$("#player").attr("src", PlayingVideoSrc);
+		$(".overlay-video").removeClass("o1");
+		setTimeout(function() {
+			$(".overlay-video").hide();
+		}, 600);
+    });
+
 </script>
 {% endblock %}

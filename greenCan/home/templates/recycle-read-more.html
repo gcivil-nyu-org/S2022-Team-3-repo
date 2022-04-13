@@ -4,43 +4,24 @@
     <div class = "row" style = "margin: 10vh;">
         <div class = "col-md-5" style="position: relative; overflow:hidden; padding:0%;">
             <img style = "object-fit: cover; height: 100%; width: 100%; margin-left: auto;border-radius: 10px;" src ="{% static 'images/homePage/nyc-waste-image.webp' %}">
-            <div id="video-btn" class="d-flex row align-items-center">
+            <div id="video-btn" class="d-flex row align-items-center js-overlay-start start" data-url="https://www.youtube.com/embed/S758wEniU0c">
                 <div class="col-3 py-auto" id="video-play">
                     <span><i class="fas fa-play-circle" style="color: white; font-size: 3.2em;"></i></span>
                 </div>
                 <div class="col-9">
-                    <b> WANT TO SEE WHAT HAPPENS TO YOUR WASTE?</b>
+                    <b> What Happens To NYC's 3.2 Million Tons Of Trash?</b>
                 </div>
             </div>
-        
-            <div id="show-video">
-                <a class="video-close">
-                    <span>
-                        <svg t="1614676844098" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2082"
-                         width="30" height="30">
-                            <path d="M591.506286 511.853714l417.133714-416.914285a54.601143 54.601143 0 0 0 0-76.8l-2.267429-2.267429a54.601143 54.601143 0 0 0-76.8 0L512.438857 433.481143 95.305143 15.798857a54.601143 54.601143 0 0 0-76.8 0L16.237714 18.066286a53.577143 53.577143 0 0 0 0 76.8l417.097143 416.987428L16.201143 929.097143a54.601143 54.601143 0 0 0 0 76.8l2.267428 2.267428a54.601143 54.601143 0 0 0 76.8 0l417.170286-417.060571 417.097143 417.097143a54.601143 54.601143 0 0 0 76.8 0l2.267429-2.267429a54.601143 54.601143 0 0 0 0-76.8z"
-                             p-id="2083" fill="#e6e6e6"></path>
-                        </svg>
-                    </span>
-                </a>
-                <video controls>
-                    <source src="https://www.youtube.com/embed/S758wEniU0c">
-                </video>
-            </div>
-
-            <!-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" hidden="true">
-                <div class="modal-dialog">
-                  <div class="modal-content">  data-bs-toggle="modal" data-bs-target="#exampleModal"
-                    <div class="modal-body">
-                        <iframe width="960" height="715" src="https://www.youtube.com/embed/S758wEniU0c" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <div class="overlay-video">
+                <div class="videoWrapperExt">
+                    <div class="videoWrapper">
+                        <div class="close">
+                            <i class="fas fa-times"></i>
+                        </div>
+                        <iframe id="player" width="853" height="480" src="" frameborder="0" allowfullscreen></iframe>
                     </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    </div>
-                  </div>
                 </div>
-              </div> -->
-
+            </div>
         </div>
 
         <div class = "col-md-6" style="margin-left: 2%;">
