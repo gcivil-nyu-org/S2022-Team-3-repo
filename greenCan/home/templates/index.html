@@ -34,10 +34,10 @@
 #video-btn{
     background-color: #6ABE52;
     color: aliceblue;
-    font-size: large!important;
+    font-size: large !important;
     font-weight:200 !important;
     height: 95px;
-    width: 225px;
+    width: 300px;
     position: absolute;
     right:0;
     top: 40%;
@@ -53,6 +53,29 @@
 
 #play-text{
     margin-top: 4%;
+}
+
+#video-btn span::before {
+  content: "";
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  z-index: 0;
+  background-color: white;
+  animation-delay: 0.2s;
+  animation: ripple 1.5s ease-out infinite;
+}
+
+@keyframes ripple {
+  from {
+    opacity: 1;
+    transform: scale(0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.7);
+  }
 }
 
 .overlay-video {
@@ -107,7 +130,7 @@
 }
 
 .close {
-    background-image:url(http://djit.ac/assets/images/news/mark.png);
+    /* background-image:url(http://djit.ac/assets/images/news/mark.png); */
     position: absolute;
     top: -50px;
     right: 0px;
