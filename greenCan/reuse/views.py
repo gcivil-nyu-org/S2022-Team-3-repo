@@ -167,8 +167,8 @@ def create_post(request):
     else:
         messages.error(
             request,
-            "Failed to create the post. Please make sure" +
-            "you fill in all the details along with images to post an ad."
+            "Failed to create the post. Please make sure you"
+            + " fill in all the details along with images to post an ad.",
         )
 
     return redirect(reverse("reuse:donation-page"))
