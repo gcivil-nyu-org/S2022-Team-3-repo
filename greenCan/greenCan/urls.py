@@ -29,3 +29,15 @@ urlpatterns = [
     path("rewards/", include("rewards.urls")),
     path("social/", include("allauth.urls"), name="social"),
 ]
+
+handler400 = "helper.views.error_400"
+
+handler403 = "helper.views.error_403"
+
+handler404 = "helper.views.error_404"
+
+handler405 = "helper.views.error_405"
+
+handler500 = "helper.views.error_500"
+
+handler502 = "helper.views.error_502"

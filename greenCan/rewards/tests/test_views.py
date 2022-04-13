@@ -364,8 +364,41 @@ class TestFeaturedGallery(TestCase):
             force_str(response.content),
             {
                 "images": [
-                    {"image": "test2.png", "event": "Recycle", "description": "This is a caption"},
-                    {"image": "test1.png", "event": "Recycle", "description": "This is a caption"},
+                    {
+                        "image": "test2.png",
+                        "event": "Recycle",
+                        "description": "This is a caption",
+                    },
+                    {
+                        "image": "test1.png",
+                        "event": "Recycle",
+                        "description": "This is a caption",
+                    },
+                ],
+                "has_next": 0,
+            },
+        )
+
+    def test_featured_image_gallery_no_page_number_POST(self):
+        """
+        test to check that page 1 is returned is post is an empty string.
+        """
+        data = {"page": ""}
+        response = self.client.post(self.url, data, follow=True)
+        self.assertJSONEqual(
+            force_str(response.content),
+            {
+                "images": [
+                    {
+                        "image": "test2.png",
+                        "event": "Recycle",
+                        "description": "This is a caption",
+                    },
+                    {
+                        "image": "test1.png",
+                        "event": "Recycle",
+                        "description": "This is a caption",
+                    },
                 ],
                 "has_next": 0,
             },
