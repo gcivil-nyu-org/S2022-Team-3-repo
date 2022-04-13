@@ -6,17 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('reuse', '0008_image_approved_alter_post_approved'),
+        ("reuse", "0008_image_approved_alter_post_approved"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='image',
-            name='approved',
+            model_name="image",
+            name="approved",
         ),
         migrations.AlterField(
-            model_name='post',
-            name='approved',
+            model_name="post",
+            name="approved",
             field=models.BooleanField(default=None, null=True),
         ),
     ]
