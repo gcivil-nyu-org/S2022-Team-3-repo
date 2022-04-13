@@ -45,37 +45,27 @@
     text-decoration: none;
 }
 
-#play-icon{
-    margin-top: 8%;
-    margin-left: 2%;
-    margin-right: 2.5%;
-}
-
-#play-text{
-    margin-top: 4%;
-}
-
 #video-btn span::before {
-  content: "";
-  position: absolute;
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  z-index: 0;
-  background-color: white;
-  animation-delay: 0.2s;
-  animation: ripple 1.5s ease-out infinite;
+    content: "";
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    z-index: 0;
+    background-color: white;
+    animation-delay: 0.2s;
+    animation: ripple 1.5s ease-out infinite;
 }
 
 @keyframes ripple {
-  from {
-    opacity: 1;
-    transform: scale(0);
-  }
-  to {
-    opacity: 0;
-    transform: scale(1.7);
-  }
+    from {
+        opacity: 1;
+        transform: scale(0);
+    }
+    to {
+        opacity: 0;
+        transform: scale(1.7);
+    }
 }
 
 .overlay-video {
@@ -117,7 +107,6 @@
 .videoWrapper {
     position: relative;
     padding-bottom: 56.25%;
-    /* 16:9 */
     height: 0;
 }
 
@@ -130,7 +119,6 @@
 }
 
 .close {
-    /* background-image:url(http://djit.ac/assets/images/news/mark.png); */
     position: absolute;
     top: -50px;
     right: 0px;
@@ -221,7 +209,7 @@
 	    }, 100);
     });
 
-    // video overlayer: close it if you click outside of the modal
+    //video overlayer: close video if you click outside of the modal
     $(".overlay-video").click(function(event) {
 	    if (!$(event.target).closest(".videoWrapperExt").length) {
 		    var PlayingVideoSrc = $("#player").attr("src").replace("&autoplay=1", "");
@@ -233,7 +221,7 @@
 	    }
     });
 
-    // video overlayer: close it via the X icon
+    //video overlayer: close video via the close icon
     $(".close").click(function(event) {
 		var PlayingVideoSrc = $("#player").attr("src").replace("&autoplay=1", "");
 		$("#player").attr("src", PlayingVideoSrc);
