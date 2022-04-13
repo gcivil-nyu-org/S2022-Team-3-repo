@@ -6,7 +6,7 @@ flake8
 black
 coverage
 coveralls
-pyrebase
+pyrebase4
 datetime
 django-crispy-forms
 pyyaml
