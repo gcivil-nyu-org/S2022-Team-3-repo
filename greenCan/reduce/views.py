@@ -83,8 +83,7 @@ def get_retailer_locations(centroid):
 """
 function: search_retailer_locations
 
-take user's input zip code from frontend
-then validate this zip code
+take user's input zip code from frontend, then validate this zip code
 if it is valid, then sort all retailer locations in database
 by the distance from centroid of the zip code to the retailer location
 otherwise, return an error message
