@@ -296,6 +296,13 @@ def search_ngo_locations(request):
     return JsonResponse(search_result)
 
 
+"""
+function: my_posts
+
+Select all posts for login user from database
+"""
+
+
 @login_required
 def my_posts(request):
     template = "reuse/templates/my-posts.html"
@@ -305,6 +312,13 @@ def my_posts(request):
     context = {"user": user, "user_posts": user_posts, "is_reuse": True}
 
     return render(request, template, context=context)
+
+
+"""
+function: post_availability
+
+Query if the post is still available
+"""
 
 
 @login_required
