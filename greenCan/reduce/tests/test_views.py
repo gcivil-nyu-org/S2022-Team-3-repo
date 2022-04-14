@@ -62,3 +62,16 @@ class TestViews(TestCase):
         response = self.client.get(self.url + "?type=zipcode&zipcode=10001")
 
         self.assertEquals(response.status_code, 200)
+
+    def test_retailer_locations_invalid_data(self):
+        """
+        test to check if searching by user's current location is returning a valid response
+        """
+
+        response = self.client.get(self.url + "?type=somerandomstring")
+
+        self.assertEquals(response.status_code, 200)
+        self.assertJSONEqual(
+            force_str(response.content),
+            {"err_flag": True, "err_msg": "Invalid arguments provided"},
+        )

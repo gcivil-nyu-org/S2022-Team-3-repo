@@ -389,7 +389,7 @@ class TestViews(TestCase):
 
     def test_ngo_locations_invalid_data(self):
         """
-        test to check if searching by user's current location is returning a valid response
+        test to check if searching by unknown type is returning a correct error message
         """
 
         response = self.client.get(self.search_ngo_locations_url + "?type=somerandomstring")
