@@ -1,5 +1,6 @@
 from django.test import TestCase, Client
 from django.urls import reverse
+from django.utils.encoding import force_str
 
 from recycle.models import ZipCode
 from reduce.models import RetailerLocation
