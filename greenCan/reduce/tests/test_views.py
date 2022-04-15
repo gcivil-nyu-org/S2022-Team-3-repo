@@ -46,7 +46,7 @@ class TestViews(TestCase):
 
     def test_retailer_locations1(self):
         """
-        test to check if searching by zip code is returning a valid response
+        test to check if searching by user's current location is returning a valid response
         """
 
         response = self.client.get(
