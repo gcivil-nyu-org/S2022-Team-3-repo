@@ -109,8 +109,8 @@ def search_retailer_locations(request):
         user_long = request.GET.get("longitude")
         centroid = {"latitude": user_lat, "longitude": user_long}
     else:
-        err_msg = "Invalid arguments provided"
         err_flag = True
+        err_msg = "Invalid arguments provided"
         return JsonResponse({"err_flag": err_flag, "err_msg": err_msg})
     sites = get_retailer_locations(centroid)
     search_result = {"centroid": centroid, "sites": sites}

@@ -64,6 +64,19 @@ class TestViews(TestCase):
 
         self.assertEquals(response.status_code, 200)
 
+    def test_retailer_locations_invalid_zip_code(self):
+        """
+        test to check if searching by an invalid zip code is returning a correct error message
+        """
+
+        response = self.client.get(self.url + "?type=zipcode&zipcode=10004")
+
+        self.assertEquals(response.status_code, 200)
+        self.assertJSONEqual(
+            force_str(response.content),
+            {"err_flag": True, "err_msg": "Please enter a valid NYC zip code"},
+        )
+
     def test_retailer_locations_invalid_data(self):
         """
         test to check if searching by unknown type is returning a correct error message
