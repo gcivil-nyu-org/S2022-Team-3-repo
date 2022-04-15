@@ -377,7 +377,7 @@ class TestViews(TestCase):
         )
 
         self.assertEquals(response.status_code, 200)
-    
+
     def test_ngo_locations2(self):
         """
         test to check if searching by input zip code is returning a valid response
