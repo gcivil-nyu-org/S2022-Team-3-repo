@@ -38,6 +38,9 @@ class TestViews(TestCase):
         self.drop_off_location = drop_off_location
 
     def test_index_GET(self):
+        """
+        test to check if index page is returning a valid response
+        """
 
         response = self.client.get(self.index_url)
 
