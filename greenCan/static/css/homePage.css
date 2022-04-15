@@ -1,0 +1,21 @@
+.owl-carousel {
+  position: relative;
+}
+.owl-next, .owl-prev {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+}
+.owl-next {
+  right: 0;
+  display: flex;
+}
+.owl-prev{
+  left: 0;
+  display: flex;
+}
+.fas{
+    color: #6ABE52;
+    border-color: #6ABE52!important;
+}

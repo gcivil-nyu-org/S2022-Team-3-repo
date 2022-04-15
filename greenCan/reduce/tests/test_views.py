@@ -1,5 +1,6 @@
 from django.test import TestCase, Client
 from django.urls import reverse
+from django.utils.encoding import force_str
 
 from recycle.models import ZipCode
 from reduce.models import RetailerLocation
@@ -62,3 +63,16 @@ class TestViews(TestCase):
         response = self.client.get(self.url + "?type=zipcode&zipcode=10001")
 
         self.assertEquals(response.status_code, 200)
+
+    def test_retailer_locations_invalid_data(self):
+        """
+        test to check if searching by unknown type is returning a correct error message
+        """
+
+        response = self.client.get(self.url + "?type=somerandomstring")
+
+        self.assertEquals(response.status_code, 200)
+        self.assertJSONEqual(
+            force_str(response.content),
+            {"err_flag": True, "err_msg": "Invalid arguments provided"},
+        )
