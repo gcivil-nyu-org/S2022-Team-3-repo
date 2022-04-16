@@ -34,7 +34,7 @@ environ.Env.read_env(BASE_DIR / ".env-dev")
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG") == "True"
+DEBUG = env("DEBUG") is True
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     "reduce",
     "rewards",
     "helper",
+    "moderation",
     "crispy_forms",
     "allauth",
     "allauth.account",
@@ -117,11 +118,6 @@ DATABASES = {
 
 
 if "test" in sys.argv:
-    # DATABASES["default"] = {
-    #     "ENGINE": "django.db.backends.sqlite3",
-    #     "NAME": "mydatabase",
-    # }
-
     DATABASES["default"] = {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": env("TEST_DATABASE_NAME"),
