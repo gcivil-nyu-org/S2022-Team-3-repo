@@ -117,7 +117,7 @@ def earn_rewards(request):
 
 def featured_image_gallery(request):
     if request.method == "POST":
-        images = Image.objects.filter(meta__consent=True).order_by("-uploaded_on")
+        images = Image.objects.filter(meta__consent=True).order_by("-meta__uploaded_on", "-pk")
         images = Paginator(images, 20)
         page_number = request.POST.get("page", 1)
         if page_number == "":

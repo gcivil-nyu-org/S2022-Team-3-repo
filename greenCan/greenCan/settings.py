@@ -61,12 +61,12 @@ INSTALLED_APPS = [
     "reduce",
     "rewards",
     "helper",
+    "moderation",
     "crispy_forms",
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
     "allauth.socialaccount.providers.google",
-    "moderation",
 ]
 
 
@@ -118,11 +118,6 @@ DATABASES = {
 
 
 if "test" in sys.argv:
-    # DATABASES["default"] = {
-    #     "ENGINE": "django.db.backends.sqlite3",
-    #     "NAME": "mydatabase",
-    # }
-
     DATABASES["default"] = {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": env("TEST_DATABASE_NAME"),
@@ -239,7 +234,5 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 SOCIAL_AUTH_URL_NAMESPACE = "social"
-
-MODERATION_MODERATORS = [('parth647@gmail.com')]
 
 django_heroku.settings(locals(), test_runner=False)
