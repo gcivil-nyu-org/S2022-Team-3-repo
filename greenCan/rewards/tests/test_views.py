@@ -327,7 +327,7 @@ class TestFeaturedGallery(TestCase):
         meta2 = ImageMeta(
             event_type=event,
             location=zipcode,
-            caption="This is a caption",
+            caption="<script>This is a caption</script>",
             user=user,
             consent=False,
         )

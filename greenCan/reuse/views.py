@@ -151,7 +151,7 @@ def create_post(request):
     ):
 
         post = Post(
-            title=title,
+            title=strip_tags(title),
             category=category,
             phone_number=number,
             email=strip_tags(email),
