@@ -114,7 +114,7 @@ user-profile
                                     {% csrf_token %}
                                     <!-- {{ form.as_p}}-->
                                     <div class="form-group">
-                                        <p><input id="avatar" type="hidden" name="avatar" value ="" hidden class="form-control"></p>
+                                        <p><input id="avatar" type="hidden" name="avatar" value ="{{ user.avatar }}" hidden class="form-control"></p>
                                         <div class = "container-fluid">
                                         <div class = "row mr-1">
                                             <div class="col-md-2 col-sm-4">
@@ -274,7 +274,7 @@ user-profile
                                     </div>
                                     <div class="modal-footer">
                                     <div class="d-flex float-right py-3">
-                                        <button type="button" class="btn btn-rounded"  style="background-color: #777 !important;" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-rounded"  style="background-color: #777 !important;" data-bs-dismiss="modal" onClick="window.location.reload();">Close</button>
                                         <span class="text-white">&nbsp&nbsp</span>
                                         <button class="btn btn-rounded" type="submit">Save</button>
                                       </div>
@@ -303,11 +303,13 @@ user-profile
 {% block scripts %}
 {% include 'sweetalert2.html' %}
 <script>
+ setTimeout(function(e){
+    document.querySelector('[data-url = "{{user.avatar}}"]').style.backgroundColor = "#69be52a4";
+ },10);
+
 $('.avatarBtn').on('click',function(){
-    console.log("before");
     $('#avatar').val($(this).attr('data-url'));
-    console.log("after");
-    console.log($('#avatar').val());
+    document.querySelector('[data-url = "{{user.avatar}}"]').style.backgroundColor = "transparent"
 });
 
 $('#main').removeClass( "container-md mx-md-auto mx-1" ).addClass("container-fluid p-0");

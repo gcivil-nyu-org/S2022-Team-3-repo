@@ -280,7 +280,7 @@ def user_profile_avatar(request):
         if avatar:
             user.avatar = avatar
         else:
-            user.avatar = None
+            user.avatar = user.avatar
         user.save()
         messages.success(request, "Your avatar has been updated.")
     return redirect("accounts:user-profile")
