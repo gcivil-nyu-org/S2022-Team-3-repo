@@ -21,8 +21,8 @@ def index(request):
 """
 function: get_dropoff_locations
 
-Querying all drop-off locations from database
-Then reformating each drop-off location for frontend
+Query all drop-off locations from database
+Then reformat each drop-off location for frontend
 """
 
 
