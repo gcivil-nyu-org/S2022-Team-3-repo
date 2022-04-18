@@ -1,5 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from channels.generic.websocket import AsyncJsonWebsocketConsumer
+from rest_framework.authtoken.models import Token
+import logging
 from recycle.models import ZipCode
 
 
@@ -180,6 +183,7 @@ class NotificationConsumer(AsyncJsonWebsocketConsumer):
             # Pass auth token as a part of url.
             token = self.scope.get('url_route', {}).get(
                 'kwargs', {}).get('token', False)
+            logger = logging.getLogger(__name__)
             # If no token specified, close the connection
             if not token:
                 logger.error('No token supplied')
@@ -218,6 +222,7 @@ class NotificationConsumer(AsyncJsonWebsocketConsumer):
             # Get auth token from url.
             token = self.scope.get('url_route', {}).get(
                 'kwargs', {}).get('token', False)
+            logger = logging.getLogger(__name__)
             try:
                 token = Token.objects.select_related('user').get(key=token)
             except Token.DoesNotExist:
