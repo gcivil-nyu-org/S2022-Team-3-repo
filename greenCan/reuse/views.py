@@ -58,7 +58,7 @@ def listing_page(request):
     template = "listing-page.html"
 
     def get_listings():
-        query = strip_tags(request.GET.get("q","")[:256])
+        query = strip_tags(request.GET.get("q", "")[:256])
 
         if query:
             search_query = SearchQuery(query)
@@ -134,7 +134,7 @@ def create_post(request):
     user = request.user
     zip_code = ZipCode.objects.filter(zip_code=zipcode)
 
-    if len(number)!=10 or not number.isdigit():
+    if len(number) != 10 or not number.isdigit():
         number = None
     if len(zip_code) == 0:
         zip_code = None

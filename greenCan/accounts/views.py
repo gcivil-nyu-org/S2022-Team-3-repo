@@ -1,5 +1,4 @@
 from datetime import timedelta
-import imp
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model

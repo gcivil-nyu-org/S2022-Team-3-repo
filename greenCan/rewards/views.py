@@ -25,7 +25,7 @@ def earn_rewards(request):
     if request.method == "POST":
         categories = request.POST.getlist("categories[]", None)
         event = request.POST.get("event", None)
-        caption = request.POST.get("caption",None)
+        caption = request.POST.get("caption", None)
         location = request.POST.get("location", None)
         consent = request.POST.get("consent", False)
         images = request.FILES.getlist("file[]")
