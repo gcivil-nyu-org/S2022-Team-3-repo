@@ -21,6 +21,10 @@ Reuse | greenCan
   .form-select:focus {
     border-color: #6abe52;
   }
+
+  .shelter-home-card {
+    cursor: pointer;
+  }
 </style>
 {% endblock %}
 
@@ -478,9 +482,8 @@ if (window.File && window.FileList && window.FileReader) {
                     stringLength: {
                         min:5,
                         max:5,
-                        message: 'Please enter a valid zip code'
+                        message: 'Please enter a valid 5 digit NYC zip code'
                     }
-                    
                 }
             },
             number: {

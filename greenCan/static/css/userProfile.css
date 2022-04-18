@@ -47,11 +47,14 @@ button.avatarBtn{
     padding: 10px;
     border-radius: 10%;
 }
-button.avatarBtn:hover{
+
+button.avatarBtn:hover, 
+button.avatarBtn:focus{
     background-color:rgba(196, 196, 196, 0.6)!important;
 }
-button.avatarBtn:focus{
-    background-color: rgba(196, 196, 196, 0.6)!important;
+
+button.avaterBtn.active {
+    background-color:rgba(106, 190, 82, 0.6)!important;
 }
 
 input.form-control {

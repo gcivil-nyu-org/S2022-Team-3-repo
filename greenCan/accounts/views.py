@@ -1,4 +1,5 @@
 from datetime import timedelta
+import imp
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
@@ -17,6 +18,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth import views as auth_views
 from .forms import PasswordResetForm, SetPasswordForm
 from recycle.models import ZipCode
+from django.utils.html import strip_tags
 
 
 class PasswordResetView(auth_views.PasswordResetView):
@@ -229,7 +231,7 @@ def user_profile(request):
         user = request.user
         first_name = request.POST.get("first_name")
         if first_name:
-            user.first_name = first_name
+            user.first_name = strip_tags(first_name)
         else:
             messages.error(request, "First name is required")
             return redirect("accounts:user-profile")
@@ -237,7 +239,7 @@ def user_profile(request):
         last_name = request.POST.get("last_name")
 
         if last_name:
-            user.last_name = last_name
+            user.last_name = strip_tags(last_name)
         else:
             messages.error(request, "Last name is required")
             return redirect("accounts:user-profile")
