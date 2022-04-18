@@ -303,9 +303,9 @@ user-profile
 {% block scripts %}
 {% include 'sweetalert2.html' %}
 <script>
- setTimeout(function(e){
+ $(document).ready(function(e){
     document.querySelector('[data-url = "{{user.avatar}}"]').style.backgroundColor = "#69be52a4";
- },10);
+ });
 
 $('.avatarBtn').on('click',function(){
     $('#avatar').val($(this).attr('data-url'));
