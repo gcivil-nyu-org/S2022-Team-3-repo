@@ -46,12 +46,13 @@ def review_post(request, id):
                     reasons.append(request.POST["check3"])
                 if("description" in request.POST):
                     reasons.append(request.POST["description"])
-                log = VolunteerLogs(post = id,reason = reasons)
+                log = VolunteerLogs(post = post,reason = reasons)
                 log.save()
 
                 messages.success(request, "Post Denied")
 
-        except Exception:
+        except Exception as e:
+            print(e)
             messages.error(request, "Post approval Failed, contact admin")
         context = {}
         return render(request, template_name=template_name, context=context)
