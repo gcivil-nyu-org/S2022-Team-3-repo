@@ -5,6 +5,7 @@ from reuse.models import Post
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
+from .models import VolunteerLogs
 
 
 @login_required
@@ -22,7 +23,7 @@ def index(request):
 def review_post(request, id):
     id = int(id)
     template_name = "moderation/templates/review-post.html"
-
+    print(request.POST)
     if request.method == "POST":
         try:
             if "approve" in request.POST:
@@ -36,6 +37,18 @@ def review_post(request, id):
                 post = Post.objects.get(id=id)
                 post.approved = False
                 post.save()
+                reasons = []
+                if("check1" in request.POST):
+                    reasons.append(request.POST["check1"])
+                if("check2" in request.POST):
+                    reasons.append(request.POST["check2"])
+                if("check3" in request.POST):
+                    reasons.append(request.POST["check3"])
+                if("description" in request.POST):
+                    reasons.append(request.POST["description"])
+                log = VolunteerLogs(post = id,reason = reasons)
+                log.save()
+
                 messages.success(request, "Post Denied")
 
         except Exception:
