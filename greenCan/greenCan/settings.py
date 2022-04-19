@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     "reduce",
     "rewards",
     "helper",
+    "moderation",
     "crispy_forms",
     "allauth",
     "allauth.account",
@@ -117,11 +118,6 @@ DATABASES = {
 
 
 if "test" in sys.argv:
-    # DATABASES["default"] = {
-    #     "ENGINE": "django.db.backends.sqlite3",
-    #     "NAME": "mydatabase",
-    # }
-
     DATABASES["default"] = {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
         "NAME": env("TEST_DATABASE_NAME"),
@@ -155,6 +151,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+SECURE_BROWSER_XSS_FILTER = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
@@ -209,9 +206,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 SITE_ID = 2
 
 # Additional configuration settings
-# SOCIALACCOUNT_QUERY_EMAIL = True
-# ACCOUNT_LOGOUT_ON_GET= True
-# ACCOUNT_UNIQUE_EMAIL = True
+
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 
 ACCOUNT_EMAIL_REQUIRED = True
