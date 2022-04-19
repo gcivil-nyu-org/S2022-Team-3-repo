@@ -10,6 +10,8 @@ from django.urls import reverse
 from uuid import uuid4
 from django.conf import settings
 from django.core.paginator import Paginator
+import sys
+from django.utils.html import strip_tags
 from django.contrib.postgres.search import (
     SearchRank,
     SearchQuery,
@@ -56,7 +58,7 @@ def listing_page(request):
     template = "listing-page.html"
 
     def get_listings():
-        query = request.GET.get("q")
+        query = strip_tags(request.GET.get("q", "")[:256])
 
         if query:
             search_query = SearchQuery(query)
@@ -136,6 +138,8 @@ def create_post(request):
     user = request.user
     zip_code = ZipCode.objects.filter(zip_code=zipcode)
 
+    if len(number) != 10 or not number.isdigit():
+        number = None
     if len(zip_code) == 0:
         zip_code = None
     if len(images) == 0:
@@ -151,18 +155,21 @@ def create_post(request):
     ):
 
         post = Post(
-            title=title,
+            title=strip_tags(title),
             category=category,
             phone_number=number,
-            email=email,
+            email=strip_tags(email),
             zip_code=zip_code[0],
-            description=description,
+            description=strip_tags(description[:200]),
             user=user,
         )
         post.save()
 
         for image in images:
-            image_name = str(uuid4().int) + "." + image.name.split(".")[-1]
+            if "test" not in sys.argv:
+                image_name = str(uuid4().int) + "." + image.name.split(".")[-1]
+            else:
+                image_name = image.name
             storage.child("posts/" + image_name).put(image)
             url = storage.child("posts/" + image_name).get_url(firebase_user["idToken"])
             image = Image(url=url, post=post)

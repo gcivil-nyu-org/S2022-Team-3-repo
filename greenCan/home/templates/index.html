@@ -133,6 +133,26 @@
     }
 }
 
+.productionlines { 
+    opacity: 0.5;
+    display: inline-block;
+    cursor: pointer;
+    color: rgba(165, 163, 163, 0.356);
+    
+    transition: all 0.5s;
+} 
+.productionlines:hover{ 
+    opacity: 0.9;
+}
+.productionlines .desc{
+    opacity: 0.5;
+    
+    transition: all 0.5s;
+}
+.productionlines:hover .desc{
+    opacity: 1;
+} 
+
 </style>
 
 {% endblock %}
@@ -142,6 +162,8 @@
 {% include 'home/templates/carousel-section.html' %}
 
 {% include 'home/templates/recycle-read-more.html' %}
+
+{% include 'home/templates/user-rank.html' %}
 
 {% include 'home/templates/contribution.html' %}
 
