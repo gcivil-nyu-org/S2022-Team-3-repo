@@ -17,29 +17,20 @@ import sys
 import os
 from django.urls import reverse_lazy
 
+# CONFIGS
 environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# CONFIGS
-# env = environ.Env(
-#     # set casting, default value
-#     DEBUG=(bool, False)
-# )
-
-# environ.Env.read_env(BASE_DIR / ".env-dev")
-
-print(os.environ['SECRET_KEY'])
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY","")
+SECRET_KEY = os.environ.get("SECRET_KEY", "")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG",True) is True
+DEBUG = bool(os.environ.get("DEBUG", True))
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
@@ -112,12 +103,12 @@ WSGI_APPLICATION = "greenCan.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.environ.get("DATABASE_NAME",""),
-        "USER": os.environ.get("DATABASE_USER",""),
-        "PASSWORD": os.environ.get("DATABASE_PASSWORD",""),
-        "HOST": os.environ.get("DATABASE_HOST",""),
+        "NAME": os.environ.get("DATABASE_NAME", ""),
+        "USER": os.environ.get("DATABASE_USER", ""),
+        "PASSWORD": os.environ.get("DATABASE_PASSWORD", ""),
+        "HOST": os.environ.get("DATABASE_HOST", ""),
         "PORT": "5432",
-        "TEST": {"NAME": os.environ.get("TEST_DATABASE_NAME","")},
+        "TEST": {"NAME": os.environ.get("TEST_DATABASE_NAME", "")},
     }
 }
 
@@ -125,10 +116,10 @@ DATABASES = {
 if "test" in sys.argv:
     DATABASES["default"] = {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": os.environ.get("TEST_DATABASE_NAME",""),
-        "USER": os.environ.get("TEST_DATABASE_USER",""),
-        "PASSWORD": os.environ.get("TEST_DATABASE_PASSWORD",""),
-        "HOST": os.environ.get("TEST_DATABASE_HOST",""),
+        "NAME": os.environ.get("TEST_DATABASE_NAME", ""),
+        "USER": os.environ.get("TEST_DATABASE_USER", ""),
+        "PASSWORD": os.environ.get("TEST_DATABASE_PASSWORD", ""),
+        "HOST": os.environ.get("TEST_DATABASE_HOST", ""),
         "PORT": "5432",
         "TEST": {"NAME": os.environ.get("TEST_DATABASE_NAME")},
     }
@@ -187,9 +178,9 @@ EMAIL_USE_TLS = True
 
 EMAIL_HOST = "smtp.gmail.com"
 
-EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER","")
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
 
-EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD","")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
