@@ -38,15 +38,15 @@ def review_post(request, id):
                 post.approved = False
                 post.save()
                 reasons = []
-                if("check1" in request.POST):
+                if "check1" in request.POST:
                     reasons.append(request.POST["check1"])
-                if("check2" in request.POST):
+                if "check2" in request.POST:
                     reasons.append(request.POST["check2"])
-                if("check3" in request.POST):
+                if "check3" in request.POST:
                     reasons.append(request.POST["check3"])
-                if("description" in request.POST):
+                if "description" in request.POST:
                     reasons.append(request.POST["description"])
-                log = VolunteerLogs(post = post,reason = reasons)
+                log = VolunteerLogs(post=post, reason=reasons)
                 log.save()
 
                 messages.success(request, "Post Denied")
