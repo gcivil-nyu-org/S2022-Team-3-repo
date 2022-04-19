@@ -26,7 +26,7 @@ admin.site.index_title = "GreenCan Admin/Volunteer Panel"
 
 urlpatterns = [
     path("", include("home.urls")),
-    path("admin/",admin.site.urls),
+    path("admin/", admin.site.urls),
     path("volunteers/", volunteer_site.urls),
     path("recycle/", include("recycle.urls")),
     path("reuse/", include("reuse.urls")),
