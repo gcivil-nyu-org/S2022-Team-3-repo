@@ -16,7 +16,6 @@ env:
     TEST_DATABASE_NAME=d7gmg5ku8a32om
     TEST_DATABASE_USER=rxbooyqynrvkvq
     TEST_DATABASE_PASSWORD=75afc573487744c5fcd6f4580bf0adc20ad8a629367e2358d783eaa50b8187bf
-    DEBUG=False
 
 install:
   - pip install -r requirements.txt
