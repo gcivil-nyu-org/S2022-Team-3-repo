@@ -20,7 +20,7 @@ reuse | greenCan
 {% block main %}
 <form>
     <div class="input-group" style="margin-top:40px;margin-bottom:15px;">
-        <input type="text" class="form-control" name="q" value="{% if q %}{{ q }}{% endif %}" placeholder="Searching an item for donation" style="float:left;"/>
+        <input type="text" maxlength="256" class="form-control" name="q" value="{% if q %}{{ q }}{% endif %}" placeholder="Searching an item for donation" style="float:left;"/>
         <button type="submit" class="btn btn-circle btn-search coolBeans" style="height: 40px; width: 40px; border-radius: 20px; margin-left: 1.5vh; margin-top:3px;"> <i class="fa fa-search"></i></button>
     </div>
 </form>
@@ -34,7 +34,7 @@ reuse | greenCan
                     <div class="col-xl-9 col-md-7 col-sm-12">
                         <p style="margin-bottom: 0 !important;font-size: 1em;">
                             <strong>
-                                {{post.title | title | truncatechars:30 }}
+                                {{post.title | title | truncatechars:30 | safe }}
                             </strong>
                         </p>
                         <i class="fa fa-map-marker" id = "positionIcon"><p class="card-text">{{ post.zip_code.borough }}, {{ post.zip_code.state_id }}</p></i>
@@ -66,11 +66,16 @@ reuse | greenCan
                     </div>
                     <!-- slides of item pictures -->
                     <div class = "col-md-6">
-                        <p><b>Rank:</b> {{post.rank}} </p>
-                        <p><b>&#128151 Category:   </b>  {{post.category}}</p>
-                        <p><b>&#x1f4e6 Item description:   </b>  {{post.headline | safe }} </p>
-                        <p><b>&#128231 Email :   </b>   {{post.email}}</p>
-                        <p><b>&#128241 Phone number:</b> {{post.phone_number}}</p>
+                        <p><b>&#128151 Category:   </b>  {{post.category }}</p>
+                        <p><b>&#x1f4e6 Item description:   </b>  
+                            {% if post.headline %}
+                                {{ post.headline | safe }} 
+                            {% else %}
+                                {{ post.description | safe }} 
+                            {% endif %}
+                        </p>
+                        <p><b>&#128231 Email :   </b>   {{post.email }}</p>
+                        <p><b>&#128241 Phone number:</b> {{post.phone_number }}</p>
                         <p><b>&#x1F4CD Pick-up location:   </b>   {{ post.zip_code.borough }}, {{ post.zip_code.state_id }} - {{ post.zip_code.zip_code }}</p>
                     </div>
                 </div>

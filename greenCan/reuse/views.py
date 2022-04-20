@@ -10,6 +10,8 @@ from django.urls import reverse
 from uuid import uuid4
 from django.conf import settings
 from django.core.paginator import Paginator
+import sys
+from django.utils.html import strip_tags
 from django.contrib.postgres.search import (
     SearchRank,
     SearchQuery,
@@ -56,7 +58,7 @@ def listing_page(request):
     template = "listing-page.html"
 
     def get_listings():
-        query = request.GET.get("q")
+        query = strip_tags(request.GET.get("q", "")[:256])
 
         if query:
             search_query = SearchQuery(query)
@@ -106,17 +108,8 @@ post and save into database
 @login_required
 def create_post(request):
     images = request.FILES.getlist("file[]")
-    config = {
-        "apiKey": "AIzaSyDTyK0Z4z6YPG_gx7Ue8bS7Nasv747a5-8",
-        "authDomain": "greencan-tandon.firebaseapp.com",
-        "projectId": "greencan-tandon",
-        "databaseURL": "https://greencan-tandon-default-rtdb.firebaseio.com/",
-        "storageBucket": "greencan-tandon.appspot.com",
-        "messagingSenderId": "957653486728",
-        "appId": "1:957653486728:web:ddb27d2cf6067972c6e33d",
-    }
 
-    firebase = pyrebase.initialize_app(config)
+    firebase = pyrebase.initialize_app(settings.FIRE_BASE_CONFIG)
     auth = firebase.auth()
     auth_email = settings.FIREBASE_HOST_USER
     auth_pswd = settings.FIREBASE_HOST_PASSWORD
@@ -132,6 +125,8 @@ def create_post(request):
     user = request.user
     zip_code = ZipCode.objects.filter(zip_code=zipcode)
 
+    if len(number) != 10 or not number.isdigit():
+        number = None
     if len(zip_code) == 0:
         zip_code = None
     if len(images) == 0:
@@ -147,18 +142,21 @@ def create_post(request):
     ):
 
         post = Post(
-            title=title,
+            title=strip_tags(title),
             category=category,
             phone_number=number,
-            email=email,
+            email=strip_tags(email),
             zip_code=zip_code[0],
-            description=description,
+            description=strip_tags(description[:200]),
             user=user,
         )
         post.save()
 
         for image in images:
-            image_name = str(uuid4().int) + "." + image.name.split(".")[-1]
+            if "test" not in sys.argv:
+                image_name = str(uuid4().int) + "." + image.name.split(".")[-1]
+            else:
+                image_name = image.name
             storage.child("posts/" + image_name).put(image)
             url = storage.child("posts/" + image_name).get_url(firebase_user["idToken"])
             image = Image(url=url, post=post)

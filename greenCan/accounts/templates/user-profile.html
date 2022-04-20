@@ -26,12 +26,12 @@ user-profile
                  <button type="button" class = "editAvatarBtn" data-bs-toggle="modal" data-bs-target="#editAvatar"><i class="fas fa-pencil-alt"></i></button>
               </div>
            
-            <p style="font-size:xx-large;"><b>{{user.get_full_name}}</b> </p>
+            <p style="font-size:xx-large;"><b>{{user.get_full_name | escape }}</b> </p>
             <div style="text-align: center;">
             <div style="display: inline-block; text-align: left;font-size: x-large;" class="mx-3">
-                <p><b>Email:   </b>  {{user.email}} </p>
+                <p><b>Email:   </b>  {{ user.email | escape }} </p>
                 {% if user.phone_number %}
-                <p><b>Phone:   </b> +1 {{user.phone_number}} </p>
+                <p><b>Phone:   </b> +1 {{user.phone_number | escape }} </p>
                 {% else %}
                 <p><b>Phone:   </b> UNKNOWN </p>
                 {% endif %}
@@ -62,20 +62,20 @@ user-profile
                                             <div class="col-md-6 col-12 mb-3">
                                                 <div class="form-group">
                                                     <label for="first_name"><b>First Name:</b></label>
-                                                    <input id="first_name" type="text" name="first_name" value = {{user.first_name}} class="form-control">
+                                                    <input id="first_name" type="text" name="first_name" value = {{user.first_name | escape }} class="form-control">
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-12 mb-3">
                                                 <div class="form-group">
                                                     <label for="last_name"><b>Last Name:</b></label>
-                                                    <input id="last_name" type="text" name="last_name" value = {{user.last_name}} class="form-control">
+                                                    <input id="last_name" type="text" name="last_name" value = {{user.last_name | escape }} class="form-control">
                                                 </div>
                                             </div>
                                             <div class="col-md-6 col-12 mb-3">
                                                 <div class="form-group">
                                                     <label for="phone_number"><b>Phone Number:</b></label>
                                                     {% if user.phone_number %}
-                                                    <input id="phone_number" type="text" name="phone_number" value = {{user.phone_number}} class="form-control">
+                                                    <input id="phone_number" type="text" name="phone_number" value = {{user.phone_number | escape }} class="form-control">
                                                     {% else %}
                                                     <input id="phone_number" type="text" name="phone_number" class="form-control">
                                                     {% endif %}
@@ -114,7 +114,7 @@ user-profile
                                     {% csrf_token %}
                                     <!-- {{ form.as_p}}-->
                                     <div class="form-group">
-                                        <p><input id="avatar" type="hidden" name="avatar" value ="" hidden class="form-control"></p>
+                                        <p><input id="avatar" type="hidden" name="avatar" value ="{{ user.avatar }}" hidden class="form-control"></p>
                                         <div class = "container-fluid">
                                         <div class = "row mr-1">
                                             <div class="col-md-2 col-sm-4">
@@ -274,7 +274,7 @@ user-profile
                                     </div>
                                     <div class="modal-footer">
                                     <div class="d-flex float-right py-3">
-                                        <button type="button" class="btn btn-rounded"  style="background-color: #777 !important;" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-rounded"  style="background-color: #777 !important;" data-bs-dismiss="modal" onClick="window.location.reload();">Close</button>
                                         <span class="text-white">&nbsp&nbsp</span>
                                         <button class="btn btn-rounded" type="submit">Save</button>
                                       </div>
@@ -303,11 +303,13 @@ user-profile
 {% block scripts %}
 {% include 'sweetalert2.html' %}
 <script>
+ $(document).ready(function(e){
+    document.querySelector('[data-url = "{{user.avatar}}"]').style.backgroundColor = "#69be52a4";
+ });
+
 $('.avatarBtn').on('click',function(){
-    console.log("before");
     $('#avatar').val($(this).attr('data-url'));
-    console.log("after");
-    console.log($('#avatar').val());
+    document.querySelector('[data-url = "{{user.avatar}}"]').style.backgroundColor = "transparent"
 });
 
 $('#main').removeClass( "container-md mx-md-auto mx-1" ).addClass("container-fluid p-0");
