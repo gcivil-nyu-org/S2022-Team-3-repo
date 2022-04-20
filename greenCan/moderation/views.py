@@ -68,7 +68,7 @@ def review_post(request, id):
                 log.save()
                 receiver = post.user
                 msg_type = "denied"
-                message = '; '.join(reasons)
+                message = "; ".join(reasons)
                 notification = {
                     "sender": sender,
                     "receiver": receiver,
