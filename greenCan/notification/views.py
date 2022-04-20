@@ -1,4 +1,7 @@
 from django.shortcuts import render
+from django.http import JsonResponse
+
+from .models import Notification
 
 
 """
@@ -17,10 +20,39 @@ def index(request):
 """
 function: get_notifications
 
-get all notifications for a specific user
+get all notifications for a specific user ordered by the created time
+so that the recent notification will be on the top of the list
 """
 
 def get_notifications(request):
-    user = request.user
+    if request.method == "POST":
+        user = request.user
+        notifications = Notification.objects.filter(user=user).order_by("created_on")
+    return JsonResponse(notifications)
 
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
