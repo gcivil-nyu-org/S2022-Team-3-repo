@@ -37,18 +37,64 @@ Review Post
           <p><b>Phone number:</b> {{post.phone_number}}</p>
           <p><b>Pick-up location:   </b>   {{ post.zip_code.borough }}, {{ post.zip_code.state_id }} - {{ post.zip_code.zip_code }}</p>
           <div class="mt-3 d-flex justify-content-center g-2">
-            <button class="btn btn-rounded mx-2">Approve</button>
-            <button class="btn btn-rounded btn-red">Block & Ask for Revision</button>
+            <form method="POST">
+              {% csrf_token %}
+            <button type="submit" name="approve" value = "{{post.id}}" class="btn btn-rounded mx-2">Approve</button>
+            
+            <button type="button" name="deny" class="btn btn-rounded btn-red" data-bs-toggle="modal" data-bs-target="#deny_Modal">Block & Ask for Revision</button>
+            
+            </form>
+            
           </div>
       </div>
   </div>
 </div>
+
+<div class="modal" id="deny_Modal" tabindex="-3" aria-labelledby="exampleModalLabel" hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable px-5 py-3" style="overflow-y: initial !important">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="exampleModalLabel" style = "text-align: center;"> Choose the reason for denial</h2>
+      </div>
+      <div class="modal-body" style="max-height: 80vh; overflow-x: hidden; overflow-y:auto;">
+        <!--information collection form -->
+        <form method="POST">
+          <div class="upload-image-frame d-flex flex-column align-middle py-4" id="image-frame">
+            <div><input type="checkbox" name="check1" value="Content does not comply with Terms of Use"> Content does not comply with Terms of Use</div>
+            <div><input type="checkbox" name="check2" value="Option 2"> Option 2</div>
+            <div><input type="checkbox" name="check3" value="Option 3"> Option 3</div>
+            <div><input type="checkbox" id="check4" name="check4" value="Others"> Others</div>  <br>
+            <div><textarea type="text" id="description" class="form-control" name="description" id="validationCustom02"  placeholder="Select others to enter reason manually" disabled row="30" style="font-family: Roboto;"></textarea></div>
+            
+          
+          
+          </div>
+          <br>
+          {% csrf_token %}
+          <div class="d-flex float-right py-3">
+            <button type="button" class="btn btn-rounded"  style="background-color: #777 !important;" data-bs-dismiss="modal">Close</button>
+            <span class="text-white">&nbsp;</span>
+            <button class="btn btn-rounded" name="deny" value = "{{post.id}}" type="submit">Submit</button>
+          </div>
+        </form>
+        <!--End of the form-->
+        </div>
+      </div>
+    </div>
+  </div>
+<!--end of post add modal-->
 {% endblock %}
 
 {% block scripts %}
+{% include 'sweetalert2.html' %}
 <script src="{% static 'modules/owl-carousel-2/js/owl-carousel2.min.js' %}"></script>
 <script>
-  $(document).ready(function() {
+
+   // function to allow reason only if checked
+    document.getElementById('check4').onchange = function() {
+    document.getElementById('description').disabled = !this.checked;
+};
+  $(document).ready(function() {  
     let owl = $('.owl-carousel');
     owl.owlCarousel({
         margin: 20,
@@ -64,3 +110,5 @@ Review Post
 }); 
 </script>
 {% endblock %}
+
+

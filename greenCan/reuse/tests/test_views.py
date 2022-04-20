@@ -390,12 +390,25 @@ class TestViews(TestCase):
 
     def test_ngo_locations2(self):
         """
-        test to check if searching by zip code is returning a valid response
+        test to check if searching by input zip code is returning a valid response
+        """
+
+        response = self.client.get(self.search_ngo_locations_url + "?type=zipcode&zipcode=10001")
+
+        self.assertEquals(response.status_code, 200)
+
+    def test_ngo_locations_invalid_zip_code(self):
+        """
+        test to check if searching by an invalid zip code is returning a correct error message
         """
 
         response = self.client.get(self.search_ngo_locations_url + "?type=zipcode&zipcode=10004")
 
         self.assertEquals(response.status_code, 200)
+        self.assertJSONEqual(
+            force_str(response.content),
+            {"err_flag": True, "err_msg": "Please enter a valid NYC zip code"},
+        )
 
     def test_ngo_locations_invalid_data(self):
         """
