@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from notifications.signals import notify
+from .models import Notification
 
 
 def create_notificaiton(notification):
