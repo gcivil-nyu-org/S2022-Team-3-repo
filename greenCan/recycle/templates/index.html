@@ -150,32 +150,36 @@ Recycle | greenCan
 
     window.onload = function() {loadView()}
 
-    function focusOn(lat,long){
-        map.flyTo(new L.LatLng(lat, long));
+    function focusOn(lat,long, zoom=17){
+        map.flyTo([lat, long], zoom);
     }
     
     var curr_zipcode=''; 
     var is_valid = false;
 
-    $('#zipcode').keyup(function (){
+    $('#zipcode').keyup(function (e){
         makeInvalid();
-        if (event.keyCode==189 || event.keyCode==190 || event.keyCode==107 || event.keyCode==109 || event.keyCode==13 || event.key.toLowerCase()=='e')
-            this.value = this.value.slice(0,-1);
-        else if(this.value.length==5){
+        if(this.value.length==5){
             zipcode = $('#zipcode').val();
             if(is_valid===true && curr_zipcode===zipcode){
                 makeValid();
             }else if (curr_zipcode!==zipcode){
-                makeValid();
                 curr_zipcode=zipcode;
                 getDropOffSitesZipcode(zipcode);
             }
         }
     });
 
-    $('#zipcode').keydown(function (){
+    $('#zipcode').keydown(function(event){
+        if (event.keyCode==189 || event.keyCode==190 || event.keyCode==107 || event.keyCode==109 || event.keyCode==13 || event.key.toLowerCase()=='e' || event.key=='.'){            
+            event.preventDefault();
+        }
         makeInvalid();
     });
+
+    $('#zipcode').on("cut copy paste drop",function(e) {
+      e.preventDefault();
+   });
 
     $('#zipcode').keypress(function(event){
         if(this.value.length==5){
@@ -190,12 +194,11 @@ Recycle | greenCan
         locations = result.map(([key, value]) => value);
         latitude = data['centroid']['latitude'];
         longitude = data['centroid']['longitude'];
-        focusOn(latitude,longitude);
+        focusOn(latitude,longitude,13);
         markPoints(locations);
     }
 
     function getDropOffSitesZipcode(zipcode){
-        console.log('Before AJAX');
         clearView();
         $.ajax({
             url: "{% url 'recycle:fetch-drop-off-locations' %}",
@@ -208,8 +211,9 @@ Recycle | greenCan
             success: function (data) {
                 if (data['err_flag']==true){
                     makeInvalid();
-                    is_valid = true;
+                    is_valid = false;
                 }else{
+                    makeValid();
                     setData(data);  
                     is_valid = true; 
                 }
@@ -223,10 +227,8 @@ Recycle | greenCan
     }
 
     function makeValid() {
-        console.log('MAKING VALID!');
         $('#zipcode').removeClass('is-invalid');
         $('#zipcode-feedback').addClass('d-none');
-        console.log('MADE VALID DONE!');
     }
 
     function getDropOffSitesLocations(position){

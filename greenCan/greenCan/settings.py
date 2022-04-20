@@ -14,27 +14,23 @@ from pathlib import Path
 import django_heroku
 import environ
 import sys
+import os
 from django.urls import reverse_lazy
+
+# CONFIGS
+environ.Env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-# CONFIGS
-env = environ.Env(
-    # set casting, default value
-    DEBUG=(bool, False)
-)
-
-environ.Env.read_env(BASE_DIR / ".env-dev")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY", "")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env("DEBUG") is True
+DEBUG = bool(os.environ.get("DEBUG", True))
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
@@ -107,12 +103,12 @@ WSGI_APPLICATION = "greenCan.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": env("DATABASE_NAME"),
-        "USER": env("DATABASE_USER"),
-        "PASSWORD": env("DATABASE_PASSWORD"),
-        "HOST": env("DATABASE_HOST"),
+        "NAME": os.environ.get("DATABASE_NAME", ""),
+        "USER": os.environ.get("DATABASE_USER", ""),
+        "PASSWORD": os.environ.get("DATABASE_PASSWORD", ""),
+        "HOST": os.environ.get("DATABASE_HOST", ""),
         "PORT": "5432",
-        "TEST": {"NAME": env("TEST_DATABASE_NAME")},
+        "TEST": {"NAME": os.environ.get("TEST_DATABASE_NAME", "")},
     }
 }
 
@@ -120,13 +116,24 @@ DATABASES = {
 if "test" in sys.argv:
     DATABASES["default"] = {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": env("TEST_DATABASE_NAME"),
-        "USER": env("TEST_DATABASE_USER"),
-        "PASSWORD": env("TEST_DATABASE_PASSWORD"),
-        "HOST": env("TEST_DATABASE_HOST"),
+        "NAME": os.environ.get("TEST_DATABASE_NAME", ""),
+        "USER": os.environ.get("TEST_DATABASE_USER", ""),
+        "PASSWORD": os.environ.get("TEST_DATABASE_PASSWORD", ""),
+        "HOST": os.environ.get("TEST_DATABASE_HOST", ""),
         "PORT": "5432",
-        "TEST": {"NAME": env("TEST_DATABASE_NAME")},
+        "TEST": {"NAME": os.environ.get("TEST_DATABASE_NAME")},
     }
+
+
+FIRE_BASE_CONFIG = {
+    "apiKey": f"{os.environ.get('FIRE_STORAGE_API_KEY')}",
+    "authDomain": "greencan-tandon.firebaseapp.com",
+    "projectId": "greencan-tandon",
+    "databaseURL": "https://greencan-tandon-default-rtdb.firebaseio.com/",
+    "storageBucket": "greencan-tandon.appspot.com",
+    "messagingSenderId": f"{os.environ.get('FIRE_MESSAGE_SENDER_ID')}",
+    "appId": f"1:{os.environ.get('FIRE_MESSAGE_SENDER_ID')}:web:{os.environ.get('FIRE_APP_ID')}",
+}
 
 
 # Password validation
@@ -182,9 +189,9 @@ EMAIL_USE_TLS = True
 
 EMAIL_HOST = "smtp.gmail.com"
 
-EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", "")
 
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 

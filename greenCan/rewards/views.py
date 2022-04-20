@@ -29,17 +29,8 @@ def earn_rewards(request):
         location = request.POST.get("location", None)
         consent = request.POST.get("consent", False)
         images = request.FILES.getlist("file[]")
-        config = {
-            "apiKey": "AIzaSyDTyK0Z4z6YPG_gx7Ue8bS7Nasv747a5-8",
-            "authDomain": "greencan-tandon.firebaseapp.com",
-            "projectId": "greencan-tandon",
-            "databaseURL": "https://greencan-tandon-default-rtdb.firebaseio.com/",
-            "storageBucket": "greencan-tandon.appspot.com",
-            "messagingSenderId": "957653486728",
-            "appId": "1:957653486728:web:ddb27d2cf6067972c6e33d",
-        }
 
-        firebase = pyrebase.initialize_app(config)
+        firebase = pyrebase.initialize_app(settings.FIRE_BASE_CONFIG)
         auth = firebase.auth()
         auth_email = settings.FIREBASE_HOST_USER
         auth_pswd = settings.FIREBASE_HOST_PASSWORD
