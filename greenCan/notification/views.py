@@ -21,4 +21,6 @@ get all notifications for a specific user
 """
 
 def get_notifications(request):
+    user = request.user
+
     
