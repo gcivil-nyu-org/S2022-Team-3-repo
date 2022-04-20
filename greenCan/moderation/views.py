@@ -32,6 +32,10 @@ def review_post(request, id):
                 post.approved = True
                 post.save()
                 messages.success(request, "Post Approved")
+                # return render(request, 'moderation:index')
+                # return redirect(reverse("moderation:index"))
+                return redirect("moderation:index")
+
             elif "deny" in request.POST:
                 id = request.POST["deny"]
                 post = Post.objects.get(id=id)
@@ -50,6 +54,7 @@ def review_post(request, id):
                 log.save()
 
                 messages.success(request, "Post Denied")
+                return redirect("moderation:index")
 
         except Exception as e:
             print(e)

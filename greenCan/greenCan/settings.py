@@ -233,5 +233,5 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 SOCIAL_AUTH_URL_NAMESPACE = "social"
-
+MESSAGE_STORAGE = "django.contrib.messages.storage.session.SessionStorage"
 django_heroku.settings(locals(), test_runner=False)
