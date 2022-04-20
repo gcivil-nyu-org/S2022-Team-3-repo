@@ -25,6 +25,7 @@ def index(request):
 def review_post(request, id):
     id = int(id)
     template_name = "moderation/templates/review-post.html"
+    print(request.method)
     if request.method == "POST":
         try:
             sender = request.user
@@ -37,7 +38,7 @@ def review_post(request, id):
                 # send notification to user
                 receiver = post.user
                 msg_type = "approved"
-                message = "None"
+                message = "Post approved successfully"
                 notification = {
                     "sender": sender,
                     "receiver": receiver,
@@ -45,6 +46,7 @@ def review_post(request, id):
                     "message": message,
                 }
                 create_notification(notification)
+                print("the post is approved")
                 messages.success(request, "Post Approved")
                 return redirect("moderation:index")
 
@@ -66,7 +68,7 @@ def review_post(request, id):
                 log.save()
                 receiver = post.user
                 msg_type = "denied"
-                message = str(reasons)
+                message = '; '.join(reasons)
                 notification = {
                     "sender": sender,
                     "receiver": receiver,
@@ -78,7 +80,8 @@ def review_post(request, id):
                 messages.success(request, "Post Denied")
                 return redirect("moderation:index")
 
-        except Exception:
+        except Exception as e:
+            print(e)
             messages.error(request, "Post approval Failed, contact admin")
         context = {}
         return render(request, template_name=template_name, context=context)
