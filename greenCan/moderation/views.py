@@ -7,6 +7,8 @@ from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from .models import VolunteerLogs
 
+# from notification.views import create_notification
+
 
 @login_required
 @user_passes_test(lambda u: u.is_staff)
@@ -23,17 +25,22 @@ def index(request):
 def review_post(request, id):
     id = int(id)
     template_name = "moderation/templates/review-post.html"
-    print(request.POST)
     if request.method == "POST":
         try:
+            # sender = request.user
+            
             if "approve" in request.POST:
                 id = request.POST["approve"]
                 post = Post.objects.get(id=id)
                 post.approved = True
                 post.save()
+                #send notification to user
+                # receiver = post.user
+                # msg_type  = "approved"
+                # message="None"
+                # notification = {"sender":sender,"receiver":receiver,"msg_type":msg_type,"message":message}
+                # create_notification(notification)
                 messages.success(request, "Post Approved")
-                # return render(request, 'moderation:index')
-                # return redirect(reverse("moderation:index"))
                 return redirect("moderation:index")
 
             elif "deny" in request.POST:
@@ -56,8 +63,7 @@ def review_post(request, id):
                 messages.success(request, "Post Denied")
                 return redirect("moderation:index")
 
-        except Exception as e:
-            print(e)
+        except Exception:
             messages.error(request, "Post approval Failed, contact admin")
         context = {}
         return render(request, template_name=template_name, context=context)

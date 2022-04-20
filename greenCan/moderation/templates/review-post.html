@@ -63,8 +63,8 @@ Review Post
             <div><input type="checkbox" name="check1" value="Content does not comply with Terms of Use"> Content does not comply with Terms of Use</div>
             <div><input type="checkbox" name="check2" value="Option 2"> Option 2</div>
             <div><input type="checkbox" name="check3" value="Option 3"> Option 3</div>
-            <div><input type="checkbox" name="check4" value="Others"> Others</div>  <br>
-            <div><textarea type="text" class="form-control" name="description" id="validationCustom02"  placeholder="Enter the Reason" required row="30"></textarea></div>
+            <div><input type="checkbox" id="check4" name="check4" value="Others"> Others</div>  <br>
+            <div><textarea type="text" id="description" class="form-control" name="description" id="validationCustom02"  placeholder="Select others to enter reason manually" required row="30" style="font-family: Roboto;"></textarea></div>
             
           
           
@@ -73,7 +73,7 @@ Review Post
           {% csrf_token %}
           <div class="d-flex float-right py-3">
             <button type="button" class="btn btn-rounded"  style="background-color: #777 !important;" data-bs-dismiss="modal">Close</button>
-            <span class="text-white">.</span>
+            <span class="text-white">&nbsp;</span>
             <button class="btn btn-rounded" name="deny" value = "{{post.id}}" type="submit">Submit</button>
           </div>
         </form>
@@ -89,7 +89,12 @@ Review Post
 {% include 'sweetalert2.html' %}
 <script src="{% static 'modules/owl-carousel-2/js/owl-carousel2.min.js' %}"></script>
 <script>
-  $(document).ready(function() {
+
+   // function to allow reason only if checked
+   document.getElementById('check4').onchange = function() {
+    document.getElementById('description').disabled = !this.checked;
+};
+  $(document).ready(function() {  
     let owl = $('.owl-carousel');
     owl.owlCarousel({
         margin: 20,
