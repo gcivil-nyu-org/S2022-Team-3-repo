@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from .models import VolunteerLogs
 
-# from notification.views import create_notification
+from notification.utils import create_notification
 
 
 @login_required
@@ -27,7 +27,7 @@ def review_post(request, id):
     template_name = "moderation/templates/review-post.html"
     if request.method == "POST":
         try:
-            # sender = request.user
+            sender = request.user
 
             if "approve" in request.POST:
                 id = request.POST["approve"]
@@ -35,12 +35,12 @@ def review_post(request, id):
                 post.approved = True
                 post.save()
                 # send notification to user
-                # receiver = post.user
-                # msg_type  = "approved"
-                # message="None"
-                # notification = {"sender":sender,"receiver":receiver,
-                # "msg_type":msg_type,"message":message}
-                # create_notification(notification)
+                receiver = post.user
+                msg_type  = "approved"
+                message="None"
+                notification = {"sender":sender,"receiver":receiver,
+                "msg_type":msg_type,"message":message}
+                create_notification(notification)
                 messages.success(request, "Post Approved")
                 return redirect("moderation:index")
 
