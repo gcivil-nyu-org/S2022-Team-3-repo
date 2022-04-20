@@ -1,0 +1,40 @@
+{% extends 'template.html' %}
+{% load static %}
+
+{% block title %}
+Reduce | greenCan
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+<link rel="stylesheet" href="{% static 'css/map.css' %}" />
+<link rel="stylesheet" href="{% static 'css/filter.css' %}" />
+<link rel="stylesheet" href="{% static 'css/card.css' %}" />
+{% endblock %}
+
+{% block main %}
+    <h1>Notifications</h1>
+    <ul>
+        {% for notification in notifications %}
+            <li>{{notification.message}} - {{notification.created_on}}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // function getNotifications(user){
+    //     $.ajax({
+    //         type: "POST",
+    //         async: false,
+    //         data: {
+    //             "user": user,
+    //         },
+    //         success: function (data) {
+    //             console.log(data)
+    //         }
+    //     });
+    // }
+</script>
+{% endblock %}

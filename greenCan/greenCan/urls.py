@@ -17,10 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from accounts import views
+from reuse.admin import volunteer_site
+
+
+admin.site.site_header = "GreenCan Admin/Volunteer Panel"
+admin.site.site_title = "GreenCan Admin/Volunteer Panel"
+admin.site.index_title = "GreenCan Admin/Volunteer Panel"
 
 urlpatterns = [
     path("", include("home.urls")),
     path("admin/", admin.site.urls),
+    path("volunteers/", volunteer_site.urls),
     path("recycle/", include("recycle.urls")),
     path("reuse/", include("reuse.urls")),
     path("reduce/", include("reduce.urls")),
@@ -28,6 +35,7 @@ urlpatterns = [
     path("social/social/signup/", views.account_exists, name="socialaccount_signup"),
     path("rewards/", include("rewards.urls")),
     path("social/", include("allauth.urls"), name="social"),
+    path("notification/", include("notification.urls")),
     path("volunteer/", include("moderation.urls")),
 ]
 

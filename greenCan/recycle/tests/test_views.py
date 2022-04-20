@@ -1,6 +1,7 @@
 from django.test import TestCase, Client
 from django.urls import reverse
 from model_bakery import baker
+from django.utils.encoding import force_str
 
 from recycle.models import ZipCode, DropOffLocation
 
@@ -37,13 +38,19 @@ class TestViews(TestCase):
         self.drop_off_location = drop_off_location
 
     def test_index_GET(self):
+        """
+        test to check if index page is returning a valid response
+        """
 
         response = self.client.get(self.index_url)
 
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, "recycle/templates/index.html")
 
-    def test_searchdropofflocations1(self):
+    def test_search_dropoff_locations1(self):
+        """
+        test to check if searching by user's current location is returning a valid response
+        """
 
         response = self.client.get(
             self.url + "?type=live-location&latitude=40.7362&longitude=-74.0422"
@@ -51,8 +58,37 @@ class TestViews(TestCase):
 
         self.assertEquals(response.status_code, 200)
 
-    def test_searchdropofflocations2(self):
+    def test_search_dropoff_locations2(self):
+        """
+        test to check if searching by zip code is returning a valid response
+        """
+
+        response = self.client.get(self.url + "?type=zipcode&zipcode=10001")
+
+        self.assertEquals(response.status_code, 200)
+
+    def test_search_dropoff_locations_invalid_zip_code(self):
+        """
+        test to check if searching by an invalid zip code is returning a correct error message
+        """
 
         response = self.client.get(self.url + "?type=zipcode&zipcode=10004")
 
         self.assertEquals(response.status_code, 200)
+        self.assertJSONEqual(
+            force_str(response.content),
+            {"err_flag": True, "err_msg": "Please enter a valid NYC zip code"},
+        )
+
+    def test_dropoff_locations_invalid_data(self):
+        """
+        test to check if searching by unknown type is returning a correct error message
+        """
+
+        response = self.client.get(self.url + "?type=somerandomstring")
+
+        self.assertEquals(response.status_code, 200)
+        self.assertJSONEqual(
+            force_str(response.content),
+            {"err_flag": True, "err_msg": "Invalid arguments provided"},
+        )
