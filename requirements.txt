@@ -13,3 +13,4 @@ pyyaml
 django-allauth
 pillow
 model_bakery
+django-notifications-hq
