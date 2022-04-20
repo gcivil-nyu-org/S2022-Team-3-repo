@@ -64,7 +64,7 @@ Review Post
             <div><input type="checkbox" name="check2" value="Option 2"> Option 2</div>
             <div><input type="checkbox" name="check3" value="Option 3"> Option 3</div>
             <div><input type="checkbox" id="check4" name="check4" value="Others"> Others</div>  <br>
-            <div><textarea type="text" id="description" class="form-control" name="description" id="validationCustom02"  placeholder="Select others to enter reason manually" required row="30" style="font-family: Roboto;"></textarea></div>
+            <div><textarea type="text" id="description" class="form-control" name="description" id="validationCustom02"  placeholder="Select others to enter reason manually" disabled row="30" style="font-family: Roboto;"></textarea></div>
             
           
           
@@ -91,7 +91,7 @@ Review Post
 <script>
 
    // function to allow reason only if checked
-   document.getElementById('check4').onchange = function() {
+    document.getElementById('check4').onchange = function() {
     document.getElementById('description').disabled = !this.checked;
 };
   $(document).ready(function() {  
