@@ -127,19 +127,33 @@ Reuse | greenCan
     }
     
     var curr_zipcode=''; 
+    var curr_zipcode=''; 
+    var is_valid = false;
 
     $('#zipcode').keyup(function (event) {
-        if (event.keyCode==189 || event.keyCode==190 || event.keyCode==107 || event.keyCode==109)
-            this.value = ''
-        if(this.value.length==5){
+        makeInvalid();
+        if (event.keyCode==189 || event.keyCode==190 || event.keyCode==107 || event.keyCode==109 || event.keyCode==13 || event.key.toLowerCase()=='e'){
+            this.value = '';
+        }
+        else if(this.value.length==5){
             zipcode = $('#zipcode').val();
-            if(curr_zipcode!==zipcode){
+            if(is_valid===true && curr_zipcode===zipcode){
+                makeValid();
+            }else if (curr_zipcode!==zipcode){
                 makeValid();
                 curr_zipcode=zipcode;
                 getNGOSitesZipcode(zipcode);
             }
         }
     });
+
+    $('#zipcode').keydown(function(){
+        makeInvalid();
+    });
+
+    $('#zipcode').on("cut copy paste drop",function(e) {
+      e.preventDefault();
+   });
 
     $('#zipcode').keypress(function(event){
         if(this.value.length==5){

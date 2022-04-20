@@ -125,6 +125,17 @@ if "test" in sys.argv:
     }
 
 
+FIRE_BASE_CONFIG = {
+    "apiKey": f"{os.environ.get('FIRE_STORAGE_API_KEY')}",
+    "authDomain": "greencan-tandon.firebaseapp.com",
+    "projectId": "greencan-tandon",
+    "databaseURL": "https://greencan-tandon-default-rtdb.firebaseio.com/",
+    "storageBucket": "greencan-tandon.appspot.com",
+    "messagingSenderId": f"{os.environ.get('FIRE_MESSAGE_SENDER_ID')}",
+    "appId": f"1:{os.environ.get('FIRE_MESSAGE_SENDER_ID')}:web:{os.environ.get('FIRE_APP_ID')}",
+}
+
+
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
