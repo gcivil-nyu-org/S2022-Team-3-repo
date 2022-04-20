@@ -31,7 +31,6 @@ SECRET_KEY = os.environ.get("SECRET_KEY", "")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get("DEBUG", True))
-
 ALLOWED_HOSTS = [
     "127.0.0.1",
     "greencan.herokuapp.com",
@@ -241,5 +240,4 @@ AUTHENTICATION_BACKENDS = [
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
 SOCIAL_AUTH_URL_NAMESPACE = "social"
-
 django_heroku.settings(locals(), test_runner=False)
