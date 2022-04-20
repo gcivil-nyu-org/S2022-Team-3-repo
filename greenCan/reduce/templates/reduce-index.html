@@ -128,24 +128,36 @@ Reduce | greenCan
 
     window.onload = function() {loadView()}
 
-    function focusOn(lat,long){
-        map.flyTo(new L.LatLng(lat, long));
+    function focusOn(lat,long, zoom=17){
+        map.flyTo([lat, long], zoom);
     }
 
-    var curr_zipcode='';
+    var curr_zipcode=''; 
+    var is_valid = false;
 
     $('#zipcode').keyup(function (event) {
-        if (event.keyCode==189 || event.keyCode==190 || event.keyCode==107 || event.keyCode==109)
-            this.value = ''
+        makeInvalid();
         if(this.value.length==5){
             zipcode = $('#zipcode').val();
-            if(curr_zipcode!==zipcode){
+            if(is_valid===true && curr_zipcode===zipcode){
                 makeValid();
+            }else if (curr_zipcode!==zipcode){
                 curr_zipcode=zipcode;
                 getRetailerSitesZipcode(zipcode);
             }
         }
     });
+
+    $('#zipcode').keydown(function(event){
+        if (event.keyCode==189 || event.keyCode==190 || event.keyCode==107 || event.keyCode==109 || event.keyCode==13 || event.key.toLowerCase()=='e' || event.key=='.'){            
+            event.preventDefault();
+        }
+        makeInvalid();
+    });
+
+    $('#zipcode').on("cut copy paste drop",function(e) {
+      e.preventDefault();
+   });
 
     $('#zipcode').keypress(function(event){
         if(this.value.length==5){
@@ -160,7 +172,7 @@ Reduce | greenCan
         locations = result.map(([key, value]) => value);
         latitude = data['centroid']['latitude'];
         longitude = data['centroid']['longitude'];
-        focusOn(latitude,longitude);
+        focusOn(latitude,longitude,13);
         markPoints(locations);
     }
 
@@ -177,9 +189,11 @@ Reduce | greenCan
             success: function (data) {
                 if (data['err_flag']==true){
                     makeInvalid();
+                    is_valid = false;
                 }else{
-                    console.log(data);
-                    setData(data);
+                    makeValid();
+                    setData(data);  
+                    is_valid = true; 
                 }
             }
         });
@@ -209,8 +223,8 @@ Reduce | greenCan
                 "longitude": longitude
             },
             success: function (data) {
-                console.log(data);
                 setData(data);
+                is_valid = true;
             }
         });
     }
@@ -233,13 +247,13 @@ Reduce | greenCan
         }
     }
 
-        $(function(){
-            $("[data-toggle='tooltip']").tooltip({
-                container: '.wrapper'
-            });
+    $(function(){
+        $("[data-toggle='tooltip']").tooltip({
+            container: '.wrapper'
         });
+    });
 
-        $('#main').addClass('my-3 mb-5 pb-5');
+    $('#main').addClass('my-3 mb-5 pb-5');
 
 </script>
 {% endblock %}
