@@ -123,8 +123,8 @@ class TestEarnRewards(TestCase):
         self.assertEquals(len(metas), 1)
         images = Image.objects.all()
         self.assertEquals(len(images), 2)
-        self.assertFalse(images[0].approved)
-        self.assertFalse(images[1].approved)
+        self.assertEquals(images[0].meta.approved, None)
+        self.assertEquals(images[1].meta.approved, None)
         self.assertTrue(metas[0].consent)
         message = list(response.context.get("messages"))[0]
         self.assertRedirects(response, self.url, 302)
@@ -145,8 +145,8 @@ class TestEarnRewards(TestCase):
         images = Image.objects.all()
         self.assertEquals(len(images), 2)
         self.assertEquals(len(metas[0].category.all()), 2)
-        self.assertFalse(images[0].approved)
-        self.assertFalse(images[1].approved)
+        self.assertEquals(images[0].meta.approved, None)
+        self.assertEquals(images[1].meta.approved, None)
         self.assertTrue(metas[0].consent)
         message = list(response.context.get("messages"))[0]
         self.assertRedirects(response, self.url, 302)
@@ -188,8 +188,8 @@ class TestEarnRewards(TestCase):
         self.assertEquals(len(metas), 1)
         images = Image.objects.all()
         self.assertEquals(len(images), 2)
-        self.assertFalse(images[0].approved)
-        self.assertFalse(images[1].approved)
+        self.assertEquals(images[0].meta.approved, None)
+        self.assertEquals(images[1].meta.approved, None)
         self.assertFalse(metas[0].consent)
         message = list(response.context.get("messages"))[0]
         self.assertRedirects(response, self.url, 302)
@@ -211,8 +211,8 @@ class TestEarnRewards(TestCase):
         self.assertEquals(len(metas), 1)
         images = Image.objects.all()
         self.assertEquals(len(images), 2)
-        self.assertFalse(images[0].approved)
-        self.assertFalse(images[1].approved)
+        self.assertEquals(images[0].meta.approved, None)
+        self.assertEquals(images[1].meta.approved, None)
         self.assertTrue(metas[0].consent)
         message = list(response.context.get("messages"))[0]
         self.assertRedirects(response, self.url, 302)
@@ -327,17 +327,13 @@ class TestFeaturedGallery(TestCase):
         meta2 = ImageMeta(
             event_type=event,
             location=zipcode,
-            caption="This is a caption",
+            caption="<script>This is a caption</script>",
             user=user,
             consent=False,
         )
         meta2.save()
-
         image3 = Image(image="test3.png", meta=meta2)
         image3.save()
-
-        image4 = Image(image="test4.png", meta=meta2)
-        image4.save()
 
     def test_featured_image_gallery_GET(self):
         """

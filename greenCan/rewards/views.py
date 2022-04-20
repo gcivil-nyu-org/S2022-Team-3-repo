@@ -9,6 +9,8 @@ from recycle.models import ZipCode
 from django.conf import settings
 from django.contrib import messages
 from uuid import uuid4
+from django.utils.html import strip_tags
+import sys
 
 
 @login_required
@@ -23,21 +25,12 @@ def earn_rewards(request):
     if request.method == "POST":
         categories = request.POST.getlist("categories[]", None)
         event = request.POST.get("event", None)
-        caption = request.POST.get("caption")
+        caption = request.POST.get("caption", None)
         location = request.POST.get("location", None)
         consent = request.POST.get("consent", False)
         images = request.FILES.getlist("file[]")
-        config = {
-            "apiKey": "AIzaSyDTyK0Z4z6YPG_gx7Ue8bS7Nasv747a5-8",
-            "authDomain": "greencan-tandon.firebaseapp.com",
-            "projectId": "greencan-tandon",
-            "databaseURL": "https://greencan-tandon-default-rtdb.firebaseio.com/",
-            "storageBucket": "greencan-tandon.appspot.com",
-            "messagingSenderId": "957653486728",
-            "appId": "1:957653486728:web:ddb27d2cf6067972c6e33d",
-        }
 
-        firebase = pyrebase.initialize_app(config)
+        firebase = pyrebase.initialize_app(settings.FIRE_BASE_CONFIG)
         auth = firebase.auth()
         auth_email = settings.FIREBASE_HOST_USER
         auth_pswd = settings.FIREBASE_HOST_PASSWORD
@@ -77,10 +70,17 @@ def earn_rewards(request):
         is_consent = consent == "consent"
         try:
             for image in images:
-                image_name = str(uuid4().int) + "." + image.name.split(".")[-1]
+                if "test" not in sys.argv:
+                    image_name = str(uuid4().int) + "." + image.name.split(".")[-1]
+                else:
+                    image_name = image.name
                 storage.child("green-wall/" + image_name).put(image)
                 url = storage.child("green-wall/" + image_name).get_url(firebase_user["idToken"])
                 urls.append(url)
+
+            if caption is not None:
+                caption = strip_tags(caption)[:100]
+
             meta = ImageMeta(
                 consent=is_consent,
                 caption=caption,
@@ -117,7 +117,7 @@ def earn_rewards(request):
 
 def featured_image_gallery(request):
     if request.method == "POST":
-        images = Image.objects.filter(meta__consent=True).order_by("-uploaded_on")
+        images = Image.objects.filter(meta__consent=True).order_by("-meta__uploaded_on", "-pk")
         images = Paginator(images, 20)
         page_number = request.POST.get("page", 1)
         if page_number == "":

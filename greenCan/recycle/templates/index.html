@@ -20,7 +20,7 @@ Recycle | greenCan
 <div class="my-md-4 my-2 d-flex container-fluid justify-content-center pb-3 mx-auto">
     <div class="row justify-content-center">
         <div class="col-md-7 col-12 justify-content-center mb-1">
-          <input type="number" class="form-control" id="zipcode"  value="" pattern="^[0-9]{5}$" min="0" maxlen="5" required placeholder="Enter Zip code">
+          <input type="number" class="form-control" id="zipcode"  value="" pattern="^[0-9]{5}$" min="0" minlength="5" maxlen="5" required placeholder="Enter Zip code">
           <div class="invalid-feedback justify-content-center d-none" id="zipcode-feedback">
                 Please enter a valid 5 digit NYC zip code.
           </div>
@@ -150,24 +150,36 @@ Recycle | greenCan
 
     window.onload = function() {loadView()}
 
-    function focusOn(lat,long){
-        map.flyTo(new L.LatLng(lat, long));
+    function focusOn(lat,long, zoom=17){
+        map.flyTo([lat, long], zoom);
     }
     
     var curr_zipcode=''; 
+    var is_valid = false;
 
-    $('#zipcode').keyup(function (event) {
-        if (event.keyCode==189 || event.keyCode==190 || event.keyCode==107 || event.keyCode==109)
-            this.value = ''
+    $('#zipcode').keyup(function (e){
+        makeInvalid();
         if(this.value.length==5){
             zipcode = $('#zipcode').val();
-            if(curr_zipcode!==zipcode){
+            if(is_valid===true && curr_zipcode===zipcode){
                 makeValid();
+            }else if (curr_zipcode!==zipcode){
                 curr_zipcode=zipcode;
                 getDropOffSitesZipcode(zipcode);
             }
         }
     });
+
+    $('#zipcode').keydown(function(event){
+        if (event.keyCode==189 || event.keyCode==190 || event.keyCode==107 || event.keyCode==109 || event.keyCode==13 || event.key.toLowerCase()=='e' || event.key=='.'){            
+            event.preventDefault();
+        }
+        makeInvalid();
+    });
+
+    $('#zipcode').on("cut copy paste drop",function(e) {
+      e.preventDefault();
+   });
 
     $('#zipcode').keypress(function(event){
         if(this.value.length==5){
@@ -182,7 +194,7 @@ Recycle | greenCan
         locations = result.map(([key, value]) => value);
         latitude = data['centroid']['latitude'];
         longitude = data['centroid']['longitude'];
-        focusOn(latitude,longitude);
+        focusOn(latitude,longitude,13);
         markPoints(locations);
     }
 
@@ -199,8 +211,11 @@ Recycle | greenCan
             success: function (data) {
                 if (data['err_flag']==true){
                     makeInvalid();
+                    is_valid = false;
                 }else{
-                    setData(data);   
+                    makeValid();
+                    setData(data);  
+                    is_valid = true; 
                 }
             }
         });
@@ -231,6 +246,7 @@ Recycle | greenCan
             },
             success: function (data) {
                 setData(data);
+                is_valid = true;
             }
         });
     }
