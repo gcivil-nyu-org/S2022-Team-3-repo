@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "recycle",
     "reduce",
     "rewards",
+    "notification",
     "helper",
     "moderation",
     "crispy_forms",
