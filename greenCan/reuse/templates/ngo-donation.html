@@ -122,20 +122,16 @@ Reuse | greenCan
 
     window.onload = function() {loadView()}
 
-    function focusOn(lat,long){
-        map.flyTo(new L.LatLng(lat, long));
+    function focusOn(lat,long, zoom=17){
+        map.flyTo([lat, long], zoom);
     }
     
-    var curr_zipcode=''; 
     var curr_zipcode=''; 
     var is_valid = false;
 
     $('#zipcode').keyup(function (event) {
         makeInvalid();
-        if (event.keyCode==189 || event.keyCode==190 || event.keyCode==107 || event.keyCode==109 || event.keyCode==13 || event.key.toLowerCase()=='e'){
-            this.value = '';
-        }
-        else if(this.value.length==5){
+        if(this.value.length==5){
             zipcode = $('#zipcode').val();
             if(is_valid===true && curr_zipcode===zipcode){
                 makeValid();
@@ -147,7 +143,10 @@ Reuse | greenCan
         }
     });
 
-    $('#zipcode').keydown(function(){
+    $('#zipcode').keydown(function(event){
+        if (event.keyCode==189 || event.keyCode==190 || event.keyCode==107 || event.keyCode==109 || event.keyCode==13 || event.key.toLowerCase()=='e' || event.key=='.'){            
+            event.preventDefault();
+        }
         makeInvalid();
     });
 
@@ -168,7 +167,7 @@ Reuse | greenCan
         locations = result.map(([key, value]) => value);
         latitude = data['centroid']['latitude'];
         longitude = data['centroid']['longitude'];
-        focusOn(latitude,longitude);
+        focusOn(latitude,longitude,13);
         markPoints(locations);
     }
 
@@ -185,8 +184,11 @@ Reuse | greenCan
             success: function (data) {
                 if (data['err_flag']==true){
                     makeInvalid();
+                    is_valid = false;
                 }else{
-                    setData(data);
+                    makeValid();
+                    setData(data);  
+                    is_valid = true; 
                 }
             }
         });
@@ -217,6 +219,7 @@ Reuse | greenCan
             },
             success: function (data) {
                 setData(data);
+                is_valid = true;
             }
         });
     }
