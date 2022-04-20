@@ -7,8 +7,8 @@ app_name = "notification"
 urlpatterns = [
     path("", views.index, name="index"),
     path(
-        "get-notificatios/",
+        "get-notifications/",
         views.get_notifications,
-        name="get-notificatios",
+        name="get-notifications",
     ),
 ]

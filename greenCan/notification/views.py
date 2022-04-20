@@ -29,30 +29,3 @@ def get_notifications(request):
         user = request.user
         notifications = Notification.objects.filter(user=user).order_by("created_on")
     return JsonResponse(notifications)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
