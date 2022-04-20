@@ -24,6 +24,7 @@ get all notifications for a specific user ordered by the created time
 so that the recent notification will be on the top of the list
 """
 
+
 def get_notifications(request):
     if request.method == "POST":
         user = request.user
