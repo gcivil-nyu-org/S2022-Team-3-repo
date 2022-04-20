@@ -28,17 +28,18 @@ def review_post(request, id):
     if request.method == "POST":
         try:
             # sender = request.user
-            
+
             if "approve" in request.POST:
                 id = request.POST["approve"]
                 post = Post.objects.get(id=id)
                 post.approved = True
                 post.save()
-                #send notification to user
+                # send notification to user
                 # receiver = post.user
                 # msg_type  = "approved"
                 # message="None"
-                # notification = {"sender":sender,"receiver":receiver,"msg_type":msg_type,"message":message}
+                # notification = {"sender":sender,"receiver":receiver,
+                # "msg_type":msg_type,"message":message}
                 # create_notification(notification)
                 messages.success(request, "Post Approved")
                 return redirect("moderation:index")
