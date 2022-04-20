@@ -20,7 +20,6 @@ function: get_notifications
 get all notifications for a specific user
 """
 
-def get_notifications(request):
-    user = request.user
 
-    
+# def get_notifications(request):
+#     user = request.user

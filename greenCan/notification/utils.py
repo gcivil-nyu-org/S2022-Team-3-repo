@@ -1,8 +1,8 @@
-from django.shortcuts import render
 from notifications.signals import notify
+from .models import Notification
 
 
-def create_notificaiton(notification):
+def create_notification(notification):
     sender = notification.get("sender")
     receiver = notification.get("receiver")
     message = notification.get("message")
@@ -15,4 +15,4 @@ def create_notificaiton(notification):
     )
     notification.save()
 
-    notify.send(sender, recipient=receiver, verb='Notification', description=message)
+    notify.send(sender, recipient=receiver, verb="Notification", description=message)

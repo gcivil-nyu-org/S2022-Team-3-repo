@@ -36,10 +36,14 @@ def review_post(request, id):
                 post.save()
                 # send notification to user
                 receiver = post.user
-                msg_type  = "approved"
-                message="None"
-                notification = {"sender":sender,"receiver":receiver,
-                "msg_type":msg_type,"message":message}
+                msg_type = "approved"
+                message = "None"
+                notification = {
+                    "sender": sender,
+                    "receiver": receiver,
+                    "msg_type": msg_type,
+                    "message": message,
+                }
                 create_notification(notification)
                 messages.success(request, "Post Approved")
                 return redirect("moderation:index")
@@ -60,6 +64,16 @@ def review_post(request, id):
                     reasons.append(request.POST["description"])
                 log = VolunteerLogs(post=post, reason=reasons)
                 log.save()
+                receiver = post.user
+                msg_type = "denied"
+                message = str(reasons)
+                notification = {
+                    "sender": sender,
+                    "receiver": receiver,
+                    "msg_type": msg_type,
+                    "message": message,
+                }
+                create_notification(notification)
 
                 messages.success(request, "Post Denied")
                 return redirect("moderation:index")
