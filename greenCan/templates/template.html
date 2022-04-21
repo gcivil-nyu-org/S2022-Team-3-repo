@@ -55,6 +55,9 @@
 						{% endif %} nav-link"><a href="{{ recycle_base_url }}">Recycle</a></li>
 					</ul>
 					{% if user.is_authenticated %}
+					<div class="notification-btn-container align-right">
+						<i class="fas fa-bell" style="color: white; font-size: 2em; padding-top: 35%;"></i>
+					</div>
 					<div class="profile-btn-container">
 						<div class="dropdown">
 							<a class="btn btn-secondary dropdown-toggle d-flex align-items-center px-3" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -73,7 +76,7 @@
 							  <a class="dropdown-item" href="{% url 'rewards:index' %}">Green Credits</a>
 							  <a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a>
 							</div>
-						  </div>
+						</div>
 					</div>
 					{% endif %}
 				</div>
