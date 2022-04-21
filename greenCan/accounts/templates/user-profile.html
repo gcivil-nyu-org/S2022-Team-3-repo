@@ -26,21 +26,32 @@ user-profile
               </div>
            
             <p style="font-size:xx-large;"><b>{{user.get_full_name | escape }}</b> </p>
+
             <div style="text-align: center;">
-            <div style="display: inline-block; text-align: left;font-size: x-large;" class="mx-3">
-                <p><b>Email:   </b>  {{ user.email | escape }} </p>
-                {% if user.phone_number %}
-                <p><b>Phone:   </b> +1 {{user.phone_number | escape }} </p>
-                {% else %}
-                <p><b>Phone:   </b> UNKNOWN </p>
-                {% endif %}
-                {% if user.zipcode %}
-                <p><b>Location:   </b> {{user.zipcode.borough}}, {{user.zipcode.state_id}} </p>
-                {% else %}
-                <p><b>Location:   </b> UNKNOWN </p>
-                {% endif %}
-                <br>
-            </div>
+                <div style="display: inline-block; text-align: left;font-size: x-large;" class="mx-3">
+                    <p>
+                        <b>Email:   </b>  {{ user.email | escape }}
+                    </p>
+                    {% if user.phone_number %}
+                    <p>
+                        <b>Phone:   </b> +1 {{user.phone_number | escape }}
+                    </p>
+                    {% else %}
+                    <p>
+                        <b>Phone:   </b> UNKNOWN
+                    </p>
+                    {% endif %}
+                    {% if user.zipcode %}
+                    <p>
+                        <b>Location:   </b> {{user.zipcode.borough}}, {{user.zipcode.state_id}}
+                    </p>
+                    {% else %}
+                    <p>
+                        <b>Location:   </b> UNKNOWN
+                    </p>
+                    {% endif %}
+                    <br>
+                </div>
             </div>
             <button type="button" class="btn btn-primary" style="background-color: black !important;" data-bs-toggle="modal" data-bs-target="#edit">Edit Profile</button>
 
@@ -287,10 +298,47 @@ user-profile
                 </div> 
             </div>
         </div>
-
-
         <div class = "col-md-7 col-sm-12 justify-content">
-            <!--green credits rewards here-->
+            <div class="timeline">
+                <ul>
+                  <li>
+                    <span>3rd January 2020</span>
+                    <div class="content">
+                      <h3>What Is Lorem Ipsum?</h3>
+                      <p>
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+                      </p>
+                    </div>
+                  </li>
+                  <li>
+                    <span>21st Jun 2019</span>
+                    <div class="content">
+                      <h3>What Is Lorem Ipsum?</h3>
+                      <p>
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                      </p>
+                    </div>
+                  </li>
+                  <li>
+                    <span>15th April 2018</span>
+                    <div class="content">
+                      <h3>What Is Lorem Ipsum?</h3>
+                      <p>
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                      </p>
+                    </div>
+                  </li>
+                  <li>
+                    <span>22nd Mars 2017</span>
+                    <div class="content">
+                      <h3>What Is Lorem Ipsum?</h3>
+                      <p>
+                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard.
+                      </p>
+                    </div>
+                  </li>
+                </ul>
+            </div>            
         </div>
     </div>
 </div>

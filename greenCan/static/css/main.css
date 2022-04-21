@@ -217,6 +217,7 @@ footer {
     align-items: center;
     justify-content: center;
     border-top: solid 5px #6abe52;
+    z-index: 100;
 }
 footer div{
     align-content: center;
