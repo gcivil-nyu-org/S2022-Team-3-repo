@@ -9,11 +9,6 @@ Notifications | greenCan
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
 <link rel="stylesheet" href="{% static 'modules/uikit-3.13.10/css/uikit3_4.min.css' %}" />
 
-<!-- <script src="{% static 'modules/uikit-3.13.10/js/uikit-icons.min.js' %}"></script>
-<script src="{% static 'modules/uikit-3.13.10/js/uikit.min.js' %}"></script> -->
-<script src="{% static 'modules/uikit-3.13.10/js/uikit3_4-icons.min.js' %}"></script>
-<script src="{% static 'modules/uikit-3.13.10/js/uikit3_4.min.js' %}"></script>
-
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
 <style>
 .uk-timeline .uk-timeline-item .uk-card {
@@ -33,11 +28,11 @@ Notifications | greenCan
     position: absolute;
     top: 20px;
     width: 2px;
-		z-index: -1;
+	z-index: -1;
 }
 
 .uk-timeline .uk-timeline-item .uk-timeline-icon .uk-badge {
-		margin-top: 20px;
+	margin-top: 20px;
     width: 40px;
     height: 40px;
 }
@@ -115,6 +110,10 @@ Notifications | greenCan
 {% endblock %}
 
 {% block scripts %}
+<script src="{% static 'modules/uikit-3.13.10/js/uikit3_4-icons.min.js' %}"></script>
+<script src="{% static 'modules/uikit-3.13.10/js/uikit3_4.min.js' %}"></script>
+<script src="{% static 'modules/uikit-3.13.10/js/uikit-icons.min.js' %}"></script>
+<script src="{% static 'modules/uikit-3.13.10/js/uikit.min.js' %}"></script>
 <script>
     // function getNotifications(user){
     //     $.ajax({
