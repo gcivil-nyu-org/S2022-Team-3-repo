@@ -2,24 +2,115 @@
 {% load static %}
 
 {% block title %}
-Reduce | greenCan
+Notifications | greenCan
 {% endblock %}
 
 {% block style %}
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+<link rel="stylesheet" href="{% static 'modules/uikit-3.13.10/css/uikit.min.css' %}" />
+<link rel="stylesheet" href="{% static 'modules/uikit-3.13.10/css/uikit-rtl.min.css' %}" />
+
+<script src="{% static 'modules/uikit-3.13.10/js/uikit-icons.min.js' %}"></script>
+<script src="{% static 'modules/uikit-3.13.10/js/uikit.min.js' %}"></script>
+
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-<link rel="stylesheet" href="{% static 'css/map.css' %}" />
-<link rel="stylesheet" href="{% static 'css/filter.css' %}" />
-<link rel="stylesheet" href="{% static 'css/card.css' %}" />
+<style>
+.uk-timeline .uk-timeline-item .uk-card {
+	max-height: 300px;
+}
+
+.uk-timeline .uk-timeline-item {
+    display: flex;
+    position: relative;
+}
+
+.uk-timeline .uk-timeline-item::before {
+    background: #dadee4;
+    content: "";
+    height: 100%;
+    left: 19px;
+    position: absolute;
+    top: 20px;
+    width: 2px;
+		z-index: -1;
+}
+
+.uk-timeline .uk-timeline-item .uk-timeline-icon .uk-badge {
+		margin-top: 20px;
+    width: 40px;
+    height: 40px;
+}
+
+.uk-timeline .uk-timeline-item .uk-timeline-content {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 0 0 0 1rem;
+}
+</style>
 {% endblock %}
 
 {% block main %}
-    <h1>Notifications</h1>
-    <ul>
-        {% for notification in notifications %}
-            <li>{{notification.message}} - {{notification.created_on}}</li>
-        {% endfor %}
-    </ul>
+<div class="uk-container uk-padding">
+    <div class="uk-timeline">
+        <div class="uk-timeline-item">
+            <div class="uk-timeline-icon">
+                <span class="uk-badge"><span uk-icon="check"></span></span>
+            </div>
+            <div class="uk-timeline-content">
+                <div class="uk-card uk-card-default uk-margin-medium-bottom uk-overflow-auto">
+                    <div class="uk-card-header">
+                        <div class="uk-grid-small uk-flex-middle" uk-grid>
+                            <h3 class="uk-card-title"><time datetime="2020-07-08">July 8</time></h3>
+                            <span class="uk-label uk-label-success uk-margin-auto-left">Feature</span>
+                        </div>
+                    </div>
+                    <div class="uk-card-body">
+						<p class="uk-text-success">Fully responsive timeline you can add to your UIkit 3 project</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="uk-timeline-item">
+            <div class="uk-timeline-icon">
+                <span class="uk-badge"><span uk-icon="check"></span></span>
+            </div>
+            <div class="uk-timeline-content">
+                <div class="uk-card uk-card-default uk-margin-medium-bottom uk-overflow-auto">
+                    <div class="uk-card-header">
+                        <div class="uk-grid-small uk-flex-middle" uk-grid>
+                            <h3 class="uk-card-title"><time datetime="2020-07-07">July 7</time></h3>
+                            <span class="uk-label uk-label-warning uk-margin-auto-left">Test</span>
+                        </div>
+                    </div>
+                    <div class="uk-card-body">
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<div class="uk-timeline-item">
+            <div class="uk-timeline-icon">
+                <span class="uk-badge"><span uk-icon="check"></span></span>
+            </div>
+            <div class="uk-timeline-content">
+                <div class="uk-card uk-card-default uk-margin-medium-bottom uk-overflow-auto">
+                    <div class="uk-card-header">
+                        <div class="uk-grid-small uk-flex-middle" uk-grid>
+                            <h3 class="uk-card-title"><time datetime="2020-07-06">July 6</time></h3>
+                            <span class="uk-label uk-label-danger uk-margin-auto-left">Fix</span>
+                        </div>
+                    </div>
+                    <div class="uk-card-body">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+                    </div>
+                </div>
+				<a href="#"><span class="uk-margin-small-right" uk-icon="triangle-down"></span>Load more</a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
