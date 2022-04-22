@@ -1,5 +1,7 @@
 from django.shortcuts import render
 
+from .models import Notification
+
 
 """
 function: index
@@ -10,17 +12,7 @@ set path for notification page
 
 def index(request):
     template = "notification/templates/notification-index.html"
-    context = {"is_notification": True}
-    return render(request, template, context=context)
-
-
-"""
-function: get_notifications
-
-get all notifications for a specific user
-"""
-
-
-def get_notifications(request):
     user = request.user
-    print(user)
+    notifications = Notification.objects.filter(user=user).order_by("-created_on")
+    context = {"is_notification": True, "notifications": notifications}
+    return render(request, template, context=context)
