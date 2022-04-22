@@ -42,7 +42,10 @@ def send_user_email(user, mail_subject, to_email, current_site, template, templa
     except (ConnectionAbortedError, SMTPException, gaierror):
         return "error"
 
-def send_user_email_with_reasons(user, mail_subject, to_email, current_site, template, template_no_style,reasons):
+
+def send_user_email_with_reasons(
+    user, mail_subject, to_email, current_site, template, template_no_style, reasons
+):
     message_no_style = render_to_string(
         template_no_style,
         {
@@ -50,7 +53,7 @@ def send_user_email_with_reasons(user, mail_subject, to_email, current_site, tem
             "domain": current_site.domain,
             "uid": urlsafe_base64_encode(force_bytes(user.id)),
             "token": account_activation_token.make_token(user),
-            "reasons":reasons,
+            "reasons": reasons,
         },
     )
 
@@ -61,7 +64,7 @@ def send_user_email_with_reasons(user, mail_subject, to_email, current_site, tem
             "domain": current_site.domain,
             "uid": urlsafe_base64_encode(force_bytes(user.id)),
             "token": account_activation_token.make_token(user),
-            "reasons":reasons,
+            "reasons": reasons,
         },
     )
 

@@ -8,7 +8,7 @@ from django.contrib import messages
 from .models import VolunteerLogs
 from django.contrib.sites.shortcuts import get_current_site
 from notification.utils import create_notification
-from accounts.utils import send_user_email,send_user_email_with_reasons
+from accounts.utils import send_user_email, send_user_email_with_reasons
 
 
 @login_required
@@ -47,8 +47,8 @@ def review_post(request, id):
                 }
                 create_notification(notification)
                 current_site = get_current_site(request)
-                
-                mail_subject = "Post "+str(post.title)+ " approved"
+
+                mail_subject = "Post " + str(post.title) + " approved"
                 response = send_user_email(
                     receiver,
                     mail_subject,
@@ -88,8 +88,8 @@ def review_post(request, id):
                 }
                 create_notification(notification)
                 current_site = get_current_site(request)
-                
-                mail_subject = "Post "+str(post.title)+ " denied"
+
+                mail_subject = "Post " + str(post.title) + " denied"
                 response = send_user_email_with_reasons(
                     receiver,
                     mail_subject,
