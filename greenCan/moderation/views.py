@@ -6,8 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from .models import VolunteerLogs
-
+from django.contrib.sites.shortcuts import get_current_site
 from notification.utils import create_notification
+from accounts.utils import send_user_email,send_user_email_with_reasons
 
 
 @login_required
@@ -25,7 +26,6 @@ def index(request):
 def review_post(request, id):
     id = int(id)
     template_name = "moderation/templates/review-post.html"
-    print(request.method)
     if request.method == "POST":
         try:
             sender = request.user
@@ -46,7 +46,18 @@ def review_post(request, id):
                     "message": message,
                 }
                 create_notification(notification)
-                print("the post is approved")
+                current_site = get_current_site(request)
+                
+                mail_subject = "Post "+str(post.title)+ " approved"
+                response = send_user_email(
+                    receiver,
+                    mail_subject,
+                    receiver.email,
+                    current_site,
+                    "email/post-approval.html",
+                    "email/post-approval-no-style.html",
+                )
+                print(response)
                 messages.success(request, "Post Approved")
                 return redirect("moderation:index")
 
@@ -76,7 +87,19 @@ def review_post(request, id):
                     "message": message,
                 }
                 create_notification(notification)
-
+                current_site = get_current_site(request)
+                
+                mail_subject = "Post "+str(post.title)+ " denied"
+                response = send_user_email_with_reasons(
+                    receiver,
+                    mail_subject,
+                    receiver.email,
+                    current_site,
+                    "email/post-denied.html",
+                    "email/post-denied-no-style.html",
+                    reasons,
+                )
+                print(response)
                 messages.success(request, "Post Denied")
                 return redirect("moderation:index")
 
