@@ -19,14 +19,14 @@ Notifications | greenCan
 }
 
 .uk-timeline .uk-timeline-item::before {
-    background: #dadee4 !important;
-    content: "" !important;
-    height: 100% !important;
-    left: 19px !important;
-    position: absolute !important;
-    top: 20px !important;
-    width: 2px !important;
-	z-index: -1 !important;
+    background: #dadee4;
+    content: "";
+    height: 100%;
+    left: 19px;
+    position: absolute;
+    top: 20px;
+    width: 2px;
+	z-index: -1;
 }
 
 .uk-timeline .uk-timeline-item .uk-timeline-icon .uk-badge {
@@ -45,7 +45,7 @@ Notifications | greenCan
 
 {% block main %}
 <div class="uk-container uk-padding">
-    <div class="uk-timeline">
+    <div id="notification-container" class="uk-timeline">
         <div class="uk-timeline-item">
             <div class="uk-timeline-icon">
                 <span class="uk-badge"><span uk-icon="check"></span></span>
@@ -100,7 +100,7 @@ Notifications | greenCan
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
                     </div>
                 </div>
-				<a href="#"><span class="uk-margin-small-right" uk-icon="triangle-down"></span>Load more</a>
+				<a id="loader" href="#"><span id="load-more" class="uk-margin-small-right" uk-icon="triangle-down"></span>Load more</a>
             </div>
         </div>
     </div>
@@ -113,4 +113,64 @@ Notifications | greenCan
 <script src="{% static 'modules/uikit-3.13.10/js/uikit-icons.min.js' %}"></script>
 <script src="{% static 'modules/uikit-3.13.10/js/uikit.min.js' %}"></script>
 
+<script>
+    $(document).ready(function(){
+        let page = 1;
+        let hasNext = true;
+        $('.load-more').click(function(){
+            put_more_data();
+        });
+
+        function createNotificationCards(notifications){
+            $.each(notifications, function(key, notification){
+                let n = '<div class="uk-timeline-item"></div><div class="uk-timeline-icon">\
+                    <span class="uk-badge"><span uk-icon="check"></span></span><div class="uk-timeline-content">\
+                    <div class="uk-card uk-card-default uk-margin-medium-bottom uk-overflow-auto">\
+                    <div class="uk-card-header"><div class="uk-grid-small uk-flex-middle" uk-grid>\
+                    <h3 class="uk-card-title"><time datetime="2020-07-08">' + notification['created_on'] + '</time>\
+                    </h3><span class="uk-label uk-label-warning uk-margin-auto-left">' + notification['message_type']
+                    + '</span></div></div><div class="uk-card-body">';
+                
+                for(let i=0; i < notification['messages'].length; i++){
+                    n += '<p>' + notification['messages'][i] + '</p>';
+                }
+
+                n += '</div></div></div></div>';
+                $('.notification-container').append($(n));
+            });
+        }
+
+        function setData(data){
+            result = Object.entries(data['notification']);
+            notifications = result.map(([key, value]) => value);
+            createNotificationCards(notifications);
+        }
+
+        function put_more_data(){
+            if(hasNext){
+                $.ajax({
+                    url: "{% url 'notification:get-notifications' %}",
+                    type: "POST",
+                    async: false,
+                    data: {
+                        "page": page
+                    },
+                    success: function (data) {
+                        setData(data); 
+                        if(data.has_next!=hasNext){
+                            $('.loader').hide();
+                            hasNext = data.has_next
+                        }
+                        if(hasNext){
+                            page = data.next_page_number   
+                        }
+                    }
+                });
+            }
+        }
+
+        put_more_data();
+    });
+
+</script>
 {% endblock %}
