@@ -8,6 +8,7 @@ from django.contrib import messages
 from .models import VolunteerLogs
 
 from notification.utils import create_notification
+from rewards.models import CreditsLookUp, EarnGreenCredits
 
 
 @login_required
@@ -34,6 +35,8 @@ def review_post(request, id):
                 id = request.POST["approve"]
                 post = Post.objects.get(id=id)
                 post.approved = True
+                # add credit to approved post
+                EarnGreenCredits.objects.create(content_object=post, action=CreditsLookUp.objects.get(action="post"), user=post.user)
                 post.save()
                 # send notification to user
                 receiver = post.user

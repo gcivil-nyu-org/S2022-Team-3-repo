@@ -18,7 +18,7 @@ from django.contrib.postgres.search import (
     SearchVector,
     SearchHeadline,
 )
-
+from rewards.models import EarnGreenCredits, CreditsLookUp
 
 """
 function: index
@@ -154,6 +154,7 @@ def create_post(request):
             description=strip_tags(description[:200]),
             user=user,
         )
+        #EarnGreenCredits.objects.create(content_object=post, action=CreditsLookUp.objects.get(action="post"), user=user)
         post.save()
 
         for image in images:
