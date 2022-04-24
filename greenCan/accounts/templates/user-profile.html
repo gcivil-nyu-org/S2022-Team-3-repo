@@ -26,7 +26,7 @@ user-profile
             </div>
            
             <p style="font-size:xx-large;" class="mb-2"><b>{{user.get_full_name | escape }}</b> </p>
-            <p style="font-size: x-large;" class="mt-0"><b><span class="green-credits-span">5 <img src="{% static 'images/illustrations/green-credit.png' %}" height="20" alt="green credits"></span></b></p>
+            <p style="font-size: x-large;" class="mt-0"><b><span class="green-credits-span">{{ earned_credits }} <img src="{% static 'images/illustrations/green-credit.png' %}" height="20" alt="green credits"></span></b></p>
             <div style="text-align: center;">
                 <div style="display: inline-block; text-align: left;font-size: x-large;" class="mx-3">
                     <p>
@@ -134,47 +134,7 @@ user-profile
             </div>
         </div>
         <div class = "col-md-7 col-sm-12 justify-content">
-            <div class="timeline">
-                <ul id="green-credit-logs">
-                    {% for log in logs %}
-                    <li>
-                        <span class="date">14th November 2021</span>
-                        <div class="content">
-                            <h3 class="mb-1 mt-0 pt-0">Test<span class="green-credits-span">{{log.action.credit}}<img src="{% static 'images/illustrations/green-credit.png' %}" height="20" alt="green credits"></span></h3>
-                          <p class="my-0 py-0">
-                            TEST earned green credits.
-                          </p>
-                        </div>
-                      </li>
-                    {% endfor %}
-                  <li>
-                    <span class="date">14th November 2021</span>
-                    <div class="content">
-                        <h3 class="mb-1 mt-0 pt-0">Hurrah! You earned <span class="green-credits-span">5 <img src="{% static 'images/illustrations/green-credit.png' %}" height="20" alt="green credits"></span></h3>
-                      <p class="my-0 py-0">
-                        You earned green credits to post an item donation ad post on greenCan.
-                      </p>
-                    </div>
-                  </li>
-                  <li>
-                    <span class="date">21st February 2021</span>
-                    <div class="content">
-                        <h3 class="mb-1 mt-0 pt-0">Hurrah! You earned <span class="green-credits-span">5 <img src="{% static 'images/illustrations/green-credit.png' %}" height="20" alt="green credits"></span></h3>
-                      <p class="my-0 py-0">
-                        You earned green credits to post an item donation ad post on greenCan.
-                      </p>
-                    </div>
-                  </li>
-                  <li>
-                    <span class="date">3rd January 2020</span>
-                    <div class="content">
-                      <h3 class="mb-1 mt-0 pt-0">Hurrah! You earned <span class="green-credits-span">5 <img src="{% static 'images/illustrations/green-credit.png' %}" height="20" alt="green credits"></span></h3>
-                      <p class="my-0 py-0">
-                        You earned green credits to post an item donation ad post on greenCan.
-                      </p>
-                    </div>
-                  </li>
-                </ul>
+            <div class="timeline" id="logs-wrapper">
                 <span class="load-more" id="load-more">Load more...</span>
             </div>            
         </div>
@@ -189,6 +149,7 @@ user-profile
 <script>
     $(document).ready(function(e){
         document.querySelector('[data-url = "{{user.avatar}}"]').style.backgroundColor = "#69be52a4";
+        load_logs();
     });
 
     $('.avatarBtn').on('click',function(){
@@ -200,9 +161,9 @@ user-profile
 
     function addOneLog(data){ 
         var $message;
-        if(data['event_type']=="POST"){
+        if(data['event_type']=="post"){
             $message = "You earned green credits to post an item donation ad post on greenCan.";
-        }else if (data['event_type']=="GREENWALL"){
+        }else if (data['event_type']=="image"){
             $message = "You earned green credits for your contribution to Green Wall.";
         }
 
@@ -226,15 +187,37 @@ user-profile
 
     var $page_number = 1;
     $('#load-more').click(function(e){
-        $.getJSON("{% static 'test.json' %}", function(data){
-            $page_number = data['next_page_number'];
-            if($page_number<1){
-                $('#load-more').hide();
-            }
-            addNotifications(data['data']);
-        });
+        load_logs();
     });
 
+    function load_logs(){
+        $.ajax({
+            url: "{% url 'accounts:green-credits-logs' %}",
+            dataType: 'json',
+            method: 'GET',
+            data: {
+                "page": $page_number
+            },
+            success: function(data) {
+                $page_number = data['next_page_number'];
+                if($page_number<1){
+                    $('#load-more').hide();
+                }
+                
+                if ($('#logs-wrapper').children().length===1){
+                    $('#logs-wrapper').prepend($('<ul id="green-credit-logs"></ul>'));
+                }
 
+                addNotifications(data['data']);
+            },
+            error: function(e) {
+                Swal.fire(
+                    "Error",
+                    "Some Error occured please try again later.",
+                    "error"
+                );
+            }
+        });
+    }
 </script>
 {% endblock %}

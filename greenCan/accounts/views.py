@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.utils.encoding import force_str
@@ -18,7 +19,9 @@ from django.contrib.auth import views as auth_views
 from .forms import PasswordResetForm, SetPasswordForm
 from recycle.models import ZipCode
 from django.utils.html import strip_tags
+from django.core.paginator import Paginator
 from rewards.models import EarnGreenCredits, CreditsLookUp
+from django.db.models import Sum
 
 
 class PasswordResetView(auth_views.PasswordResetView):
@@ -224,7 +227,6 @@ function: user-profile
 set path for user-profile
 """
 
-
 @login_required
 def user_profile(request):
     if request.method == "POST":
@@ -271,7 +273,11 @@ def user_profile(request):
         user.save()
         messages.success(request, "Your details have been updated successfully")
         return redirect("accounts:user-profile")
-    return render(request, "accounts/templates/user-profile.html", {})
+    earned_credits = EarnGreenCredits.objects.filter(user=request.user).aggregate(Sum('action__credit'))
+    context = {
+        'earned_credits': earned_credits['action__credit__sum'] if earned_credits['action__credit__sum'] else 0
+    }
+    return render(request, "accounts/templates/user-profile.html", context)
 
 
 @login_required
@@ -287,12 +293,25 @@ def user_profile_avatar(request):
         messages.success(request, "Your avatar has been updated.")
     return redirect("accounts:user-profile")
 
-
+@login_required
 def green_credits_logs(request):
-    template = "accounts/templates/user-profile.html"
-    user = request.user
-    logs = EarnGreenCredits.objects.filter(user=request.user)
-    print(logs)
-    context = {"user": user, "logs": logs}
+    page_number = int(request.GET.get('page',1))
+    earned_credits_logs = EarnGreenCredits.objects.filter(user=request.user).order_by("-earned_on")
+    pages = Paginator(earned_credits_logs, 10)
+    datas = pages.get_page(page_number)
+    logs = {
+        'status': True
+    }
+    logs['data'] = []
+    for data in datas:
+        logs['data'].append({
+            "date": data.earned_on.strftime("%d %b' %Y - %I:%M:%S %p"),
+            "event_type": data.action.action,
+            "credits": data.action.credit
+        })
+    if datas.has_next():
+            logs["next_page_number"] = data.next_page_number()
+    else:
+        logs["next_page_number"] = 0
 
-    return render(request, template, context=context)
+    return JsonResponse(logs)

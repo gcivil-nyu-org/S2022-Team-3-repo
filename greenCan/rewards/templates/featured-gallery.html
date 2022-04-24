@@ -24,10 +24,10 @@ Rewards | greenCan
 <button class="load-more">Load More</button>
 {% include 'rewards/templates/earn-credits-banner.html' %}
 
-
 {% endblock %}
 
 {% block scripts %}
+{% include 'sweetalert2.html' %}
 <script>
     
     $(document).ready(function(){
@@ -49,29 +49,6 @@ Rewards | greenCan
             }
             image_dom += '</div>';
             return image_dom;
-        }
-
-        function auto_adjust_height() {
-            min_height_elem = -1;
-            max_height_elem = -1;
-            for(i = 0; i<4; i++){
-                curr_elem = $('#grid-col'+i.toString());
-                if (min_height_elem === -1 || min_height_elem.height() > curr_elem.height()) {
-                    min_height_elem = curr_elem;
-                }
-                if (max_height_elem === -1 || max_height_elem.height() < curr_elem.height()) {
-                    max_height_elem = curr_elem;
-                }
-            }
-            
-            console.log(max_height_elem);
-            console.log(min_height_elem);
-
-            if(max_height_elem.height() > min_height_elem.height()+200){    
-                child = max_height_elem.children().last().empty();
-                console.log(child);
-                min_height_elem.append(child);
-            }
         }
 
         function put_more_data() {
@@ -99,7 +76,11 @@ Rewards | greenCan
                         $('.loader').hide();
                     },
                     error : function() {
-                        alert("Some Error occured please try again later.");
+                        Swal.fire(
+                            "Error",
+                            "Some Error occured please try again later.",
+                            "error"
+                        );
                     }
                 });
             }
