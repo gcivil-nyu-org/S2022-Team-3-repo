@@ -135,6 +135,7 @@ class User(AbstractBaseUser):
     def is_admin(self):
         return self.admin
 
+
 class LoginAttempt(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     login_attempts = models.IntegerField(default=0)

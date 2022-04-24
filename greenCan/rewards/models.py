@@ -36,15 +36,15 @@ class Image(models.Model):
 class CreditsLookUp(models.Model):
     action = models.CharField(primary_key=True, max_length=200)
     credit = models.PositiveIntegerField(null=True, default=None)
-    
+
 
 class EarnGreenCredits(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE)
     action = models.ForeignKey(CreditsLookUp, on_delete=models.CASCADE)
     earned_on = models.DateTimeField(auto_now_add=True)
-    #post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    #meta = models.ForeignKey(ImageMeta, on_delete=models.CASCADE)
+    # post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    # meta = models.ForeignKey(ImageMeta, on_delete=models.CASCADE)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey()

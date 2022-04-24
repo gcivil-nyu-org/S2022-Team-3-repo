@@ -7,13 +7,13 @@ import django.utils.timezone
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('rewards', '0010_alter_earngreencredits_object_id'),
+        ("rewards", "0010_alter_earngreencredits_object_id"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='earngreencredits',
-            name='earned_on',
+            model_name="earngreencredits",
+            name="earned_on",
             field=models.DateTimeField(auto_now_add=True, default=django.utils.timezone.now),
             preserve_default=False,
         ),

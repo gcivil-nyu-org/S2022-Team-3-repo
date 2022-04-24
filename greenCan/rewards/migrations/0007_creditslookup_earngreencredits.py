@@ -8,27 +8,42 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('contenttypes', '0002_remove_content_type_name'),
+        ("contenttypes", "0002_remove_content_type_name"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('rewards', '0006_alter_imagemeta_approved'),
+        ("rewards", "0006_alter_imagemeta_approved"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='CreditsLookUp',
+            name="CreditsLookUp",
             fields=[
-                ('action', models.CharField(max_length=200, primary_key=True, serialize=False)),
-                ('credit', models.PositiveIntegerField(default=None, null=True)),
+                ("action", models.CharField(max_length=200, primary_key=True, serialize=False)),
+                ("credit", models.PositiveIntegerField(default=None, null=True)),
             ],
         ),
         migrations.CreateModel(
-            name='EarnGreenCredits',
+            name="EarnGreenCredits",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False)),
-                ('object_id', models.PositiveIntegerField()),
-                ('action', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rewards.creditslookup')),
-                ('content_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='contenttypes.contenttype')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False)),
+                ("object_id", models.PositiveIntegerField()),
+                (
+                    "action",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="rewards.creditslookup"
+                    ),
+                ),
+                (
+                    "content_type",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="contenttypes.contenttype"
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
+                    ),
+                ),
             ],
         ),
     ]
