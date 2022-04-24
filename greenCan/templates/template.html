@@ -62,9 +62,9 @@
 						<div class="dropdown">
 							<a class="btn btn-secondary dropdown-toggle d-flex align-items-center px-3" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								{% if user.avatar %}
-									<img height="35" src="{{ user.avatar | escape }}">
+									<img style="height: 35px !important;" src="{{ user.avatar | escape }}">
 								{% else %}
-									<img height="35" src="{% static 'images/avatar/avatar.svg' %}">
+									<img style="height: 35px !important;" src="{% static 'images/avatar/avatar.svg' %}">
 								{% endif %}
 									<span class="align-middle text-white name">{{ user.get_full_name | escape }}</span>
 							</a>

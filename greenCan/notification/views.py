@@ -52,7 +52,7 @@ def get_notifications(request):
             "messages": messages
         }
         page_notifications.append(n)
-    
+
     result = {"notification": page_notifications}
 
     if not page.has_next():

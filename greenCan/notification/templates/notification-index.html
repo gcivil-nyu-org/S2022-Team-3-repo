@@ -100,7 +100,7 @@ Notifications | greenCan
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
                     </div>
                 </div>
-				<a id="loader" href="#"><span id="load-more" class="uk-margin-small-right" uk-icon="triangle-down"></span>Load more</a>
+				<div class="loader"><span id="load-more" class="uk-margin-small-right" uk-icon="triangle-down"></span>Load more</div>
             </div>
         </div>
     </div>
@@ -136,7 +136,7 @@ Notifications | greenCan
                 }
 
                 n += '</div></div></div></div>';
-                $('.notification-container').append($(n));
+                $('#notification-container').append($(n));
             });
         }
 
@@ -153,6 +153,7 @@ Notifications | greenCan
                     type: "POST",
                     async: false,
                     data: {
+                        "csrfmiddlewaretoken": "{{ csrf_token }}",
                         "page": page
                     },
                     success: function (data) {
