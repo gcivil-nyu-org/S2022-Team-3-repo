@@ -136,6 +136,17 @@ user-profile
         <div class = "col-md-7 col-sm-12 justify-content">
             <div class="timeline">
                 <ul id="green-credit-logs">
+                    {% for log in logs %}
+                    <li>
+                        <span class="date">14th November 2021</span>
+                        <div class="content">
+                            <h3 class="mb-1 mt-0 pt-0">Test<span class="green-credits-span">{{log.action.credit}}<img src="{% static 'images/illustrations/green-credit.png' %}" height="20" alt="green credits"></span></h3>
+                          <p class="my-0 py-0">
+                            TEST earned green credits.
+                          </p>
+                        </div>
+                      </li>
+                    {% endfor %}
                   <li>
                     <span class="date">14th November 2021</span>
                     <div class="content">

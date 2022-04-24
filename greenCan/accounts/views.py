@@ -18,6 +18,7 @@ from django.contrib.auth import views as auth_views
 from .forms import PasswordResetForm, SetPasswordForm
 from recycle.models import ZipCode
 from django.utils.html import strip_tags
+from rewards.models import EarnGreenCredits, CreditsLookUp
 
 
 class PasswordResetView(auth_views.PasswordResetView):
@@ -285,3 +286,13 @@ def user_profile_avatar(request):
         user.save()
         messages.success(request, "Your avatar has been updated.")
     return redirect("accounts:user-profile")
+
+
+def green_credits_logs(request):
+    template = "accounts/templates/user-profile.html"
+    user = request.user
+    logs = EarnGreenCredits.objects.filter(user=request.user)
+    print(logs)
+    context = {"user": user, "logs": logs}
+
+    return render(request, template, context=context)

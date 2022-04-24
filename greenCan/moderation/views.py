@@ -36,7 +36,7 @@ def review_post(request, id):
                 post = Post.objects.get(id=id)
                 post.approved = True
                 # add credit to approved post
-                EarnGreenCredits.objects.create(content_object=post, action=CreditsLookUp.objects.get(action="post"), user=post.user)
+                #EarnGreenCredits.objects.create(content_object=post, action=CreditsLookUp.objects.get(action="post"), user=post.user)
                 post.save()
                 # send notification to user
                 receiver = post.user

@@ -154,8 +154,9 @@ def create_post(request):
             description=strip_tags(description[:200]),
             user=user,
         )
-        #EarnGreenCredits.objects.create(content_object=post, action=CreditsLookUp.objects.get(action="post"), user=user)
         post.save()
+        #test: earn credits without approve
+        EarnGreenCredits.objects.create(object_id = post.id, content_object=post, action=CreditsLookUp.objects.get(action="post"), user=user)
 
         for image in images:
             if "test" not in sys.argv:
