@@ -11,6 +11,7 @@ from reuse.models import Image, Post
 from django.utils.encoding import force_str
 from reuse.models import NGOLocation
 
+
 User = get_user_model()
 
 
@@ -269,7 +270,7 @@ class TestViews(TestCase):
         post = Post(
             title="Apple",
             category="Books",
-            phone_number="9175185345",
+            phone_number="1234567890",
             email="pb2640@nyu.edu",
             zip_code=zipcode,
             description=" Book on apple",
@@ -457,7 +458,7 @@ class TestUserPostsViews(TestCase):
         self.post = Post(
             title="Apple",
             category="Books",
-            phone_number="9175185345",
+            phone_number="1234567890",
             email="user1@gmail.com",
             zip_code=zipcode,
             description=" Book on apple",
