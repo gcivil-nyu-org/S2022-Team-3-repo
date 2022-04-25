@@ -29,7 +29,6 @@ def review_post(request, id):
     if request.method == "POST":
         try:
             sender = request.user
-
             if "approve" in request.POST:
                 id = request.POST["approve"]
                 post = Post.objects.get(id=id)
@@ -98,12 +97,12 @@ def review_post(request, id):
                     "email/post-denied-no-style.html",
                     reasons,
                 )
-                print(response)
+                if response != "success":
+                    raise Exception("Failed to send email")
                 messages.success(request, "Post Denied")
                 return redirect("moderation:index")
 
-        except Exception as e:
-            print(e)
+        except Exception:
             messages.error(request, "Post approval Failed, contact admin")
         context = {}
         return render(request, template_name=template_name, context=context)
