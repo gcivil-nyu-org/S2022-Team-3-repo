@@ -57,7 +57,6 @@ def review_post(request, id):
                     "email/post-approval.html",
                     "email/post-approval-no-style.html",
                 )
-                print(response)
                 messages.success(request, "Post Approved")
                 return redirect("moderation:index")
 
