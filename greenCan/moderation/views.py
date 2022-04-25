@@ -6,8 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from .models import VolunteerLogs
-
+from django.contrib.sites.shortcuts import get_current_site
 from notification.utils import create_notification
+from accounts.utils import send_user_email, send_user_email_with_reasons
 
 
 @login_required
@@ -28,7 +29,6 @@ def review_post(request, id):
     if request.method == "POST":
         try:
             sender = request.user
-
             if "approve" in request.POST:
                 id = request.POST["approve"]
                 post = Post.objects.get(id=id)
@@ -51,6 +51,20 @@ def review_post(request, id):
                     "message": message,
                 }
                 create_notification(notification)
+
+                current_site = get_current_site(request)
+
+                mail_subject = "Post " + str(post.title) + " approved"
+                response = send_user_email(
+                    receiver,
+                    mail_subject,
+                    receiver.email,
+                    current_site,
+                    "email/post-approval.html",
+                    "email/post-approval-no-style.html",
+                )
+                if response != "success":
+                    raise Exception("Failed to send email")
                 messages.success(request, "Post Approved")
                 return redirect("moderation:index")
 
@@ -68,7 +82,7 @@ def review_post(request, id):
                     reasons.append(request.POST["check3"])
                 if "description" in request.POST:
                     reasons.append(request.POST["description"])
-                log = VolunteerLogs(post=post, reason=reasons)
+                log = VolunteerLogs(post=post, reason=reasons, approved_by=sender)
                 log.save()
                 receiver = post.user
                 msg_type = "denied"
@@ -80,7 +94,20 @@ def review_post(request, id):
                     "message": message,
                 }
                 create_notification(notification)
+                current_site = get_current_site(request)
 
+                mail_subject = "Post " + str(post.title) + " denied"
+                response = send_user_email_with_reasons(
+                    receiver,
+                    mail_subject,
+                    receiver.email,
+                    current_site,
+                    "email/post-denied.html",
+                    "email/post-denied-no-style.html",
+                    reasons,
+                )
+                if response != "success":
+                    raise Exception("Failed to send email")
                 messages.success(request, "Post Denied")
                 return redirect("moderation:index")
 
