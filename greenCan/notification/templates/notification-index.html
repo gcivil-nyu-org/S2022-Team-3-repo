@@ -46,44 +46,6 @@ Notifications | greenCan
 {% block main %}
 <div class="uk-container uk-padding">
     <div id="notification-container" class="uk-timeline">
-        <div class="uk-timeline-item">
-            <div class="uk-timeline-icon">
-                <span class="uk-badge"><span uk-icon="check"></span></span>
-            </div>
-            <div class="uk-timeline-content">
-                <div class="uk-card uk-card-default uk-margin-medium-bottom uk-overflow-auto">
-                    <div class="uk-card-header">
-                        <div class="uk-grid-small uk-flex-middle" uk-grid>
-                            <h3 class="uk-card-title"><time datetime="2020-07-08">July 8</time></h3>
-                            <span class="uk-label uk-label-success uk-margin-auto-left">Feature</span>
-                        </div>
-                    </div>
-                    <div class="uk-card-body">
-						<p class="uk-text-success">Fully responsive timeline you can add to your UIkit 3 project</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="uk-timeline-item">
-            <div class="uk-timeline-icon">
-                <span class="uk-badge"><span uk-icon="check"></span></span>
-            </div>
-            <div class="uk-timeline-content">
-                <div class="uk-card uk-card-default uk-margin-medium-bottom uk-overflow-auto">
-                    <div class="uk-card-header">
-                        <div class="uk-grid-small uk-flex-middle" uk-grid>
-                            <h3 class="uk-card-title"><time datetime="2020-07-07">July 7</time></h3>
-                            <span class="uk-label uk-label-warning uk-margin-auto-left">Test</span>
-                        </div>
-                    </div>
-                    <div class="uk-card-body">
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
-						<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
 		<div class="uk-timeline-item">
             <div class="uk-timeline-icon">
                 <span class="uk-badge"><span uk-icon="check"></span></span>
@@ -127,12 +89,32 @@ Notifications | greenCan
                     <span class="uk-badge"><span uk-icon="check"></span></span><div class="uk-timeline-content">\
                     <div class="uk-card uk-card-default uk-margin-medium-bottom uk-overflow-auto">\
                     <div class="uk-card-header"><div class="uk-grid-small uk-flex-middle" uk-grid>\
-                    <h3 class="uk-card-title"><time datetime="2020-07-08">' + notification['created_on'] + '</time>\
-                    </h3><span class="uk-label uk-label-warning uk-margin-auto-left">' + notification['message_type']
-                    + '</span></div></div><div class="uk-card-body">';
+                    <h3 class="uk-card-title"><time datetime="2020-07-08">' + notification['created_on_year'] + '-'
+                    + notification['created_on_month'] + '-' + notification['created_on_day'] + '</time>\
+                    </h3>';
                 
-                for(let i=0; i < notification['messages'].length; i++){
-                    n += '<p>' + notification['messages'][i] + '</p>';
+                if(notification['message_type'] == "approved"){
+                    n += '<span class="uk-label uk-label-success uk-margin-auto-left">'
+                        + notification['message_type'] + '</span></div></div><div class="uk-card-body">';
+                }
+                else if(notification['message_type'] === "denied"){
+                    n += '<span class="uk-label uk-label-danger uk-margin-auto-left">'
+                        + notification['message_type'] + '</span></div></div><div class="uk-card-body">';
+                }
+                else{
+                    n += '<span class="uk-label uk-label-warning uk-margin-auto-left">'
+                        + notification['message_type'] + '</span></div></div><div class="uk-card-body">';
+                }
+
+                if(notification['is_read'] == true){
+                    for(let i=0; i < notification['messages'].length; i++){
+                        n += '<p>' + notification['messages'][i] + '</p>';
+                    }
+                }
+                else{
+                    for(let i=0; i < notification['messages'].length; i++){
+                        n += '<p style="color: red;">' + notification['messages'][i] + '</p>';
+                    }
                 }
 
                 n += '</div></div></div></div>';

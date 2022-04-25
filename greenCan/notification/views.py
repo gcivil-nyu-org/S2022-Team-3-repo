@@ -33,7 +33,7 @@ get all notifications of an input page number for a specific user
 def get_notifications(request):
     user = request.user
     notificationObjects = Notification.objects.filter(user=user).order_by("-created_on")
-    notificationObjects = Paginator(notificationObjects, 10)
+    notificationObjects = Paginator(notificationObjects, 2)
     page_number = request.POST.get("page", 1)
     if page_number == "":
         page_number = 1
@@ -42,16 +42,23 @@ def get_notifications(request):
 
     for p in page:
         is_read = p.is_read
-        created_on = p.created_on
+        created_on_year = p.created_on.year
+        created_on_month = p.created_on.month
+        created_on_day = p.created_on.day
         message_type = p.message_type
         messages = (p.message).split("; ")
         n = {
             "is_read": is_read,
-            "created_on": created_on,
+            "created_on_year": created_on_year,
+            "created_on_month": created_on_month,
+            "created_on_day": created_on_day,
             "message_type": message_type,
             "messages": messages
         }
         page_notifications.append(n)
+        if p.is_read == False:
+            p.is_read = True
+            p.save()
 
     result = {"notification": page_notifications}
 
@@ -59,6 +66,7 @@ def get_notifications(request):
         result["has_next"] = 0
     else:
         result["next_page_number"] = page.next_page_number()
+        print(str(result["next_page_number"]))
         result["has_next"] = 1
 
     return JsonResponse(result)
