@@ -66,7 +66,6 @@ def get_notifications(request):
         result["has_next"] = 0
     else:
         result["next_page_number"] = page.next_page_number()
-        print(str(result["next_page_number"]))
         result["has_next"] = 1
 
     return JsonResponse(result)
