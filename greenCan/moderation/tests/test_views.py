@@ -155,10 +155,11 @@ class TestReviewPost(TestCase):
 
 
 class TestSubmissionActions(TestCase):
-    '''
+    """
     1. use admin to take latest post and set it to unknown
-    2. use a staffs account to 
-    '''
+    2. use a staffs account to
+    """
+
     def setUp(self):
         self.user = User.objects.create(
             email="testemail1@gmail.com",
@@ -192,28 +193,28 @@ class TestSubmissionActions(TestCase):
 
     def test_post_approval_email_status(self):
         self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
-        data = {"approve":self.post.id}
+        data = {"approve": self.post.id}
         response = self.client.post(self.url, data, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, "moderation/templates/index.html")
 
     def test_post_approval_email_subject(self):
         self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
-        data = {"approve":self.post.id}
+        data = {"approve": self.post.id}
         self.client.post(self.url, data, follow=True)
         self.assertEqual(len(mail.outbox), 1)
-        self.assertEqual(mail.outbox[0].subject,"Post " + str(self.post.title) + " approved")
-    
+        self.assertEqual(mail.outbox[0].subject, "Post " + str(self.post.title) + " approved")
+
     def test_post_denial_email_response(self):
         self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
-        data = {"deny":self.post.id}
+        data = {"deny": self.post.id}
         response = self.client.post(self.url, data, follow=True)
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, "moderation/templates/index.html")
 
     def test_post_denial_email_subject(self):
         self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
-        data = {"deny":self.post.id,"check1":"check1 reason"}
+        data = {"deny": self.post.id, "check1": "check1 reason"}
         self.client.post(self.url, data, follow=True)
         self.assertEqual(len(mail.outbox), 1)
-        self.assertEqual(mail.outbox[0].subject,"Post " + str(self.post.title) + " denied")
+        self.assertEqual(mail.outbox[0].subject, "Post " + str(self.post.title) + " denied")
