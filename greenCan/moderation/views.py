@@ -74,7 +74,7 @@ def review_post(request, id):
                     reasons.append(request.POST["check3"])
                 if "description" in request.POST:
                     reasons.append(request.POST["description"])
-                log = VolunteerLogs(post=post, reason=reasons)
+                log = VolunteerLogs(post=post, reason=reasons,approved_by = sender)
                 log.save()
                 receiver = post.user
                 msg_type = "denied"
