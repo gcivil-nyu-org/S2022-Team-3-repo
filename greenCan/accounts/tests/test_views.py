@@ -582,15 +582,9 @@ class TestUserProfileAvatar(TestCase):
 class TestUserGreenCreditLogs(TestCase):
     def setUp(self):
 
-        CreditsLookUp.objects.create(
-            action = "post",
-            credit=10
-        )
+        CreditsLookUp.objects.create(action="post", credit=10)
 
-        CreditsLookUp.objects.create(
-            action = "image",
-            credit=5
-        )
+        CreditsLookUp.objects.create(action="image", credit=5)
 
         self.user_1 = User.objects.create(
             first_name="first1", last_name="last1", email="user1@gmail.com", password="password1"

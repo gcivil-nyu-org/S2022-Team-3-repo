@@ -84,7 +84,7 @@ def review_post(request, id):
                 messages.success(request, "Post Denied")
                 return redirect("moderation:index")
 
-        except Exception as e:
+        except Exception:
             messages.error(request, "Post approval Failed, contact admin")
         context = {}
         return render(request, template_name=template_name, context=context)

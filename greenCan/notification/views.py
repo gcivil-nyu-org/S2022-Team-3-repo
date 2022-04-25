@@ -9,6 +9,7 @@ function: index
 set path for notification page
 """
 
+
 def index(request):
     template = "notification/templates/notification-index.html"
     user = request.user
