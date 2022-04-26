@@ -13,6 +13,7 @@ from django.utils.html import strip_tags
 import sys
 from rewards.models import EarnGreenCredits, CreditsLookUp
 
+
 @login_required
 def index(request):
     template_name = "rewards/templates/index.html"
@@ -92,11 +93,11 @@ def earn_rewards(request):
 
             # test: earn credits without approve
             EarnGreenCredits.objects.create(
-            object_id=post.id,
-            content_object=post,
-            action=CreditsLookUp.objects.get(action="image"),
-            user=user,
-        )
+                object_id=meta.id,
+                content_object=meta,
+                action=CreditsLookUp.objects.get(action="image"),
+                user=user,
+            )
 
             if categories:
                 for cat_id in categories:

@@ -11,63 +11,100 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('contenttypes', '0002_remove_content_type_name'),
-        ('recycle', '0002_create_calculate_distance_function'),
+        ("contenttypes", "0002_remove_content_type_name"),
+        ("recycle", "0002_create_calculate_distance_function"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Category',
+            name="Category",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=100, unique=True)),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False)),
+                ("name", models.CharField(max_length=100, unique=True)),
             ],
         ),
         migrations.CreateModel(
-            name='CreditsLookUp',
+            name="CreditsLookUp",
             fields=[
-                ('action', models.CharField(max_length=200, primary_key=True, serialize=False)),
-                ('credit', models.PositiveIntegerField(default=None, null=True)),
+                ("action", models.CharField(max_length=200, primary_key=True, serialize=False)),
+                ("credit", models.PositiveIntegerField(default=None, null=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Event',
+            name="Event",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=100, unique=True)),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False)),
+                ("name", models.CharField(max_length=100, unique=True)),
             ],
         ),
         migrations.CreateModel(
-            name='ImageMeta',
+            name="ImageMeta",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False)),
-                ('caption', models.CharField(max_length=150, null=True)),
-                ('consent', models.BooleanField(default=False)),
-                ('approved', models.BooleanField(default=None, null=True)),
-                ('uploaded_on', models.DateTimeField(auto_now_add=True)),
-                ('category', models.ManyToManyField(to='rewards.Category')),
-                ('event_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rewards.event')),
-                ('location', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='recycle.zipcode')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False)),
+                ("caption", models.CharField(max_length=150, null=True)),
+                ("consent", models.BooleanField(default=False)),
+                ("approved", models.BooleanField(default=None, null=True)),
+                ("uploaded_on", models.DateTimeField(auto_now_add=True)),
+                ("category", models.ManyToManyField(to="rewards.Category")),
+                (
+                    "event_type",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="rewards.event"
+                    ),
+                ),
+                (
+                    "location",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="recycle.zipcode",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Image',
+            name="Image",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False)),
-                ('image', models.URLField(max_length=2000, unique=True)),
-                ('meta', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rewards.imagemeta')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False)),
+                ("image", models.URLField(max_length=2000, unique=True)),
+                (
+                    "meta",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="rewards.imagemeta"
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='EarnGreenCredits',
+            name="EarnGreenCredits",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False)),
-                ('earned_on', models.DateTimeField(auto_now_add=True)),
-                ('object_id', models.PositiveIntegerField()),
-                ('action', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='rewards.creditslookup')),
-                ('content_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='contenttypes.contenttype')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False)),
+                ("earned_on", models.DateTimeField(auto_now_add=True)),
+                ("object_id", models.PositiveIntegerField()),
+                (
+                    "action",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="rewards.creditslookup"
+                    ),
+                ),
+                (
+                    "content_type",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="contenttypes.contenttype"
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
+                    ),
+                ),
             ],
         ),
     ]

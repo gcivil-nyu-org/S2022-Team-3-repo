@@ -23,7 +23,8 @@ from django.core.paginator import Paginator
 from rewards.models import EarnGreenCredits
 from django.db.models import Sum, Window, F
 from django.db.models.functions import Rank
-from django.db.models.functions.window import RowNumber
+
+# from django.db.models.functions.window import RowNumber
 
 
 class PasswordResetView(auth_views.PasswordResetView):
@@ -276,28 +277,35 @@ def user_profile(request):
         user.save()
         messages.success(request, "Your details have been updated successfully")
         return redirect("accounts:user-profile")
-    
-    #earned_credits = EarnGreenCredits.objects.filter(user=request.user).aggregate(
+
+    # earned_credits = EarnGreenCredits.objects.filter(user=request.user).aggregate(
     #    Sum("action__credit")
-    #)
-    #calculate ranks
-    result = (EarnGreenCredits.objects.values('user').annotate(totalCredits=Sum('action__credit')).annotate(rank=Window(expression=Rank(), order_by=F('totalCredits').desc()))).order_by('rank')
+    # )
+    # calculate ranks
+    result = (
+        EarnGreenCredits.objects.values("user")
+        .annotate(totalCredits=Sum("action__credit"))
+        .annotate(rank=Window(expression=Rank(), order_by=F("totalCredits").desc()))
+    ).order_by("rank")
     try:
         earned_credits = result.filter(user=request.user)[0]
         print(earned_credits)
-        r = EarnGreenCredits.objects.values('user').annotate(totalCredits=Sum('action__credit')).filter(totalCredits__gt=earned_credits["totalCredits"]).count()+1
+        r = (
+            EarnGreenCredits.objects.values("user")
+            .annotate(totalCredits=Sum("action__credit"))
+            .filter(totalCredits__gt=earned_credits["totalCredits"])
+            .count()
+            + 1
+        )
         context = {
-        #"rank": earned_credits["rank"],
-        "rank": r,
-        "earned_credits": earned_credits["totalCredits"]
+            # "rank": earned_credits["rank"],
+            "rank": r,
+            "earned_credits": earned_credits["totalCredits"],
         }
-    
+
     except IndexError:
-        context = {
-        "rank": 'Not Available',
-        "earned_credits": 0
-        }
-    
+        context = {"rank": "Not Available", "earned_credits": 0}
+
     return render(request, "accounts/templates/user-profile.html", context)
 
 
