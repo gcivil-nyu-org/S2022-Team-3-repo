@@ -41,7 +41,6 @@ def index(request):
         bronze = None
         user3 = None
 
-  
     if request.user.is_authenticated:
         postNum = EarnGreenCredits.objects.filter(user=request.user, action="post").count()
         metaNum = EarnGreenCredits.objects.filter(user=request.user, action="image").count()
@@ -54,7 +53,7 @@ def index(request):
         # print(userImageMeta)
         ImgNum = Image.objects.filter(meta__pk__in=userImageMeta).count()
 
-        if postNum+metaNum == 0:
+        if postNum + metaNum == 0:
             rank = None
         else:
             rank = (
