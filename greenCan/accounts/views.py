@@ -281,7 +281,7 @@ def user_profile(request):
     #    Sum("action__credit")
     #)
     #calculate ranks
-    result = EarnGreenCredits.objects.values('user').annotate(totalCredits=Sum('action__credit')).annotate(rank=Window(expression=Rank(), order_by=F('totalCredits').desc()))
+    result = (EarnGreenCredits.objects.values('user').annotate(totalCredits=Sum('action__credit')).annotate(rank=Window(expression=Rank(), order_by=F('totalCredits').desc()))).order_by('rank')
     print(result)
     try:
         earned_credits = result.filter(user=request.user)[0]
