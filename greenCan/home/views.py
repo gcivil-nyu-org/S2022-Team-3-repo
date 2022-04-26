@@ -85,6 +85,5 @@ def index(request):
             "user2": user2,
             "user3": user3,
             "user": request.user,
-            # "post_num": postNum
         }
     return render(request, template_name=template_name, context=context)
