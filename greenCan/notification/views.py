@@ -42,16 +42,15 @@ def get_notifications(request):
 
     for p in page:
         is_read = p.is_read
-        created_on_year = p.created_on.year
-        created_on_month = p.created_on.month
-        created_on_day = p.created_on.day
+        created_on = p.created_on.strftime("%B %d' %Y - %I:%M:%S %p").split(" -")[0]
+        created_on_date = created_on.split("' ")[0]
+        created_on_year = created_on.split("' ")[1]
         message_type = p.message_type
         messages = (p.message).split("; ")
         n = {
             "is_read": is_read,
+            "created_on_date": created_on_date,
             "created_on_year": created_on_year,
-            "created_on_month": created_on_month,
-            "created_on_day": created_on_day,
             "message_type": message_type,
             "messages": messages
         }

@@ -46,7 +46,7 @@ Notifications | greenCan
 {% block main %}
 <div class="uk-container uk-padding">
     <div id="notification-container" class="uk-timeline">
-		<div class="uk-timeline-item">
+		<!-- <div class="uk-timeline-item">
             <div class="uk-timeline-icon">
                 <span class="uk-badge"><span uk-icon="check"></span></span>
             </div>
@@ -63,9 +63,9 @@ Notifications | greenCan
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
-    <div class="loader"><span id="load-more" class="uk-margin-small-right" uk-icon="triangle-down"></span>Load more</div>
+    <div class="loader"><span id="load-more" style="color: #6abe52; cursor: pointer; font-weight: bold;"><span class="uk-margin-small-right" uk-icon="triangle-down"></span>LOAD MORE</span></div>
 </div>
 {% endblock %}
 
@@ -79,19 +79,18 @@ Notifications | greenCan
     $(document).ready(function(){
         let page = 1;
         let hasNext = true;
-        $('.load-more').click(function(){
+        $('#load-more').click(function(){
             put_more_data();
         });
 
         function createNotificationCards(notifications){
             $.each(notifications, function(key, notification){
-                let n = '<div class="uk-timeline-item"></div><div class="uk-timeline-icon">\
-                    <span class="uk-badge"><span uk-icon="check"></span></span><div class="uk-timeline-content">\
+                let n = '<div class="uk-timeline-item"><div class="uk-timeline-icon">\
+                    <span class="uk-badge"><span uk-icon="check"></span></span></div><div class="uk-timeline-content">\
                     <div class="uk-card uk-card-default uk-margin-medium-bottom uk-overflow-auto">\
                     <div class="uk-card-header"><div class="uk-grid-small uk-flex-middle" uk-grid>\
-                    <h3 class="uk-card-title"><time datetime="2020-07-08">' + notification['created_on_year'] + '-'
-                    + notification['created_on_month'] + '-' + notification['created_on_day'] + '</time>\
-                    </h3>';
+                    <h3 class="uk-card-title"><time>' + notification['created_on_date'] +
+                    '&nbsp&nbsp&nbsp' + notification['created_on_year'] + '</time></h3>';
                 
                 if(notification['message_type'] == "approved"){
                     n += '<span class="uk-label uk-label-success uk-margin-auto-left">'
@@ -113,7 +112,15 @@ Notifications | greenCan
                 }
                 else{
                     for(let i=0; i < notification['messages'].length; i++){
-                        n += '<p style="color: red;">' + notification['messages'][i] + '</p>';
+                        if(notification['message_type'] == "approved"){
+                            n += '<p style="color: #32d296;">' + notification['messages'][i] + '</p>';
+                        }
+                        else if(notification['message_type'] === "denied"){
+                            n += '<p style="color: #f0506e;">' + notification['messages'][i] + '</p>';
+                        }
+                        else{
+                            n += '<p style="color: #faa05a;">' + notification['messages'][i] + '</p>';
+                        }
                     }
                 }
 
