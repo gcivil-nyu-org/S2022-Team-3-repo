@@ -24,34 +24,24 @@ def index(request):
         gold = result[0]
         user1 = User.objects.get(pk=gold["user"])
     except IndexError:
-        gold = "null"
-        user1 = "null"
+        gold = None
+        user1 = None
 
     try:
         silver = result[1]
         user2 = User.objects.get(pk=silver["user"])
     except IndexError:
-        silver = "null"
-        user2 = "null"
+        silver = None
+        user2 = None
 
     try:
         bronze = result[2]
         user3 = User.objects.get(pk=bronze["user"])
     except IndexError:
-        bronze = "null"
-        user3 = "null"
+        bronze = None
+        user3 = None
 
-    # context = {
-    #   "gold": gold,
-    #  "silver": silver,
-    # "bronze": bronze,
-    # "user1": user1,
-    # "user2": user2,
-    # "user3": user3,
-    # "user": request.user,
-    # "post_num": postNum
-    # }
-
+  
     if request.user.is_authenticated:
         postNum = EarnGreenCredits.objects.filter(user=request.user, action="post").count()
         metaNum = EarnGreenCredits.objects.filter(user=request.user, action="image").count()
@@ -63,15 +53,17 @@ def index(request):
         ).values_list("object_id", flat=True)
         # print(userImageMeta)
         ImgNum = Image.objects.filter(meta__pk__in=userImageMeta).count()
-        # print(totalImg)
 
-        rank = (
-            EarnGreenCredits.objects.values("user")
-            .annotate(totalCredits=Sum("action__credit"))
-            .filter(totalCredits__gt=earned_credits["action__credit__sum"])
-            .count()
-            + 1
-        )
+        if postNum+metaNum == 0:
+            rank = None
+        else:
+            rank = (
+                EarnGreenCredits.objects.values("user")
+                .annotate(totalCredits=Sum("action__credit"))
+                .filter(totalCredits__gt=earned_credits["action__credit__sum"])
+                .count()
+                + 1
+            )
         context = {
             "gold": gold,
             "silver": silver,
