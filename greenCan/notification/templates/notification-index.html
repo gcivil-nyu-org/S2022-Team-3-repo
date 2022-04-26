@@ -40,32 +40,19 @@ Notifications | greenCan
     flex: 1 1 auto;
     padding: 0 0 0 1rem;
 }
+
 </style>
 {% endblock %}
 
 {% block main %}
 <div class="uk-container uk-padding">
-    <div id="notification-container" class="uk-timeline">
-		<!-- <div class="uk-timeline-item">
-            <div class="uk-timeline-icon">
-                <span class="uk-badge"><span uk-icon="check"></span></span>
-            </div>
-            <div class="uk-timeline-content">
-                <div class="uk-card uk-card-default uk-margin-medium-bottom uk-overflow-auto">
-                    <div class="uk-card-header">
-                        <div class="uk-grid-small uk-flex-middle" uk-grid>
-                            <h3 class="uk-card-title"><time datetime="2020-07-06">July 6</time></h3>
-                            <span class="uk-label uk-label-danger uk-margin-auto-left">Fix</span>
-                        </div>
-                    </div>
-                    <div class="uk-card-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
-                    </div>
-                </div>
-            </div>
-        </div> -->
+    <div id="notification-container" class="uk-timeline"></div>
+    <div class="loader">
+        <span id="load-more" style="color: #6abe52; cursor: pointer; font-weight: bold;">
+            <span class="uk-margin-small-right" uk-icon="triangle-down"></span>
+            LOAD MORE
+        </span>
     </div>
-    <div class="loader"><span id="load-more" style="color: #6abe52; cursor: pointer; font-weight: bold;"><span class="uk-margin-small-right" uk-icon="triangle-down"></span>LOAD MORE</span></div>
 </div>
 {% endblock %}
 
@@ -88,21 +75,21 @@ Notifications | greenCan
                 let n = '<div class="uk-timeline-item"><div class="uk-timeline-icon">\
                     <span class="uk-badge"><span uk-icon="check"></span></span></div><div class="uk-timeline-content">\
                     <div class="uk-card uk-card-default uk-margin-medium-bottom uk-overflow-auto">\
-                    <div class="uk-card-header"><div class="uk-grid-small uk-flex-middle" uk-grid>\
+                    <div class="uk-card-header" style="width: 800px !important;"><div class="uk-grid-small uk-flex-middle" uk-grid>\
                     <h3 class="uk-card-title"><time>' + notification['created_on_date'] +
                     '&nbsp&nbsp&nbsp' + notification['created_on_year'] + '</time></h3>';
                 
                 if(notification['message_type'] == "approved"){
                     n += '<span class="uk-label uk-label-success uk-margin-auto-left">'
-                        + notification['message_type'] + '</span></div></div><div class="uk-card-body">';
+                        + notification['message_type'] + '</span></div></div><div class="uk-card-body" style="width: 800px !important;">';
                 }
                 else if(notification['message_type'] === "denied"){
                     n += '<span class="uk-label uk-label-danger uk-margin-auto-left">'
-                        + notification['message_type'] + '</span></div></div><div class="uk-card-body">';
+                        + notification['message_type'] + '</span></div></div><div class="uk-card-body" style="width: 800px !important;">';
                 }
                 else{
                     n += '<span class="uk-label uk-label-warning uk-margin-auto-left">'
-                        + notification['message_type'] + '</span></div></div><div class="uk-card-body">';
+                        + notification['message_type'] + '</span></div></div><div class="uk-card-body" style="width: 800px !important;">';
                 }
 
                 if(notification['is_read'] == true){
