@@ -2,7 +2,7 @@
 <div class = "anniversary-container" style="background-color: #21212D; width: 100%;">
     <div class = "row">
         <div class = "col-md-6" style="text-align: center; margin-top: 10%; justify-content: center;">
-            <b style="color: aliceblue; font-size: xx-large;">🎊 <u>User 1</u>, Congratulations 🎊</b>
+            <b style="color: aliceblue; font-size: xx-large;">🎊 <u>{{user.get_full_name}}</u>, Congratulations 🎊</b>
     
             <div class = "stat" style="color: aliceblue; font-size: x-large; text-align: left;padding-left: 20%;">
                 <br>
@@ -18,19 +18,19 @@
 <div class = "pics" style=" position: relative;padding-bottom: 0;">
     <img style = "max-width:85%; height: auto;" src ="{% static 'images/homePage/ranking.png' %}">
     <div class = "winner" style="position: absolute;top: 33%;left: 42%;transform: translate(-50%, -50%);text-align: center;background-color: rgba(255, 174, 0, 0.751);border-radius: 10%;padding: 1%;">
-        <img height="90vh" src ="{% static 'images/avatar/27.svg' %}" style="padding: 0;margin:0;">
-        <h3 style="margin: 0; padding: 0; color:black;">User 1</h3>
-        <p style="margin: 0; padding: 0; "><img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"> 6,485 <img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"></p>
+        <img height="90vh" src ="{{user1.avatar}}" style="padding: 0;margin:0;">
+        <h3 style="margin: 0; padding: 0; color:black;">{{user1.get_full_name}}</h3>
+        <p style="margin: 0; padding: 0; "><img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"> {{gold.totalCredits}} <img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"></p>
     </div>
     <div class = "winner" style="position: absolute;top: 50%;left: 18%;transform: translate(-50%, -50%);text-align: center;background-color: rgba(70, 70, 70, 0.861);border-radius: 10%;padding: 1%;">
-        <img height="90vh" src ="{% static 'images/avatar/19.svg' %}" style="padding: 0;margin:0;">
-        <h3 style="margin: 0; padding: 0; color:antiquewhite;">User 2</h3>
-        <p style="margin: 0; padding: 0; color: antiquewhite;"><img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"> 5,730 <img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"></p>
+        <img height="90vh" src ="{{user2.avatar}}" style="padding: 0;margin:0;">
+        <h3 style="margin: 0; padding: 0; color:antiquewhite;">{{user2.get_full_name}}</h3>
+        <p style="margin: 0; padding: 0; color: antiquewhite;"><img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"> {{silver.totalCredits}} <img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"></p>
     </div>
     <div class = "winner" style="position: absolute;top: 55%;left: 65%;transform: translate(-50%, -50%);text-align: center;background-color: rgba(132, 83, 30, 0.849);border-radius: 10%;padding: 1%;">
-        <img height="90vh" src ="{% static 'images/avatar/30.svg' %}" style="padding: 0;margin:0;">
-        <h3 style="margin: 0; padding: 0; color:antiquewhite;">User 3</h3>
-        <p style="margin: 0; padding: 0; color: antiquewhite;"><img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"> 5,005 <img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"></p>
+        <img height="90vh" src ="{{user3.avatar}}" style="padding: 0;margin:0;">
+        <h3 style="margin: 0; padding: 0; color:antiquewhite;">{{user3.get_full_name}} </h3>
+        <p style="margin: 0; padding: 0; color: antiquewhite;"><img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;">{{bronze.totalCredits}} <img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"></p>
     </div>
 </div>
 </div>

@@ -21,7 +21,9 @@ from recycle.models import ZipCode
 from django.utils.html import strip_tags
 from django.core.paginator import Paginator
 from rewards.models import EarnGreenCredits
-from django.db.models import Sum
+from django.db.models import Sum, Window, F
+from django.db.models.functions import Rank
+from django.db.models.functions.window import RowNumber
 
 
 class PasswordResetView(auth_views.PasswordResetView):
@@ -274,14 +276,27 @@ def user_profile(request):
         user.save()
         messages.success(request, "Your details have been updated successfully")
         return redirect("accounts:user-profile")
-    earned_credits = EarnGreenCredits.objects.filter(user=request.user).aggregate(
-        Sum("action__credit")
-    )
-    context = {
-        "earned_credits": earned_credits["action__credit__sum"]
-        if earned_credits["action__credit__sum"]
-        else 0
-    }
+    
+    #earned_credits = EarnGreenCredits.objects.filter(user=request.user).aggregate(
+    #    Sum("action__credit")
+    #)
+    #calculate ranks
+    result = EarnGreenCredits.objects.values('user').annotate(totalCredits=Sum('action__credit')).annotate(rank=Window(expression=Rank(), order_by=F('totalCredits').desc()))
+    print(result)
+    try:
+        earned_credits = result.filter(user=request.user)[0]
+        print(earned_credits)
+        context = {
+        "rank": earned_credits["rank"],
+        "earned_credits": earned_credits["totalCredits"]
+        }
+    
+    except IndexError:
+        context = {
+        "rank": 'Not Available',
+        "earned_credits": 0
+        }
+    
     return render(request, "accounts/templates/user-profile.html", context)
 
 
