@@ -15,7 +15,7 @@ set path for homepage
 def index(request):
     template_name = "home/templates/index.html"
     result = EarnGreenCredits.objects.values('user').annotate(totalCredits=Sum('action__credit')).annotate(rank=Window(expression=Rank(), order_by=F('totalCredits').desc()))
-    #logs = EarnGreenCredits.objects.filter(user=request.user, action="post")
+    postNum = EarnGreenCredits.objects.filter(user=request.user, action="post").count()
     try:
         gold = result[0]
         user1 = User.objects.get(pk=gold["user"])
@@ -45,6 +45,7 @@ def index(request):
         "user1": user1,
         "user2": user2,
         "user3": user3,
-        "user": request.user
+        "user": request.user,
+        "post_num": postNum
     }
     return render(request, template_name=template_name, context=context)
