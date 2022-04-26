@@ -1,6 +1,6 @@
 {% extends 'template.html' %}
 {% load static %}
-
+{% load notifications_tags %}
 {% block title %}
 Notifications | greenCan
 {% endblock %}
@@ -33,6 +33,7 @@ Notifications | greenCan
 	margin-top: 20px;
     width: 40px;
     height: 40px;
+    background-color: #6abe52;
 }
 
 .uk-timeline .uk-timeline-item .uk-timeline-content {
@@ -45,6 +46,7 @@ Notifications | greenCan
 {% endblock %}
 
 {% block main %}
+{% live_notify_badge %}
 <div class="uk-container uk-padding">
     <div id="notification-container" class="uk-timeline"></div>
     <div class="loader">
@@ -61,6 +63,8 @@ Notifications | greenCan
 <script src="{% static 'modules/uikit-3.13.10/js/uikit3_4.min.js' %}"></script>
 <script src="{% static 'modules/uikit-3.13.10/js/uikit-icons.min.js' %}"></script>
 <script src="{% static 'modules/uikit-3.13.10/js/uikit.min.js' %}"></script>
+<script src="{% static 'js/notify.js' %}"></script>
+{% register_notify_callbacks callbacks='fill_notification_badge' %}
 
 <script>
     $(document).ready(function(){
@@ -76,8 +80,7 @@ Notifications | greenCan
                     <span class="uk-badge"><span uk-icon="check"></span></span></div><div class="uk-timeline-content">\
                     <div class="uk-card uk-card-default uk-margin-medium-bottom uk-overflow-auto">\
                     <div class="uk-card-header" style="width: 800px !important;"><div class="uk-grid-small uk-flex-middle" uk-grid>\
-                    <h3 class="uk-card-title"><time>' + notification['created_on_date'] +
-                    '&nbsp&nbsp&nbsp' + notification['created_on_year'] + '</time></h3>';
+                    <h3 class="uk-card-title"><time>' + notification['created_on_date'] + '</time></h3>';
                 
                 if(notification['message_type'] == "approved"){
                     n += '<span class="uk-label uk-label-success uk-margin-auto-left">'

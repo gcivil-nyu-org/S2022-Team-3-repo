@@ -56,12 +56,12 @@
 					</ul>
 					{% if user.is_authenticated %}
 					<div class="notification-btn-container align-right" style="width: 120px;">
-						<div>
+						<div id="notification">
 							<i class="fas fa-bell" style="color: white; font-size: 2em; padding-top: 8%;"></i>
 						</div>
 					</div>
 					<div class="profile-btn-container">
-						<div class="dropdown">
+						<div id="profile-dropdown" class="dropdown">
 							<a class="btn btn-secondary dropdown-toggle d-flex align-items-center px-3" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 								{% if user.avatar %}
 									<img style="height: 35px !important;" src="{{ user.avatar | escape }}">
@@ -71,7 +71,7 @@
 									<span class="align-middle text-white name">{{ user.get_full_name | escape }}</span>
 							</a>
 						  
-							<div class="dropdown-menu d-none" id="dropdown-menu" aria-labelledby="dropdownMenuLink">
+							<div class="dropdown-menu d-none" id="profile-dropdown-menu" aria-labelledby="dropdownMenuLink">
 							  <a class="dropdown-item" href="{% url 'accounts:user-profile' %}">My Profile</a>
 							  <a class="dropdown-item" href="{% url 'reuse:my-posts' %}">My Posts</a>
 							  <a class="dropdown-item" href="{% url 'notification:index' %}">Notifications</a>

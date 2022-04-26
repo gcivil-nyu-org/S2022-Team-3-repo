@@ -41,8 +41,8 @@
 			}
 		});
 		
-		 $('.dropdown').hover(function(){
-			$('.dropdown-menu').toggleClass('d-none');
+		 $('#profile-dropdown').hover(function(){
+			$('#profile-dropdown-menu').toggleClass('d-none');
 		 });
 
 		// Title Bar.
