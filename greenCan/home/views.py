@@ -16,10 +16,6 @@ def index(request):
     template_name = "home/templates/index.html"
     result = EarnGreenCredits.objects.values('user').annotate(totalCredits=Sum('action__credit')).annotate(rank=Window(expression=Rank(), order_by=F('totalCredits').desc()))
     #postNum = EarnGreenCredits.objects.filter(user=request.user, action="post").count()
-    if request.user:
-        print("I am NOT none")
-    else:
-        print("I am none")
     try:
         gold = result[0]
         user1 = User.objects.get(pk=gold["user"])
@@ -41,8 +37,39 @@ def index(request):
         bronze = 'null'
         user3 = 'null'
     
-    #print(result)
-    context = {
+    
+    #context = {
+     #   "gold": gold,
+      #  "silver": silver,
+       # "bronze": bronze,
+        #"user1": user1,
+        #"user2": user2,
+        #"user3": user3,
+        #"user": request.user,
+        #"post_num": postNum
+    #}
+
+    if request.user.is_authenticated:
+        postNum = EarnGreenCredits.objects.filter(user=request.user, action="post").count()
+        #imageNum = EarnGreenCredits.objects.filter(user=request.user, action="image").count()
+        earned_credits = EarnGreenCredits.objects.filter(user=request.user).aggregate(
+            Sum("action__credit")
+        )
+        print(earned_credits)
+        rank = EarnGreenCredits.objects.values('user').annotate(totalCredits=Sum('action__credit')).filter(totalCredits__gt=earned_credits["action__credit__sum"]).count()+1
+        context = {
+        "gold": gold,
+        "silver": silver,
+        "bronze": bronze,
+        "user1": user1,
+        "user2": user2,
+        "user3": user3,
+        "user": request.user,
+        "post_num": postNum,
+        "rank": rank
+    }
+    else:
+        context = {
         "gold": gold,
         "silver": silver,
         "bronze": bronze,
