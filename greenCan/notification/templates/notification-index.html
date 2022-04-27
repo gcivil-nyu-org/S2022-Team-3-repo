@@ -88,17 +88,17 @@ Notifications | greenCan
                     <div class="uk-card-header" style="width: 800px !important;"><div class="uk-grid-small uk-flex-middle" uk-grid>\
                     <h3 class="uk-card-title"><time>' + notification['created_on_date'] + '</time></h3>';
                 
-                if(notification['message_type'] == "approved"){
+                if(notification['message_type'] == "success"){
                     n += '<span class="uk-label uk-label-success uk-margin-auto-left">'
-                        + notification['message_type'] + '</span></div></div><div class="uk-card-body" style="width: 800px !important;">';
+                        + 'Success' + '</span></div></div><div class="uk-card-body" style="width: 800px !important;">';
                 }
-                else if(notification['message_type'] === "denied"){
+                else if(notification['message_type'] === "error"){
                     n += '<span class="uk-label uk-label-danger uk-margin-auto-left">'
-                        + notification['message_type'] + '</span></div></div><div class="uk-card-body" style="width: 800px !important;">';
+                        + 'Error' + '</span></div></div><div class="uk-card-body" style="width: 800px !important;">';
                 }
                 else{
                     n += '<span class="uk-label uk-label-warning uk-margin-auto-left">'
-                        + notification['message_type'] + '</span></div></div><div class="uk-card-body" style="width: 800px !important;">';
+                        + 'Info' + '</span></div></div><div class="uk-card-body" style="width: 800px !important;">';
                 }
 
                 if(notification['is_read'] == true){
@@ -108,10 +108,10 @@ Notifications | greenCan
                 }
                 else{
                     for(let i=0; i < notification['messages'].length; i++){
-                        if(notification['message_type'] == "approved"){
+                        if(notification['message_type'] == "success"){
                             n += '<p style="color: #32d296;">' + notification['messages'][i] + '</p>';
                         }
-                        else if(notification['message_type'] === "denied"){
+                        else if(notification['message_type'] === "error"){
                             n += '<p style="color: #f0506e;">' + notification['messages'][i] + '</p>';
                         }
                         else{
