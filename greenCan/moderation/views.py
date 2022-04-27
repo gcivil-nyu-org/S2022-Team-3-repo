@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import user_passes_test
-from rewards.models import ImageMeta
+from rewards.models import ImageMeta, EarnGreenCredits, CreditsLookUp
 from reuse.models import Post
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
@@ -34,13 +34,16 @@ def review_post(request, id):
                 id = request.POST["approve"]
                 post = Post.objects.get(id=int(id))
                 post.approved = True
-                # add credit to approved post
-                # EarnGreenCredits.objects.create(
-                #     content_object=post,
-                #     action=CreditsLookUp.objects.get(action="post"),
-                #     user=post.user
-                # )
                 post.save()
+
+                # add credit to approved post
+                EarnGreenCredits.objects.create(
+                    object_id=post.id,
+                    content_object=post,
+                    action=CreditsLookUp.objects.get(action="post"),
+                    user=post.user,
+                )
+
                 log = VolunteerLogs(content_object=post, reason=reasons, approved_by=sender.email)
                 log.save()
                 # send notification to user
@@ -139,6 +142,14 @@ def review_credit_request(request, id):
                 img_meta = ImageMeta.objects.get(id=int(id))
                 img_meta.approved = True
                 img_meta.save()
+
+                EarnGreenCredits.objects.create(
+                    object_id=img_meta.id,
+                    content_object=img_meta,
+                    action=CreditsLookUp.objects.get(action="image"),
+                    user=img_meta.user,
+                )
+
                 log = VolunteerLogs(
                     content_object=img_meta, reason=reasons, approved_by=sender.email
                 )

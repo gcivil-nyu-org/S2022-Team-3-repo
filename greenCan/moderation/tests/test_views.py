@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from reuse.models import Post
 from recycle.models import ZipCode
 from django.core import mail
+from rewards.models import CreditsLookUp
 
 User = get_user_model()
 
@@ -191,6 +192,8 @@ class TestSubmissionActions(TestCase):
         )
         self.post.save()
         self.url = reverse("moderation:review-post", kwargs={"id": self.post.id})
+        CreditsLookUp.objects.create(action="image", credit=5)
+        CreditsLookUp.objects.create(action="post", credit=10)
 
     def test_post_approval_email_status(self):
         self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
