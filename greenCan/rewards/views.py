@@ -91,14 +91,6 @@ def earn_rewards(request):
             )
             meta.save()
 
-            # test: earn credits without approve
-            EarnGreenCredits.objects.create(
-                object_id=meta.id,
-                content_object=meta,
-                action=CreditsLookUp.objects.get(action="image"),
-                user=user,
-            )
-
             if categories:
                 for cat_id in categories:
                     cat_id = int(cat_id)
