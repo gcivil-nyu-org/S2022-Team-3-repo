@@ -11,7 +11,6 @@ from django.contrib import messages
 from uuid import uuid4
 from django.utils.html import strip_tags
 import sys
-from rewards.models import EarnGreenCredits, CreditsLookUp
 
 
 @login_required

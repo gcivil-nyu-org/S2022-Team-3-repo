@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from reuse.models import Post
 from recycle.models import ZipCode
 from django.core import mail
+
 User = get_user_model()
 
 

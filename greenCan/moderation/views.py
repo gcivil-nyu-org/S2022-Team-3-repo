@@ -10,6 +10,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from notification.utils import create_notification
 from accounts.utils import send_user_email, send_user_email_with_reasons
 
+
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def index(request):
