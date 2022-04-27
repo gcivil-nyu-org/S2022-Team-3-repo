@@ -4,7 +4,6 @@ from ..models import VolunteerLogs
 
 
 class TestModerationModels(TestCase):
-
     def test_log_model(self):
         log = baker.make("moderation.VolunteerLogs")
         self.assertIsInstance(log, VolunteerLogs)
