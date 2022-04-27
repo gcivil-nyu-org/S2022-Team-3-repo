@@ -15,10 +15,9 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 from accounts import views
 from reuse.admin import volunteer_site
-
 
 admin.site.site_header = "GreenCan Admin/Volunteer Panel"
 admin.site.site_title = "GreenCan Admin/Volunteer Panel"
@@ -37,6 +36,7 @@ urlpatterns = [
     path("social/", include("allauth.urls"), name="social"),
     path("notification/", include("notification.urls")),
     path("volunteer/", include("moderation.urls")),
+    re_path("^inbox/notifications/", include("notifications.urls", namespace="notifications")),
 ]
 
 handler400 = "helper.views.error_400"

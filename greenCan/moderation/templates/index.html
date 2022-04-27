@@ -127,9 +127,9 @@ Moderation
                     <tr>
                       <td>{{ forloop.counter }}</td>
                       <td>{{ request.caption | title | truncatechars:30 }}</td>
-                      <td>{{ request.meta.uploaded_on }}</td>
+                      <td>{{ request.uploaded_on }}</td>
                       <td><div class="badge badge-warning badge-round">Pending</div></td>
-                      <td>/volunteer/review/image/{{request.id}}</td>
+                      <td>/volunteer/review/credit-request/{{request.id}}</td>
                     </tr>
                   {% endfor %}
               </table>
@@ -186,7 +186,7 @@ Moderation
       });
 
       $('#credit-request-table tbody').on('click', 'tr', function () {
-            var data = postTable.row( this ).data();
+            var data = creditTable.row( this ).data();
             window.open(data[4],'_self');
       });
     });

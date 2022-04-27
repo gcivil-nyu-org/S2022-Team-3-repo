@@ -1,6 +1,6 @@
 from django.test import SimpleTestCase
 from django.urls import reverse, resolve
-from moderation.views import index, review_post
+from moderation.views import index, review_post, review_credit_request
 
 
 class TestUrls(SimpleTestCase):
@@ -21,3 +21,12 @@ class TestUrls(SimpleTestCase):
         self.assertEquals(resolve(url).func, review_post)
         self.assertEquals(resolve(url).namespace, "moderation")
         self.assertEquals(url, "/volunteer/review/post/1")
+
+    def test_credit_post_url_is_resolved(self):
+        """
+        test credit post is resolved
+        """
+        url = reverse("moderation:review-credit", kwargs={"id": 1})
+        self.assertEquals(resolve(url).func, review_credit_request)
+        self.assertEquals(resolve(url).namespace, "moderation")
+        self.assertEquals(url, "/volunteer/review/credit-request/1")

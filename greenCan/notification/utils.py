@@ -1,18 +1,23 @@
 from notifications.signals import notify
-from .models import Notification
+from rewards.models import ImageMeta
 
 
 def create_notification(notification):
     sender = notification.get("sender")
     receiver = notification.get("receiver")
+    notification_obj = notification.get("notification_obj")
+    verb_str = "post"
+    if type(notification_obj) == ImageMeta:
+        verb_str = "imagemeta"
+
+    message_type = notification.get("msg_type")
     message = notification.get("message")
-    msg_type = notification.get("msg_type")
 
-    notification = Notification(
-        user=receiver,
-        message=message,
-        message_type=msg_type,
+    notify.send(
+        sender=sender,
+        recipient=receiver,
+        verb=verb_str,
+        level=message_type,
+        action_object=notification_obj,
+        description=message,
     )
-    notification.save()
-
-    notify.send(sender, recipient=receiver, verb="Notification", description=message)
