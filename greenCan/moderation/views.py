@@ -44,6 +44,7 @@ def review_post(request, id):
                     "receiver": receiver,
                     "msg_type": msg_type,
                     "message": message,
+                    "notification_obj": post,
                 }
                 create_notification(notification)
                 print("the post is approved")
@@ -74,6 +75,7 @@ def review_post(request, id):
                     "receiver": receiver,
                     "msg_type": msg_type,
                     "message": message,
+                    "notification_obj": post,
                 }
                 create_notification(notification)
 
