@@ -29,7 +29,9 @@ get all notifications of an input page number for a specific user
 
 @login_required
 def get_notifications(request):
-    notificationObjects = Notification.objects.filter(recipient=request.user).order_by("-timestamp")
+    notificationObjects = Notification.objects.filter(recipient=request.user).order_by(
+        "-timestamp"
+    )
     max_count = int(request.POST.get("max", 1))
     notificationObjects = Paginator(notificationObjects, max_count)
     page_number = int(request.POST.get("page", 1))
@@ -45,7 +47,7 @@ def get_notifications(request):
             "is_read": is_read,
             "created_on_date": created_on,
             "message_type": message_type,
-            "messages": descriptions
+            "messages": descriptions,
         }
         page_notifications.append(n)
         if p.unread:

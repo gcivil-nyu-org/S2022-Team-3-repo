@@ -240,6 +240,6 @@ AUTHENTICATION_BACKENDS = [
     "django.contrib.auth.backends.ModelBackend",  # authenticate using django
     "allauth.account.auth_backends.AuthenticationBackend",
 ]
-NOTIFICATIONS_NOTIFICATION_MODEL = 'notification.Notification'
+NOTIFICATIONS_NOTIFICATION_MODEL = "notification.Notification"
 SOCIAL_AUTH_URL_NAMESPACE = "social"
 django_heroku.settings(locals(), test_runner=False)
