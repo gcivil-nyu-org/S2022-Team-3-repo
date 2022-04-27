@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 from reuse.models import Post
 from recycle.models import ZipCode
+from django.core import mail
 
 User = get_user_model()
 
@@ -151,3 +152,69 @@ class TestReviewPost(TestCase):
         self.client.force_login(volunteer, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url_1)
         self.assertTemplateUsed(response, "moderation/templates/review-post.html")
+
+
+class TestSubmissionActions(TestCase):
+    """
+    1. use admin to take latest post and set it to unknown
+    2. use a staffs account to
+    """
+
+    def setUp(self):
+        self.user = User.objects.create(
+            email="testemail1@gmail.com",
+            password="password1",
+            first_name="john",
+            last_name="doe",
+        )
+        zipcode = ZipCode(
+            zip_code="10001",
+            state_id="NY",
+            state="New York",
+            borough="Manhattan",
+            centroid_latitude=40.75021293296376,
+            centroid_longitude=-73.99692994900218,
+            polygon="",
+        )
+        self.user.staff = True
+        self.user.save()
+        zipcode.save()
+        self.post = Post(
+            title="Apple",
+            category="Books",
+            phone_number="9175185345",
+            email="pb2640@nyu.edu",
+            zip_code=zipcode,
+            description=" Book on apple",
+            user=self.user,
+        )
+        self.post.save()
+        self.url = reverse("moderation:review-post", kwargs={"id": self.post.id})
+
+    def test_post_approval_email_status(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        data = {"approve": self.post.id}
+        response = self.client.post(self.url, data, follow=True)
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, "moderation/templates/index.html")
+
+    def test_post_approval_email_subject(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        data = {"approve": self.post.id}
+        self.client.post(self.url, data, follow=True)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, "Post " + str(self.post.title) + " approved")
+
+    def test_post_denial_email_response(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        data = {"deny": self.post.id}
+        response = self.client.post(self.url, data, follow=True)
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, "moderation/templates/index.html")
+
+    def test_post_denial_email_subject(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        data = {"deny": self.post.id, "check1": "check1 reason"}
+        self.client.post(self.url, data, follow=True)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, "Post " + str(self.post.title) + " denied")

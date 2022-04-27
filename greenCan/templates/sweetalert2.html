@@ -10,19 +10,27 @@ else show message with error icon -->
                 {% for message in messages %}
                     {% if message.tags == 'success' %}
                         <script>    
-                        Swal.fire(
-                        'Saved!',
-                        `{{ message }}`,
-                        'success'
-                        );
+                        Swal.fire({
+                        title:'Saved!',
+                       text:`{{ message }}`,
+                        icon:'success',
+                        confirmButtonColor:'#6ABE52',
+                        backdrop: `
+                            rgba(0,0,123,0.4)
+                            url("/static/images/gifs/cat.gif")
+                            left top
+                            no-repeat
+                        `
+                        });
                         </script>
                     {% else %}
-                    <script>    
-                        Swal.fire(
-                        'Error Occured!',
-                        `{{ message }}`,
-                        'error'
-                        );
+                    <script>  
+                    Swal.fire({
+                        title:'Error Occured!',
+                       text:`{{ message }}`,
+                        icon:'error',
+                        confirmButtonColor:'#6ABE52',
+                        });  
                 </script>
                     {% endif %}
                 {% endfor %}

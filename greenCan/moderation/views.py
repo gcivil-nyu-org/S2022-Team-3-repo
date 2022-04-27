@@ -6,8 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from .models import VolunteerLogs
-
+from django.contrib.sites.shortcuts import get_current_site
 from notification.utils import create_notification
+from accounts.utils import send_user_email, send_user_email_with_reasons
 
 
 @login_required
@@ -25,15 +26,19 @@ def index(request):
 def review_post(request, id):
     id = int(id)
     template_name = "moderation/templates/review-post.html"
-    print(request.method)
     if request.method == "POST":
         try:
             sender = request.user
-
             if "approve" in request.POST:
                 id = request.POST["approve"]
                 post = Post.objects.get(id=id)
                 post.approved = True
+                # add credit to approved post
+                # EarnGreenCredits.objects.create(
+                #     content_object=post,
+                #     action=CreditsLookUp.objects.get(action="post"),
+                #     user=post.user
+                # )
                 post.save()
                 # send notification to user
                 receiver = post.user
@@ -47,7 +52,20 @@ def review_post(request, id):
                     "notification_obj": post,
                 }
                 create_notification(notification)
-                print("the post is approved")
+
+                current_site = get_current_site(request)
+
+                mail_subject = "Post " + str(post.title) + " approved"
+                response = send_user_email(
+                    receiver,
+                    mail_subject,
+                    receiver.email,
+                    current_site,
+                    "email/post-approval.html",
+                    "email/post-approval-no-style.html",
+                )
+                if response != "success":
+                    raise Exception("Failed to send email")
                 messages.success(request, "Post Approved")
                 return redirect("moderation:index")
 
@@ -65,7 +83,7 @@ def review_post(request, id):
                     reasons.append(request.POST["check3"])
                 if "description" in request.POST:
                     reasons.append(request.POST["description"])
-                log = VolunteerLogs(post=post, reason=reasons)
+                log = VolunteerLogs(post=post, reason=reasons, approved_by=sender)
                 log.save()
                 receiver = post.user
                 msg_type = "denied"
@@ -78,12 +96,24 @@ def review_post(request, id):
                     "notification_obj": post,
                 }
                 create_notification(notification)
+                current_site = get_current_site(request)
 
+                mail_subject = "Post " + str(post.title) + " denied"
+                response = send_user_email_with_reasons(
+                    receiver,
+                    mail_subject,
+                    receiver.email,
+                    current_site,
+                    "email/post-denied.html",
+                    "email/post-denied-no-style.html",
+                    reasons,
+                )
+                if response != "success":
+                    raise Exception("Failed to send email")
                 messages.success(request, "Post Denied")
                 return redirect("moderation:index")
 
-        except Exception as e:
-            print(e)
+        except Exception:
             messages.error(request, "Post approval Failed, contact admin")
         context = {}
         return render(request, template_name=template_name, context=context)
@@ -96,5 +126,4 @@ def review_post(request, id):
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def post_approval(request):
-
     return redirect("reuse:my-posts")

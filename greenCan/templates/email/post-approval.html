@@ -1,0 +1,68 @@
+{% load static %}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+     	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+     	<title>Post Approval</title>
+     	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style>
+            body {
+                width: 50vw;
+                display: block;
+            }
+            .btn {
+                height: 50px;
+                border-radius: 25px;
+                padding: 10px 20px;
+                text-decoration: none;
+                color: #fff !important;
+                background-color: #6abe52;
+            }
+            header {
+                height: 70px;
+                background-color: #fff;
+                justify-content: center;
+            }
+            footer{
+                height: 20px;
+                padding: 10px;
+                justify-content: center;
+                background-color: #21212d;
+                color: #fff;
+            }
+            main {
+                padding: 40px;
+                min-height: 50vh;
+                text-align: justify;
+            }
+            .text-green {
+                color: #6abe52 !important;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <img src="https://greencan.herokuapp.com/static/images/icons/full-logo.png" alt="greenCan" height="40">
+        </header>
+        <main>
+            {% autoescape off %}
+            Hi {{ user.get_full_name }},
+
+            <br><br>
+
+           Your post was approved. To check status of other Posts, click on the link below.
+
+            <br><br><br>
+
+            <a class="btn" href="http://{{ domain }}{% url 'reuse:my-posts' %}">Post Status</a>
+
+    
+            
+            {% endautoescape %}
+        </main>
+        <footer>
+            &copy; 2022 : All rights reserved
+        </footer>
+    </body>    
+</html>
