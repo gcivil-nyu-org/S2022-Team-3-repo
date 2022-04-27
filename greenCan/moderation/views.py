@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import user_passes_test
 from rewards.models import ImageMeta
 from reuse.models import Post
-from rewards.models import Image, ImageMeta
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
@@ -156,7 +155,7 @@ def review_credit_request(request, id):
                     "message": message,
                     "notification_obj": img_meta,
                 }
-                # create_notification(notification)
+                create_notification(notification)
                 current_site = get_current_site(request)
 
                 mail_subject = "Post " + str(img_meta.caption) + " approved"
@@ -199,7 +198,7 @@ def review_credit_request(request, id):
                     "message": message,
                     "notification_obj": img_meta,
                 }
-                # create_notification(notification)
+                create_notification(notification)
                 current_site = get_current_site(request)
 
                 mail_subject = "Post " + str(img_meta.caption) + " denied"
