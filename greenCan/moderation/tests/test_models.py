@@ -1,9 +1,11 @@
 from django.test import TestCase
-from moderation.models import VolunteerLogs
 from model_bakery import baker
+from ..models import VolunteerLogs
 
 
 class TestModerationModels(TestCase):
-    def test_volunteer_logs_model(self):
-        volunteer_log = baker.make("moderation.VolunteerLogs")
-        self.assertIsInstance(volunteer_log, VolunteerLogs)
+
+    def test_log_model(self):
+        log = baker.make("moderation.VolunteerLogs")
+        self.assertIsInstance(log, VolunteerLogs)
+        self.assertEquals(str(log), str(log.id))
