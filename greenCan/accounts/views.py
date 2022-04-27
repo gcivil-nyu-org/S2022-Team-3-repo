@@ -278,18 +278,15 @@ def user_profile(request):
         messages.success(request, "Your details have been updated successfully")
         return redirect("accounts:user-profile")
 
-    # earned_credits = EarnGreenCredits.objects.filter(user=request.user).aggregate(
-    #    Sum("action__credit")
-    # )
-    # calculate ranks
+    #calculate rank and total credits of the user
     result = (
         EarnGreenCredits.objects.values("user")
         .annotate(totalCredits=Sum("action__credit"))
         .annotate(rank=Window(expression=Rank(), order_by=F("totalCredits").desc()))
     ).order_by("rank")
+
     try:
         earned_credits = result.filter(user=request.user)[0]
-        print(earned_credits)
         r = (
             EarnGreenCredits.objects.values("user")
             .annotate(totalCredits=Sum("action__credit"))
@@ -298,7 +295,6 @@ def user_profile(request):
             + 1
         )
         context = {
-            # "rank": earned_credits["rank"],
             "rank": r,
             "earned_credits": earned_credits["totalCredits"],
         }

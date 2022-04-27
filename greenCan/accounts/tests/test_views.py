@@ -655,6 +655,7 @@ class TestUserGreenCreditLogs(TestCase):
             object_id=image_meta_1.id,
         )
         self.url = reverse("accounts:green-credits-logs") + "?page=1"
+        self.url2 = reverse("accounts:user-profile")
 
     def test_green_credit_logs_login_required(self):
         response = self.client.get(self.url)
@@ -700,3 +701,22 @@ class TestUserGreenCreditLogs(TestCase):
                 ],
             },
         )
+
+    def test_user_rank(self):
+        self.client.force_login(self.user_1, backend=settings.AUTHENTICATION_BACKENDS[0])
+        response = self.client.get(self.url2)
+        self.assertEqual(response.context['rank'], 1)
+        self.assertEqual(response.context['earned_credits'], 15)
+    
+    def test_new_user_rank(self):
+        user = User.objects.create(
+            email="newuser@gmail.com",
+            password="newpassword",
+            first_name="new",
+            last_name="Sun",
+        )
+        self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        response = self.client.get(self.url2)
+        self.assertEqual(response.context['rank'], "Not Available")
+        self.assertEqual(response.context['earned_credits'], 0)
+    
