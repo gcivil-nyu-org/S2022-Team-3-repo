@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import JsonResponse
-
+from reuse.models import Post
 from .models import Notification
 
 
@@ -49,6 +49,8 @@ def get_notifications(request):
             "message_type": message_type,
             "messages": descriptions,
         }
+        if type(p.action_object) == Post:
+            n["messages"] = "<b>" + p.action_object.title + "</b>: <br/>" + n["messages"]
         page_notifications.append(n)
         if p.unread:
             p.unread = False
