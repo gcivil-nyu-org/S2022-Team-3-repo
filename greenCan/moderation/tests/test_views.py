@@ -48,6 +48,7 @@ class TestModerationIndexPage(TestCase):
         volunteer.staff = True
         volunteer.save()
         self.client.force_login(volunteer, backend=settings.AUTHENTICATION_BACKENDS[0])
+
         response = self.client.get(self.url)
         self.assertEquals(response.status_code, 200)
         self.assertTemplateUsed(response, "moderation/templates/index.html")

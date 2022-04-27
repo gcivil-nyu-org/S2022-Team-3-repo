@@ -24,7 +24,6 @@ def index(request):
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def review_post(request, id):
-    id = int(id)
     template_name = "moderation/templates/review-post.html"
     if request.method == "POST":
         try:
@@ -33,7 +32,7 @@ def review_post(request, id):
             if "approve" in request.POST:
 
                 id = request.POST["approve"]
-                post = Post.objects.get(id=id)
+                post = Post.objects.get(id=int(id))
                 post.approved = True
                 # add credit to approved post
                 # EarnGreenCredits.objects.create(
@@ -75,7 +74,7 @@ def review_post(request, id):
 
             elif "deny" in request.POST:
                 id = request.POST["deny"]
-                post = Post.objects.get(id=id)
+                post = Post.objects.get(id=int(id))
                 post.approved = False
                 post.save()
                 if "check1" in request.POST:
@@ -137,7 +136,7 @@ def review_credit_request(request, id):
             sender = request.user
             if "approve" in request.POST:
                 id = request.POST["approve"]
-                img_meta = ImageMeta.objects.get(id=id)
+                img_meta = ImageMeta.objects.get(id=int(id))
                 img_meta.approved = True
                 img_meta.save()
                 log = VolunteerLogs(
@@ -172,7 +171,7 @@ def review_credit_request(request, id):
 
             elif "deny" in request.POST:
                 id = request.POST["deny"]
-                img_meta = ImageMeta.objects.get(id=id)
+                img_meta = ImageMeta.objects.get(id=int(id))
                 img_meta.approved = False
                 img_meta.save()
                 reasons = []
