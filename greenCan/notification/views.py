@@ -50,7 +50,7 @@ def get_notifications(request):
             "messages": descriptions,
         }
         if type(p.action_object) == Post:
-            n["messages"] = "<b>" + p.action_object.title + "</b>: <br/>" + n["messages"]
+            n["messages"] = ["<b>" + p.action_object.title + "</b>: <br/>"] + n["messages"]
         page_notifications.append(n)
         if p.unread:
             p.unread = False
