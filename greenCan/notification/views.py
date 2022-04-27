@@ -30,10 +30,9 @@ get all notifications of an input page number for a specific user
 @login_required
 def get_notifications(request):
     notificationObjects = Notification.objects.filter(recipient=request.user).order_by("-timestamp")
-    notificationObjects = Paginator(notificationObjects, 1)
-    page_number = request.POST.get("page", 1)
-    if page_number == "":
-        page_number = 1
+    max_count = int(request.POST.get("max", 1))
+    notificationObjects = Paginator(notificationObjects, max_count)
+    page_number = int(request.POST.get("page", 1))
     page = notificationObjects.get_page(page_number)
     page_notifications = []
 
