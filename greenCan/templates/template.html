@@ -60,7 +60,7 @@
 					{% if user.is_authenticated %}
 					<div class="d-flex">
 						<a class="notification-btn-container px-2" href="{% url 'notification:index' %}">
-							<div class="notification-icon-wrapper pt-1">
+							<div id="notification-icon" class="notification-icon-wrapper pt-1">
 								<i class="fas fa-bell" style="color: white; font-size: 2em; padding-top: 8%;"></i>
 								{% live_notify_badge badge_class="badge" %}
 							</div>
@@ -127,7 +127,12 @@
 	<script src="{% static 'modules/bootstrap/js/popper.min.js' %}"></script>
 	<script src="{% static 'modules/bootstrap/js/bootstrap.min.js' %}"></script>
 	<script src="{% static 'js/notify.js' %}"></script>
-	{% register_notify_callbacks callbacks='fill_notification_badge' api_name='count' refresh_period=45 fetch=99 %}
+	<script>
+		function my_special_notification_callback(data) {
+			$('#notification-icon .badge').html(data.unread_count);
+		}
+	</script>
+	{% register_notify_callbacks callbacks='fill_notification_badge,my_special_notification_callback' api_name='count' refresh_period=30 fetch=99 %}
     {% block scripts %}
     {% endblock %}
 	<!-- Scripts -->
