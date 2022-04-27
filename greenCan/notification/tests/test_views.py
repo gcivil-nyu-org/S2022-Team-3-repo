@@ -84,6 +84,11 @@ class TestNotificationsViews(TestCase):
         response = self.client.get(self.url)
         self.assertRedirects(response, reverse("accounts:login") + f"?next={self.url}", 302)
 
+    def test_template_used(self):
+        self.client.force_login(self.user1, backend=settings.AUTHENTICATION_BACKENDS[0])
+        response = self.client.get(self.url)
+        self.assertTemplateUsed(response, "notification/templates/notification-index.html")
+
     def test_authenticated_users_GET(self):
         self.client.force_login(self.user1, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url)
