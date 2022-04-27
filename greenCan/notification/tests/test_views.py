@@ -177,14 +177,14 @@ class TestNotificationsViews(TestCase):
         self.assertEquals(data["has_next"], 0)
         self.assertEquals(len(data["notification"]), 0)
 
-class TestNotificationsApis(TestCase):
 
+class TestNotificationsApis(TestCase):
     def setUp(self):
-        self.user= User.objects.create(
+        self.user = User.objects.create(
             email="testemail1@gmail.com",
             password="password1",
             first_name="john1",
-            last_name="doe1"
+            last_name="doe1",
         )
         self.url = "/inbox/notifications/api/unread_count/?max=99"
 
