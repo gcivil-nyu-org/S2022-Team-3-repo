@@ -11,6 +11,7 @@ from django.contrib import messages
 from uuid import uuid4
 from django.utils.html import strip_tags
 import sys
+from rewards.models import EarnGreenCredits, CreditsLookUp
 
 
 @login_required
@@ -89,6 +90,15 @@ def earn_rewards(request):
                 event_type=event[0],
             )
             meta.save()
+
+            # test: earn credits without approve
+            EarnGreenCredits.objects.create(
+                object_id=meta.id,
+                content_object=meta,
+                action=CreditsLookUp.objects.get(action="image"),
+                user=user,
+            )
+
             if categories:
                 for cat_id in categories:
                     cat_id = int(cat_id)

@@ -10,6 +10,8 @@ from recycle.models import ZipCode
 from reuse.models import Image, Post
 from django.utils.encoding import force_str
 from reuse.models import NGOLocation
+from rewards.models import CreditsLookUp
+
 
 User = get_user_model()
 
@@ -48,7 +50,7 @@ class TestCreatePost(TestCase):
             "email": "kevin@gmail.com",
             "category": "Furniture",
         }
-
+        CreditsLookUp.objects.create(action="post", credit=10)
         zipcode = ZipCode(
             zip_code="10001",
             state_id="NY",
@@ -269,7 +271,7 @@ class TestViews(TestCase):
         post = Post(
             title="Apple",
             category="Books",
-            phone_number="9175185345",
+            phone_number="1234567890",
             email="pb2640@nyu.edu",
             zip_code=zipcode,
             description=" Book on apple",
@@ -457,7 +459,7 @@ class TestUserPostsViews(TestCase):
         self.post = Post(
             title="Apple",
             category="Books",
-            phone_number="9175185345",
+            phone_number="1234567890",
             email="user1@gmail.com",
             zip_code=zipcode,
             description=" Book on apple",

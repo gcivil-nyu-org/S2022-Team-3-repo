@@ -1,9 +1,8 @@
 from django.db import models
 from django.conf import settings
 
+
 # Create Notification Model
-
-
 class Notification(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, on_delete=models.CASCADE)

@@ -33,6 +33,12 @@ def review_post(request, id):
                 id = request.POST["approve"]
                 post = Post.objects.get(id=id)
                 post.approved = True
+                # add credit to approved post
+                # EarnGreenCredits.objects.create(
+                #     content_object=post,
+                #     action=CreditsLookUp.objects.get(action="post"),
+                #     user=post.user
+                # )
                 post.save()
                 # send notification to user
                 receiver = post.user
@@ -45,6 +51,7 @@ def review_post(request, id):
                     "message": message,
                 }
                 create_notification(notification)
+
                 current_site = get_current_site(request)
 
                 mail_subject = "Post " + str(post.title) + " approved"
@@ -56,6 +63,8 @@ def review_post(request, id):
                     "email/post-approval.html",
                     "email/post-approval-no-style.html",
                 )
+                if response != "success":
+                    raise Exception("Failed to send email")
                 messages.success(request, "Post Approved")
                 return redirect("moderation:index")
 
@@ -115,5 +124,4 @@ def review_post(request, id):
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def post_approval(request):
-
     return redirect("reuse:my-posts")
