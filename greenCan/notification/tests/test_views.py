@@ -32,4 +32,4 @@ class TestNotificationsViews(TestCase):
     def test_authenticated_users_GET(self):
         self.client.force_login(self.user1, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url)
-        self.assertEquals(response, 200)
+        self.assertEquals(response.status_code, 200)
