@@ -139,7 +139,8 @@ Notifications | greenCan
                     async: false,
                     data: {
                         "csrfmiddlewaretoken": "{{ csrf_token }}",
-                        "page": page
+                        "page": page,
+                        "max": 5,
                     },
                     success: function (data) {
                         setData(data); 
