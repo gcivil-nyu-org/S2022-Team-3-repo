@@ -42,11 +42,20 @@ Notifications | greenCan
     padding: 0 0 0 1rem;
 }
 
+.h1 {
+    font-family: 'Roboto', sans-serif !important;
+    color: #000 !important;
+    font-weight: 600 !important;
+    font-size: 1.75em !important;
+    line-height: 1.75em !important;
+}
 </style>
 {% endblock %}
 
 {% block main %}
-{% live_notify_badge %}
+<div class="d-flex justify-content-md-center justify-content-sm-start my-3">
+    <h1 class="h1">Notifications</h1>
+</div>
 <div class="uk-container uk-padding">
     <div id="notification-container" class="uk-timeline"></div>
     <div class="loader">
@@ -63,9 +72,6 @@ Notifications | greenCan
 <script src="{% static 'modules/uikit-3.13.10/js/uikit3_4.min.js' %}"></script>
 <script src="{% static 'modules/uikit-3.13.10/js/uikit-icons.min.js' %}"></script>
 <script src="{% static 'modules/uikit-3.13.10/js/uikit.min.js' %}"></script>
-<script src="{% static 'js/notify.js' %}"></script>
-{% register_notify_callbacks callbacks='fill_notification_badge' %}
-
 <script>
     $(document).ready(function(){
         let page = 1;

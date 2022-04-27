@@ -16,9 +16,7 @@ set path for notification page
 @login_required
 def index(request):
     template = "notification/templates/notification-index.html"
-    user = request.user
-    notifications = Notification.objects.filter(user=user).order_by("-created_on")
-    context = {"is_notification": True, "notifications": notifications}
+    context = {}
     return render(request, template, context=context)
 
 
@@ -31,8 +29,7 @@ get all notifications of an input page number for a specific user
 
 @login_required
 def get_notifications(request):
-    user = request.user
-    notificationObjects = Notification.objects.filter(user=user).order_by("-created_on")
+    notificationObjects = Notification.objects.filter(recipient=request.user).order_by("-timestamp")
     notificationObjects = Paginator(notificationObjects, 1)
     page_number = request.POST.get("page", 1)
     if page_number == "":
@@ -41,19 +38,19 @@ def get_notifications(request):
     page_notifications = []
 
     for p in page:
-        is_read = p.is_read
-        created_on = p.created_on.strftime("%B %d, %Y")
-        message_type = p.message_type
-        messages = (p.message).split("; ")
+        is_read = not p.unread
+        created_on = p.timestamp.strftime("%B %d, %Y")
+        message_type = p.level
+        descriptions = (p.description).split("; ")
         n = {
             "is_read": is_read,
             "created_on_date": created_on,
             "message_type": message_type,
-            "messages": messages
+            "messages": descriptions
         }
         page_notifications.append(n)
-        if not p.is_read:
-            p.is_read = True
+        if p.unread:
+            p.unread = False
             p.save()
 
     result = {"notification": page_notifications}
