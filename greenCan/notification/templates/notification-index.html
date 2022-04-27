@@ -1,40 +1,163 @@
 {% extends 'template.html' %}
 {% load static %}
-
+{% load notifications_tags %}
 {% block title %}
-Reduce | greenCan
+Notifications | greenCan
 {% endblock %}
 
 {% block style %}
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
-<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
-<link rel="stylesheet" href="{% static 'css/map.css' %}" />
-<link rel="stylesheet" href="{% static 'css/filter.css' %}" />
-<link rel="stylesheet" href="{% static 'css/card.css' %}" />
+<link rel="stylesheet" href="{% static 'modules/uikit-3.13.10/css/uikit3_4.min.css' %}" />
+
+<style>
+.uk-timeline .uk-timeline-item .uk-card {
+	max-height: 300px;
+}
+
+.uk-timeline .uk-timeline-item {
+    display: flex;
+    position: relative;
+}
+
+.uk-timeline .uk-timeline-item::before {
+    background: #dadee4;
+    content: "";
+    height: 100%;
+    left: 19px;
+    position: absolute;
+    top: 20px;
+    width: 2px;
+	z-index: -1;
+}
+
+.uk-timeline .uk-timeline-item .uk-timeline-icon .uk-badge {
+	margin-top: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: #6abe52;
+}
+
+.uk-timeline .uk-timeline-item .uk-timeline-content {
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    padding: 0 0 0 1rem;
+}
+
+.h1 {
+    font-family: 'Roboto', sans-serif !important;
+    color: #000 !important;
+    font-weight: 600 !important;
+    font-size: 1.75em !important;
+    line-height: 1.75em !important;
+}
+</style>
 {% endblock %}
 
 {% block main %}
-    <h1>Notifications</h1>
-    <ul>
-        {% for notification in notifications %}
-            <li>{{notification.message}} - {{notification.created_on}}</li>
-        {% endfor %}
-    </ul>
+<div class="d-flex justify-content-md-center justify-content-sm-start my-3">
+    <h1 class="h1">Notifications</h1>
+</div>
+<div class="uk-container uk-padding">
+    <div id="notification-container" class="uk-timeline"></div>
+    <div class="loader">
+        <span id="load-more" style="color: #6abe52; cursor: pointer; font-weight: bold;">
+            <span class="uk-margin-small-right" uk-icon="triangle-down"></span>
+            LOAD MORE
+        </span>
+    </div>
+</div>
 {% endblock %}
 
 {% block scripts %}
+<script src="{% static 'modules/uikit-3.13.10/js/uikit3_4-icons.min.js' %}"></script>
+<script src="{% static 'modules/uikit-3.13.10/js/uikit3_4.min.js' %}"></script>
+<script src="{% static 'modules/uikit-3.13.10/js/uikit-icons.min.js' %}"></script>
+<script src="{% static 'modules/uikit-3.13.10/js/uikit.min.js' %}"></script>
 <script>
-    // function getNotifications(user){
-    //     $.ajax({
-    //         type: "POST",
-    //         async: false,
-    //         data: {
-    //             "user": user,
-    //         },
-    //         success: function (data) {
-    //             console.log(data)
-    //         }
-    //     });
-    // }
+    $(document).ready(function(){
+        let page = 1;
+        let hasNext = true;
+        $('#load-more').click(function(){
+            put_more_data();
+        });
+
+        function createNotificationCards(notifications){
+            $.each(notifications, function(key, notification){
+                let n = '<div class="uk-timeline-item"><div class="uk-timeline-icon">\
+                    <span class="uk-badge"><span uk-icon="check"></span></span></div><div class="uk-timeline-content">\
+                    <div class="uk-card uk-card-default uk-margin-medium-bottom uk-overflow-auto">\
+                    <div class="uk-card-header" style="width: 800px !important;"><div class="uk-grid-small uk-flex-middle" uk-grid>\
+                    <h3 class="uk-card-title"><time>' + notification['created_on_date'] + '</time></h3>';
+                
+                if(notification['message_type'] == "success"){
+                    n += '<span class="uk-label uk-label-success uk-margin-auto-left">'
+                        + 'APPROVED' + '</span></div></div><div class="uk-card-body" style="width: 800px !important;">';
+                }
+                else if(notification['message_type'] === "error"){
+                    n += '<span class="uk-label uk-label-danger uk-margin-auto-left">'
+                        + 'DENIED' + '</span></div></div><div class="uk-card-body" style="width: 800px !important;">';
+                }
+                else{
+                    n += '<span class="uk-label uk-label-warning uk-margin-auto-left">'
+                        + 'INFO' + '</span></div></div><div class="uk-card-body" style="width: 800px !important;">';
+                }
+
+                if(notification['is_read'] == true){
+                    for(let i=0; i < notification['messages'].length; i++){
+                        n += '<p>' + notification['messages'][i] + '</p>';
+                    }
+                }
+                else{
+                    for(let i=0; i < notification['messages'].length; i++){
+                        if(notification['message_type'] == "success"){
+                            n += '<p style="color: #32d296;">' + notification['messages'][i] + '</p>';
+                        }
+                        else if(notification['message_type'] === "error"){
+                            n += '<p style="color: #f0506e;">' + notification['messages'][i] + '</p>';
+                        }
+                        else{
+                            n += '<p style="color: #faa05a;">' + notification['messages'][i] + '</p>';
+                        }
+                    }
+                }
+
+                n += '</div></div></div></div>';
+                $('#notification-container').append($(n));
+            });
+        }
+
+        function setData(data){
+            result = Object.entries(data['notification']);
+            notifications = result.map(([key, value]) => value);
+            createNotificationCards(notifications);
+        }
+
+        function put_more_data(){
+            if(hasNext){
+                $.ajax({
+                    url: "{% url 'notification:get-notifications' %}",
+                    type: "POST",
+                    async: false,
+                    data: {
+                        "csrfmiddlewaretoken": "{{ csrf_token }}",
+                        "page": page,
+                        "max": 5,
+                    },
+                    success: function (data) {
+                        setData(data); 
+                        if(data.has_next!=hasNext){
+                            $('.loader').hide();
+                            hasNext = data.has_next
+                        }
+                        if(hasNext){
+                            page = data.next_page_number   
+                        }
+                    }
+                });
+            }
+        }
+
+        put_more_data();
+    });
+
 </script>
 {% endblock %}

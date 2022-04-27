@@ -217,6 +217,7 @@ footer {
     align-items: center;
     justify-content: center;
     border-top: solid 5px #6abe52;
+    z-index: 100;
 }
 footer div{
     align-content: center;
@@ -405,6 +406,31 @@ body {
 	font-size: 1.2rem;
 }
 
+.notification-icon-wrapper {
+    position: relative;
+    float: left;
+}
+
+.notification-btn-container {
+    cursor: pointer;
+}
+
+.badge {
+    background: #dc3545!important;
+    color: #fff !important;
+    width:fit-content;
+    height:fit-content;
+    min-width: 16px;
+    margin:0;
+    border-radius:50%;
+    padding: 1px 3px;
+    font-size: 13px;
+    line-height: 16px;
+    position: absolute; /* Position the badge within the relatively positioned button */
+    top: 5;
+    right: 0;
+}
+
 #nav div.profile-btn-container {
     text-transform: capitalize;
     color: #fff !important;
@@ -420,6 +446,7 @@ body {
     text-decoration: none !important;
     color: #fff;
     width: 100%;
+    min-width: 190px;
 }
 
 #nav div.profile-btn-container span.name {

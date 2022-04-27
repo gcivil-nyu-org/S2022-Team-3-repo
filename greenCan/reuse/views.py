@@ -19,7 +19,6 @@ from django.contrib.postgres.search import (
     SearchHeadline,
 )
 
-
 """
 function: index
 

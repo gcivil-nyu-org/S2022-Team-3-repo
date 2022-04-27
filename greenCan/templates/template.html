@@ -2,8 +2,10 @@
 {% url 'reuse:index' as reuse_base_url %}
 {% url 'reduce:index' as reduce_base_url %}
 {% url 'home:index' as home_base_url %}
-
+{% url 'notification:index' as notification_url %}
 {% load static %}
+{% load notifications_tags %}
+
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
@@ -42,38 +44,46 @@
 						{% if request.path == home_base_url %}
 						current
 						{% endif %} nav-link"><a href="{{ home_base_url }}">Home</a></li>
-						<li class="{% if request.path == reduce_base_url or is_reduce %}
+						<li class="
+						{% if request.path == recycle_base_url or is_recycle %}
 						current
-						{% endif %} nav-link"><a href="{{ reduce_base_url }}">Reduce</a></li>
+						{% endif %} nav-link"><a href="{{ recycle_base_url }}">Recycle</a></li>
 						<li class="
 						{% if request.path == reuse_base_url or is_reuse %}
 						current
 						{% endif %} nav-link"><a href="{{ reuse_base_url }}">Reuse</a></li>
 						<li class="
-						{% if request.path == recycle_base_url or is_recycle %}
+						{% if request.path == reduce_base_url or is_reduce %}
 						current
-						{% endif %} nav-link"><a href="{{ recycle_base_url }}">Recycle</a></li>
+						{% endif %} nav-link"><a href="{{ reduce_base_url }}">Reduce</a></li>
 					</ul>
 					{% if user.is_authenticated %}
-					<div class="profile-btn-container">
-						<div class="dropdown">
-							<a class="btn btn-secondary dropdown-toggle d-flex align-items-center px-3" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								{% if user.avatar %}
-									<img height="35" src="{{ user.avatar | escape }}">
-								{% else %}
-									<img height="35" src="{% static 'images/avatar/avatar.svg' %}">
-								{% endif %}
-									<span class="align-middle text-white name">{{ user.get_full_name | escape }}</span>
-							</a>
-						  
-							<div class="dropdown-menu d-none" id="dropdown-menu" aria-labelledby="dropdownMenuLink">
-							  <a class="dropdown-item" href="{% url 'accounts:user-profile' %}">My Profile</a>
-							  <a class="dropdown-item" href="{% url 'reuse:my-posts' %}">My Posts</a>
-							  <a class="dropdown-item" href="{% url 'notification:index' %}">Notifications</a>
-							  <a class="dropdown-item" href="{% url 'rewards:index' %}">Green Credits</a>
-							  <a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a>
+					<div class="d-flex">
+						<a class="notification-btn-container px-2" href="{% url 'notification:index' %}">
+							<div id="notification-icon" class="notification-icon-wrapper pt-1">
+								<i class="fas fa-bell" style="color: white; font-size: 2em; padding-top: 8%;"></i>
+								{% live_notify_badge badge_class="badge" %}
 							</div>
-						  </div>
+						</a>
+						<div class="profile-btn-container">
+							<div id="profile-dropdown" class="dropdown">
+								<a class="btn btn-secondary dropdown-toggle d-flex align-items-center px-3" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									{% if user.avatar %}
+										<img style="height: 35px !important;" src="{{ user.avatar | escape }}">
+									{% else %}
+										<img style="height: 35px !important;" src="{% static 'images/avatar/avatar.svg' %}">
+									{% endif %}
+										<span class="align-middle text-white name">{{ user.get_full_name | escape }}</span>
+								</a>
+							  
+								<div class="dropdown-menu d-none" id="profile-dropdown-menu" aria-labelledby="dropdownMenuLink">
+								  <a class="dropdown-item" href="{% url 'accounts:user-profile' %}">My Profile</a>
+								  <a class="dropdown-item" href="{% url 'reuse:my-posts' %}">My Posts</a>
+								  <a class="dropdown-item" href="{% url 'rewards:index' %}">Green Credits</a>
+								  <a class="dropdown-item" href="{% url 'accounts:logout' %}">Logout</a>
+								</div>
+							</div>
+						</div>
 					</div>
 					{% endif %}
 				</div>
@@ -116,7 +126,15 @@
 	<script src="{% static 'js/main.js' %}"></script>
 	<script src="{% static 'modules/bootstrap/js/popper.min.js' %}"></script>
 	<script src="{% static 'modules/bootstrap/js/bootstrap.min.js' %}"></script>
+	<script src="{% static 'js/notify.js' %}"></script>
+	<script>
+		function my_special_notification_callback(data) {
+			$('#notification-icon .badge').html(data.unread_count);
+		}
+	</script>
+	{% register_notify_callbacks callbacks='fill_notification_badge,my_special_notification_callback' api_name='count' refresh_period=30 fetch=99 %}
     {% block scripts %}
     {% endblock %}
+	<!-- Scripts -->
 </body>
 </html>

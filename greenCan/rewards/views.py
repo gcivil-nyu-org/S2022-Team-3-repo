@@ -89,6 +89,7 @@ def earn_rewards(request):
                 event_type=event[0],
             )
             meta.save()
+
             if categories:
                 for cat_id in categories:
                     cat_id = int(cat_id)

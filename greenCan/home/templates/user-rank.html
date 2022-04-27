@@ -1,38 +1,111 @@
 {% load static %}
+
+{% if user.is_authenticated and rank %}
 <div class = "anniversary-container" style="background-color: #21212D; width: 100%;">
     <div class = "row">
         <div class = "col-md-6" style="text-align: center; margin-top: 10%; justify-content: center;">
-            <b style="color: aliceblue; font-size: xx-large;">🎊 <u>User 1</u>, Congratulations 🎊</b>
+            <b style="color: aliceblue; font-size: xx-large;">🎊 <u>{{user.get_full_name}}</u>, Congratulations 🎊</b>
     
             <div class = "stat" style="color: aliceblue; font-size: x-large; text-align: left;padding-left: 20%;">
                 <br>
-                <p>You are the <b style="color: #6ABE52;">TOP 1</b> environmental protector!</p> 
+                <p>You are the <b style="color: #6ABE52;">No.{{rank}}</b> environmental protector!</p> 
                 <br>
-                <p>🗓️ During the past week: </p>
-                <p>&#8226 &nbsp you posted <b style="color: #6ABE52;">9</b> item(s) for donation.</p> 
-                <p>&#8226 &nbsp you drop off recyclables <b style="color: #6ABE52;">5</b> times, </p> 
-                <p>&#8226 &nbsp and uploaded <b style="color: #6ABE52;">14</b> nice pictures on the <a href="{% url 'rewards:featured-image-gallery' %}" style="color: #6ABE52;">Green Wall</a>.</p>
+                <p>🗓️ During the past days: </p>
+                <p>&#8226 &nbsp you posted <b style="color: #6ABE52;">{{post_num}}</b> item(s) for donation.</p> 
+                <p>&#8226 &nbsp you drop off recyclables <b style="color: #6ABE52;">{{image_meta_num}}</b> time(s), </p> 
+                <p>&#8226 &nbsp and uploaded <b style="color: #6ABE52;">{{image_num}}</b> nice pictures on the <a href="{% url 'rewards:featured-image-gallery' %}" style="color: #6ABE52;">Green Wall</a>.</p>
             </div>
         </div>
         <div class="col-md-6" style="padding-bottom: 5%;padding-top: 2%;">
 <div class = "pics" style=" position: relative;padding-bottom: 0;">
     <img style = "max-width:85%; height: auto;" src ="{% static 'images/homePage/ranking.png' %}">
+    {% if user1 %}
     <div class = "winner" style="position: absolute;top: 33%;left: 42%;transform: translate(-50%, -50%);text-align: center;background-color: rgba(255, 174, 0, 0.751);border-radius: 10%;padding: 1%;">
-        <img height="90vh" src ="{% static 'images/avatar/27.svg' %}" style="padding: 0;margin:0;">
-        <h3 style="margin: 0; padding: 0; color:black;">User 1</h3>
-        <p style="margin: 0; padding: 0; "><img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"> 6,485 <img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"></p>
+        <img height="90vh" src ="{{user1.avatar}}" style="padding: 0;margin:0;">
+        <h3 style="margin: 0; padding: 0; color:black;max-width: 110px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        text-align: center;">{{user1.get_full_name}}</h3>
+        <p style="margin: 0; padding: 0; "><img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"> {{gold.totalCredits}} <img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"></p>
     </div>
+    {% endif %}
+
+    {% if user2 %}
     <div class = "winner" style="position: absolute;top: 50%;left: 18%;transform: translate(-50%, -50%);text-align: center;background-color: rgba(70, 70, 70, 0.861);border-radius: 10%;padding: 1%;">
-        <img height="90vh" src ="{% static 'images/avatar/19.svg' %}" style="padding: 0;margin:0;">
-        <h3 style="margin: 0; padding: 0; color:antiquewhite;">User 2</h3>
-        <p style="margin: 0; padding: 0; color: antiquewhite;"><img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"> 5,730 <img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"></p>
+        <img height="90vh" src ="{{user2.avatar}}" style="padding: 0;margin:0;">
+        <h3 style="margin: 0; padding: 0; color:antiquewhite;max-width: 110px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        text-align: center;">{{user2.get_full_name}}</h3>
+        <p style="margin: 0; padding: 0; color: antiquewhite;"><img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"> {{silver.totalCredits}} <img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"></p>
     </div>
+    {% endif %}
+
+    {% if user3 %}
     <div class = "winner" style="position: absolute;top: 55%;left: 65%;transform: translate(-50%, -50%);text-align: center;background-color: rgba(132, 83, 30, 0.849);border-radius: 10%;padding: 1%;">
-        <img height="90vh" src ="{% static 'images/avatar/30.svg' %}" style="padding: 0;margin:0;">
-        <h3 style="margin: 0; padding: 0; color:antiquewhite;">User 3</h3>
-        <p style="margin: 0; padding: 0; color: antiquewhite;"><img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"> 5,005 <img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"></p>
+        <img height="90vh" src ="{{user3.avatar}}" style="padding: 0;margin:0;">
+        <h3 style="margin: 0; padding: 0; color:antiquewhite;max-width: 110px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        text-align: center;">{{user3.get_full_name}} </h3>
+        <p style="margin: 0; padding: 0; color: antiquewhite;"><img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;">{{bronze.totalCredits}} <img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"></p>
     </div>
+    {% endif %}
+
 </div>
 </div>
 </div>
 </div>
+
+{% else %}
+<div class = "anniversary-container" style="background-color: #21212D; width: 100%;">
+    <div class = "row">
+        <div class="col-md-12" style="padding-bottom: 5%;padding-top: 2%; text-align: center;">
+            <br>
+            <b style="color: aliceblue; font-size: xx-large;">🎊 Top 3 environmental protector on our leaderboard 🎊</b>
+            <br>
+<div class = "pics" style=" position: relative;padding-bottom: 0; padding-top: 5%;">
+    <img style = "max-width:40%; height: auto;" src ="{% static 'images/homePage/ranking.png' %}">
+    {% if user1 %}
+    <div class = "winner" style="position: absolute;top: 40%;left: 50%;transform: translate(-50%, -50%);text-align: center;background-color: rgba(255, 174, 0, 0.751);border-radius: 10%;padding: 1%;">
+        <img height="90vh" src ="{{user1.avatar}}" style="padding: 0;margin:0;">
+        <h3 style="margin: 0; padding: 0; color:black;max-width: 110px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        text-align: center;">{{user1.get_full_name}}</h3>
+        <p style="margin: 0; padding: 0; "><img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"> {{gold.totalCredits}} <img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"></p>
+    </div>
+    {% endif %}
+    {% if user2 %}
+    <div class = "winner" style="position: absolute;top: 54%;left: 38%;transform: translate(-50%, -50%);text-align: center;background-color: rgba(70, 70, 70, 0.861);border-radius: 10%;padding: 1%;">
+        <img height="90vh" src ="{{user2.avatar}}" style="padding: 0;margin:0;">
+        <h3 style="margin: 0; padding: 0; color:antiquewhite;max-width: 110px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        text-align: center;">{{user2.get_full_name}}</h3>
+        <p style="margin: 0; padding: 0; color: antiquewhite;"><img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"> {{silver.totalCredits}} <img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"></p>
+    </div>
+    {% endif %}
+{% if user3 %}
+    <div class = "winner" style="position: absolute;top: 59%;left: 62%;transform: translate(-50%, -50%);text-align: center;background-color: rgba(132, 83, 30, 0.849);border-radius: 10%;padding: 1%;">
+        <img height="90vh" src ="{{user3.avatar}}" style="padding: 0;margin:0;">
+        <h3 style="margin: 0; padding: 0; color:antiquewhite;max-width: 110px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        text-align: center;">{{user3.get_full_name}} </h3>
+        <p style="margin: 0; padding: 0; color: antiquewhite;"><img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;">{{bronze.totalCredits}} <img height="30vh" src ="{% static 'images/illustrations/green-credit.png' %}" style="padding-top: 15%;"></p>
+    </div>
+{% endif %}
+</div>
+</div>
+</div>
+</div>
+
+
+{% endif %}
