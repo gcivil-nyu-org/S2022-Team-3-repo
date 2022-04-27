@@ -32,9 +32,12 @@ Review Credits
       </div>
       <!-- slides of item pictures -->
       <div class = "col-md-6">
-        <b>Category:   </b>
-          {% for item in img_meta.category.values() %}
-          <p>  {{item["name"]}}</p>
+        <b>Categories:   </b>
+         
+ 
+          {% for item in categories %}
+          
+            <li style="display: inline;">"{{item.name}}"</li>
           {% endfor %}
           <p><b>Event Type:   </b>  {{img_meta.event_type.name | safe }} </p>
           <p><b>Caption :</b> {{img_meta.caption}}</p>
