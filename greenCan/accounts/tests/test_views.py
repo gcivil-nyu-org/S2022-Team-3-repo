@@ -3,14 +3,15 @@ from django.contrib.auth import get_user_model, get_user
 from django.test import TestCase
 from django.urls import reverse, reverse_lazy
 from django.core import mail
-from django.utils.encoding import force_bytes
+from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode
 from accounts.models import LoginAttempt
 from accounts.token import account_activation_token
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.template.loader import render_to_string
-
+from reuse.models import Post
 from recycle.models import ZipCode
+from rewards.models import EarnGreenCredits, ImageMeta, Event, CreditsLookUp
 
 
 User = get_user_model()
@@ -548,7 +549,7 @@ class TestUserProfile(TestCase):
 
 class TestUserProfileAvatar(TestCase):
     def setUp(self):
-        user = User.objects.create(
+        self.user = User.objects.create(
             first_name="first2",
             last_name="last2",
             email="user2@gmail.com",
@@ -556,18 +557,165 @@ class TestUserProfileAvatar(TestCase):
             avatar="1.svg",
             is_active=True,
         )
-        self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         self.url1 = reverse("accounts:user-profile")
         self.url2 = reverse("accounts:user-profile-avatar")
 
+    def test_login_required(self):
+        response = self.client.get(self.url2)
+        self.assertRedirects(response, reverse("accounts:login") + "?next=" + self.url2, 302)
+
     def test_returns_302(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url2)
         self.assertRedirects(response, self.url1, 302)
 
     def test_info_changed_after_edit_profile_avatar(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.post(self.url2, {"avatar": "2.svg"}, follow=True)
         user2 = get_user(self.client)
         self.assertEquals(user2.avatar, "2.svg")
         message = list(response.context.get("messages"))[0]
         self.assertEquals(message.tags, "success")
         self.assertEquals(message.message, "Your avatar has been updated.")
+
+
+class TestUserGreenCreditLogs(TestCase):
+    def setUp(self):
+
+        CreditsLookUp.objects.create(action="post", credit=10)
+
+        CreditsLookUp.objects.create(action="image", credit=5)
+
+        self.user_1 = User.objects.create(
+            first_name="first1", last_name="last1", email="user1@gmail.com", password="password1"
+        )
+
+        self.user_2 = User.objects.create(
+            first_name="first2", last_name="last2", email="user2@gmail.com", password="password2"
+        )
+
+        zipcode = ZipCode.objects.create(
+            zip_code="10001",
+            state_id="NY",
+            state="New York",
+            borough="Manhattan",
+            centroid_latitude=40.75021293296376,
+            centroid_longitude=-73.99692994900218,
+            polygon="",
+        )
+
+        post_1 = Post.objects.create(
+            title="Apple",
+            category="Books",
+            phone_number="1234567890",
+            email="user1@nyu.edu",
+            zip_code=zipcode,
+            description=" Book on apple",
+            user=self.user_1,
+        )
+
+        post_2 = Post.objects.create(
+            title="Apple",
+            category="Books",
+            phone_number="1234567890",
+            email="user2@nyu.edu",
+            zip_code=zipcode,
+            description=" Book on apple",
+            user=self.user_2,
+        )
+
+        event = Event.objects.create(name="Recycle")
+
+        image_meta_1 = ImageMeta.objects.create(
+            event_type=event,
+            location=zipcode,
+            caption="This is a caption",
+            user=self.user_1,
+            consent=True,
+        )
+
+        self.log_1 = EarnGreenCredits.objects.create(
+            content_object=post_1,
+            action=CreditsLookUp.objects.get(action="post"),
+            user=post_1.user,
+            object_id=post_1.id,
+        )
+
+        self.log_2 = EarnGreenCredits.objects.create(
+            content_object=post_2,
+            action=CreditsLookUp.objects.get(action="post"),
+            user=post_2.user,
+            object_id=post_2.id,
+        )
+
+        self.log_3 = EarnGreenCredits.objects.create(
+            content_object=image_meta_1,
+            action=CreditsLookUp.objects.get(action="image"),
+            user=image_meta_1.user,
+            object_id=image_meta_1.id,
+        )
+        self.url = reverse("accounts:green-credits-logs") + "?page=1"
+        self.url2 = reverse("accounts:user-profile")
+
+    def test_green_credit_logs_login_required(self):
+        response = self.client.get(self.url)
+        self.assertRedirects(response, reverse("accounts:login") + "?next=" + self.url)
+
+    def test_green_credit_logs_GET_1(self):
+        self.client.force_login(self.user_1, backend=settings.AUTHENTICATION_BACKENDS[0])
+        response = self.client.get(self.url)
+        self.assertJSONEqual(
+            force_str(response.content),
+            {
+                "status": True,
+                "next_page_number": 0,
+                "data": [
+                    {
+                        "date": self.log_3.earned_on.strftime("%d %b' %Y - %I:%M:%S %p"),
+                        "event_type": self.log_3.action.action,
+                        "credits": self.log_3.action.credit,
+                    },
+                    {
+                        "date": self.log_1.earned_on.strftime("%d %b' %Y - %I:%M:%S %p"),
+                        "event_type": self.log_1.action.action,
+                        "credits": self.log_1.action.credit,
+                    },
+                ],
+            },
+        )
+
+    def test_green_credit_logs_GET_2(self):
+        self.client.force_login(self.user_2, backend=settings.AUTHENTICATION_BACKENDS[0])
+        response = self.client.get(self.url)
+        self.assertJSONEqual(
+            force_str(response.content),
+            {
+                "status": True,
+                "next_page_number": 0,
+                "data": [
+                    {
+                        "date": self.log_2.earned_on.strftime("%d %b' %Y - %I:%M:%S %p"),
+                        "event_type": self.log_2.action.action,
+                        "credits": self.log_2.action.credit,
+                    }
+                ],
+            },
+        )
+
+    def test_user_rank(self):
+        self.client.force_login(self.user_1, backend=settings.AUTHENTICATION_BACKENDS[0])
+        response = self.client.get(self.url2)
+        self.assertEqual(response.context["rank"], 1)
+        self.assertEqual(response.context["earned_credits"], 15)
+
+    def test_new_user_rank(self):
+        user = User.objects.create(
+            email="newuser@gmail.com",
+            password="newpassword",
+            first_name="new",
+            last_name="Sun",
+        )
+        self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        response = self.client.get(self.url2)
+        self.assertEqual(response.context["rank"], "Not Available")
+        self.assertEqual(response.context["earned_credits"], 0)

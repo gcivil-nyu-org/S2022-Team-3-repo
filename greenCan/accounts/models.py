@@ -136,14 +136,6 @@ class User(AbstractBaseUser):
         return self.admin
 
 
-# keep the base user as simple as possible and only include the minimum basic required fields
-# you can extend this user using a profile to get more info about your users. e.g.
-
-# class Profile(models.Model):
-# user = models.OneToOneField(User)
-# then add some other fields e.g. first name, last name, phone number e.t.c.
-
-
 class LoginAttempt(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     login_attempts = models.IntegerField(default=0)

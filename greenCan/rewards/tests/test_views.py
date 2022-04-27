@@ -6,7 +6,7 @@ from django.conf import settings
 from reuse.tests.test_views import create_image
 from django.core.files.uploadedfile import SimpleUploadedFile
 from recycle.models import ZipCode
-from rewards.models import Event, ImageMeta, Image, Category
+from rewards.models import Event, ImageMeta, Image, Category, CreditsLookUp
 
 User = get_user_model()
 
@@ -51,6 +51,7 @@ class TestEarnRewards(TestCase):
             last_name="doe",
             is_active=True,
         )
+        CreditsLookUp.objects.create(action="image", credit=5)
         self.url = reverse("rewards:earn-rewards")
         image = create_image(None, "test.png")
         image_file = SimpleUploadedFile("test.png", image.getvalue())
