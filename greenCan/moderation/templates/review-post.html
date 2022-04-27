@@ -33,7 +33,7 @@ Review Post
       <!-- slides of item pictures -->
       <div class = "col-md-6">
           <p><b>Category:   </b>  {{post.category}}</p>
-          <p><b>Item description:   </b>  {{post.headline | safe }} </p>
+          <p><b>Item description:   </b>  {{post.description | safe }} </p>
           <p><b>Email :   </b>   {{post.email}}</p>
           <p><b>Phone number:</b> {{post.phone_number}}</p>
           <p><b>Pick-up location:   </b>   {{ post.zip_code.borough }}, {{ post.zip_code.state_id }} - {{ post.zip_code.zip_code }}</p>
