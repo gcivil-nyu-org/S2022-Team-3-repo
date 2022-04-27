@@ -138,7 +138,7 @@ class TestHomePage(TestCase):
             action=CreditsLookUp.objects.get(action="image"),
             user=self.user1,
         )
-    
+
         EarnGreenCredits.objects.create(
             object_id=meta2.id,
             content_object=meta2,
@@ -152,7 +152,6 @@ class TestHomePage(TestCase):
             action=CreditsLookUp.objects.get(action="image"),
             user=self.user1,
         )
-    
 
     def test_template_used(self):
         response = self.client.get(self.url)
@@ -190,21 +189,19 @@ class TestHomePage(TestCase):
         )
         self.assertContains(response, user.get_full_name())
 
-
     def test_unauthenticated_user_home_data(self):
         response = self.client.get(self.url)
 
-        self.assertFalse('rank' in response.context)
-        self.assertFalse('image_num' in response.context)
-        self.assertFalse('image_meta_num' in response.context)
-        self.assertFalse('post_num' in response.context)
-        self.assertEqual(response.context['user1'], self.user1)
-        self.assertEqual(response.context['user2'], self.user2)
-        self.assertEqual(response.context['user3'], self.user3)
-        self.assertEqual(response.context['gold']['totalCredits'], 20)
-        self.assertEqual(response.context['silver']['totalCredits'], 15)
-        self.assertEqual(response.context['bronze']['totalCredits'], 10)
-    
+        self.assertFalse("rank" in response.context)
+        self.assertFalse("image_num" in response.context)
+        self.assertFalse("image_meta_num" in response.context)
+        self.assertFalse("post_num" in response.context)
+        self.assertEqual(response.context["user1"], self.user1)
+        self.assertEqual(response.context["user2"], self.user2)
+        self.assertEqual(response.context["user3"], self.user3)
+        self.assertEqual(response.context["gold"]["totalCredits"], 20)
+        self.assertEqual(response.context["silver"]["totalCredits"], 15)
+        self.assertEqual(response.context["bronze"]["totalCredits"], 10)
 
     def test_user_home_data_without_credits(self):
         user = User.objects.create(
@@ -216,17 +213,17 @@ class TestHomePage(TestCase):
 
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url)
-        self.assertEqual(response.context['rank'], None)
-        self.assertEqual(response.context['image_num'], 0)
-        self.assertEqual(response.context['image_meta_num'], 0)
-        self.assertEqual(response.context['post_num'], 0)
-        self.assertEqual(response.context['user1'], self.user1)
-        self.assertEqual(response.context['user2'], self.user2)
-        self.assertEqual(response.context['user3'], self.user3)
-        self.assertEqual(response.context['user'], user)
-        self.assertEqual(response.context['gold']['totalCredits'], 20)
-        self.assertEqual(response.context['silver']['totalCredits'], 15)
-        self.assertEqual(response.context['bronze']['totalCredits'], 10)
+        self.assertEqual(response.context["rank"], None)
+        self.assertEqual(response.context["image_num"], 0)
+        self.assertEqual(response.context["image_meta_num"], 0)
+        self.assertEqual(response.context["post_num"], 0)
+        self.assertEqual(response.context["user1"], self.user1)
+        self.assertEqual(response.context["user2"], self.user2)
+        self.assertEqual(response.context["user3"], self.user3)
+        self.assertEqual(response.context["user"], user)
+        self.assertEqual(response.context["gold"]["totalCredits"], 20)
+        self.assertEqual(response.context["silver"]["totalCredits"], 15)
+        self.assertEqual(response.context["bronze"]["totalCredits"], 10)
 
     def test_user_home_data_with_credits(self):
         user = User.objects.create(
@@ -290,15 +287,14 @@ class TestHomePage(TestCase):
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url)
 
-        self.assertEqual(response.context['rank'], 1)
-        self.assertEqual(response.context['image_num'], 0)
-        self.assertEqual(response.context['image_meta_num'], 1)
-        self.assertEqual(response.context['post_num'], 2)
-        self.assertEqual(response.context['user1'], user)
-        self.assertEqual(response.context['user2'], self.user1)
-        self.assertEqual(response.context['user3'], self.user2)
-        self.assertEqual(response.context['user'], user)
-        self.assertEqual(response.context['gold']['totalCredits'], 25)
-        self.assertEqual(response.context['silver']['totalCredits'], 20)
-        self.assertEqual(response.context['bronze']['totalCredits'], 15)
-        
+        self.assertEqual(response.context["rank"], 1)
+        self.assertEqual(response.context["image_num"], 0)
+        self.assertEqual(response.context["image_meta_num"], 1)
+        self.assertEqual(response.context["post_num"], 2)
+        self.assertEqual(response.context["user1"], user)
+        self.assertEqual(response.context["user2"], self.user1)
+        self.assertEqual(response.context["user3"], self.user2)
+        self.assertEqual(response.context["user"], user)
+        self.assertEqual(response.context["gold"]["totalCredits"], 25)
+        self.assertEqual(response.context["silver"]["totalCredits"], 20)
+        self.assertEqual(response.context["bronze"]["totalCredits"], 15)

@@ -278,7 +278,7 @@ def user_profile(request):
         messages.success(request, "Your details have been updated successfully")
         return redirect("accounts:user-profile")
 
-    #calculate rank and total credits of the user
+    # calculate rank and total credits of the user
     result = (
         EarnGreenCredits.objects.values("user")
         .annotate(totalCredits=Sum("action__credit"))
