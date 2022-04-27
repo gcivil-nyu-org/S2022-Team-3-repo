@@ -90,15 +90,15 @@ Notifications | greenCan
                 
                 if(notification['message_type'] == "success"){
                     n += '<span class="uk-label uk-label-success uk-margin-auto-left">'
-                        + 'Success' + '</span></div></div><div class="uk-card-body" style="width: 800px !important;">';
+                        + 'APPROVED' + '</span></div></div><div class="uk-card-body" style="width: 800px !important;">';
                 }
                 else if(notification['message_type'] === "error"){
                     n += '<span class="uk-label uk-label-danger uk-margin-auto-left">'
-                        + 'Error' + '</span></div></div><div class="uk-card-body" style="width: 800px !important;">';
+                        + 'DENIED' + '</span></div></div><div class="uk-card-body" style="width: 800px !important;">';
                 }
                 else{
                     n += '<span class="uk-label uk-label-warning uk-margin-auto-left">'
-                        + 'Info' + '</span></div></div><div class="uk-card-body" style="width: 800px !important;">';
+                        + 'INFO' + '</span></div></div><div class="uk-card-body" style="width: 800px !important;">';
                 }
 
                 if(notification['is_read'] == true){
