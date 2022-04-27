@@ -14,7 +14,7 @@ def create_notification(notification):
     message = notification.get("message")
 
     notify.send(
-        actor=sender,
+        sender=sender,
         recipient=receiver,
         verb=verb_str,
         level=message_type,
