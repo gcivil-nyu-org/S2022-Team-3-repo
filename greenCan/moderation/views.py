@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import user_passes_test
 from rewards.models import ImageMeta
 from reuse.models import Post
-from rewards.models import Image,ImageMeta
+from rewards.models import Image, ImageMeta
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
@@ -32,7 +32,7 @@ def review_post(request, id):
             reasons = []
             sender = request.user
             if "approve" in request.POST:
-                
+
                 id = request.POST["approve"]
                 post = Post.objects.get(id=id)
                 post.approved = True
@@ -87,7 +87,7 @@ def review_post(request, id):
                     "receiver": receiver,
                     "msg_type": msg_type,
                     "message": message,
-                    #post  object / img meta object
+                    # post  object / img meta object
                 }
                 create_notification(notification)
                 current_site = get_current_site(request)
@@ -116,6 +116,7 @@ def review_post(request, id):
     context = {"post": post}
     return render(request, template_name=template_name, context=context)
 
+
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def review_credit_request(request, id):
@@ -130,7 +131,9 @@ def review_credit_request(request, id):
                 img_meta = ImageMeta.objects.get(id=id)
                 img_meta.approved = True
                 img_meta.save()
-                log = VolunteerLogs(content_object=img_meta, reason=reasons, approved_by=sender.email)
+                log = VolunteerLogs(
+                    content_object=img_meta, reason=reasons, approved_by=sender.email
+                )
                 log.save()
                 # send notification to user
                 receiver = img_meta.user
@@ -171,7 +174,9 @@ def review_credit_request(request, id):
                     reasons.append(request.POST["check3"])
                 if "description" in request.POST:
                     reasons.append(request.POST["description"])
-                log = VolunteerLogs(content_object=img_meta, reason=reasons, approved_by=sender.email)
+                log = VolunteerLogs(
+                    content_object=img_meta, reason=reasons, approved_by=sender.email
+                )
                 log.save()
                 receiver = img_meta.user
                 msg_type = "error"
@@ -208,8 +213,10 @@ def review_credit_request(request, id):
 
     img_meta = get_object_or_404(ImageMeta, approved=None, pk=id)
     categories = img_meta.category.all()
-    context = {"img_meta": img_meta,"categories":categories}
+    context = {"img_meta": img_meta, "categories": categories}
     return render(request, template_name=template_name, context=context)
+
+
 @login_required
 @user_passes_test(lambda u: u.is_staff)
 def post_approval(request):

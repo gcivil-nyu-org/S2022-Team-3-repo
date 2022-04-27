@@ -214,7 +214,13 @@ class TestSubmissionActions(TestCase):
 
     def test_post_denial_email_subject(self):
         self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
-        data = {"deny": self.post.id, "check1": "check1 reason","check2": "check2 reason","check3": "check3 reason","description": "description"}
+        data = {
+            "deny": self.post.id,
+            "check1": "check1 reason",
+            "check2": "check2 reason",
+            "check3": "check3 reason",
+            "description": "description",
+        }
         self.client.post(self.url, data, follow=True)
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, "Post " + str(self.post.title) + " denied")
