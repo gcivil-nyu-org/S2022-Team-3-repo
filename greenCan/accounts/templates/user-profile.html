@@ -22,25 +22,40 @@ user-profile
                     <img height="150" src="{% static 'images/avatar/avatar.svg' %}" >
                     {% endif %}
                   </div>
-                 <button type="button" class = "editAvatarBtn" data-bs-toggle="modal" data-bs-target="#editAvatar"><i class="fas fa-pencil-alt"></i></button>
-              </div>
-           
-            <p style="font-size:xx-large;"><b>{{user.get_full_name | escape }}</b> </p>
-            <div style="text-align: center;">
-            <div style="display: inline-block; text-align: left;font-size: x-large;" class="mx-3">
-                <p><b>Email:   </b>  {{ user.email | escape }} </p>
-                {% if user.phone_number %}
-                <p><b>Phone:   </b> +1 {{user.phone_number | escape }} </p>
-                {% else %}
-                <p><b>Phone:   </b> UNKNOWN </p>
-                {% endif %}
-                {% if user.zipcode %}
-                <p><b>Location:   </b> {{user.zipcode.borough}}, {{user.zipcode.state_id}} </p>
-                {% else %}
-                <p><b>Location:   </b> UNKNOWN </p>
-                {% endif %}
-                <br>
+                <button type="button" class = "editAvatarBtn" data-bs-toggle="modal" data-bs-target="#editAvatar"><i class="fas fa-pencil-alt"></i></button>
             </div>
+           
+            <p style="font-size:xx-large;" class="mb-2"><b>{{user.get_full_name | escape }}</b> </p>
+            <p style="font-size: x-large;" class="mt-0"><b><span class="green-credits-span">{{ earned_credits }} <img src="{% static 'images/illustrations/green-credit.png' %}" height="20" alt="green credits"></span></b></p>
+            <div style="text-align: center;">
+                <div style="display: inline-block; text-align: left;font-size: x-large;" class="mx-3">
+                    <p>
+                        <b>Rank:   </b>  {{ rank }}
+                    </p>
+
+                    <p>
+                        <b>Email:   </b>  {{ user.email | escape }}
+                    </p>
+                    {% if user.phone_number %}
+                    <p>
+                        <b>Phone:   </b> +1 {{user.phone_number | escape }}
+                    </p>
+                    {% else %}
+                    <p>
+                        <b>Phone:   </b>
+                    </p>
+                    {% endif %}
+                    {% if user.zipcode %}
+                    <p>
+                        <b>Location:   </b> {{user.zipcode.borough}}, {{user.zipcode.state_id}}
+                    </p>
+                    {% else %}
+                    <p>
+                        <b>Location:   </b>
+                    </p>
+                    {% endif %}
+                    <br>
+                </div>
             </div>
             <button type="button" class="btn btn-primary" style="background-color: black !important;" data-bs-toggle="modal" data-bs-target="#edit">Edit Profile</button>
 
@@ -113,188 +128,22 @@ user-profile
                                     {% csrf_token %}
                                     <!-- {{ form.as_p}}-->
                                     <div class="form-group">
-                                        <p><input id="avatar" type="hidden" name="avatar" value ="{{ user.avatar }}" hidden class="form-control"></p>
-                                        <div class = "container-fluid">
-                                        <div class = "row mr-1">
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/1.svg' %}" >
-                                                    <img style="max-height: 50px;" src ="{% static 'images/avatar/1.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/2.svg' %}" >
-                                                    <img style="max-height: 50px;" src ="{% static 'images/avatar/2.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/3.svg' %}" >
-                                                    <img style="max-height: 50px;" src ="{% static 'images/avatar/3.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/4.svg' %}" >
-                                                    <img style="max-height: 50px;" src ="{% static 'images/avatar/4.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/5.svg' %}" >
-                                                    <img style="max-height: 50px;" src ="{% static 'images/avatar/5.svg' %}">
-                                                </button>
-                                            </div>
-
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/6.svg' %}" >
-                                                    <img style="max-height: 50px;" src ="{% static 'images/avatar/6.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/7.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/7.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/8.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/8.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/9.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/9.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/10.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/10.svg' %}">
-                                                </button>
-                                            </div>
-
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/11.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/11.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/12.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/12.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/13.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/13.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/14.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/14.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/15.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/15.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/16.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/16.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/17.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/17.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/18.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/18.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/19.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/19.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/20.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/20.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/21.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/21.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/22.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/22.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/23.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/23.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/24.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/24.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/25.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/25.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/26.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/26.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/27.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/27.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/28.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/28.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/29.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/29.svg' %}">
-                                                </button>
-                                            </div>
-                                            <div class="col-md-2 col-sm-4">
-                                                <button type="button" class="avatarBtn" data-url = "{% static 'images/avatar/30.svg' %}" >
-                                                    <img height="50" src ="{% static 'images/avatar/30.svg' %}">
-                                                </button>
-                                            </div>
-                                        </div>
+                                        {% include 'accounts/templates/profile-avatars.html' %}
                                     </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                    <div class="d-flex float-right py-3">
-                                        <button type="button" class="btn btn-rounded"  style="background-color: #777 !important;" data-bs-dismiss="modal" onClick="window.location.reload();">Close</button>
-                                        <span class="text-white">&nbsp&nbsp</span>
-                                        <button class="btn btn-rounded" type="submit">Save</button>
-                                      </div>
-                                    </div>
-                        
                                 </form>
                             </div>
-
                         </div>
                     </div>
                 </div> 
             </div>
         </div>
-
-
         <div class = "col-md-7 col-sm-12 justify-content">
-            <!--green credits rewards here-->
+            <div class="timeline" id="logs-wrapper">
+                <span class="load-more" id="load-more">Load more...</span>
+            </div>            
         </div>
     </div>
 </div>
-
 
 
 {% endblock %}
@@ -302,16 +151,77 @@ user-profile
 {% block scripts %}
 {% include 'sweetalert2.html' %}
 <script>
- $(document).ready(function(e){
-    document.querySelector('[data-url = "{{user.avatar}}"]').style.backgroundColor = "#69be52a4";
- });
+    $(document).ready(function(e){
+        document.querySelector('[data-url = "{{user.avatar}}"]').style.backgroundColor = "#69be52a4";
+        load_logs();
+    });
 
-$('.avatarBtn').on('click',function(){
-    $('#avatar').val($(this).attr('data-url'));
-    document.querySelector('[data-url = "{{user.avatar}}"]').style.backgroundColor = "transparent"
-});
+    $('.avatarBtn').on('click',function(){
+        $('#avatar').val($(this).attr('data-url'));
+        document.querySelector('[data-url = "{{user.avatar}}"]').style.backgroundColor = "transparent"
+    });
 
-$('#main').removeClass( "container-md mx-md-auto mx-1" ).addClass("container-fluid p-0");
+    $('#main').removeClass( "container-md mx-md-auto mx-1" ).addClass("container-fluid p-0");
 
+    function addOneLog(data){ 
+        var $message;
+        if(data['event_type']=="post"){
+            $message = "You earned green credits to post an item donation ad post on greenCan.";
+        }else if (data['event_type']=="image"){
+            $message = "You earned green credits for your contribution to Green Wall.";
+        }
+
+        var $log = $("<li>" +
+        `<span class='date'>${data['date']}</span>` +
+        `<h3 class='mb-1 mt-0 pt-0'>Hurrah! You earned <span class='green-credits-span'>${data['credits']} <img src=\"{% static 'images/illustrations/green-credit.png' %}\" height='20' alt='green credits'></span></h3>` +
+        "<div class='content'>" +
+            "<p class='my-0 py-0'>" +
+            `${$message}` +
+            "</p>" +
+        "</div>" + 
+        "</li>");
+        return $log;
+    }
+
+    function addNotifications(data){
+        $.each(data, function(i, d){
+            $('#green-credit-logs').append(addOneLog(d));
+        });
+    }
+
+    var $page_number = 1;
+    $('#load-more').click(function(e){
+        load_logs();
+    });
+
+    function load_logs(){
+        $.ajax({
+            url: "{% url 'accounts:green-credits-logs' %}",
+            dataType: 'json',
+            method: 'GET',
+            data: {
+                "page": $page_number
+            },
+            success: function(data) {
+                $page_number = data['next_page_number'];
+                if($page_number<1){
+                    $('#load-more').hide();
+                }
+                
+                if ($('#logs-wrapper').children().length===1){
+                    $('#logs-wrapper').prepend($('<ul id="green-credit-logs"></ul>'));
+                }
+
+                addNotifications(data['data']);
+            },
+            error: function(e) {
+                Swal.fire(
+                    "Error",
+                    "Some Error occured please try again later.",
+                    "error"
+                );
+            }
+        });
+    }
 </script>
 {% endblock %}

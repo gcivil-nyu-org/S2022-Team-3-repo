@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.utils.encoding import force_str
@@ -18,6 +19,12 @@ from django.contrib.auth import views as auth_views
 from .forms import PasswordResetForm, SetPasswordForm
 from recycle.models import ZipCode
 from django.utils.html import strip_tags
+from django.core.paginator import Paginator
+from rewards.models import EarnGreenCredits
+from django.db.models import Sum, Window, F
+from django.db.models.functions import Rank
+
+# from django.db.models.functions.window import RowNumber
 
 
 class PasswordResetView(auth_views.PasswordResetView):
@@ -270,7 +277,32 @@ def user_profile(request):
         user.save()
         messages.success(request, "Your details have been updated successfully")
         return redirect("accounts:user-profile")
-    return render(request, "accounts/templates/user-profile.html", {})
+
+    # calculate rank and total credits of the user
+    result = (
+        EarnGreenCredits.objects.values("user")
+        .annotate(totalCredits=Sum("action__credit"))
+        .annotate(rank=Window(expression=Rank(), order_by=F("totalCredits").desc()))
+    ).order_by("rank")
+
+    try:
+        earned_credits = result.filter(user=request.user)[0]
+        r = (
+            EarnGreenCredits.objects.values("user")
+            .annotate(totalCredits=Sum("action__credit"))
+            .filter(totalCredits__gt=earned_credits["totalCredits"])
+            .count()
+            + 1
+        )
+        context = {
+            "rank": r,
+            "earned_credits": earned_credits["totalCredits"],
+        }
+
+    except IndexError:
+        context = {"rank": "Not Available", "earned_credits": 0}
+
+    return render(request, "accounts/templates/user-profile.html", context)
 
 
 @login_required
@@ -285,3 +317,27 @@ def user_profile_avatar(request):
         user.save()
         messages.success(request, "Your avatar has been updated.")
     return redirect("accounts:user-profile")
+
+
+@login_required
+def green_credits_logs(request):
+    page_number = int(request.GET.get("page", 1))
+    earned_credits_logs = EarnGreenCredits.objects.filter(user=request.user).order_by("-earned_on")
+    pages = Paginator(earned_credits_logs, 10)
+    datas = pages.get_page(page_number)
+    logs = {"status": True}
+    logs["data"] = []
+    for data in datas:
+        logs["data"].append(
+            {
+                "date": data.earned_on.strftime("%d %b' %Y - %I:%M:%S %p"),
+                "event_type": data.action.action,
+                "credits": data.action.credit,
+            }
+        )
+    if datas.has_next():
+        logs["next_page_number"] = data.next_page_number()
+    else:
+        logs["next_page_number"] = 0
+
+    return JsonResponse(logs)

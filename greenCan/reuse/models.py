@@ -3,6 +3,8 @@ from recycle.models import ZipCode
 from django.conf import settings
 from django.contrib.postgres.search import SearchVectorField
 from django.contrib.postgres.indexes import GinIndex
+from rewards.models import EarnGreenCredits
+from django.contrib.contenttypes.fields import GenericRelation
 
 
 class Post(models.Model):
@@ -19,6 +21,7 @@ class Post(models.Model):
     created_on = models.DateTimeField(auto_now_add=True, null=False)
     updated_on = models.DateTimeField(auto_now=True, null=False)
     search_vector = SearchVectorField(null=True)
+    green_credits = GenericRelation(EarnGreenCredits)
 
     def __str__(self):
         return str(self.id)
