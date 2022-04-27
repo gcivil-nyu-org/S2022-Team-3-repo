@@ -1,5 +1,5 @@
 from notifications.signals import notify
-from rewards.models import *
+from rewards.models import ImageMeta
 
 
 def create_notification(notification):
@@ -9,8 +9,15 @@ def create_notification(notification):
     verb_str = "post"
     if type(notification_obj) == ImageMeta:
         verb_str = "imagemeta"
-    
+
     message_type = notification.get("msg_type")
     message = notification.get("message")
 
-    notify.send(actor=sender, recipient=receiver, verb=verb_str, level=message_type, action_object=notification_obj, description=message)
+    notify.send(
+        actor=sender,
+        recipient=receiver,
+        verb=verb_str,
+        level=message_type,
+        action_object=notification_obj,
+        description=message,
+    )

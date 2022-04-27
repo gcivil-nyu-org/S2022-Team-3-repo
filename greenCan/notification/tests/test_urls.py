@@ -1,11 +1,9 @@
-import imp
 from django.test import TestCase
 from notification.views import index, get_notifications
 from django.urls import reverse, resolve
 
 
 class TestNotificationUrls(TestCase):
-
     def test_index_URL(self):
         url = reverse("notification:index")
         self.assertEquals(resolve(url).func, index)
