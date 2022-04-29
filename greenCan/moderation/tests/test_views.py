@@ -196,7 +196,7 @@ class TestSubmissionActions(TestCase):
         CreditsLookUp.objects.create(action="image", credit=5)
         CreditsLookUp.objects.create(action="post", credit=10)
 
-        #create a new meta
+        # create a new meta
         event = Event(name="Recycle")
         event.save()
         self.event = event
@@ -243,33 +243,71 @@ class TestSubmissionActions(TestCase):
         self.client.post(self.url, data, follow=True)
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, "Post " + str(self.post.title) + " denied")
-    
+
+    def test_meta_approval_email_status(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        data = {"approve": self.meta.id}
+        response = self.client.post(self.url2, data, follow=True)
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, "moderation/templates/index.html")
+
+    def test_meta_approval_email_subject(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        data = {"approve": self.meta.id}
+        self.client.post(self.url2, data, follow=True)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, "Post " + str(self.meta.caption) + " approved")
+
+    def test_meta_denial_email_response(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        data = {"deny": self.meta.id}
+        response = self.client.post(self.url2, data, follow=True)
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, "moderation/templates/index.html")
+
+    def test_meta_denial_email_subject(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        data = {
+            "deny": self.meta.id,
+            "check1": "check1 reason",
+            "check2": "check2 reason",
+            "check3": "check3 reason",
+            "description": "description",
+        }
+        self.client.post(self.url2, data, follow=True)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, "Post " + str(self.meta.caption) + " denied")
+
     def test_post_approval_credits_logs(self):
         self.assertEqual(EarnGreenCredits.objects.filter(user=self.user).count(), 0)
         self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
         data = {"approve": self.post.id}
         self.client.post(self.url, data, follow=True)
         self.assertEqual(EarnGreenCredits.objects.filter(user=self.user).count(), 1)
-        self.assertEqual(EarnGreenCredits.objects.filter(user=self.user)[0].object_id, self.post.id)
-    
+        self.assertEqual(
+            EarnGreenCredits.objects.filter(user=self.user)[0].object_id, self.post.id
+        )
+
     def test_post_denial_credits_logs(self):
         self.assertEqual(EarnGreenCredits.objects.filter(user=self.user).count(), 0)
         self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
         data = {"deny": self.post.id}
-        response = self.client.post(self.url, data, follow=True)
+        self.client.post(self.url, data, follow=True)
         self.assertEqual(EarnGreenCredits.objects.filter(user=self.user).count(), 0)
-    
+
     def test_meta_approval_credits_logs(self):
         self.assertEqual(EarnGreenCredits.objects.filter(user=self.user).count(), 0)
         self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
         data = {"approve": self.meta.id}
         self.client.post(self.url2, data, follow=True)
         self.assertEqual(EarnGreenCredits.objects.filter(user=self.user).count(), 1)
-        self.assertEqual(EarnGreenCredits.objects.filter(user=self.user)[0].object_id, self.meta.id)
-    
+        self.assertEqual(
+            EarnGreenCredits.objects.filter(user=self.user)[0].object_id, self.meta.id
+        )
+
     def test_meta_denial_credits_logs(self):
         self.assertEqual(EarnGreenCredits.objects.filter(user=self.user).count(), 0)
         self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
         data = {"deny": self.meta.id}
-        response = self.client.post(self.url2, data, follow=True)
+        self.client.post(self.url2, data, follow=True)
         self.assertEqual(EarnGreenCredits.objects.filter(user=self.user).count(), 0)
