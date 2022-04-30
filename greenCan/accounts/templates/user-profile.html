@@ -173,7 +173,7 @@ user-profile
 
         var $log = $("<li>" +
         `<span class='date'>${data['date']}</span>` +
-        `<h3 class='mb-1 mt-0 pt-0'>Hurrah! You earned <span class='green-credits-span'>${data['credits']} <img src=\"{% static 'images/illustrations/green-credit.png' %}\" height='20' alt='green credits'></span></h3>` +
+        `<h3 class='mb-1 mt-0 pt-0'>Hurrah! You earned <span class='green-credits-span'>+${data['credits']} <img src=\"{% static 'images/illustrations/green-credit.png' %}\" height='20' alt='green credits'></span></h3>` +
         "<div class='content'>" +
             "<p class='my-0 py-0'>" +
             `${$message}` +
