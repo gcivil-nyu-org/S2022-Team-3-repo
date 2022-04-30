@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 from model_bakery import baker
 from notification.utils import create_notification
-from datetime import datetime
+from django.utils import timezone
 
 
 User = get_user_model()
@@ -131,13 +131,13 @@ class TestNotificationsViews(TestCase):
         self.assertFalse(data["notification"][1]["is_read"])
         self.assertFalse(data["notification"][2]["is_read"])
         self.assertEquals(
-            data["notification"][0]["created_on_date"], datetime.now().strftime("%B %d, %Y")
+            data["notification"][0]["created_on_date"], timezone.now().strftime("%B %d, %Y")
         )
         self.assertEquals(
-            data["notification"][1]["created_on_date"], datetime.now().strftime("%B %d, %Y")
+            data["notification"][1]["created_on_date"], timezone.now().strftime("%B %d, %Y")
         )
         self.assertEquals(
-            data["notification"][2]["created_on_date"], datetime.now().strftime("%B %d, %Y")
+            data["notification"][2]["created_on_date"], timezone.now().strftime("%B %d, %Y")
         )
 
     def test_marked_is_read_POST(self):
