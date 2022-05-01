@@ -18,6 +18,7 @@ from django.contrib.postgres.search import (
     SearchVector,
     SearchHeadline,
 )
+from django.http import Http404, HttpResponse
 
 """
 function: index
@@ -348,5 +349,7 @@ def post_details(request):
         user = request.user
         post_id = request.GET.get('postID')
         post = Post.objects.filter(pk=post_id)[0]
+        if post.user != user:
+            raise Http404('you are not allowed to see others posts ')
         context = {"user": user, "post": post, "is_reuse": True}
         return render(request, template, context=context)
