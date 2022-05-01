@@ -8,22 +8,64 @@ Reuse | greenCan
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/picSlider.css' %}">
 <link rel="stylesheet" href="{% static 'modules/owl-carousel-2/css/owl-carousel2.min.css' %}" />
+<style>
+    .btn-round{
+    border-radius: 50px !important;
+    padding: 0.45em 1.5em;
+    width: 40%;
+    text-overflow: clip;
+    cursor: default;
+    font-size: small;
+  }
+  .btn-round:hover{
+    cursor: default;
+  }
+  .peddingBtn{
+    background-color: #FFA500 !important;
+  }
+  .listedBtn{
+    background-color: #008000 !important;
+  }
+  .removedBtn{
+    background-color: #FF0000 !important;
+  }
+  .NABtn{
+    background-color: #C4C4C4 !important;
+  }
+  .concernBtn{
+    background-color: rgb(32, 139, 132) !important;
+  }
+
+</style>
 {% endblock %}
 
 {% block main %}
-<h1>{{post.title}}</h1>
-<div class = "container" style="margin-top: 50px;" style="justify-content: center;">
+<h1 style="margin-top: 4%;">{{post.title}}</h1>
+<br>
+<div class = "container" style="justify-content: center;">
     <div class = "row">
         <!-- slides of item pictures -->
         <div class = "col-md-6">
             <div class="owl-carousel owl-theme">
                 {% for img in post.image_set.all %}
-                    <div class="item"><img src={{img.url}} style="width:100%"/></div>
+                    <div class="item" style="justify-content: center;"><img src={{img.url}} style="width:100%;"/></div>
                 {% endfor %}
             </div>
         </div>
         <!-- slides of item pictures -->
         <div class = "col-md-6">
+            {% if post.approved == True and post.still_available == True %}
+                <p><b>🛎️ Status:   </b>   <button type = "button" class = "listedBtn btn-round">Listed</button></p>
+            {% endif %}
+            {% if post.approved == None and post.still_available == True %}
+                <p><b>🛎️ Status:   </b>   <button type = "button" class = "peddingBtn btn-round">Pending</button></p>
+            {% endif %}
+            {% if post.approved != False and post.still_available == False %}
+                <p><b>🛎️ Status:   </b>   <button type = "button" class = "NABtn btn-round">Not avaliable</button></p>
+            {% endif %}
+            {% if post.approved == False %}
+            <p><b>🛎️ Status:   </b>   <button type = "button" class = "removedBtn btn-round">Removed</button></p>
+            {% endif %}
             <p><b>&#128151 Category:   </b>  {{post.category }}</p>
             <p><b>&#x1f4e6 Item description:   </b>  
                 {% if post.headline %}
@@ -35,6 +77,11 @@ Reuse | greenCan
             <p><b>&#128231 Email :   </b>   {{post.email }}</p>
             <p><b>&#128241 Phone number:</b> {{post.phone_number }}</p>
             <p><b>&#x1F4CD Pick-up location:   </b>   {{ post.zip_code.borough }}, {{ post.zip_code.state_id }} - {{ post.zip_code.zip_code }}</p>
+            <br>
+            {% if post.approved == False %}
+            <p style="color: #008000;font-size: large;"><b><u>Why my post was denied</u>❔ </b></p>
+            <button type = "button" class = "concernBtn btn">🙋 Raise a concern</button>
+            {% endif %}
         </div>
     </div>
 </div>
@@ -49,7 +96,7 @@ Reuse | greenCan
         margin: 20,
         loop: true,
         autoplay: true,
-        autoplayTimeout: 2800,
+        autoplayTimeout: 4000,
         autoplayHoverpause: true,
         items: 1,
         nav: true,
