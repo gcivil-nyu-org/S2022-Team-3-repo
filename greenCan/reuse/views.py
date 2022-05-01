@@ -339,3 +339,14 @@ def post_availability(request):
         except Exception:
             return JsonResponse({"message": "Error"})
     return redirect("reuse:my-posts")
+
+
+@login_required
+def post_details(request):
+    if request.method=='GET':
+        template = "reuse/templates/my-posts-details.html"
+        user = request.user
+        post_id = request.GET.get('postID')
+        post = Post.objects.filter(pk=post_id)[0]
+        context = {"user": user, "post": post, "is_reuse": True}
+        return render(request, template, context=context)

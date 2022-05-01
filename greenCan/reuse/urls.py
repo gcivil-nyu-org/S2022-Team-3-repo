@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from .models import Post
 
 app_name = "reuse"
 
@@ -17,4 +18,5 @@ urlpatterns = [
     ),
     path("my-posts/", views.my_posts, name="my-posts"),
     path("post-availability/", views.post_availability, name="post-availability"),
+    path("post_details/", views.post_details, name="post-details"),
 ]
