@@ -80,7 +80,7 @@ Reuse | greenCan
             <br>
             {% if post.approved == False %}
             <p style="color: #008000;font-size: large;"><b><u>Why my post was denied</u>❔ </b></p>
-            <button type = "button" class = "concernBtn btn">🙋 Raise a concern</button>
+            <button type = "button" class = "concernBtn btn" id = {{post.id}}>🙋 Raise a concern</button>
             {% endif %}
         </div>
     </div>
@@ -104,5 +104,20 @@ Reuse | greenCan
     });
 
 }); 
+
+$(".concernBtn").click(function(){
+ //do something here
+ alert("you are raising a concern")
+ $.ajax({
+                    url: "{% url 'reuse:raise-concerns' %}",
+                    data: {
+                        id: this.id,
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                    },
+                    type: "POST",
+                    dataType : "json",
+    })
+})
 </script>
+
 {% endblock %}
