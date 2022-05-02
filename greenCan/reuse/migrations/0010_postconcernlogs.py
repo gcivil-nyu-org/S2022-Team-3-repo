@@ -7,16 +7,21 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('reuse', '0009_remove_image_approved_alter_post_approved'),
+        ("reuse", "0009_remove_image_approved_alter_post_approved"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='PostConcernLogs',
+            name="PostConcernLogs",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False)),
-                ('created_on', models.DateTimeField(auto_now_add=True)),
-                ('post', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='reuse.post')),
+                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False)),
+                ("created_on", models.DateTimeField(auto_now_add=True)),
+                (
+                    "post",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="reuse.post"
+                    ),
+                ),
             ],
         ),
     ]

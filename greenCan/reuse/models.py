@@ -56,6 +56,7 @@ class NGOLocation(models.Model):
     def __str__(self):
         return str(self.id)
 
+
 class PostConcernLogs(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
     post = models.ForeignKey(Post, null=False, on_delete=models.CASCADE)

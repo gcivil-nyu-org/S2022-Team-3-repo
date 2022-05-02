@@ -361,11 +361,10 @@ def raise_concerns(request):
         post_id = request.POST.get("id")
         post = Post.objects.filter(pk=post_id)[0]
         if len(PostConcernLogs.objects.filter(post_id=post_id)) != 0:
-            return JsonResponse({"message": "You can only raise a concern once per post."})
+            return JsonResponse({"message": "Repeated"})
         else:
             new_concern = PostConcernLogs(
-                post = post,
+                post=post,
             )
             new_concern.save()
             return JsonResponse({"message": "Success"})
-    return redirect("reuse:my-posts")
