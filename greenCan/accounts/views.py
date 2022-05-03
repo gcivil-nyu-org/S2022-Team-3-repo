@@ -343,13 +343,14 @@ def green_credits_logs(request):
 
     return JsonResponse(logs)
 
+
 @login_required
 @user_passes_test(lambda u: not (u.is_staff or u.is_admin))
 def volunteer_registration(request):
 
     if request.POST == "POST":
-        
-        return redirect(reverse('accounts:volunteer-registration'))
+
+        return redirect(reverse("accounts:volunteer-registration"))
 
     template_name = "accounts/templates/volunteer-registration.html"
-    return render(request, template_name, context = {})
+    return render(request, template_name, context={})
