@@ -177,7 +177,7 @@ class TestHomePage(TestCase):
             password="password1",
             first_name="john",
             last_name="doe",
-            admin=True
+            admin=True,
         )
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url)
@@ -190,7 +190,7 @@ class TestHomePage(TestCase):
             password="password1",
             first_name="john",
             last_name="doe",
-            staff=True
+            staff=True,
         )
         self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.get(self.url)
