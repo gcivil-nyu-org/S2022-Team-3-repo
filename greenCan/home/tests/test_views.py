@@ -156,6 +156,7 @@ class TestHomePage(TestCase):
     def test_template_used(self):
         response = self.client.get(self.url)
         self.assertTemplateUsed(response, "home/templates/index.html")
+        self.assertTemplateUsed(response, "home/templates/user-registration-banner.html")
         self.assertEquals(response.status_code, 200)
 
     def test_unauthenticated_user(self):
@@ -191,7 +192,7 @@ class TestHomePage(TestCase):
 
     def test_unauthenticated_user_home_data(self):
         response = self.client.get(self.url)
-
+        self.assertTemplateUsed(response, "home/templates/volunteer-registration-banner.html")
         self.assertFalse("rank" in response.context)
         self.assertFalse("image_num" in response.context)
         self.assertFalse("image_meta_num" in response.context)

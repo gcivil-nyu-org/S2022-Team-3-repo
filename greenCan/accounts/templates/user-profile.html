@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title %}
-user-profile
+{{ user.get_full_name | escape | title }} 
 {% endblock %}
 
 {% block style %}

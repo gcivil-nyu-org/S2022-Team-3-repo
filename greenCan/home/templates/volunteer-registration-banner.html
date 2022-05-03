@@ -1,0 +1,21 @@
+{% load static %}
+<div class="banner-container m-5">
+    <div class="banner">
+        <div class="left-container">
+            <img src="{% static 'images/illustrations/recycle-bin-men.png' %}" alt="">
+        </div>
+        <div class="content">
+            <span>Our planet is precious to us.</span>
+            <h3>Save EARTH</h3>
+            <p>Thank you for a valuable part of our community.<br/>
+                Become a Volunteer.
+            </p>
+            <div class="btn-container">
+                <a href="{% url 'accounts:volunteer-registration' %}" class="button btn-rounded btn">Apply Now</a>
+            </div>
+        </div>
+        <div class="right-container">
+            <img src="{% static 'images/illustrations/reuse-reduce-recycle.png' %}" alt="">
+        </div>
+    </div>
+</div>

@@ -1,0 +1,19 @@
+{% load static %}
+<div class="banner-container m-5">
+    <div class="banner">
+        <div class="left-container">
+            <img src="{% static 'images/illustrations/recycle-bin-men.png' %}" alt="">
+        </div>
+        <div class="content">
+            <span>Our planet is precious to us.</span>
+            <h3>Save EARTH</h3>
+            <p>Get involved by joining our community.</p>
+            <div class="btn-container">
+                <a href="{% url 'accounts:create' %}" class="button btn-rounded btn">Sign Up</a>
+            </div>
+        </div>
+        <div class="right-container">
+            <img src="{% static 'images/illustrations/reuse-reduce-recycle.png' %}" alt="">
+        </div>
+    </div>
+</div>

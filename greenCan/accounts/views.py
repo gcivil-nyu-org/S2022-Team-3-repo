@@ -1,8 +1,9 @@
+from audioop import reverse
 from datetime import timedelta
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
@@ -341,3 +342,14 @@ def green_credits_logs(request):
         logs["next_page_number"] = 0
 
     return JsonResponse(logs)
+
+@login_required
+@user_passes_test(lambda u: not (u.is_staff or u.is_admin))
+def volunteer_registration(request):
+
+    if request.POST == "POST":
+        
+        return redirect(reverse('accounts:volunteer-registration'))
+
+    template_name = "accounts/templates/volunteer-registration.html"
+    return render(request, template_name, context = {})
