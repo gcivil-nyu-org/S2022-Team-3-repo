@@ -1,6 +1,6 @@
 from django.test import TestCase
 from model_bakery import baker
-from reuse.models import Post, Image, NGOLocation
+from reuse.models import Post, Image, NGOLocation, PostConcernLogs
 
 
 class TestModels(TestCase):
@@ -18,3 +18,8 @@ class TestModels(TestCase):
         ngo_location = baker.make("reuse.NGOLocation")
         self.assertIsInstance(ngo_location, NGOLocation)
         self.assertEquals(str(ngo_location), str(ngo_location.id))
+
+    def test_PostConcernLogs_model(self):
+        post_concern_logs = baker.make("reuse.PostConcernLogs")
+        self.assertIsInstance(post_concern_logs, PostConcernLogs)
+        self.assertEquals(str(post_concern_logs), str(post_concern_logs))

@@ -7,10 +7,9 @@ from django.core.files.base import ContentFile
 from PIL import Image as Img
 from six import BytesIO
 from recycle.models import ZipCode
-from reuse.models import Image, Post
-from django.utils.encoding import force_str
-from reuse.models import NGOLocation
+from reuse.models import Image, Post, NGOLocation
 from rewards.models import CreditsLookUp
+from django.utils.encoding import force_str
 
 
 User = get_user_model()

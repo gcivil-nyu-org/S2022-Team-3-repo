@@ -17,4 +17,6 @@ urlpatterns = [
     ),
     path("my-posts/", views.my_posts, name="my-posts"),
     path("post-availability/", views.post_availability, name="post-availability"),
+    path("post-details/", views.post_details, name="post-details"),
+    path("raise-concerns/", views.raise_concerns, name="raise-concerns"),
 ]

@@ -1,0 +1,176 @@
+{% extends 'template.html' %}
+{% load static %}
+
+{% block title %}
+Reuse | greenCan
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/picSlider.css' %}">
+<link rel="stylesheet" href="{% static 'modules/owl-carousel-2/css/owl-carousel2.min.css' %}" />
+<style>
+    .btn-round{
+    border-radius: 50px !important;
+    padding: 0.45em 1.5em;
+    width: 40%;
+    text-overflow: clip;
+    cursor: default;
+    font-size: small;
+  }
+  .btn-round:hover{
+    cursor: default;
+  }
+  .peddingBtn{
+    background-color: #FFA500 !important;
+  }
+  .listedBtn{
+    background-color: #008000 !important;
+  }
+  .removedBtn{
+    background-color: #FF0000 !important;
+  }
+  .NABtn{
+    background-color: #C4C4C4 !important;
+  }
+  .concernBtn{
+    background-color: rgb(32, 139, 132) !important;
+  }
+
+</style>
+{% endblock %}
+
+{% block main %}
+<h1 style="margin-top: 4%;">{{post.title}}</h1>
+<br>
+<div class = "container" style="justify-content: center;">
+    <div class = "row">
+        <!-- slides of item pictures -->
+        <div class = "col-md-6">
+            <div class="owl-carousel owl-theme">
+                {% for img in post.image_set.all %}
+                    <div class="item" style="justify-content: center;"><img src={{img.url}} style="width:100%;"/></div>
+                {% endfor %}
+            </div>
+        </div>
+        <!-- slides of item pictures -->
+        <div class = "col-md-6">
+            {% if post.approved == True and post.still_available == True %}
+                <p><b>🛎️ Status:   </b>   <button type = "button" class = "listedBtn btn-round">Listed</button></p>
+            {% endif %}
+            {% if post.approved == None and post.still_available == True %}
+                <p><b>🛎️ Status:   </b>   <button type = "button" class = "peddingBtn btn-round">Pending</button></p>
+            {% endif %}
+            {% if post.approved != False and post.still_available == False %}
+                <p><b>🛎️ Status:   </b>   <button type = "button" class = "NABtn btn-round">Not avaliable</button></p>
+            {% endif %}
+            {% if post.approved == False %}
+            <p><b>🛎️ Status:   </b>   <button type = "button" class = "removedBtn btn-round">Removed</button></p>
+            {% endif %}
+            <p><b>&#128151 Category:   </b>  {{post.category }}</p>
+            <p><b>&#x1f4e6 Item description:   </b>  
+                {% if post.headline %}
+                    {{ post.headline | safe }} 
+                {% else %}
+                    {{ post.description | safe }} 
+                {% endif %}
+            </p>
+            <p><b>&#128231 Email :   </b>   {{post.email }}</p>
+            <p><b>&#128241 Phone number:</b> {{post.phone_number }}</p>
+            <p><b>&#x1F4CD Pick-up location:   </b>   {{ post.zip_code.borough }}, {{ post.zip_code.state_id }} - {{ post.zip_code.zip_code }}</p>
+            <br>
+            {% if post.approved == False %}
+            <p style="color: #008000;font-size: large;"><b><u>Why my post was denied</u>❔ </b></p>
+            <button type = "button" class = "concernBtn btn" id = {{post.id}}>🙋 Raise a concern</button>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'modules/owl-carousel-2/js/owl-carousel2.min.js' %}"></script>
+<script>
+  $(document).ready(function() {
+    let owl = $('.owl-carousel');
+    owl.owlCarousel({
+        margin: 20,
+        loop: true,
+        autoplay: true,
+        autoplayTimeout: 4000,
+        autoplayHoverpause: true,
+        items: 1,
+        nav: true,
+        navText : ["<i class='fas fa-chevron-left ml-0'></i>","<i class='fas fa-chevron-right mr-0'></i>"]
+    });
+
+}); 
+</script>
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+  $(".concernBtn").click(function(e) {
+        e.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to raise a concern about this post?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes! I want ro raise a concern.'
+        }).then((result) =>{
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: "{% url 'reuse:raise-concerns' %}",
+                    data: {
+                        id: this.id,
+                        csrfmiddlewaretoken: "{{ csrf_token }}",
+                    },
+                    type: "POST",
+                    dataType : "json",
+                    success: function(e) {
+                        if(e.message == "Success"){
+                            Swal.fire(
+                                'Nice!',
+                                'We have received your concern about this post.',
+                                'success'
+                            )
+                        } else if(e.message == "Repeated"){
+                            Swal.fire(
+                                'You have already raised a concern for this post.',
+                                'You can only raised a concern once for each post.',
+                                'info'
+                            )
+                        }else{
+                            Swal.fire(
+                                'Error!',
+                                'Something went wrong, please try again.',
+                                'error'
+                            )
+                        }
+                    }, 
+                    error: function(e) {
+                        Swal.fire(
+                                'Error!',
+                                'Something went wrong, please try again.',
+                                'error'
+                            );   
+                       
+                    }
+                });
+
+            } else{
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Cancel',
+                    text: 'Your action has been canceled',
+                    });
+            }
+        });
+        return false;
+    });
+});
+</script>
+
+{% endblock %}
