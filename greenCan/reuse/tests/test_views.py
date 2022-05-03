@@ -239,6 +239,31 @@ class TestCreatePost(TestCase):
         )
         self.assertRedirects(response, self.redirect_url, 302)
 
+    def test_auth_invalid_form_8(self):
+        data = self.data.copy()
+        data["number"] = "999"
+        user = User.objects.create(
+            email="testemail@gmail.com",
+            password="password1",
+            first_name="john",
+            last_name="doe",
+        )
+        self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        response = self.client.post(self.url, data=data, follow=True)
+        self.assertContains(response, "csrfmiddlewaretoken")
+        posts = Post.objects.all()
+        self.assertEquals(len(posts), 0)
+        images = Image.objects.all()
+        self.assertEquals(len(images), 0)
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "error")
+        self.assertEquals(
+            message.message,
+            "Failed to create the post. Please make sure you fill"
+            + " in all the details along with images to post an ad.",
+        )
+        self.assertRedirects(response, self.redirect_url, 302)
+
 
 class TestViews(TestCase):
     def setUp(self):
