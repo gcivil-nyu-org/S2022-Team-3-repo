@@ -23,7 +23,7 @@ Reuse | greenCan
             </tr>
             {% for post in user_posts %}
                 <tr>
-                    <td><h3 class = "trimTitle">{{post.title}}</h3></td>
+                    <td><a href="{% url 'reuse:post-details' %}?postID={{ post.id|urlencode }}"><h3 class = "trimTitle">{{post.title}}</h3></a></td>
                     <td>{{post.created_on}}</td>
                     <td>{{post.updated_on}}</td>
                     {% if post.approved == None and post.still_available == True %}
@@ -127,8 +127,5 @@ $(document).ready(function() {
         return false;
     });
 });
-// $(document).ajaxStop(function(){
-//     window.location.reload();
-// });
 </script>
 {% endblock %}

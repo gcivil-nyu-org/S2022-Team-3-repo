@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
-from .models import Post, Image, NGOLocation
+from .models import Post, Image, NGOLocation, PostConcernLogs
 from recycle.models import ZipCode
 import pyrebase
 from django.contrib.auth.decorators import login_required
@@ -18,6 +18,7 @@ from django.contrib.postgres.search import (
     SearchVector,
     SearchHeadline,
 )
+from django.http import Http404
 
 """
 function: index
@@ -339,3 +340,31 @@ def post_availability(request):
         except Exception:
             return JsonResponse({"message": "Error"})
     return redirect("reuse:my-posts")
+
+
+@login_required
+def post_details(request):
+    if request.method == "GET":
+        template = "reuse/templates/my-posts-details.html"
+        user = request.user
+        post_id = request.GET.get("postID")
+        post = Post.objects.filter(pk=post_id)[0]
+        if post.user != user:
+            raise Http404("you are not allowed to see others posts ")
+        context = {"user": user, "post": post, "is_reuse": True}
+        return render(request, template, context=context)
+
+
+@login_required
+def raise_concerns(request):
+    if request.method == "POST":
+        post_id = request.POST.get("id")
+        post = Post.objects.filter(pk=post_id)[0]
+        if len(PostConcernLogs.objects.filter(post_id=post_id)) != 0:
+            return JsonResponse({"message": "Repeated"})
+        else:
+            new_concern = PostConcernLogs(
+                post=post,
+            )
+            new_concern.save()
+            return JsonResponse({"message": "Success"})

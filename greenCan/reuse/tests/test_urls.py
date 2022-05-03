@@ -7,6 +7,8 @@ from reuse.views import (
     create_post,
     my_posts,
     post_availability,
+    post_details,
+    raise_concerns,
 )
 
 
@@ -66,3 +68,23 @@ class TestUrls(SimpleTestCase):
         self.assertEqual(resolved.func, post_availability)
         self.assertEqual(resolved.namespace, "reuse")
         self.assertEqual(url, "/reuse/post-availability/")
+
+    def test_post_details_url(self):
+        """
+        test create post details url is resolved
+        """
+        url = reverse("reuse:post-details")
+        resolved = resolve(url)
+        self.assertEqual(resolved.func, post_details)
+        self.assertEqual(resolved.namespace, "reuse")
+        self.assertEqual(url, "/reuse/post-details/")
+
+    def test_raise_concerns_url(self):
+        """
+        test create raise concerns url is resolved
+        """
+        url = reverse("reuse:raise-concerns")
+        resolved = resolve(url)
+        self.assertEqual(resolved.func, raise_concerns)
+        self.assertEqual(resolved.namespace, "reuse")
+        self.assertEqual(url, "/reuse/raise-concerns/")
