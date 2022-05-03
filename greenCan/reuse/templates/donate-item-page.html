@@ -381,7 +381,7 @@ Reuse | greenCan
               </div>
               <div class="form-group">
                 <label for="validationCustom04" class="form-label"><b>Your Contact Number:</b></label>
-                <input type="number" class="form-control"  id="validationCustom04" name="number" placeholder="Enter your Contact Number" style = "max-width: 100%;" required>
+                <input type="number" class="form-control"  id="validationCustom04" name="number" placeholder="Enter your Contact Number" style = "max-width: 100%;" required minlength="10" maxlength="10" min="1000000000" max="9999999999">
               </div>
               <div class="form-group">
                 <label for="validationCustom05" class="form-label"><b>Your E-mail:</b></label>
@@ -389,7 +389,7 @@ Reuse | greenCan
               </div>
               <div class="form-group">
               <label for="validationCustom06" class="form-label"><b>Zipcode of Pick-up Location:</b></label>
-                <input type="number" class="form-control" id="validationCustom06" name="zipcode" placeholder="Enter the Zipcode of the loaction" style = "max-width: 100%;" required>
+                <input type="number" class="form-control" id="validationCustom06" name="zipcode" placeholder="Enter the Zipcode of the loaction" style = "max-width: 100%;" required minlength="5" maxlength="5" min="10001">
               </div>
             </div>
             </div>
@@ -435,6 +435,12 @@ if (window.File && window.FileList && window.FileReader) {
 
   $('#image-frame').click(function(){
     $('#image-upload').trigger('click');
+  });
+
+  $('input[type="number"]').keydown(function(event){
+      if (($(this).val().length >= parseInt($(this).attr('maxlength')) && event.keyCode!=8) || event.keyCode==189 || event.keyCode==190 || event.keyCode==107 || event.keyCode==109 || event.keyCode==13 || event.key.toLowerCase()=='e' || event.key=='.'){            
+          event.preventDefault();
+      }
   });
  
   $(document).ready(function() {
@@ -502,7 +508,7 @@ if (window.File && window.FileList && window.FileReader) {
                         message: 'The contact number is required'
                     },
                     stringLength: {
-                        min: 10,
+                        min:10,
                         max:10,
                         message: 'Please enter a valid phone number'
                     }

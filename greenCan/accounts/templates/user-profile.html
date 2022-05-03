@@ -89,9 +89,9 @@
                                                 <div class="form-group">
                                                     <label for="phone_number"><b>Phone Number:</b></label>
                                                     {% if user.phone_number %}
-                                                    <input id="phone_number" type="text" name="phone_number" value = {{user.phone_number | escape }} class="form-control">
+                                                    <input id="phone_number" type="number" name="phone_number" value = {{user.phone_number | escape }} minlength="10" maxlength="10" class="form-control" min="1000000000" max="999999999">
                                                     {% else %}
-                                                    <input id="phone_number" type="text" name="phone_number" class="form-control">
+                                                    <input id="phone_number" type="number" name="phone_number" class="form-control" minlength="10" maxlength="10" min="1000000000" max="9999999999">
                                                     {% endif %}
                                                 </div>
                                             </div>
@@ -99,9 +99,9 @@
                                                 <div class="form-group">
                                                     <label for="zipcode"><b>Zipcode:</b></label>
                                                 {% if user.zipcode %}
-                                                    <input id="zipcode" type="text" name="zipcode" value = {{user.zipcode}} class="form-control">
+                                                    <input id="zipcode" type="number" name="zipcode" value = {{user.zipcode}} class="form-control" minlength="5" maxlength="5" min="10001">
                                                 {% else %}
-                                                    <input id="zipcode" type="text" name="zipcode" class="form-control">
+                                                    <input id="zipcode" type="number" name="zipcode" class="form-control" minlength="5" maxlength="5" min="10001">
                                                 {% endif %}
                                                 </div>
                                             </div>
@@ -154,6 +154,12 @@
     $(document).ready(function(e){
         document.querySelector('[data-url = "{{user.avatar}}"]').style.backgroundColor = "#69be52a4";
         load_logs();
+    });
+
+    $('input[type="number"]').keydown(function(event){
+        if (($(this).val().length >= parseInt($(this).attr('maxlength')) && event.keyCode!=8) || event.keyCode==189 || event.keyCode==190 || event.keyCode==107 || event.keyCode==109 || event.keyCode==13 || event.key.toLowerCase()=='e' || event.key=='.'){            
+            event.preventDefault();
+        }
     });
 
     $('.avatarBtn').on('click',function(){
