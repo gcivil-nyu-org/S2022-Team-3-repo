@@ -1,6 +1,9 @@
+import django
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+import validators
 from recycle.models import ZipCode
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class UserManager(BaseUserManager):
@@ -93,7 +96,6 @@ class User(AbstractBaseUser):
     )
     phone_number = models.CharField(verbose_name="Phone number", max_length=17, null=True)
     avatar = models.TextField(verbose_name="Avatar", null=True)
-    # avatar = models.ImageField(upload_to="Avatars", null=True)
     is_active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False)
     admin = models.BooleanField(default=False)
@@ -143,3 +145,16 @@ class LoginAttempt(models.Model):
 
     def __str__(self):
         return "user: {}, attempts: {}".format(self.user.email, self.login_attempts)
+
+class VolunteerApplication(models.Model):
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=False, related_name='applicant')
+    submitted_on = models.DateTimeField(auto_now_add=True)
+    score = models.IntegerField(null=False, default=0, validators=[MaxValueValidator(5),MinValueValidator(0)])
+    essay_1 = models.TextField(max_length=500, null=False)
+    essay_2 = models.TextField(max_length=500, null=False)
+    approved_by = models.ForeignKey(User, null=False, on_delete=models.CASCADE, related_name='reviewer')
+    updated_on = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.user.get_full_name()
