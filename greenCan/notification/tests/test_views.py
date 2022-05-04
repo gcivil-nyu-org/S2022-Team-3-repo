@@ -140,6 +140,32 @@ class TestNotificationsViews(TestCase):
             data["notification"][2]["created_on_date"], timezone.now().strftime("%B %d, %Y")
         )
 
+    def test_get_user_notifications_has_next_POST(self):
+        self.client.force_login(self.user2, backend=settings.AUTHENTICATION_BACKENDS[0])
+        response = self.client.post(
+            self.url_get_notifications, data={"page": 1, "max": 2}, enforce_csrf_checks=True
+        )
+        data = response.json()
+        self.assertEquals(len(data), 3)
+        self.assertTrue("has_next" in data)
+        self.assertTrue("notification" in data)
+        self.assertTrue("next_page_number" in data)
+        self.assertEquals(data["has_next"], 1)
+        self.assertEquals(data["next_page_number"], 2)
+        self.assertEquals(len(data["notification"]), 2)
+        self.assertTrue("message_type" in data["notification"][0])
+        self.assertTrue("is_read" in data["notification"][0])
+        self.assertTrue("created_on_date" in data["notification"][0])
+        self.assertTrue("messages" in data["notification"][0])
+        self.assertFalse(data["notification"][0]["is_read"])
+        self.assertFalse(data["notification"][1]["is_read"])
+        self.assertEquals(
+            data["notification"][0]["created_on_date"], timezone.now().strftime("%B %d, %Y")
+        )
+        self.assertEquals(
+            data["notification"][1]["created_on_date"], timezone.now().strftime("%B %d, %Y")
+        )
+
     def test_marked_is_read_POST(self):
         self.client.force_login(self.user2, backend=settings.AUTHENTICATION_BACKENDS[0])
         response = self.client.post(
