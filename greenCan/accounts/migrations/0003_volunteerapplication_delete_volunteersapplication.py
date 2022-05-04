@@ -9,24 +9,52 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0002_volunteersapplication'),
+        ("accounts", "0002_volunteersapplication"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='VolunteerApplication',
+            name="VolunteerApplication",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('submitted_on', models.DateTimeField(auto_now_add=True)),
-                ('score', models.IntegerField(default=0, validators=[django.core.validators.MaxValueValidator(5), django.core.validators.MinValueValidator(0)])),
-                ('essay_1', models.TextField(max_length=500)),
-                ('essay_2', models.TextField(max_length=500)),
-                ('updated_on', models.DateTimeField(auto_now=True)),
-                ('approved_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='reviewer', to=settings.AUTH_USER_MODEL)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, related_name='applicant', to=settings.AUTH_USER_MODEL)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("submitted_on", models.DateTimeField(auto_now_add=True)),
+                (
+                    "score",
+                    models.IntegerField(
+                        default=0,
+                        validators=[
+                            django.core.validators.MaxValueValidator(5),
+                            django.core.validators.MinValueValidator(0),
+                        ],
+                    ),
+                ),
+                ("essay_1", models.TextField(max_length=500)),
+                ("essay_2", models.TextField(max_length=500)),
+                ("updated_on", models.DateTimeField(auto_now=True)),
+                (
+                    "approved_by",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="reviewer",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
+                (
+                    "user",
+                    models.OneToOneField(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="applicant",
+                        to=settings.AUTH_USER_MODEL,
+                    ),
+                ),
             ],
         ),
         migrations.DeleteModel(
-            name='VolunteersApplication',
+            name="VolunteersApplication",
         ),
     ]
