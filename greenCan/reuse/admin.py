@@ -24,17 +24,26 @@ class PostConcernLogsAdmin(admin.ModelAdmin):
 
     def change_view(self, request, object_id, extra_context=None):
         post_concern = PostConcernLogs.objects.get(pk=object_id)
-        moderated = False;
+        moderated = False
 
         if request.POST:
-            admin_form = self.get_form(request, moderated_object)(request.POST)
+            admin_form = self.get_form(request, post_concern)(request.POST)
 
             if admin_form.is_valid():
-                reason = admin_form.cleaned_data['reason']
+                message = admin_form.cleaned_data['message']
                 if 'approve' in request.POST:
-                    moderated_object.approve(request.user, reason)
+                    moderated = True
+                    post_concern.approve(request.user, message)
+                    post_concern.checked = True
+                    post_concern.message = message
+                    post_concern.save()
                 elif 'reject' in request.POST:
-                    moderated_object.reject(request.user, reason)
+                    moderated = True
+                    post_concern.reject(request.user, message)
+                    post_concern.checked = True
+                    post_concern.message = message
+                    post_concern.save()
+                
 
         extra_context = {
             'post_url': 'greencan.heroku.com/post/' + str(post_concern.post.id),

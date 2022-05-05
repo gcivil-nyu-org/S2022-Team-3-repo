@@ -16,7 +16,6 @@ class VolunteerLogs(models.Model):
 
     @property
     def is_approved(self):
-        print("approved working")
         if self.content_object == Post:
             return str(self.approved)
         else:

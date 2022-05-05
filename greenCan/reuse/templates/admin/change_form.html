@@ -57,18 +57,19 @@ id="moderatedobject_form">{% csrf_token %}
 	    <h2>{% trans "Post concern" %}</h2>
 	</fieldset>
 
-    <a href="{{post_url}}" target="_blank">{{post_url}}</a>
+    <a href="{{post_url}}" target="_blank">View Post</a>
 	{% for fieldset in adminform %}
 		{% include "admin/includes/fieldset.html" %}
 	{% endfor %}
 
-	<div class="submit-row">
+    {% if not moderated %}
+	<div class="submit-row" style="width:300px;">
 		<p class="deletelink-box">
 			<input type="submit" value="{% trans 'Reject' %}" name="reject"  />
 		</p>
-
 		<input type="submit" value="{% trans 'Approve' %}" name="approve" />
 	</div>
+    {% endif %}
 
 </form>
 </div>
