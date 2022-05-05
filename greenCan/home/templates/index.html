@@ -163,9 +163,9 @@
 
 {% include 'home/templates/recycle-read-more.html' %}
 
-{% include 'home/templates/user-rank.html' %}
-
 {% include 'home/templates/contribution.html' %}
+
+{% include 'home/templates/user-rank.html' %}
 
 {% include 'home/templates/developers-corner.html' %}
 
@@ -216,6 +216,14 @@
     //scroll down to statistics section
     $('.contribution_btn').click(function(){
         document.getElementById('contribution').scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+        });
+    });
+
+    //scroll down to user rank section
+    $('.rank').click(function(){
+        document.getElementById('rank-section').scrollIntoView({
             behavior: "smooth",
             block: "center",
         });
