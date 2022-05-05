@@ -82,7 +82,7 @@ class PostConcernLogs(models.Model):
             msg_type = "error"
         post.save()
 
-        #send notification to user
+        # send notification to user
         sender = admin_user
         receiver = self.post.user
         msg = "Your post is " + status

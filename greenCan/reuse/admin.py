@@ -34,7 +34,6 @@ class PostConcernLogsAdmin(admin.ModelAdmin):
                     post_concern.send_signals_and_moderate(request.user, 1, message)
                 elif 'reject' in request.POST:
                     post_concern.send_signals_and_moderate(request.user, 0, message)
-                
 
         extra_context = {
             'post_url': 'http://127.0.0.1:8000/reuse/post-details/?postID=' + str(post_concern.post.id),
