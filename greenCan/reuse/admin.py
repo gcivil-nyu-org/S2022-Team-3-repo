@@ -31,9 +31,9 @@ class PostConcernLogsAdmin(admin.ModelAdmin):
             if admin_form.is_valid():
                 message = admin_form.cleaned_data['message']
                 if 'approve' in request.POST:
-                    post_concern.send_signals_and_moderate(1, message)
+                    post_concern.send_signals_and_moderate(request.user, 1, message)
                 elif 'reject' in request.POST:
-                    post_concern.send_signals_and_moderate(0, message)
+                    post_concern.send_signals_and_moderate(request.user, 0, message)
                 
 
         extra_context = {

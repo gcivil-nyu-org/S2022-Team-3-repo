@@ -5,6 +5,7 @@ from django.contrib.postgres.search import SearchVectorField
 from django.contrib.postgres.indexes import GinIndex
 from rewards.models import EarnGreenCredits
 from django.contrib.contenttypes.fields import GenericRelation
+from notification.utils import create_notification
 
 
 class Post(models.Model):
@@ -67,15 +68,32 @@ class PostConcernLogs(models.Model):
     def __str__(self):
         return str(self.id)
 
-    def send_signals_and_moderate(self, new_status, message=None):
+    def send_signals_and_moderate(self, admin_user, new_status, message=None):
         status = ""
+        msg_type = ""
         post = self.post
         if new_status == 1:
             post.approved = True
             status = "approved"
+            msg_type = "success"
         elif new_status == 0:
             post.approved = False
             status = "denied"
+            msg_type = "error"
         post.save()
 
         #send notification to user
+        sender = admin_user
+        receiver = self.post.user
+        msg = "Your post is " + status
+        if message is not None:
+            msg += "; " + message
+
+        notification = {
+            "sender": sender,
+            "receiver": receiver,
+            "msg_type": msg_type,
+            "message": msg,
+            "notification_obj": post,
+        }
+        create_notification(notification)
