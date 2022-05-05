@@ -63,3 +63,19 @@ class PostConcernLogs(models.Model):
     created_on = models.DateTimeField(auto_now_add=True, null=False)
     checked = models.BooleanField(default=False)
     message = models.TextField(null=True, max_length=500)
+
+    def __str__(self):
+        return str(self.id)
+
+    def send_signals_and_moderate(self, new_status, message=None):
+        status = ""
+        post = self.post
+        if new_status == 1:
+            post.approved = True
+            status = "approved"
+        elif new_status == 0:
+            post.approved = False
+            status = "denied"
+        post.save()
+
+        #send notification to user

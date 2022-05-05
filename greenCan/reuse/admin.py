@@ -19,12 +19,11 @@ class PostAdmin(admin.ModelAdmin):
 
 
 class PostConcernLogsAdmin(admin.ModelAdmin):
-    list_display = ('post', 'created_on')
+    list_display = ('post', 'created_on', 'checked')
     change_form_template = 'reuse/templates/admin/change_form.html'
 
     def change_view(self, request, object_id, extra_context=None):
         post_concern = PostConcernLogs.objects.get(pk=object_id)
-        moderated = False
 
         if request.POST:
             admin_form = self.get_form(request, post_concern)(request.POST)
@@ -32,22 +31,14 @@ class PostConcernLogsAdmin(admin.ModelAdmin):
             if admin_form.is_valid():
                 message = admin_form.cleaned_data['message']
                 if 'approve' in request.POST:
-                    moderated = True
-                    post_concern.approve(request.user, message)
-                    post_concern.checked = True
-                    post_concern.message = message
-                    post_concern.save()
+                    post_concern.send_signals_and_moderate(1, message)
                 elif 'reject' in request.POST:
-                    moderated = True
-                    post_concern.reject(request.user, message)
-                    post_concern.checked = True
-                    post_concern.message = message
-                    post_concern.save()
+                    post_concern.send_signals_and_moderate(0, message)
                 
 
         extra_context = {
-            'post_url': 'greencan.heroku.com/post/' + str(post_concern.post.id),
-            'moderated': moderated,
+            'post_url': 'http://127.0.0.1:8000/reuse/post-details/?postID=' + str(post_concern.post.id),
+            'moderated': post_concern.checked,
         }
         return super().change_view(request, object_id, extra_context=extra_context)
 
