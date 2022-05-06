@@ -3,9 +3,11 @@ from recycle.models import ZipCode
 from django.conf import settings
 from django.contrib.postgres.search import SearchVectorField
 from django.contrib.postgres.indexes import GinIndex
-from rewards.models import EarnGreenCredits
 from django.contrib.contenttypes.fields import GenericRelation
+from rewards.models import EarnGreenCredits, CreditsLookUp
 from notification.utils import create_notification
+from accounts.utils import send_user_email, send_user_email_with_reasons
+from django.contrib.sites.shortcuts import get_current_site
 
 
 class Post(models.Model):
@@ -68,7 +70,7 @@ class PostConcernLogs(models.Model):
     def __str__(self):
         return str(self.id)
 
-    def send_signals_and_moderate(self, admin_user, new_status, message=None):
+    def send_signals_and_moderate(self, admin_user, new_status, current_site, message=None):
         status = ""
         msg_type = ""
         post = self.post
@@ -76,11 +78,21 @@ class PostConcernLogs(models.Model):
             post.approved = True
             status = "approved"
             msg_type = "success"
+            EarnGreenCredits.objects.create(
+                object_id=post.id,
+                content_object=post,
+                action=CreditsLookUp.objects.get(action="post"),
+                user=self.post.user,
+            )
         elif new_status == 0:
             post.approved = False
             status = "denied"
             msg_type = "error"
         post.save()
+
+        # self.checked = True
+        # self.save()
+        # print(self.checked)
 
         # send notification to user
         sender = admin_user
@@ -97,3 +109,31 @@ class PostConcernLogs(models.Model):
             "notification_obj": post,
         }
         create_notification(notification)
+
+        if new_status == 1:
+            mail_subject = "Post " + str(post.title) + " approved"
+            response = send_user_email(
+                receiver,
+                mail_subject,
+                receiver.email,
+                current_site,
+                "email/post-approval.html",
+                "email/post-approval-no-style.html",
+            )
+            if response != "success":
+                raise Exception("Failed to send email")
+        elif new_status == 0:
+            mail_subject = "Post " + str(post.title) + " denied"
+            reasons = []
+            reasons.append(msg)
+            response = send_user_email_with_reasons(
+                receiver,
+                mail_subject,
+                receiver.email,
+                current_site,
+                "email/post-denied.html",
+                "email/post-denied-no-style.html",
+                reasons,
+            )
+            if response != "success":
+                raise Exception("Failed to send email")

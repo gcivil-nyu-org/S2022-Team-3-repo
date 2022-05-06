@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.sites.shortcuts import get_current_site
 
 # from .models import Post, Image, NGOLocation
 from .models import Post, Image, NGOLocation, PostConcernLogs
@@ -30,13 +31,14 @@ class PostConcernLogsAdmin(admin.ModelAdmin):
 
             if admin_form.is_valid():
                 message = admin_form.cleaned_data['message']
+                current_site = get_current_site(request)
                 if 'approve' in request.POST:
-                    post_concern.send_signals_and_moderate(request.user, 1, message)
+                    post_concern.send_signals_and_moderate(request.user, 1, current_site, message)
                 elif 'reject' in request.POST:
-                    post_concern.send_signals_and_moderate(request.user, 0, message)
+                    post_concern.send_signals_and_moderate(request.user, 0, current_site, message)
 
         extra_context = {
-            'post_url': 'http://127.0.0.1:8000/reuse/post-details/?postID=' + str(post_concern.post.id),
+            'post_url': '/reuse/post-details/?postID=' + str(post_concern.post.id),
             'moderated': post_concern.checked,
         }
         return super().change_view(request, object_id, extra_context=extra_context)
