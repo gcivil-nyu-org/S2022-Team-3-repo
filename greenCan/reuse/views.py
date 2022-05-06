@@ -5,7 +5,7 @@ from django.contrib import messages
 from .models import Post, Image, NGOLocation
 from recycle.models import ZipCode
 import pyrebase
-from django.contrib.auth.decorators import login_required,user_passes_test
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse
 from uuid import uuid4
 from django.conf import settings
@@ -24,6 +24,7 @@ function: index
 
 set path for reuse page
 """
+
 
 @user_passes_test(lambda u: not u.is_staff)
 def index(request):
@@ -109,7 +110,6 @@ post and save into database
 
 
 @login_required
-
 def create_post(request):
     images = request.FILES.getlist("file[]")
 
