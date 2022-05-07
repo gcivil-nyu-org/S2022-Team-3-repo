@@ -17,7 +17,7 @@ from .views import (
     activate_account_page,
     user_profile,
     user_profile_avatar,
-    get_questions
+    get_questions,
 )
 
 app_name = "accounts"
@@ -62,5 +62,5 @@ urlpatterns = [
     path("user-profile-avatar/", user_profile_avatar, name="user-profile-avatar"),
     path("green-credits-logs/", green_credits_logs, name="green-credits-logs"),
     path("volunteer/registration/", volunteer_registration, name="volunteer-registration"),
-    path("application-questions/", get_questions, name="fetch-questions")
+    path("application-questions/", get_questions, name="fetch-questions"),
 ]
