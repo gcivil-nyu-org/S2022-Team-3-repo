@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # from .models import Post, Image, NGOLocation
-from .models import Post, Image, NGOLocation
+from .models import Post, Image, NGOLocation, PostConcernLogs
 
 
 class VolunteerAdmin(admin.AdminSite):
@@ -25,3 +25,4 @@ volunteer_site.register(NGOLocation)
 admin.site.register(Post)
 admin.site.register(Image)
 admin.site.register(NGOLocation)
+admin.site.register(PostConcernLogs)
