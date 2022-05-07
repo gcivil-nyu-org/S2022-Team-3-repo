@@ -1,5 +1,3 @@
-from random import choices
-from secrets import choice
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from recycle.models import ZipCode
@@ -167,19 +165,22 @@ class VolunteerApplication(models.Model):
     def __str__(self):
         return self.user.get_full_name()
 
+
 class QuestionType(models.IntegerChoices):
-    IMAGE_CLASSIFICATION = 1, _('Image')
-    TEXT_CLASSIFICATION = 2, _('Text')
+    IMAGE_CLASSIFICATION = 1, _("Image")
+    TEXT_CLASSIFICATION = 2, _("Text")
+
 
 class Answer(models.IntegerChoices):
-    NO = 0, _('Approve')
-    YES = 1, _('Deny')
-    __empty__ = _('(Unknown)')
+    NO = 0, _("Approve")
+    YES = 1, _("Deny")
+    __empty__ = _("(Unknown)")
+
 
 class Question(models.Model):
 
-    question_type = models.IntegerField(choices = QuestionType.choices)
-    answer = models.IntegerField(choices = Answer.choices)
+    question_type = models.IntegerField(choices=QuestionType.choices)
+    answer = models.IntegerField(choices=Answer.choices)
     image = models.URLField(max_length=3000, null=True, blank=True)
     question = models.TextField(null=False)
     text = models.TextField(null=True, blank=True)

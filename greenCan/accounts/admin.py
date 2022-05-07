@@ -70,4 +70,5 @@ class LoginAttemptAdmin(admin.ModelAdmin):
     list_display = ["user", "login_attempts", "timestamp"]
     search_fields = ["user"]
 
+
 admin.site.register(Question)

@@ -169,8 +169,8 @@ class TestVolunteerApplication(TestCase):
         self.assertEquals(application.score, 4)
         self.assertEquals(application.approved_by, self.admin)
 
-class TestQuestion(TestCase):
 
+class TestQuestion(TestCase):
     def test_is_instance(self):
         question = baker.make("accounts.Question")
         self.assertIsInstance(question, Question)
@@ -181,48 +181,40 @@ class TestQuestion(TestCase):
 
     def test_custom_image_question_object(self):
         question = Question.objects.create(
-            question = "This is question",
-            image = "https://img.url",
-            answer = 1,
-            question_type = 1
+            question="This is question", image="https://img.url", answer=1, question_type=1
         )
         questions = Question.objects.all()
         self.assertEquals(len(questions), 1)
         self.assertEquals(question.get_choices(), Answer.choices)
-        self.assertEquals(question.get_question_type(), question.QuestionType(question.question_type)._name_)
+        self.assertEquals(
+            question.get_question_type(), question.QuestionType(question.question_type)._name_
+        )
         self.assertEquals(question.question, "This is question")
         self.assertEquals(question.image, "https://img.url")
-        
-    def test_custom_image_question_object(self):
+
+    def test_custom_text_question_object(self):
         question = Question.objects.create(
-            question = "This is question",
-            text = "description",
-            answer = 0,
-            question_type = 2
+            question="This is question", text="description", answer=0, question_type=2
         )
         questions = Question.objects.all()
         self.assertEquals(len(questions), 1)
         self.assertEquals(question.get_choices(), Answer.choices)
-        self.assertEquals(question.get_question_type(), QuestionType(question.question_type)._name_)
+        self.assertEquals(
+            question.get_question_type(), QuestionType(question.question_type)._name_
+        )
         self.assertEquals(question.question, "This is question")
         self.assertEquals(question.text, "description")
 
     def test_verify_correct_answer_method(self):
         question = Question.objects.create(
-            question = "This is question",
-            text = "description",
-            answer = 0,
-            question_type = 2
+            question="This is question", text="description", answer=0, question_type=2
         )
         choice = 0
         self.assertTrue(question.verify_answer(choice))
 
     def test_verify_incorrect_answer_method(self):
         question = Question.objects.create(
-            question = "This is question",
-            text = "description",
-            answer = 0,
-            question_type = 2
+            question="This is question", text="description", answer=0, question_type=2
         )
         choice = 1
         self.assertFalse(question.verify_answer(choice))

@@ -6,19 +6,27 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0003_volunteerapplication_delete_volunteersapplication'),
+        ("accounts", "0003_volunteerapplication_delete_volunteersapplication"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Question',
+            name="Question",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('question_type', models.IntegerField(choices=[(1, 'Image'), (2, 'Text')])),
-                ('answer', models.IntegerField(choices=[(None, '(Unknown)'), (0, 'No'), (1, 'Yes')])),
-                ('image', models.URLField(max_length=3000, null=True)),
-                ('question', models.TextField()),
-                ('text', models.TextField(null=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("question_type", models.IntegerField(choices=[(1, "Image"), (2, "Text")])),
+                (
+                    "answer",
+                    models.IntegerField(choices=[(None, "(Unknown)"), (0, "No"), (1, "Yes")]),
+                ),
+                ("image", models.URLField(max_length=3000, null=True)),
+                ("question", models.TextField()),
+                ("text", models.TextField(null=True)),
             ],
         ),
     ]
