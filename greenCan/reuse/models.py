@@ -65,7 +65,7 @@ class PostConcernLogs(models.Model):
     post = models.ForeignKey(Post, null=False, on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True, null=False)
     checked = models.BooleanField(default=False)
-    message = models.TextField(null=True, max_length=500)
+    message = models.TextField(null=True, blank=True, max_length=500)
 
     def __str__(self):
         return str(self.id)
