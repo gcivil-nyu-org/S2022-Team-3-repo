@@ -350,7 +350,7 @@ def post_details(request):
         user = request.user
         post_id = request.GET.get("postID")
         post = Post.objects.filter(pk=post_id)[0]
-        if post.user != user:
+        if post.user != user and user.is_admin is False:
             raise Http404("you are not allowed to see others posts ")
         context = {"user": user, "post": post, "is_reuse": True}
         return render(request, template, context=context)
