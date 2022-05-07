@@ -7,10 +7,9 @@ from django.core.files.base import ContentFile
 from PIL import Image as Img
 from six import BytesIO
 from recycle.models import ZipCode
-from reuse.models import Image, Post
-from django.utils.encoding import force_str
-from reuse.models import NGOLocation
+from reuse.models import Image, Post, NGOLocation, PostConcernLogs
 from rewards.models import CreditsLookUp
+from django.utils.encoding import force_str
 
 
 User = get_user_model()
@@ -468,6 +467,32 @@ class TestUserPostsViews(TestCase):
         self.post.save()
         self.zipcode = zipcode
 
+        self.post_details_url = reverse("reuse:post-details")
+        self.raise_concerns_url = reverse("reuse:raise-concerns")
+
+        self.post2 = Post(
+            title="Pear",
+            category="Books",
+            phone_number="1234567891",
+            email="user2@gmail.com",
+            zip_code=zipcode,
+            description=" Book on pear",
+            user=self.user2,
+        )
+        self.post2.save()
+
+        self.post3 = Post(
+            title="Apple3",
+            category="Books",
+            phone_number="9175185345",
+            email="user@nyu.edu",
+            zip_code=self.zipcode,
+            description="Book on apple",
+            user=self.user,
+            approved=False,
+        )
+        self.post3.save()
+
     def test_my_posts_GET(self):
         """
         test to check if user posts page is returning a valid response
@@ -567,3 +592,60 @@ class TestUserPostsViews(TestCase):
             follow=True,
         )
         self.assertJSONEqual(force_str(response.content), {"message": "Error"})
+
+    # tests of post details
+    def test_post_details_GET(self):
+        """
+        test to check if user get one post's detail is returning a valid response
+        """
+        response = self.client.get(
+            self.post_details_url,
+            {
+                "postID": self.post.id,
+            },
+        )
+        self.assertEquals(response.status_code, 200)
+        self.assertTemplateUsed(response, "reuse/templates/my-posts-details.html")
+
+    def test_access_others_post_details_GET(self):
+        """
+        test to check if user can access other users' posts
+        """
+        response = self.client.get(
+            self.post_details_url,
+            {
+                "postID": self.post2.id,
+            },
+        )
+        self.assertEquals(response.status_code, 404)
+
+    # tests of raise concerns
+    def test_post_raise_concern_success(self):
+        response = self.client.post(
+            self.raise_concerns_url,
+            {
+                "id": self.post3.id,
+            },
+            follow=True,
+        )
+        self.assertJSONEqual(force_str(response.content), {"message": "Success"})
+        self.assertEquals(len(PostConcernLogs.objects.all()), 1)
+
+    def test_post_raise_concern_repeatly(self):
+        self.client.post(
+            self.raise_concerns_url,
+            {
+                "id": self.post3.id,
+            },
+            follow=True,
+        )
+
+        response = self.client.post(
+            self.raise_concerns_url,
+            {
+                "id": self.post3.id,
+            },
+            follow=True,
+        )
+        self.assertJSONEqual(force_str(response.content), {"message": "Repeated"})
+        self.assertEquals(len(PostConcernLogs.objects.all()), 1)
