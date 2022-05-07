@@ -7,7 +7,6 @@ from django.contrib.contenttypes.fields import GenericRelation
 from rewards.models import EarnGreenCredits, CreditsLookUp
 from notification.utils import create_notification
 from accounts.utils import send_user_email, send_user_email_with_reasons
-from django.contrib.sites.shortcuts import get_current_site
 
 
 class Post(models.Model):
