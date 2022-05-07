@@ -174,7 +174,6 @@ class QuestionType(models.IntegerChoices):
 class Answer(models.IntegerChoices):
     NO = 0, _("Approve")
     YES = 1, _("Deny")
-    __empty__ = _("(Unknown)")
 
 
 class Question(models.Model):
