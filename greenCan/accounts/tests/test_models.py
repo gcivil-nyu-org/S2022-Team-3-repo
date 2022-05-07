@@ -187,7 +187,7 @@ class TestQuestion(TestCase):
         self.assertEquals(len(questions), 1)
         self.assertEquals(question.get_choices(), Answer.choices)
         self.assertEquals(
-            question.get_question_type(), question.QuestionType(question.question_type)._name_
+            question.get_question_type(), QuestionType(question.question_type)._name_
         )
         self.assertEquals(question.question, "This is question")
         self.assertEquals(question.image, "https://img.url")
