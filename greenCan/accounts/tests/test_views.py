@@ -5,7 +5,7 @@ from django.urls import reverse, reverse_lazy
 from django.core import mail
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode
-from accounts.models import LoginAttempt
+from accounts.models import LoginAttempt, Question
 from accounts.token import account_activation_token
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.template.loader import render_to_string
@@ -744,3 +744,54 @@ class TestUserGreenCreditLogs(TestCase):
         response = self.client.get(self.url2)
         self.assertEqual(response.context["rank"], "Not Available")
         self.assertEqual(response.context["earned_credits"], 0)
+
+
+class TestFetchQuestions(TestCase):
+    def setUp(self):
+        self.url = reverse("accounts:fetch-questions")
+        self.user = User.objects.create(
+            email="newuser@gmail.com",
+            password="newpassword",
+            first_name="new",
+            last_name="sun",
+        )
+
+    def test_response_unauthenticated_POST(self):
+        response = self.client.post(self.url)
+        self.assertRedirects(response, reverse("accounts:login") + "?next=" + self.url, 302)
+
+    def test_response_GET(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        response = self.client.get(self.url)
+        self.assertEquals(response.status_code, 405)
+
+    def test_response_no_data_POST(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        response = self.client.post(self.url)
+        self.assertEquals(response.status_code, 200)
+        self.assertJSONEqual(force_str(response.content), [])
+
+    def test_response_POST(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        question = Question.objects.create(
+            question="This is question", image="https://img.url", answer=1, question_type=1
+        )
+        response = self.client.post(self.url)
+        self.assertEquals(response.status_code, 200)
+        choices = question.get_choices()
+        for i, choice in enumerate(choices):
+            choices[i] = list(choice)
+
+        self.assertJSONEqual(
+            force_str(response.content),
+            [
+                {
+                    "questionId": question.id,
+                    "questionType": question.question_type,
+                    "choices": choices,
+                    "text": question.text,
+                    "question": question.question,
+                    "image": question.image,
+                }
+            ],
+        )

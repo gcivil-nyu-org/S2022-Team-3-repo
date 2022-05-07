@@ -4,7 +4,7 @@ from django.contrib.auth.views import (
     PasswordResetDoneView,
     PasswordResetCompleteView,
 )
-from accounts.views import account_exists, green_credits_logs
+from accounts.views import account_exists, get_questions, green_credits_logs
 from accounts.views import (
     signup_page,
     login_page,
@@ -101,3 +101,10 @@ class TestUrls(SimpleTestCase):
         resolved = resolve(url)
         self.assertEqual(resolved.func, account_exists)
         self.assertEqual(url, "/social/social/signup/")
+
+    def test_get_question_url(self):
+        url = reverse("accounts:fetch-questions")
+        resolved = resolve(url)
+        self.assertEqual(resolved.func, get_questions)
+        self.assertEqual(resolved.namespace, "accounts")
+        self.assertEqual(url, "/accounts/application-questions/")
