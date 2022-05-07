@@ -12,7 +12,7 @@ from django.template.loader import render_to_string
 from reuse.models import Post
 from recycle.models import ZipCode
 from rewards.models import EarnGreenCredits, ImageMeta, Event, CreditsLookUp
-
+from time import sleep
 
 User = get_user_model()
 
@@ -155,6 +155,8 @@ class TestActivateAccountView(TestCase):
             is_active=False,
         )
 
+        self.login_url = reverse("accounts:login")
+
     def test_test_with_valid_token(self):
         uidb64 = urlsafe_base64_encode(force_bytes(self.user.id))
         token = account_activation_token.make_token(self.user)
@@ -173,6 +175,35 @@ class TestActivateAccountView(TestCase):
         user = User.objects.get(id=self.user.id)
 
         self.assertTrue(user.is_active)  # user status updated to active
+
+    def test_test_with_valid_token_reactive_account(self):
+        data = {
+            "email": "testuser2@gmail.com",
+            "password": "somepassword",
+        }  # user with these credentials doesn't exist
+        
+        login_attempt = LoginAttempt.objects.create(
+            user=self.user,
+            login_attempts = settings.MAX_LOGIN_ATTEMPTS
+        )
+        uidb64 = urlsafe_base64_encode(force_bytes(self.user.id))
+        token = account_activation_token.make_token(self.user)
+
+        url = reverse("accounts:activate", args=[uidb64, token])
+
+        response = self.client.get(url, follow=True)
+        message = list(response.context.get("messages"))[0]
+        self.assertRedirects(response, reverse("accounts:login"), 302)
+        self.assertEquals(
+            message.message,
+            "Account restored, you can now proceed to login",
+        )
+        self.assertEquals(message.tags, "success")
+        user = User.objects.get(id=self.user.id)
+        self.assertTrue(user.is_active)  # user status updated to active
+        login_attempt = LoginAttempt.objects.get(user=self.user)
+        self.assertEquals(login_attempt.login_attempts, 0)
+
 
     def test_with_invalid_token(self):
         uidb64 = urlsafe_base64_encode(force_bytes(3))  # user with id = 3 DoesNotExist
