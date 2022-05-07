@@ -19,6 +19,13 @@ Volunteer Registration
             <div class="col-md-11">
                 <p>You need to answer all the questions below inorder to submit your application successfully</p>
                 <form method="POST">
+                    
+                    <div class="form-group mb-2">
+                        <label for="question-1">How do you classify the following image?</label>
+                        <input type="radio" value=1 id="question-1" name="question-1"> Aprove
+                        <input type="radio" value=0 id="question-1" name="question-1"> Deny
+                    </div>
+                    
                     <div class="form-group mb-2">
                         <label for="essay-1"><b>Why do you want to become a greenCan Volunteer? <small>(max 500 chars.)</small></b></label>
                         <textarea class="form-control" name="essay-1" required id="essay-1" maxlength="500"></textarea>

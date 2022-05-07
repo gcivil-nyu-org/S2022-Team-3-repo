@@ -354,3 +354,8 @@ def volunteer_registration(request):
 
     template_name = "accounts/templates/volunteer-registration.html"
     return render(request, template_name, context={})
+
+@login_required
+def get_questions(request):
+
+    
