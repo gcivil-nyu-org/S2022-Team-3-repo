@@ -5,7 +5,7 @@ from django.contrib import messages
 from .models import Post, Image, NGOLocation, PostConcernLogs
 from recycle.models import ZipCode
 import pyrebase
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse
 from uuid import uuid4
 from django.conf import settings
@@ -27,6 +27,7 @@ set path for reuse page
 """
 
 
+@user_passes_test(lambda u: not u.is_staff)
 def index(request):
     template = "reuse-index.html"
     context = {"is_reuse": True}
