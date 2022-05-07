@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('reuse', '0011_postconcernlogs_message'),
+        ("reuse", "0011_postconcernlogs_message"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='postconcernlogs',
-            name='message',
+            model_name="postconcernlogs",
+            name="message",
             field=models.TextField(max_length=500, null=True),
         ),
     ]

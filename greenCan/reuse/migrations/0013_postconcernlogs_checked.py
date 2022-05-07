@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('reuse', '0012_alter_postconcernlogs_message'),
+        ("reuse", "0012_alter_postconcernlogs_message"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='postconcernlogs',
-            name='checked',
+            model_name="postconcernlogs",
+            name="checked",
             field=models.BooleanField(default=False),
         ),
     ]
