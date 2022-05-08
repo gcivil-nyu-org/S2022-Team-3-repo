@@ -157,7 +157,7 @@ class TestVolunteerApplication(TestCase):
         application = VolunteerApplication.objects.create(
             user=self.user,
             approved_by=self.admin,
-            score=4,
+            score=40,
             essay_1="This is essay 1",
             essay_2="This is essay 2",
         )
@@ -166,7 +166,7 @@ class TestVolunteerApplication(TestCase):
         self.assertEquals(str(application), self.user.get_full_name())
         self.assertEquals(application.essay_1, "This is essay 1")
         self.assertEquals(application.essay_2, "This is essay 2")
-        self.assertEquals(application.score, 4)
+        self.assertEquals(application.score, 40)
         self.assertEquals(application.approved_by, self.admin)
 
 

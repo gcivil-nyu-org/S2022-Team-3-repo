@@ -5,7 +5,7 @@ from django.urls import reverse, reverse_lazy
 from django.core import mail
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode
-from accounts.models import LoginAttempt, Question
+from accounts.models import LoginAttempt, Question, VolunteerApplication
 from accounts.token import account_activation_token
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.template.loader import render_to_string
@@ -794,4 +794,208 @@ class TestFetchQuestions(TestCase):
                     "image": question.image,
                 }
             ],
+        )
+
+
+class TestVolunteerApplication(TestCase):
+    def setUp(self):
+        self.url = reverse("accounts:volunteer-registration")
+        self.login_url = reverse("accounts:login") + "?next=" + self.url
+        self.home_url = reverse("home:index")
+
+        self.user = User.objects.create(
+            email="newuser@gmail.com",
+            password="newpassword",
+            first_name="new",
+            last_name="sun",
+        )
+
+        self.volunteer = User.objects.create(
+            email="volunteeruser@gmail.com",
+            password="newpassword",
+            first_name="new",
+            last_name="sun",
+            staff=True,
+        )
+
+        self.admin = User.objects.create(
+            email="adminuser@gmail.com",
+            password="newpassword",
+            first_name="new",
+            last_name="sun",
+            admin=True,
+        )
+
+        question1 = Question.objects.create(
+            question="This is question 1", image="https://img1.url", answer=1, question_type=1
+        )
+
+        question2 = Question.objects.create(
+            question="This is question 2", text="description for q2", answer=0, question_type=2
+        )
+
+        question3 = Question.objects.create(
+            question="This is question 3", image="https://img3.url", answer=0, question_type=1
+        )
+
+        question4 = Question.objects.create(
+            question="This is question 4", text="description for q4", answer=1, question_type=2
+        )
+
+        question5 = Question.objects.create(
+            question="This is question 5", text="description for q5", answer=0, question_type=2
+        )
+        self.question_id = f"question#{question1.id}"
+        self.data = {
+            "essay_1": "essay_one",
+            "essay_2": "essay_two",
+            f"question#{question1.id}": 0,
+            f"question#{question2.id}": 0,
+            f"question#{question3.id}": 1,
+            f"question#{question4.id}": 1,
+            f"question#{question5.id}": 0,
+            "consent": "consent",
+        }
+
+    def test_unauthenticated_user_GET(self):
+        response = self.client.get(self.url)
+        self.assertRedirects(response, self.login_url)
+
+    def test_authenticated_admin_GET(self):
+        self.client.force_login(self.admin, backend=settings.AUTHENTICATION_BACKENDS[0])
+        response = self.client.get(self.url)
+        self.assertRedirects(response, self.login_url, target_status_code=302)
+
+    def test_authenticated_volunteer_GET(self):
+        self.client.force_login(self.volunteer, backend=settings.AUTHENTICATION_BACKENDS[0])
+        response = self.client.get(self.url)
+        self.assertRedirects(response, self.login_url, target_status_code=302)
+
+    def test_authenticated_user_GET(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        response = self.client.get(self.url)
+        self.assertEquals(response.status_code, 200)
+        self.assertContains(response, "csrfmiddlewaretoken")
+
+    def test_unauthenticated_user_POST(self):
+        response = self.client.post(self.url)
+        self.assertRedirects(response, self.login_url)
+
+    def test_authenticated_admin_POST(self):
+        self.client.force_login(self.admin, backend=settings.AUTHENTICATION_BACKENDS[0])
+        response = self.client.post(self.url)
+        self.assertRedirects(response, self.login_url, target_status_code=302)
+
+    def test_authenticated_volunteer_POST(self):
+        self.client.force_login(self.volunteer, backend=settings.AUTHENTICATION_BACKENDS[0])
+        response = self.client.post(self.url)
+        self.assertRedirects(response, self.login_url, target_status_code=302)
+
+    def test_authenticated_user_POST(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        data = self.data.copy()
+        response = self.client.post(self.url, data=data, follow=True)
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "success")
+        self.assertEquals(
+            message.message,
+            "Your application has been submitted successfully and is"
+            " subject to approval from the administrator. You"
+            " would receive an email once it is reviewed.",
+        )
+
+        application = VolunteerApplication.objects.get(user=self.user)
+        self.assertIsInstance(application, VolunteerApplication)
+        self.assertEquals(application.score, 60)
+        self.assertEquals(application.essay_1, self.data["essay_1"])
+        self.assertEquals(application.essay_2, self.data["essay_2"])
+        self.assertEquals(application.user, self.user)
+        self.assertEquals(application.approved_by, None)
+        self.assertRedirects(response, self.url, 302)
+
+    def test_check_consent_POST(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        data = self.data.copy()
+        del data["consent"]
+        response = self.client.post(self.url, data=data, follow=True)
+        self.assertRedirects(response, self.url, 302)
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "error")
+        self.assertEquals(
+            message.message,
+            "In order to submit your application successfully you must accept"
+            " our Terms and Conditions.",
+        )
+
+    def test_check_questions_POST(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        data = self.data.copy()
+        del data[self.question_id]
+        response = self.client.post(self.url, data=data, follow=True)
+        self.assertRedirects(response, self.url, 302)
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "error")
+        self.assertEquals(
+            message.message, "Please attempt all the questions in the questionnaire."
+        )
+
+    def test_check_essay_1_POST(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        data = self.data.copy()
+        del data["essay_1"]
+        response = self.client.post(self.url, data=data, follow=True)
+        self.assertRedirects(response, self.url, 302)
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "error")
+        self.assertEquals(
+            message.message,
+            "In order to submit your application successfully you need to"
+            " complete both the essays",
+        )
+
+    def test_check_essay_2_POST(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        data = self.data.copy()
+        del data["essay_2"]
+        response = self.client.post(self.url, data=data, follow=True)
+        self.assertRedirects(response, self.url, 302)
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "error")
+        self.assertEquals(
+            message.message,
+            "In order to submit your application successfully you need to"
+            " complete both the essays",
+        )
+
+    def test_check_essay_1_2_POST(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        data = self.data.copy()
+        del data["essay_1"]
+        del data["essay_2"]
+        response = self.client.post(self.url, data=data, follow=True)
+        self.assertRedirects(response, self.url, 302)
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "error")
+        self.assertEquals(
+            message.message,
+            "In order to submit your application successfully you need to"
+            " complete both the essays",
+        )
+
+    def test_check_already_applied_POST(self):
+        VolunteerApplication.objects.create(
+            user=self.user,
+            score=100,
+            essay_1="This is essay 1",
+            essay_2="This is essay 2",
+        )
+
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        data = self.data.copy()
+        response = self.client.post(self.url, data=data, follow=True)
+        self.assertRedirects(response, self.url, 302)
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "error")
+        self.assertEquals(
+            message.message, "You have already made a submission. You cannot apply again."
         )

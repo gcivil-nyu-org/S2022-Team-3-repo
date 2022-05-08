@@ -360,8 +360,8 @@ def volunteer_registration(request):
                 question_ids.append(int(key.split("#")[-1]))
                 answers.append(int(request.POST[key]))
 
-        essay_1 = request.POST.get("essay-1")
-        essay_2 = request.POST.get("essay-2")
+        essay_1 = request.POST.get("essay_1")
+        essay_2 = request.POST.get("essay_2")
         consent = request.POST.get("consent")
 
         if VolunteerApplication.objects.filter(user=request.user):
@@ -379,16 +379,15 @@ def volunteer_registration(request):
         if not essay_1 or not essay_2:
             messages.error(
                 request,
-                "In order to submit your application successfully you need to\
-                     complete both the essays",
+                "In order to submit your application successfully you need to"
+                " complete both the essays",
             )
             return redirect(reverse("accounts:volunteer-registration"))
 
         if len(question_ids) != NUMBER_OF_QUESTIONS:
             messages.error(
                 request,
-                "Please attempt all the questions\
-                 in the questionnaire.",
+                "Please attempt all the questions in the questionnaire.",
             )
             return redirect(reverse("accounts:volunteer-registration"))
 
@@ -409,7 +408,7 @@ def volunteer_registration(request):
         if correct == incorrect == 0:
             score = 0
         else:
-            score = round(correct / (correct + incorrect))
+            score = round(correct / (correct + incorrect) * 100)
 
         application = VolunteerApplication(
             user=request.user, score=score, essay_1=essay_1, essay_2=essay_2
@@ -417,9 +416,9 @@ def volunteer_registration(request):
         application.save()
         messages.success(
             request,
-            "Your application has been submitted successfully and is\
-                 subject to approval from the administrator. You\
-                      would receive an email once it is reviewed.",
+            "Your application has been submitted successfully and is"
+            " subject to approval from the administrator. You"
+            " would receive an email once it is reviewed.",
         )
 
         return redirect(reverse("accounts:volunteer-registration"))

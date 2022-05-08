@@ -158,7 +158,7 @@ class VolunteerApplication(models.Model):
     essay_1 = models.TextField(max_length=500, null=False)
     essay_2 = models.TextField(max_length=500, null=False)
     approved_by = models.ForeignKey(
-        User, null=False, on_delete=models.CASCADE, related_name="reviewer"
+        User, null=True, on_delete=models.CASCADE, related_name="reviewer"
     )
     updated_on = models.DateTimeField(auto_now=True)
 
