@@ -877,6 +877,11 @@ class TestVolunteerApplication(TestCase):
         self.assertEquals(response.status_code, 200)
         self.assertContains(response, "csrfmiddlewaretoken")
 
+    def test_authenticated_user_template_GET(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        response = self.client.get(self.url)
+        self.assertTemplateUsed(response, "accounts/templates/volunteer-registration.html")
+
     def test_unauthenticated_user_POST(self):
         response = self.client.post(self.url)
         self.assertRedirects(response, self.login_url)

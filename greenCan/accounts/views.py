@@ -405,10 +405,7 @@ def volunteer_registration(request):
             else:
                 incorrect += 1
 
-        if correct == incorrect == 0:
-            score = 0
-        else:
-            score = round(correct / (correct + incorrect) * 100)
+        score = round(correct / (correct + incorrect) * 100)
 
         application = VolunteerApplication(
             user=request.user, score=score, essay_1=essay_1, essay_2=essay_2
