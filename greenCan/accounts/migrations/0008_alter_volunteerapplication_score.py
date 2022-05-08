@@ -7,13 +7,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('accounts', '0007_alter_question_answer'),
+        ("accounts", "0007_alter_question_answer"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='volunteerapplication',
-            name='score',
-            field=models.IntegerField(default=0, validators=[django.core.validators.MaxValueValidator(100), django.core.validators.MinValueValidator(0)]),
+            model_name="volunteerapplication",
+            name="score",
+            field=models.IntegerField(
+                default=0,
+                validators=[
+                    django.core.validators.MaxValueValidator(100),
+                    django.core.validators.MinValueValidator(0),
+                ],
+            ),
         ),
     ]

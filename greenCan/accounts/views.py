@@ -353,11 +353,11 @@ def volunteer_registration(request):
 
     if request.method == "POST":
         keys = request.POST.keys()
-        questions = []
+        question_ids = []
         answers = []
         for key in keys:
             if key.startswith("question#"):
-                questions.append(int(key.split("#")[-1]))
+                question_ids.append(int(key.split("#")[-1]))
                 answers.append(int(request.POST[key]))
 
         essay_1 = request.POST.get("essay-1")
@@ -369,44 +369,58 @@ def volunteer_registration(request):
             return redirect(reverse("accounts:volunteer-registration"))
 
         if not consent:
-            messages.error(request, "In order to submit your application successfully you must accept our Terms and Conditions.")
+            messages.error(
+                request,
+                "In order to submit your application successfully you must accept"
+                " our Terms and Conditions.",
+            )
             return redirect(reverse("accounts:volunteer-registration"))
 
         if not essay_1 or not essay_2:
-            messages.error(request, "In order to submit your application successfully you need to complete both the essays")
+            messages.error(
+                request,
+                "In order to submit your application successfully you need to\
+                     complete both the essays",
+            )
             return redirect(reverse("accounts:volunteer-registration"))
-        
-        if len(question) != NUMBER_OF_QUESTIONS:
-            messages.error(request, "Please attempt all the questions in the questionnaire.")
+
+        if len(question_ids) != NUMBER_OF_QUESTIONS:
+            messages.error(
+                request,
+                "Please attempt all the questions\
+                 in the questionnaire.",
+            )
             return redirect(reverse("accounts:volunteer-registration"))
-            
+
         essay_1 = essay_1[:500]
         essay_2 = essay_2[:500]
-        
+
         correct = 0
         incorrect = 0
-        
+
         questions = Question.objects.all()
-        for qid,answer in zip(questions, answers):
+        for qid, answer in zip(question_ids, answers):
             question = questions.get(pk=qid)
             if question.verify_answer(answer):
                 correct += 1
             else:
                 incorrect += 1
-        
+
         if correct == incorrect == 0:
             score = 0
         else:
-            score = round(correct/(correct+incorrect))
-    
+            score = round(correct / (correct + incorrect))
+
         application = VolunteerApplication(
-            user = request.user,
-            score = score,
-            essay_1 = essay_1,
-            essay_2 = essay_2
+            user=request.user, score=score, essay_1=essay_1, essay_2=essay_2
         )
         application.save()
-        messages.success(request, "Your application has been submitted successfully and is subject to approval from the administrator. You would receive an email once it is reviewed.")
+        messages.success(
+            request,
+            "Your application has been submitted successfully and is\
+                 subject to approval from the administrator. You\
+                      would receive an email once it is reviewed.",
+        )
 
         return redirect(reverse("accounts:volunteer-registration"))
 
@@ -417,7 +431,7 @@ def volunteer_registration(request):
 @csrf_exempt
 @login_required
 def get_questions(request):
-    
+
     if request.method != "POST":
         return error_405(request)
 
