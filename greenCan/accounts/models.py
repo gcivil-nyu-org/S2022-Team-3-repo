@@ -153,7 +153,7 @@ class VolunteerApplication(models.Model):
     )
     submitted_on = models.DateTimeField(auto_now_add=True)
     score = models.IntegerField(
-        null=False, default=0, validators=[MaxValueValidator(5), MinValueValidator(0)]
+        null=False, default=0, validators=[MaxValueValidator(100), MinValueValidator(0)]
     )
     essay_1 = models.TextField(max_length=500, null=False)
     essay_2 = models.TextField(max_length=500, null=False)
