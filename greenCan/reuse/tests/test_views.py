@@ -683,7 +683,7 @@ class TestUserPostsViews(TestCase):
         )
         self.assertJSONEqual(force_str(response.content), {"message": "Repeated"})
         self.assertEquals(len(PostConcernLogs.objects.all()), 1)
-    
+
     def test_email_sent_to_admin(self):
         self.client.post(
             self.raise_concerns_url,
