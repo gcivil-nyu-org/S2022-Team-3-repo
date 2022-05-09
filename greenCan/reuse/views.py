@@ -19,6 +19,8 @@ from django.contrib.postgres.search import (
     SearchHeadline,
 )
 from django.http import Http404
+from accounts.utils import send_admin_email
+from django.contrib.sites.shortcuts import get_current_site
 
 """
 function: index
@@ -368,4 +370,13 @@ def raise_concerns(request):
                 post=post,
             )
             new_concern.save()
+
+            send_admin_email(
+                volunteer=request.user,
+                template="email/email-admin-raise-concerns.html",
+                template_no_style="email/email-admin-raise-concerns-no-style.html",
+                current_site=get_current_site(request),
+                mail_subject="You have a new post concern to Review",
+            )
+
             return JsonResponse({"message": "Success"})
