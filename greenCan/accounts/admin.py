@@ -62,7 +62,7 @@ class UserAdmin(BaseUserAdmin):
 admin.site.register(User, UserAdmin)
 
 # if you are not using the groups, you can remove the Group model by:
-admin.site.unregister(Group)
+# admin.site.register(Group)
 
 
 @admin.register(LoginAttempt)

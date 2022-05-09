@@ -160,6 +160,6 @@ class VolunteerApplication(models.Model):
         User, null=False, on_delete=models.CASCADE, related_name="reviewer"
     )
     updated_on = models.DateTimeField(auto_now=True)
-
+    approved = models.BooleanField(default=False)
     def __str__(self):
         return self.user.get_full_name()
