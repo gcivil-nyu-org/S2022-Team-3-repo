@@ -1,11 +1,10 @@
 from django.db import models
-
-# Create your models here.
 from django.contrib.contenttypes.fields import GenericForeignKey
 from reuse.models import Post
 from django.contrib.contenttypes.models import ContentType
 
 
+# Create your models here.
 class VolunteerLogs(models.Model):
     id = models.AutoField(primary_key=True, auto_created=True)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
