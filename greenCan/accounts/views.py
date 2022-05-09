@@ -13,7 +13,7 @@ from django.utils.http import urlsafe_base64_decode
 from .models import LoginAttempt, Question, User, VolunteerApplication
 from .token import account_activation_token
 from .decorators import unauthenticated_user
-from .utils import send_user_email
+from .utils import send_user_email, send_admin_email
 from django.urls import reverse_lazy, reverse
 from django.contrib.auth import views as auth_views
 from .forms import PasswordResetForm, SetPasswordForm
@@ -416,6 +416,14 @@ def volunteer_registration(request):
             "Your application has been submitted successfully and is"
             " subject to approval from the administrator. You"
             " would receive an email once it is reviewed.",
+        )
+
+        send_admin_email(
+            volunteer=request.user,
+            template="email/email-admin-volunteer-application.html",
+            template_no_style="email/email-admin-volunteer-application-no-style.html",
+            current_site=get_current_site(request),
+            mail_subject="You have a new Applicatioon to Review",
         )
 
         return redirect(reverse("accounts:volunteer-registration"))

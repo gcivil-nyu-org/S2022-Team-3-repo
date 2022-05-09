@@ -9,9 +9,11 @@ from accounts.models import LoginAttempt, Question, VolunteerApplication
 from accounts.token import account_activation_token
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.template.loader import render_to_string
+from accounts.views import NUMBER_OF_QUESTIONS
 from reuse.models import Post
 from recycle.models import ZipCode
 from rewards.models import EarnGreenCredits, ImageMeta, Event, CreditsLookUp
+from json import loads
 
 
 User = get_user_model()
@@ -796,6 +798,15 @@ class TestFetchQuestions(TestCase):
             ],
         )
 
+    def test_response_check_number_of_questions_POST(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        for _ in range(NUMBER_OF_QUESTIONS + 1):
+            Question.objects.create(
+                question="This is question", image="https://img.url", answer=1, question_type=1
+            )
+        response = self.client.post(self.url)
+        self.assertEquals(len(loads(force_str(response.content))), NUMBER_OF_QUESTIONS)
+
 
 class TestVolunteerApplication(TestCase):
     def setUp(self):
@@ -819,7 +830,7 @@ class TestVolunteerApplication(TestCase):
         )
 
         self.admin = User.objects.create(
-            email="adminuser@gmail.com",
+            email=settings.EMAIL_HOST_USER,
             password="newpassword",
             first_name="new",
             last_name="sun",
@@ -918,6 +929,25 @@ class TestVolunteerApplication(TestCase):
         self.assertEquals(application.approved_by, None)
         self.assertRedirects(response, self.url, 302)
 
+    def test_email_sent_POST(self):
+        self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        data = self.data.copy()
+        self.client.post(self.url, data=data, follow=True)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, "You have a new Applicatioon to Review")
+        self.assertEqual(
+            mail.outbox[0].from_email, settings.DEFAULT_FROM_EMAIL
+        )  # change to your email <youremail>
+        self.assertEqual(mail.outbox[0].from_email, settings.EMAIL_HOST_USER)
+        self.assertEqual(mail.outbox[0].to, [settings.EMAIL_HOST_USER])  # self.user.email
+        admin = User.objects.get(email=settings.EMAIL_HOST_USER)
+        self.assertEqual(
+            mail.outbox[0].body,
+            f"\nHi { admin.get_full_name() },\n\n{ self.user.get_full_name() }"
+            ", has applied to become a volunteer."
+            "\n\nYou can review it through the greenCan admin dashboard.\n\n\n\n\n",
+        )
+
     def test_check_consent_POST(self):
         self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
         data = self.data.copy()
@@ -925,6 +955,7 @@ class TestVolunteerApplication(TestCase):
         response = self.client.post(self.url, data=data, follow=True)
         self.assertRedirects(response, self.url, 302)
         message = list(response.context.get("messages"))[0]
+        self.assertEqual(len(mail.outbox), 0)
         self.assertEquals(message.tags, "error")
         self.assertEquals(
             message.message,
@@ -939,6 +970,7 @@ class TestVolunteerApplication(TestCase):
         response = self.client.post(self.url, data=data, follow=True)
         self.assertRedirects(response, self.url, 302)
         message = list(response.context.get("messages"))[0]
+        self.assertEqual(len(mail.outbox), 0)
         self.assertEquals(message.tags, "error")
         self.assertEquals(
             message.message, "Please attempt all the questions in the questionnaire."
@@ -951,6 +983,7 @@ class TestVolunteerApplication(TestCase):
         response = self.client.post(self.url, data=data, follow=True)
         self.assertRedirects(response, self.url, 302)
         message = list(response.context.get("messages"))[0]
+        self.assertEqual(len(mail.outbox), 0)
         self.assertEquals(message.tags, "error")
         self.assertEquals(
             message.message,
@@ -965,6 +998,7 @@ class TestVolunteerApplication(TestCase):
         response = self.client.post(self.url, data=data, follow=True)
         self.assertRedirects(response, self.url, 302)
         message = list(response.context.get("messages"))[0]
+        self.assertEqual(len(mail.outbox), 0)
         self.assertEquals(message.tags, "error")
         self.assertEquals(
             message.message,
@@ -980,6 +1014,7 @@ class TestVolunteerApplication(TestCase):
         response = self.client.post(self.url, data=data, follow=True)
         self.assertRedirects(response, self.url, 302)
         message = list(response.context.get("messages"))[0]
+        self.assertEqual(len(mail.outbox), 0)
         self.assertEquals(message.tags, "error")
         self.assertEquals(
             message.message,
@@ -1000,6 +1035,7 @@ class TestVolunteerApplication(TestCase):
         response = self.client.post(self.url, data=data, follow=True)
         self.assertRedirects(response, self.url, 302)
         message = list(response.context.get("messages"))[0]
+        self.assertEqual(len(mail.outbox), 0)
         self.assertEquals(message.tags, "error")
         self.assertEquals(
             message.message, "You have already made a submission. You cannot apply again."
