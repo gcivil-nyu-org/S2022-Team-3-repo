@@ -18,8 +18,6 @@ class VolunteerApplicationAdmin(admin.ModelAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
-        # form.base_fields['user'].disabled = True
-        # form.base_fields['approved_by'].disabled = True
 
         return form
 
