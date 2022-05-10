@@ -7,6 +7,7 @@ from reuse.tests.test_views import create_image
 from django.core.files.uploadedfile import SimpleUploadedFile
 from recycle.models import ZipCode
 from rewards.models import Event, ImageMeta, Image, Category, CreditsLookUp
+from json import loads
 
 User = get_user_model()
 
@@ -333,6 +334,7 @@ class TestFeaturedGallery(TestCase):
             consent=False,
         )
         meta2.save()
+        self.meta = meta
         image3 = Image(image="test3.png", meta=meta2)
         image3.save()
 
@@ -400,3 +402,18 @@ class TestFeaturedGallery(TestCase):
                 "has_next": 0,
             },
         )
+
+    def test_featured_image_gallery_next_page_number_POST(self):
+        """
+        test to check that next page number is returned when there is a next page to load
+        """
+        data = {"page": 1}
+
+        for i in range(21):
+            Image.objects.create(image=f"test_{i}.png", meta=self.meta)
+
+        response = self.client.post(self.url, data, follow=True)
+        json = loads(force_str(response.content))
+        self.assertEquals(len(json["images"]), 20)
+        self.assertEquals(json["next_page_number"], 2)
+        self.assertEquals(json["has_next"], 1)
