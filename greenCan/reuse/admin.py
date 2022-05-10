@@ -20,6 +20,7 @@ class PostAdmin(admin.ModelAdmin):
 
 
 class PostConcernLogsAdmin(admin.ModelAdmin):
+    readonly_fields = ('checked',)
     list_display = ("post", "created_on", "checked")
     change_form_template = "reuse/templates/admin/change_form.html"
 

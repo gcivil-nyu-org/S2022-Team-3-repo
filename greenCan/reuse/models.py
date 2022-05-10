@@ -89,9 +89,9 @@ class PostConcernLogs(models.Model):
             msg_type = "error"
         post.save()
 
-        # self.checked = True
-        # self.save()
-        # print(self.checked)
+        # change checked status
+        self.checked = True
+        self.save()
 
         # send notification to user
         sender = admin_user
