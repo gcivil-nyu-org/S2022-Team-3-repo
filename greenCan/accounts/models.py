@@ -161,5 +161,6 @@ class VolunteerApplication(models.Model):
     )
     updated_on = models.DateTimeField(auto_now=True)
     approved = models.BooleanField(default=False)
+
     def __str__(self):
         return self.user.get_full_name()
