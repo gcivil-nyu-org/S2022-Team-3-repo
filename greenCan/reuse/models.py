@@ -109,6 +109,7 @@ class PostConcernLogs(models.Model):
         }
         create_notification(notification)
 
+        response = "success"
         if new_status == 1:
             mail_subject = "Post " + str(post.title) + " approved"
             response = send_user_email(
