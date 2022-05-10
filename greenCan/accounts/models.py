@@ -160,7 +160,6 @@ class VolunteerApplication(models.Model):
     approved_by = models.ForeignKey(
         User, null=True, on_delete=models.CASCADE, related_name="reviewer"
     )
-    approved = models.BooleanField(default=False)
     updated_on = models.DateTimeField(auto_now=True)
 
     def __str__(self):
