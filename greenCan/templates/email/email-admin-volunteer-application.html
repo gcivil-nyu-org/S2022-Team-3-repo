@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
      	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-     	<title>Post Approval</title>
+     	<title>Post Denial</title>
      	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <style>
             body {
@@ -51,12 +51,13 @@
 
             <br><br>
 
-           Your post was approved. To check status of other Posts, click on the link below.
+            {{ volunteer.get_full_name }}, has applied to become a volunteer.
 
-            <br><br><br>
 
-            <a class="btn" href="http://{{ domain }}{% url 'reuse:my-posts' %}">Post Status</a>
+            To review the application please click the link below: <br><br>
 
+            <a class="text-green" href="http://{{ domain }}/admin">http://{{ domain }}/admin</a>
+            
             <br><br><br>
             
             {% endautoescape %}

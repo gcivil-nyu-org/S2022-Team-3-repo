@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from model_bakery import baker
-from accounts.models import LoginAttempt, VolunteerApplication
+from accounts.models import LoginAttempt, Question, VolunteerApplication, Answer, QuestionType
 
 
 class TestModelManager(TestCase):
@@ -153,11 +153,11 @@ class TestVolunteerApplication(TestCase):
         application = baker.make("accounts.VolunteerApplication")
         self.assertIsInstance(application, VolunteerApplication)
 
-    def test_str_method(self):
+    def test_custom_voluteer_object(self):
         application = VolunteerApplication.objects.create(
             user=self.user,
             approved_by=self.admin,
-            score=4,
+            score=40,
             essay_1="This is essay 1",
             essay_2="This is essay 2",
         )
@@ -166,5 +166,55 @@ class TestVolunteerApplication(TestCase):
         self.assertEquals(str(application), self.user.get_full_name())
         self.assertEquals(application.essay_1, "This is essay 1")
         self.assertEquals(application.essay_2, "This is essay 2")
-        self.assertEquals(application.score, 4)
+        self.assertEquals(application.score, 40)
         self.assertEquals(application.approved_by, self.admin)
+
+
+class TestQuestion(TestCase):
+    def test_is_instance(self):
+        question = baker.make("accounts.Question")
+        self.assertIsInstance(question, Question)
+
+    def test_str_method(self):
+        question = baker.make("accounts.Question")
+        self.assertEquals(str(question), str(question.id))
+
+    def test_custom_image_question_object(self):
+        question = Question.objects.create(
+            question="This is question", image="https://img.url", answer=1, question_type=1
+        )
+        questions = Question.objects.all()
+        self.assertEquals(len(questions), 1)
+        self.assertEquals(question.get_choices(), Answer.choices)
+        self.assertEquals(
+            question.get_question_type(), QuestionType(question.question_type)._name_
+        )
+        self.assertEquals(question.question, "This is question")
+        self.assertEquals(question.image, "https://img.url")
+
+    def test_custom_text_question_object(self):
+        question = Question.objects.create(
+            question="This is question", text="description", answer=0, question_type=2
+        )
+        questions = Question.objects.all()
+        self.assertEquals(len(questions), 1)
+        self.assertEquals(question.get_choices(), Answer.choices)
+        self.assertEquals(
+            question.get_question_type(), QuestionType(question.question_type)._name_
+        )
+        self.assertEquals(question.question, "This is question")
+        self.assertEquals(question.text, "description")
+
+    def test_verify_correct_answer_method(self):
+        question = Question.objects.create(
+            question="This is question", text="description", answer=0, question_type=2
+        )
+        choice = 0
+        self.assertTrue(question.verify_answer(choice))
+
+    def test_verify_incorrect_answer_method(self):
+        question = Question.objects.create(
+            question="This is question", text="description", answer=0, question_type=2
+        )
+        choice = 1
+        self.assertFalse(question.verify_answer(choice))

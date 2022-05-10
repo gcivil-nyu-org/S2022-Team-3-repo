@@ -91,10 +91,10 @@ Review Post
 <script src="{% static 'modules/owl-carousel-2/js/owl-carousel2.min.js' %}"></script>
 <script>
 
-   // function to allow reason only if checked
-    document.getElementById('check4').onchange = function() {
+  // function to allow reason only if checked
+  document.getElementById('check4').onchange = function() {
     document.getElementById('description').disabled = !this.checked;
-};
+  };
   $(document).ready(function() {  
     let owl = $('.owl-carousel');
     owl.owlCarousel({

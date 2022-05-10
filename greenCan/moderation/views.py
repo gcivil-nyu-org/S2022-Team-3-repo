@@ -6,9 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.contrib import messages
 from .models import VolunteerLogs
-from django.contrib.sites.shortcuts import get_current_site
 from notification.utils import create_notification
 from accounts.utils import send_user_email, send_user_email_with_reasons
+from django.contrib.sites.shortcuts import get_current_site
 
 
 @login_required
@@ -101,8 +101,8 @@ def review_post(request, id):
                     "notification_obj": post,
                 }
                 create_notification(notification)
-                current_site = get_current_site(request)
 
+                current_site = get_current_site(request)
                 mail_subject = "Post " + str(post.title) + " denied"
                 response = send_user_email_with_reasons(
                     receiver,
@@ -236,9 +236,3 @@ def review_credit_request(request, id):
     categories = img_meta.category.all()
     context = {"img_meta": img_meta, "categories": categories}
     return render(request, template_name=template_name, context=context)
-
-
-@login_required
-@user_passes_test(lambda u: u.is_staff)
-def post_approval(request):
-    return redirect("reuse:my-posts")

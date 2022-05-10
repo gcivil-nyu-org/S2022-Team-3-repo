@@ -5,7 +5,7 @@ from django.contrib import messages
 from .models import Post, Image, NGOLocation, PostConcernLogs
 from recycle.models import ZipCode
 import pyrebase
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.urls import reverse
 from uuid import uuid4
 from django.conf import settings
@@ -19,6 +19,8 @@ from django.contrib.postgres.search import (
     SearchHeadline,
 )
 from django.http import Http404
+from accounts.utils import send_admin_email
+from django.contrib.sites.shortcuts import get_current_site
 
 """
 function: index
@@ -27,6 +29,7 @@ set path for reuse page
 """
 
 
+@user_passes_test(lambda u: not u.is_staff)
 def index(request):
     template = "reuse-index.html"
     context = {"is_reuse": True}
@@ -349,7 +352,7 @@ def post_details(request):
         user = request.user
         post_id = request.GET.get("postID")
         post = Post.objects.filter(pk=post_id)[0]
-        if post.user != user:
+        if post.user != user and user.is_admin is False:
             raise Http404("you are not allowed to see others posts ")
         context = {"user": user, "post": post, "is_reuse": True}
         return render(request, template, context=context)
@@ -367,4 +370,13 @@ def raise_concerns(request):
                 post=post,
             )
             new_concern.save()
+
+            send_admin_email(
+                volunteer=request.user,
+                template="email/email-admin-raise-concerns.html",
+                template_no_style="email/email-admin-raise-concerns-no-style.html",
+                current_site=get_current_site(request),
+                mail_subject="You have a new post concern to Review",
+            )
+
             return JsonResponse({"message": "Success"})
