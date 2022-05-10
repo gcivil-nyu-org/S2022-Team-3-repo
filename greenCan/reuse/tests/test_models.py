@@ -52,11 +52,7 @@ class TestModels(TestCase):
         post.save()
         self.post = post
 
-        post_concern = PostConcernLogs(
-            post=self.post,
-            checked=False,
-            message="Approved!"
-        )
+        post_concern = PostConcernLogs(post=self.post, checked=False, message="Approved!")
         self.post_concern = post_concern
         CreditsLookUp.objects.create(action="post", credit=10)
 
@@ -81,14 +77,14 @@ class TestModels(TestCase):
         self.assertEquals(str(post_concern_logs), str(post_concern_logs))
 
     def test_send_signals_and_moderate_for_approve_for_approve(self):
-        url = reverse('home:index')
+        url = reverse("home:index")
         request = self.factory.get(url)
         self.post_concern.send_signals_and_moderate(self.user, 1, get_current_site(request), "A")
         self.assertEquals(self.post_concern.checked, True)
         self.assertEquals(self.post_concern.post.approved, True)
 
     def test_send_signals_and_moderate_for_approve_for_reject(self):
-        url = reverse('home:index')
+        url = reverse("home:index")
         request = self.factory.get(url)
         self.post_concern.send_signals_and_moderate(self.user, 0, get_current_site(request), "A")
         self.assertEquals(self.post_concern.checked, True)
