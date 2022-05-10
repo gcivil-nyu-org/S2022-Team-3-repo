@@ -119,8 +119,6 @@ class PostConcernLogs(models.Model):
                 "email/post-approval.html",
                 "email/post-approval-no-style.html",
             )
-            if response != "success":
-                raise Exception("Failed to send email")
         elif new_status == 0:
             mail_subject = "Post " + str(post.title) + " denied"
             reasons = []
@@ -134,5 +132,5 @@ class PostConcernLogs(models.Model):
                 "email/post-denied-no-style.html",
                 reasons,
             )
-            if response != "success":
-                raise Exception("Failed to send email")
+        if response != "success":
+            raise Exception("Failed to send email")
