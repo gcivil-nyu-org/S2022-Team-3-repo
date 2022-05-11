@@ -9,6 +9,7 @@ from notification.utils import create_notification
 from accounts.utils import send_user_email, send_user_email_with_reasons
 
 
+# Create Post Model
 class Post(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
     title = models.CharField(max_length=250, null=False)
@@ -34,6 +35,7 @@ class Post(models.Model):
         ]
 
 
+# Create Image Model
 class Image(models.Model):
     id = models.AutoField(primary_key=True, auto_created=True)
     post = models.ForeignKey(Post, null=False, on_delete=models.CASCADE)
@@ -43,6 +45,7 @@ class Image(models.Model):
         return str(self.id)
 
 
+# Create NGOLocation Model
 class NGOLocation(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
     zip_code = models.ForeignKey(ZipCode, null=False, on_delete=models.CASCADE)
@@ -59,6 +62,7 @@ class NGOLocation(models.Model):
         return str(self.id)
 
 
+# Create PostConcernLogs Model
 class PostConcernLogs(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
     post = models.ForeignKey(Post, null=False, on_delete=models.CASCADE)
