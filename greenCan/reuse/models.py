@@ -89,9 +89,9 @@ class PostConcernLogs(models.Model):
             msg_type = "error"
         post.save()
 
-        # self.checked = True
-        # self.save()
-        # print(self.checked)
+        # change checked status
+        self.checked = True
+        self.save()
 
         # send notification to user
         sender = admin_user
@@ -109,6 +109,7 @@ class PostConcernLogs(models.Model):
         }
         create_notification(notification)
 
+        response = "success"
         if new_status == 1:
             mail_subject = "Post " + str(post.title) + " approved"
             response = send_user_email(
@@ -119,8 +120,6 @@ class PostConcernLogs(models.Model):
                 "email/post-approval.html",
                 "email/post-approval-no-style.html",
             )
-            if response != "success":
-                raise Exception("Failed to send email")
         elif new_status == 0:
             mail_subject = "Post " + str(post.title) + " denied"
             reasons = []
@@ -134,5 +133,5 @@ class PostConcernLogs(models.Model):
                 "email/post-denied-no-style.html",
                 reasons,
             )
-            if response != "success":
-                raise Exception("Failed to send email")
+        if response != "success":
+            raise Exception("Failed to send email")

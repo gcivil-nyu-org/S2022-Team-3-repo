@@ -18,9 +18,6 @@ class VolunteerApplicationAdmin(admin.ModelAdmin):
 
     def get_form(self, request, obj=None, **kwargs):
         form = super().get_form(request, obj, **kwargs)
-        # form.base_fields['user'].disabled = True
-        # form.base_fields['approved_by'].disabled = True
-
         return form
 
     def save_model(self, request, obj, form, change):
@@ -89,14 +86,15 @@ class VolunteerApplicationAdmin(admin.ModelAdmin):
 class PostAdmin(admin.ModelAdmin):
     fields = ["title", "category", "approved"]
 
-    def has_add_permission(request):
+    def has_add_permission(self, request):
         return False
 
-    def has_delete_permission(request, obj=None):
+    def has_delete_permission(self, request, obj=None):
         return False
 
 
 class PostConcernLogsAdmin(admin.ModelAdmin):
+    readonly_fields = ("checked",)
     list_display = ("post", "created_on", "checked")
     change_form_template = "reuse/templates/admin/change_form.html"
 
