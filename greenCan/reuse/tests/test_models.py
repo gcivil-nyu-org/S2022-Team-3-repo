@@ -86,6 +86,6 @@ class TestModels(TestCase):
     def test_send_signals_and_moderate_for_approve_for_reject(self):
         url = reverse("home:index")
         request = self.factory.get(url)
-        self.post_concern.send_signals_and_moderate(self.user, 0, get_current_site(request), "A")
+        self.post_concern.send_signals_and_moderate(self.user, 0, get_current_site(request), "R")
         self.assertEquals(self.post_concern.checked, True)
         self.assertEquals(self.post_concern.post.approved, False)
