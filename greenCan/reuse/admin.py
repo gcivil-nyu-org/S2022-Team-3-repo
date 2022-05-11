@@ -93,6 +93,7 @@ class PostAdmin(admin.ModelAdmin):
         return False
 
 
+# @admin.site.register()
 class PostConcernLogsAdmin(admin.ModelAdmin):
     readonly_fields = ("checked",)
     list_display = ("post", "created_on", "checked")
@@ -115,6 +116,7 @@ class PostConcernLogsAdmin(admin.ModelAdmin):
         extra_context = {
             "post_url": "/reuse/post-details/?postID=" + str(post_concern.post.id),
             "moderated": post_concern.checked,
+            "is_post_concern_log": True,
         }
         return super().change_view(request, object_id, extra_context=extra_context)
 
