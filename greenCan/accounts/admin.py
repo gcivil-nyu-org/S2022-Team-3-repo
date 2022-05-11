@@ -1,9 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from .forms import UserAdminCreationForm, UserAdminChangeForm
-from .models import LoginAttempt
+from .models import LoginAttempt, Question
 
 User = get_user_model()
 
@@ -62,10 +61,13 @@ class UserAdmin(BaseUserAdmin):
 admin.site.register(User, UserAdmin)
 
 # if you are not using the groups, you can remove the Group model by:
-admin.site.unregister(Group)
+# admin.site.register(Group)
 
 
 @admin.register(LoginAttempt)
 class LoginAttemptAdmin(admin.ModelAdmin):
     list_display = ["user", "login_attempts", "timestamp"]
     search_fields = ["user"]
+
+
+admin.site.register(Question)

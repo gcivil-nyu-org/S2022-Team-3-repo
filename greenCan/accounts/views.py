@@ -2,7 +2,7 @@ from datetime import timedelta
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout, get_user_model
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
@@ -10,11 +10,11 @@ from django.shortcuts import render, redirect
 from django.utils import timezone
 from django.utils.encoding import force_str
 from django.utils.http import urlsafe_base64_decode
-from .models import LoginAttempt, User
+from .models import LoginAttempt, Question, User, VolunteerApplication
 from .token import account_activation_token
 from .decorators import unauthenticated_user
-from .utils import send_user_email
-from django.urls import reverse_lazy
+from .utils import send_user_email, send_admin_email
+from django.urls import reverse_lazy, reverse
 from django.contrib.auth import views as auth_views
 from .forms import PasswordResetForm, SetPasswordForm
 from recycle.models import ZipCode
@@ -23,8 +23,11 @@ from django.core.paginator import Paginator
 from rewards.models import EarnGreenCredits
 from django.db.models import Sum, Window, F
 from django.db.models.functions import Rank
+from django.views.decorators.csrf import csrf_exempt
+from helper.views import error_405
 
-# from django.db.models.functions.window import RowNumber
+
+NUMBER_OF_QUESTIONS = 5
 
 
 class PasswordResetView(auth_views.PasswordResetView):
@@ -105,6 +108,7 @@ def signup_page(request):
     return render(request, "accounts/templates/signup.html", context)
 
 
+@unauthenticated_user
 def account_exists(request):
 
     """
@@ -341,3 +345,116 @@ def green_credits_logs(request):
         logs["next_page_number"] = 0
 
     return JsonResponse(logs)
+
+
+@login_required
+@user_passes_test(lambda u: not (u.is_staff or u.is_admin))
+def volunteer_registration(request):
+
+    if request.method == "POST":
+        keys = request.POST.keys()
+        question_ids = []
+        answers = []
+        for key in keys:
+            if key.startswith("question#"):
+                question_ids.append(int(key.split("#")[-1]))
+                answers.append(int(request.POST[key]))
+
+        essay_1 = request.POST.get("essay_1")
+        essay_2 = request.POST.get("essay_2")
+        consent = request.POST.get("consent")
+
+        if VolunteerApplication.objects.filter(user=request.user):
+            messages.error(request, "You have already made a submission. You cannot apply again.")
+            return redirect(reverse("accounts:volunteer-registration"))
+
+        if not consent:
+            messages.error(
+                request,
+                "In order to submit your application successfully you must accept"
+                " our Terms and Conditions.",
+            )
+            return redirect(reverse("accounts:volunteer-registration"))
+
+        if not essay_1 or not essay_2:
+            messages.error(
+                request,
+                "In order to submit your application successfully you need to"
+                " complete both the essays",
+            )
+            return redirect(reverse("accounts:volunteer-registration"))
+
+        if len(question_ids) != NUMBER_OF_QUESTIONS:
+            messages.error(
+                request,
+                "Please attempt all the questions in the questionnaire.",
+            )
+            return redirect(reverse("accounts:volunteer-registration"))
+
+        essay_1 = essay_1[:500]
+        essay_2 = essay_2[:500]
+
+        correct = 0
+        incorrect = 0
+
+        questions = Question.objects.all()
+        for qid, answer in zip(question_ids, answers):
+            question = questions.get(pk=qid)
+            if question.verify_answer(answer):
+                correct += 1
+            else:
+                incorrect += 1
+
+        score = round(correct / (correct + incorrect) * 100)
+
+        application = VolunteerApplication(
+            user=request.user, score=score, essay_1=essay_1, essay_2=essay_2
+        )
+        application.save()
+        messages.success(
+            request,
+            "Your application has been submitted successfully and is"
+            " subject to approval from the administrator. You"
+            " would receive an email once it is reviewed.",
+        )
+
+        send_admin_email(
+            volunteer=request.user,
+            template="email/email-admin-volunteer-application.html",
+            template_no_style="email/email-admin-volunteer-application-no-style.html",
+            current_site=get_current_site(request),
+            mail_subject="You have a new Applicatioon to Review",
+        )
+
+        return redirect(reverse("accounts:volunteer-registration"))
+
+    template_name = "accounts/templates/volunteer-registration.html"
+    return render(request, template_name, context={})
+
+
+@csrf_exempt
+@login_required
+def get_questions(request):
+
+    if request.method != "POST":
+        return error_405(request)
+
+    questions = Question.objects.all()
+
+    questions = questions.order_by("?")[:NUMBER_OF_QUESTIONS]
+
+    data = []
+
+    for question in questions:
+        data.append(
+            {
+                "questionId": question.id,
+                "questionType": question.question_type,
+                "choices": question.get_choices(),
+                "text": question.text,
+                "question": question.question,
+                "image": question.image,
+            }
+        )
+
+    return JsonResponse(data, safe=False)

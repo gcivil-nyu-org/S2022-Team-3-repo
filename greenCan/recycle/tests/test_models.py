@@ -11,3 +11,4 @@ class TestModels(TestCase):
     def test_DropOffLocation_model(self):
         dropoffloc = baker.make("recycle.DropOffLocation")
         self.assertIsInstance(dropoffloc, DropOffLocation)
+        self.assertEquals(str(dropoffloc), str(dropoffloc.id))

@@ -1,0 +1,122 @@
+{% extends 'template.html' %}
+{% load static %}
+
+{% block title %}
+Volunteer Registration
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
+{% endblock %}
+
+{% block main %}
+<div class ="container-fluid p-0 mb-5">
+    <div class="d-flex justify-content-md-center justify-content-sm-start">
+        <h1 class="h1">Become a Volunteer</h1>
+    </div>
+    <div class="d-flex justify-content-md-center justify-content-sm-start">
+        <div class = "row">
+            <div class="col-md-11">
+                <p>You need to answer all the questions below inorder to submit your application successfully</p>
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    <div id="questions-wrapper"></div>
+                    
+                    <div class="form-group mb-2">
+                        <label for="essay-1"><b>Why do you want to become a greenCan Volunteer? <small>(max 500 chars.)</small></b></label>
+                        <textarea class="form-control" name="essay_1" required id="essay_1" maxlength="500"></textarea>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label for="essay-2"><b>Why do you belive that our mission is important? <small>(max 500 chars.)</small></b></label>
+                        <textarea class="form-control" name="essay_2" required id="essay_2" maxlength="500"></textarea>
+                    </div>
+                    <div class="custom-control custom-checkbox mb-3">
+                        <input type="checkbox" class="custom-control-input" id="consent" name="consent" required value="consent">
+                        <label class="custom-control-label" for="consent">I agree with all the Terms & Conditions of greenCan, and I will well and faithfully discharge the duties of a greenCan Volunteer.</label>
+                    </div>
+                    <input type="submit" value="Submit" name="submit" class="button btn-rounded">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{% include 'sweetalert2.html' %}
+<script>
+
+    function makeQuestion(question, i) {
+        var wrapperDiv = document.createElement('div');
+        wrapperDiv.classList = 'question-group';
+        var p = document.createElement('p');
+        var strong = document.createElement('strong');
+        strong.innerHTML = `Q${i+1}) ${question['question']}`;
+        p.append(strong);
+        wrapperDiv.append(p);
+
+        // 1 - Image
+        if(question['questionType']==1){
+            var img = document.createElement('img');
+            img.setAttribute('src',`${question['image']}`);
+            img.setAttribute('height','150px');
+            wrapperDiv.append(img);
+        }else if(question['questionType']==2){
+            var p = document.createElement('p');
+            p.innerHTML = `${question['text']}`;
+            wrapperDiv.append(p);
+        }
+
+        $.each(question['choices'], function(i){
+            choice = question['choices'][i];
+            var label = document.createElement('label');
+            label.classList = 'radio-container';
+            var span = document.createElement('span');
+            span.innerHTML = `${choice[1]}`;
+            label.append(span);
+            var input = document.createElement('input');
+            input.setAttribute('type','radio');
+            input.setAttribute('required','required');
+            input.setAttribute('name',`question#${question['questionId']}`);
+            input.setAttribute('id',`question#${question['questionId']}-${choice[0]}`);
+            input.setAttribute('value',choice[0]);
+            label.appendChild(input);
+            var spanRadio = document.createElement('span');
+            spanRadio.classList = 'radio-checkmark';
+            label.append(spanRadio);
+            wrapperDiv.append(label);
+        });
+        return wrapperDiv;
+    }
+
+    function addQuestions(questions) {
+        var wrapper = document.getElementById('questions-wrapper');
+        $.each(questions, function(i) {
+            wrapper.append(makeQuestion(questions[i],i));
+        });
+    }
+
+    $(document).ready(function(){
+        $.post({
+            url: "{% url 'accounts:fetch-questions' %}",
+            dataType: "json",
+            success: function(data) {
+                if(data.length > 0){
+                    addQuestions(data);
+                }
+            },
+            error: function(e) {
+                Swal.fire({
+                    title:'Error Occured!',
+                    text: `Please try again later.`,
+                    icon:'error',
+                    confirmButtonColor:'#6ABE52',
+                });  
+            }
+        });
+    });
+
+</script>
+{% endblock %}

@@ -10,7 +10,7 @@ from recycle.models import ZipCode
 from reuse.models import Image, Post, NGOLocation, PostConcernLogs
 from rewards.models import CreditsLookUp
 from django.utils.encoding import force_str
-
+from django.core import mail
 
 User = get_user_model()
 
@@ -239,6 +239,31 @@ class TestCreatePost(TestCase):
         )
         self.assertRedirects(response, self.redirect_url, 302)
 
+    def test_auth_invalid_form_8(self):
+        data = self.data.copy()
+        data["number"] = "999"
+        user = User.objects.create(
+            email="testemail@gmail.com",
+            password="password1",
+            first_name="john",
+            last_name="doe",
+        )
+        self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        response = self.client.post(self.url, data=data, follow=True)
+        self.assertContains(response, "csrfmiddlewaretoken")
+        posts = Post.objects.all()
+        self.assertEquals(len(posts), 0)
+        images = Image.objects.all()
+        self.assertEquals(len(images), 0)
+        message = list(response.context.get("messages"))[0]
+        self.assertEquals(message.tags, "error")
+        self.assertEquals(
+            message.message,
+            "Failed to create the post. Please make sure you fill"
+            + " in all the details along with images to post an ad.",
+        )
+        self.assertRedirects(response, self.redirect_url, 302)
+
 
 class TestViews(TestCase):
     def setUp(self):
@@ -445,6 +470,15 @@ class TestUserPostsViews(TestCase):
             is_active=True,
         )
         self.client.force_login(self.user, backend=settings.AUTHENTICATION_BACKENDS[0])
+
+        self.admin = User.objects.create(
+            email=settings.EMAIL_HOST_USER,
+            password="newpassword",
+            first_name="new",
+            last_name="sun",
+            admin=True,
+        )
+
         zipcode = ZipCode(
             zip_code="10001",
             state_id="NY",
@@ -649,3 +683,26 @@ class TestUserPostsViews(TestCase):
         )
         self.assertJSONEqual(force_str(response.content), {"message": "Repeated"})
         self.assertEquals(len(PostConcernLogs.objects.all()), 1)
+
+    def test_email_sent_to_admin(self):
+        self.client.post(
+            self.raise_concerns_url,
+            {
+                "id": self.post3.id,
+            },
+            follow=True,
+        )
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, "You have a new post concern to Review")
+        self.assertEqual(
+            mail.outbox[0].from_email, settings.DEFAULT_FROM_EMAIL
+        )  # change to your email <youremail>
+        self.assertEqual(mail.outbox[0].from_email, settings.EMAIL_HOST_USER)
+        self.assertEqual(mail.outbox[0].to, [settings.EMAIL_HOST_USER])  # self.user.email
+        admin = User.objects.get(email=settings.EMAIL_HOST_USER)
+        self.assertEqual(
+            mail.outbox[0].body,
+            f"\nHi { admin.get_full_name() },\n\n{ self.user.get_full_name() }"
+            ", has raised a concern about his/her denied post."
+            "\n\nYou can review it through the greenCan admin dashboard.\n\n\n\n",
+        )

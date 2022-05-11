@@ -9,6 +9,7 @@ from notification.utils import create_notification
 from accounts.utils import send_user_email, send_user_email_with_reasons
 
 
+# Create Post Model
 class Post(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
     title = models.CharField(max_length=250, null=False)
@@ -34,6 +35,7 @@ class Post(models.Model):
         ]
 
 
+# Create Image Model
 class Image(models.Model):
     id = models.AutoField(primary_key=True, auto_created=True)
     post = models.ForeignKey(Post, null=False, on_delete=models.CASCADE)
@@ -43,6 +45,7 @@ class Image(models.Model):
         return str(self.id)
 
 
+# Create NGOLocation Model
 class NGOLocation(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
     zip_code = models.ForeignKey(ZipCode, null=False, on_delete=models.CASCADE)
@@ -59,6 +62,7 @@ class NGOLocation(models.Model):
         return str(self.id)
 
 
+# Create PostConcernLogs Model
 class PostConcernLogs(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True)
     post = models.ForeignKey(Post, null=False, on_delete=models.CASCADE)
@@ -89,9 +93,9 @@ class PostConcernLogs(models.Model):
             msg_type = "error"
         post.save()
 
-        # self.checked = True
-        # self.save()
-        # print(self.checked)
+        # change checked status
+        self.checked = True
+        self.save()
 
         # send notification to user
         sender = admin_user
@@ -109,6 +113,7 @@ class PostConcernLogs(models.Model):
         }
         create_notification(notification)
 
+        response = "success"
         if new_status == 1:
             mail_subject = "Post " + str(post.title) + " approved"
             response = send_user_email(
@@ -119,8 +124,6 @@ class PostConcernLogs(models.Model):
                 "email/post-approval.html",
                 "email/post-approval-no-style.html",
             )
-            if response != "success":
-                raise Exception("Failed to send email")
         elif new_status == 0:
             mail_subject = "Post " + str(post.title) + " denied"
             reasons = []
@@ -134,5 +137,5 @@ class PostConcernLogs(models.Model):
                 "email/post-denied-no-style.html",
                 reasons,
             )
-            if response != "success":
-                raise Exception("Failed to send email")
+        if response != "success":
+            raise Exception("Failed to send email")

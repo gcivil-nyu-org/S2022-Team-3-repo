@@ -236,9 +236,3 @@ def review_credit_request(request, id):
     categories = img_meta.category.all()
     context = {"img_meta": img_meta, "categories": categories}
     return render(request, template_name=template_name, context=context)
-
-
-@login_required
-@user_passes_test(lambda u: u.is_staff)
-def post_approval(request):
-    return redirect("reuse:my-posts")

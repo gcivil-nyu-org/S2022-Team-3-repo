@@ -51,7 +51,7 @@ class TestHomePage(TestCase):
             title="Apple",
             category="Books",
             phone_number="1234567890",
-            email="pb2640@nyu.edu",
+            email="pb@nyu.edu",
             zip_code=zipcode,
             description=" Book on apple",
             user=self.user1,
@@ -69,7 +69,7 @@ class TestHomePage(TestCase):
             title="Apple",
             category="Books",
             phone_number="1234567890",
-            email="pb2640@nyu.edu",
+            email="pb@nyu.edu",
             zip_code=zipcode,
             description=" Book on apple",
             user=self.user2,
@@ -87,7 +87,7 @@ class TestHomePage(TestCase):
             title="Apple",
             category="Books",
             phone_number="1234567890",
-            email="pb2640@nyu.edu",
+            email="pb@nyu.edu",
             zip_code=zipcode,
             description=" Book on apple",
             user=self.user3,
@@ -168,6 +168,34 @@ class TestHomePage(TestCase):
             response,
             '<a class="dropdown-item" href="' + reverse("accounts:logout") + '">Logout</a>',
         )
+        self.assertTemplateUsed(response, "home/templates/user-registration-banner.html")
+        self.assertTemplateNotUsed(response, "home/templates/volunteer-registration-banner.html")
+
+    def test_authenticated_user_admin(self):
+        user = User.objects.create(
+            email="testemail@gmail.com",
+            password="password1",
+            first_name="john",
+            last_name="doe",
+            admin=True,
+        )
+        self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        response = self.client.get(self.url)
+        self.assertTemplateNotUsed(response, "home/templates/volunteer-registration-banner.html")
+        self.assertTemplateNotUsed(response, "home/templates/user-registration-banner.html")
+
+    def test_authenticated_user_volunteer(self):
+        user = User.objects.create(
+            email="testemail@gmail.com",
+            password="password1",
+            first_name="john",
+            last_name="doe",
+            staff=True,
+        )
+        self.client.force_login(user, backend=settings.AUTHENTICATION_BACKENDS[0])
+        response = self.client.get(self.url)
+        self.assertTemplateNotUsed(response, "home/templates/volunteer-registration-banner.html")
+        self.assertTemplateNotUsed(response, "home/templates/user-registration-banner.html")
 
     def test_authenticated_user(self):
         user = User.objects.create(
@@ -188,10 +216,11 @@ class TestHomePage(TestCase):
             '<a class="dropdown-item" href="' + reverse("accounts:logout") + '">Logout</a>',
         )
         self.assertContains(response, user.get_full_name())
+        self.assertTemplateUsed(response, "home/templates/volunteer-registration-banner.html")
+        self.assertTemplateNotUsed(response, "home/templates/user-registration-banner.html")
 
     def test_unauthenticated_user_home_data(self):
         response = self.client.get(self.url)
-
         self.assertFalse("rank" in response.context)
         self.assertFalse("image_num" in response.context)
         self.assertFalse("image_meta_num" in response.context)
@@ -236,7 +265,7 @@ class TestHomePage(TestCase):
             title="Apple",
             category="Books",
             phone_number="1234567890",
-            email="pb2640@nyu.edu",
+            email="pb@nyu.edu",
             zip_code=self.zipcode,
             description=" Book on apple",
             user=user,
@@ -254,7 +283,7 @@ class TestHomePage(TestCase):
             title="Apple1",
             category="Books1",
             phone_number="1234567890",
-            email="pb2640@nyu.edu",
+            email="pb@nyu.edu",
             zip_code=self.zipcode,
             description="Book on apple",
             user=user,

@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from recycle.models import ZipCode
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.utils.translation import gettext_lazy as _
 
 
 class UserManager(BaseUserManager):
@@ -93,7 +95,6 @@ class User(AbstractBaseUser):
     )
     phone_number = models.CharField(verbose_name="Phone number", max_length=17, null=True)
     avatar = models.TextField(verbose_name="Avatar", null=True)
-    # avatar = models.ImageField(upload_to="Avatars", null=True)
     is_active = models.BooleanField(default=True)
     staff = models.BooleanField(default=False)
     admin = models.BooleanField(default=False)
@@ -143,3 +144,55 @@ class LoginAttempt(models.Model):
 
     def __str__(self):
         return "user: {}, attempts: {}".format(self.user.email, self.login_attempts)
+
+
+class VolunteerApplication(models.Model):
+
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, null=False, related_name="applicant"
+    )
+    submitted_on = models.DateTimeField(auto_now_add=True)
+    score = models.IntegerField(
+        null=False, default=0, validators=[MaxValueValidator(100), MinValueValidator(0)]
+    )
+    essay_1 = models.TextField(max_length=500, null=False)
+    essay_2 = models.TextField(max_length=500, null=False)
+    approved_by = models.ForeignKey(
+        User, null=True, on_delete=models.CASCADE, related_name="reviewer"
+    )
+    updated_on = models.DateTimeField(auto_now=True)
+    approved = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.user.get_full_name()
+
+
+class QuestionType(models.IntegerChoices):
+    IMAGE_CLASSIFICATION = 1, _("Image")
+    TEXT_CLASSIFICATION = 2, _("Text")
+
+
+class Answer(models.IntegerChoices):
+    NO = 0, _("Approve")
+    YES = 1, _("Deny")
+
+
+class Question(models.Model):
+
+    question_type = models.IntegerField(choices=QuestionType.choices)
+    answer = models.IntegerField(choices=Answer.choices)
+    image = models.URLField(max_length=3000, null=True, blank=True)
+    question = models.TextField(null=False)
+    text = models.TextField(null=True, blank=True)
+
+    def verify_answer(self, choice: int) -> bool:
+        return self.answer == choice
+
+    def get_choices(self) -> list:
+        return Answer.choices
+
+    def get_question_type(self) -> str:
+        return QuestionType(self.question_type)._name_
+
+    def __str__(self):
+        return f"{self.id}"
