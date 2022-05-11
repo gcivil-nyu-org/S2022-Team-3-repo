@@ -25,7 +25,7 @@ class VolunteerApplicationAdmin(admin.ModelAdmin):
         cleaned_data = form.cleaned_data
         user = cleaned_data.get("user")
         sender = cleaned_data.get("approved_by")
-        user = User.objects.get(email="pb2640@nyu.edu")
+        user = User.objects.get(email=user)
         approved = cleaned_data.get("approved")
         if approved:
             user.staff = True
