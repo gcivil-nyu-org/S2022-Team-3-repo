@@ -96,85 +96,27 @@
     background-color: #6ABE52 !important;
 }
 
+.owl-carousel {
+    position: relative;
+}
+
+.owl-next, .owl-prev {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+}
+.owl-next {
+    right: 0;
+    display: flex;
+}
+.owl-prev{
+    left: 0;
+    display: flex;
+}
+
 @media screen and (max-width: 780px) {
     .text-address, .text-time {
         text-align: center !important;
     }
 }
-
-
-textarea.form-control {
-    min-height: 150px !important;
-    border-radius: 20px !important;
-}
-
-.form-control {
-    height: 30px !important;
-}
-
-.form-select{
-    -webkit-border-radius: 50px !important;
-    -moz-border-radius: 50px !important;
-    border-radius: 50px !important;
-    border: 1px solid #C4C4C4;
-    box-sizing: border-box;
-    border-radius: 28px;
-    padding: .25em 1em;
-    display: block;
-    width: 30vw;
-    min-width: 200px;
-    height: 30px !important;
-}
-  
-.upload-image-frame {
-    border: 4px dashed #c4c4c4;
-    border-radius: 20px;
-    width: inherit;
-    max-height: 200px;
-    padding-top: 3em;
-    padding-bottom: 3em;
-    align-items: center;
-    box-sizing: border-box;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 15px;
-}
-  
-.upload-image-frame .upload-text {
-    color: #c4c4c4;
-    font-size: 1.2em;
-    font-weight: normal;
-    text-align: center;
-    margin-bottom: 38px;
-    display: flex;
-    flex-wrap: wrap;
-  }
-  
-.upload-image-frame .upload-btn {
-    color: #fff;
-    background-color: #c4c4c4;
-    width: fit-content;
-    padding: 7px 30px;
-    border-radius: 30px;
-    text-transform: uppercase;
-}
-  
-.upload-text img {
-    width: 60px;
-    height: 60px;
-    object-fit: fill;
-    margin: 2px;
-  }
-
-.textarea
-  {
-    -webkit-box-sizing: border-box;
-    -moz-box-sizing: border-box;
-         box-sizing: border-box;
-    border: 1px solid #C4C4C4;
-    box-sizing: border-box;
-    border-radius: 28px;
-    padding: .25em 1em;
-    display: block;
-    width: 30vw;
-    min-width: 200px;
-  }

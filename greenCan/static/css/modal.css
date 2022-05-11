@@ -1,0 +1,14 @@
+.modal{
+    position: fixed;
+    float: left;
+    left: 50%;
+    top: 50%;
+    width: 70%;
+    justify-content: center;
+    transform: translate(-50%, -50%);
+    background:#ffffff;
+    border: 2px solid #00000060;
+    border-radius: 10px;
+    z-index: 1500;
+    box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);
+}

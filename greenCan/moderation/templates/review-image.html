@@ -1,0 +1,64 @@
+{% extends 'template.html' %}
+{% load static %}
+
+{% block title %}
+Review Post
+{% endblock %}
+
+{% block style %}
+<style>
+  .btn-red {
+    background-color:#dc3545!important;
+  }
+</style>
+{% endblock %}
+
+{% block main %}
+<div class = "container my-5">
+  <h1>Review Post</h1>
+  <div class = "row">
+      <!-- slides of item pictures -->
+      <div class = "col-md-6">
+          <div class="owl-carousel owl-theme">
+              {% for img in post.image_set.all %}
+                  <div class="item">
+                    <img src={{img.url}} style="width:100%;"/>
+                  </div>
+              {% endfor %}
+          </div>
+      </div>
+      <!-- slides of item pictures -->
+      <div class = "col-md-6">
+          <p><b>Category:   </b>  {{post.category}}</p>
+          <p><b>Item description:   </b>  {{post.headline | safe }} </p>
+          <p><b>Email :   </b>   {{post.email}}</p>
+          <p><b>Phone number:</b> {{post.phone_number}}</p>
+          <p><b>Pick-up location:   </b>   {{ post.zip_code.borough }}, {{ post.zip_code.state_id }} - {{ post.zip_code.zip_code }}</p>
+          <div class="mt-3 d-flex justify-content-center g-2">
+            <button class="btn btn-rounded mx-2">Approve</button>
+            <button class="btn btn-rounded btn-red">Block & Ask for Revision</button>
+          </div>
+      </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'modules/owl-carousel-2/js/owl-carousel2.min.js' %}"></script>
+<script>
+  $(document).ready(function() {
+    let owl = $('.owl-carousel');
+    owl.owlCarousel({
+        margin: 20,
+        loop: true,
+        autoplay: true,
+        autoplayTimeout: 2000,
+        autoplayHoverpause: true,
+        items: 1,
+        nav: true,
+        navText : ["<i class='fas fa-chevron-left ml-0'></i>","<i class='fas fa-chevron-right mr-0'></i>"]
+    });
+
+}); 
+</script>
+{% endblock %}

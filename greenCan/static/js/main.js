@@ -4,6 +4,7 @@
 		$body = $('body'),
 		$nav = $('#nav');
 
+
 		// Breakpoints.
 		breakpoints({
 			xlarge:  [ '1281px',  '1680px' ],
@@ -13,25 +14,36 @@
 			xsmall:  [ null,      '360px'  ]
 		});
 
-		$(window).scroll(function() {
-			scrollFunction();
+		$('#nav > ul').dropotron({
+			mode: 'fade',
+			noOpenerFade: true,
+			speed: 300,
+			alignment: 'left'
 		});
-				
+
 		$('#scrollToTopBtn').hide();
-
-		function scrollFunction() {
-			if (document.documentElement.scrollTop > 50) {
-				$('#scrollToTopBtn').show();
-			} else {
-				$('#scrollToTopBtn').hide();
-			}
-		}
-
+		
 		$('#scrollToTopBtn').click(function() {
 			$('html, body').animate({scrollTop : 0},700);
 		});
 
 		// Nav.
+		var navbar = document.getElementById("nav");
+		var sticky = navbar.offsetTop;
+		
+		$(window).scroll(function() {
+			if (document.documentElement.scrollTop > sticky * .3) {
+				$('#scrollToTopBtn').show();
+				navbar.classList.add("sticky");
+			} else {
+				$('#scrollToTopBtn').hide();
+				navbar.classList.remove("sticky");
+			}
+		});
+		
+		 $('#profile-dropdown').hover(function(){
+			$('#profile-dropdown-menu').toggleClass('d-none');
+		 });
 
 		// Title Bar.
 			$(

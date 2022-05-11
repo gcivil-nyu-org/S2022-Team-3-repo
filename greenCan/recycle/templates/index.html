@@ -17,20 +17,20 @@ Recycle | greenCan
 <div class="d-flex justify-content-md-center justify-content-sm-start">
     <h1 class="h1">Search for Drop-off Sites</h1>
 </div>
-<div class="my-md-4 my-2 mx-md-2 mx-1 d-flex container-fluid justify-content-center pb-3 align-items-center">
+<div class="my-md-4 my-2 d-flex container-fluid justify-content-center pb-3 mx-auto">
     <div class="row justify-content-center">
-        <div class="col-md-7 col-12 justify-content-center d-flex mb-1">
-          <input type="number" class="form-control" id="zipcode"  value="" pattern="^[0-9]{5}$" min="0" maxlen="5" required placeholder="Enter Zip code">
-          <div class="invalid-feedback d-flex justify-content-center d-none" id="zipcode-feedback">
+        <div class="col-md-7 col-12 justify-content-center mb-1">
+          <input type="number" class="form-control" id="zipcode"  value="" pattern="^[0-9]{5}$" min="0" minlength="5" maxlen="5" required placeholder="Enter Zip code">
+          <div class="invalid-feedback justify-content-center d-none" id="zipcode-feedback">
                 Please enter a valid 5 digit NYC zip code.
           </div>
         </div>
-        <div class="col-md-2 col-12 justify-content-center d-flex mb-1">
+        <div class="col-md-2 col-12 justify-content-center mb-1">
             <div class="mx-md-4 mx-2 p-2 or-container">
                 OR
             </div>
         </div>
-        <div class="col-md-3 col-12 justify-content-center d-flex mb-1">
+        <div class="col-md-3 col-12 justify-content-center mb-1">
             <button class="btn btn-rounded" id="btn-locate-me">Locate Me</button>
         </div>
     </div>
@@ -49,7 +49,7 @@ Recycle | greenCan
     <div class="col-md-8 col-sm-10 col-12 offset-md-0 offset-sm-1 pr-2">
         <div id="map"></div>
     </div>
-    <div class="col-md-4 col-sm-10 col-12 offset-md-0 offset-sm-1">
+    <div class="col-md-4 col-sm-10 col-12 offset-md-0 offset-sm-1" >
         <div id="listings" class="mt-2 card_frame">
         </div>
     </div>
@@ -59,13 +59,14 @@ Recycle | greenCan
 
 {% block scripts %}
 <script src="{% static 'js/maps.js' %}"></script>
+{% include 'sweetalert2.html' %}
 <script>
 
-    var result = {};
-    var locations = {};
+    let result = {};
+    let locations = {};
     function markPoints(locations){
         clearView();
-        var marker;
+        let marker;
         $.each(locations, function( key,site ) {
             marker = L.marker([site["latitude"],site["longitude"]],{icon: colorCategoryMap[site['type'].toLowerCase()][0]})
             marker.bindTooltip('<b>'+site["name"]+'</b><br/>'+site["street_address"]+'<br/>'+site['state_id']+' '+site['zip_code'], {
@@ -121,8 +122,6 @@ Recycle | greenCan
                   </div>';
             $('#listings').append($(card));
             markersLayer.addLayer(marker);
-            // You card DOM over here
-            
         });
     }
     
@@ -151,24 +150,36 @@ Recycle | greenCan
 
     window.onload = function() {loadView()}
 
-    function focusOn(lat,long){
-        map.flyTo(new L.LatLng(lat, long));
+    function focusOn(lat,long, zoom=17){
+        map.flyTo([lat, long], zoom);
     }
     
     var curr_zipcode=''; 
+    var is_valid = false;
 
-    $('#zipcode').keyup(function (event) {
-        if (event.keyCode==189 || event.keyCode==190 || event.keyCode==107 || event.keyCode==109)
-            this.value = ''
+    $('#zipcode').keyup(function (e){
+        makeInvalid();
         if(this.value.length==5){
             zipcode = $('#zipcode').val();
-            if(curr_zipcode!==zipcode){
+            if(is_valid===true && curr_zipcode===zipcode){
                 makeValid();
+            }else if (curr_zipcode!==zipcode){
                 curr_zipcode=zipcode;
                 getDropOffSitesZipcode(zipcode);
             }
         }
     });
+
+    $('#zipcode').keydown(function(event){
+        if (event.keyCode==189 || event.keyCode==190 || event.keyCode==107 || event.keyCode==109 || event.keyCode==13 || event.key.toLowerCase()=='e' || event.key=='.'){            
+            event.preventDefault();
+        }
+        makeInvalid();
+    });
+
+    $('#zipcode').on("cut copy paste drop",function(e) {
+      e.preventDefault();
+   });
 
     $('#zipcode').keypress(function(event){
         if(this.value.length==5){
@@ -183,7 +194,7 @@ Recycle | greenCan
         locations = result.map(([key, value]) => value);
         latitude = data['centroid']['latitude'];
         longitude = data['centroid']['longitude'];
-        focusOn(latitude,longitude);
+        focusOn(latitude,longitude,13);
         markPoints(locations);
     }
 
@@ -200,8 +211,11 @@ Recycle | greenCan
             success: function (data) {
                 if (data['err_flag']==true){
                     makeInvalid();
+                    is_valid = false;
                 }else{
-                    setData(data);   
+                    makeValid();
+                    setData(data);  
+                    is_valid = true; 
                 }
             }
         });
@@ -217,7 +231,9 @@ Recycle | greenCan
         $('#zipcode-feedback').addClass('d-none');
     }
 
-    function getDropOffSitesLocations(latitude,longitude){
+    function getDropOffSitesLocations(position){
+        let latitude = position.coords.latitude;
+        let longitude = position.coords.longitude;
         clearView();
         $.ajax({
             url: "{% url 'recycle:fetch-drop-off-locations' %}",
@@ -230,6 +246,7 @@ Recycle | greenCan
             },
             success: function (data) {
                 setData(data);
+                is_valid = true;
             }
         });
     }
@@ -237,17 +254,23 @@ Recycle | greenCan
     $('#btn-locate-me').click(function(){
         $('#zipcode').val('');
         makeValid();
-        $.ajax({
-          url: 'https://get.geojs.io/v1/ip/geo.json',
-          type: 'GET',
-          success: function (data) {
-              getDropOffSitesLocations(data['latitude'],data['longitude']);
-          }
-        });
+        getLocation();
     });
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(getDropOffSitesLocations);
+        } else { 
+            Swal.fire(
+                    'Error!',
+                    'Geolocation is not supported by this browser.',
+                    'error'
+                );
+        }
+    }
     
     function filterByCategory(obj){
-        var selectedCat = $(obj).val();
+        let selectedCat = $(obj).val();
         if(selectedCat == 'showing all sites'){
             locations = result.map(([key, value]) => value);
         }
@@ -256,6 +279,8 @@ Recycle | greenCan
         }
         markPoints(locations);
     }
+    
+    $('#main').addClass('my-3 mb-5 pb-5');
 
 </script>
 {% endblock %}

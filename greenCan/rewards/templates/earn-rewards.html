@@ -1,0 +1,131 @@
+{% extends 'template.html' %}
+{% load static %}
+
+{% block title %}
+Rewards | greenCan
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/form.css' %}"></link>
+<link rel="stylesheet" href="{% static 'modules/select2/css/select2.min.css' %}"></link>
+<style>
+    .heading-wrapper .heading,
+    .heading-wrapper .subheading {
+        text-align: center;
+    }
+
+    .text-danger {
+        color: red;
+    }
+</style>
+{% endblock %}
+
+{% block main %}
+<div class="heading-wrapper mb-3 align-middle">
+    <h1 class="heading mb-0 h1">Did you help save our planet recently?</h1>
+    <p class="subheading">
+        If so, you can upload the participation image(s) and earn credits for it. By doing so you can also help us create awareness among others.
+    </p>
+</div>
+<div class="d-flex container-fluid justify-content-center pb-3 mx-auto mb-md-5">
+    <form class="form-container g-3 justify-content-center" id = "proof-upload-form" enctype="multipart/form-data" method="POST" role="form">
+        <!--img upload-->
+        
+        <div class="upload-image-frame d-flex flex-column align-middle py-4" id="image-frame">
+            <div class="upload-text mx-5" id="show-image-frame">
+            You can choose to upload multiple images<span class="text-danger">*</span>
+            </div>
+            <div class="upload-btn">
+            <i class="fa fa-plus"></i>
+            <span>
+                ADD PICTURES
+            </span>
+            </div>
+        </div>
+        <input type="file" name="file[]" class="d-none" id="image-upload" accept="image/*" multiple="multiple" required>
+        <br>
+        {% csrf_token %}
+        <div class="row container-fluid">
+            <div class="col-md-12">
+                <div class="form-group mb-1">
+                    <label for="caption" class="form-label"><b>Caption:</b></label>
+                    <input type="text" class="form-control" name="caption" id="caption" placeholder="Enter the caption" maxlength="100">
+                </div>
+                <div class="form-group mb-1">
+                    <label for="location" class="form-label"><b>Location:</b></label>
+                    <input type="text" class="form-control" name="location" id="location" placeholder="Enter the area zipcode" pattern="^{\d}(5)$">
+                </div>
+                <div class="form-group mb-1">
+                    <label for="event" class="form-label"><b>Event:</b><span class="text-danger">*</span></label>
+                    <select class="form-select" id = "event" name="event" aria-label="Event" required>
+                        <option value="" disabled selected>Select an Event</option>
+                        {% for event in events %}
+                            <option value={{ event.id }}>{{ event.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group mb-3">
+                    <label for="select2Control" class="form-label"><b>Category:</b></label>
+                    <select name="categories[]" multiple id="select2Control" class="select2Control form-control">
+                        {% for category in categories %}
+                            <option value={{ category.id }}>{{ category.name }}</option>
+                        {% endfor %}
+                    </select>                    
+                </div>
+                <div class="custom-control custom-checkbox mb-3">
+                    <input type="checkbox" class="custom-control-input" id="consent" name="consent" value="consent">
+                    <label class="custom-control-label" for="consent">I allow greenCan to feature these images on Green Wall.</label>
+                </div>
+                <div class="form-group mt-4 d-flex justify-content-center">
+                    <button class="button btn-rounded" type="submit" id="submit-btn">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+
+{% block scripts %}
+
+{% include 'sweetalert2.html' %}
+
+<script src="{% static 'modules/select2/js/select2.min.js' %}"></script>
+<script src="{% static 'modules/attrchange/js/attrchange.min.js' %}"></script>
+<script src="{% static 'js/select2-config.js' %}"></script>
+<script>
+    if (window.File && window.FileList && window.FileReader) {
+        let filesInput = document.getElementById("image-upload");
+        filesInput.addEventListener("change", function (event) {
+            let files = event.target.files; //FileList object
+            let output = document.getElementById("show-image-frame");
+            output.innerHTML = "";
+            for (let i = 0; i < files.length; i++) {
+                let file = files[i];
+                //Only pics
+                if (!file.type.match('image'))
+                    continue;
+                let picReader = new FileReader();
+                picReader.addEventListener("load", function (event) {
+                    let picFile = event.target;
+                    let div = document.createElement("div");
+                    div.innerHTML = "<img class='thumbnail' src='" + picFile.result + "'" +
+                        "title='" + picReader.name + "'/>";
+                    output.insertBefore(div, null);
+                });
+                //Read the image
+                picReader.readAsDataURL(file);
+            }
+        });
+    } else {
+        console.log("Your browser does not support File API");
+    }
+
+    $('#image-frame').click(function(){
+        $('#image-upload').trigger('click');
+    });
+    
+</script>
+{% endblock %}

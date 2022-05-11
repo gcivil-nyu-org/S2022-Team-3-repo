@@ -5,5 +5,12 @@ django-environ
 flake8
 black
 coverage
-pyrebase
+coveralls
+pyrebase4
 datetime
+django-crispy-forms
+pyyaml
+django-allauth
+pillow
+model_bakery
+django-notifications-hq

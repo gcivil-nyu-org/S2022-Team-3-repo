@@ -1,0 +1,271 @@
+{% extends 'template.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/modal.css' %}" />
+<link rel="stylesheet" href="{% static 'modules/owl-carousel-2/css/owl-carousel2.min.css' %}" />
+<link rel="stylesheet" href="{% static 'css/earn-credits-banner.css' %}">
+<style>
+.owl-carousel {
+    position: relative;
+}
+.owl-next, .owl-prev {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
+}
+.owl-next {
+    right: 0;
+    display: flex;
+}
+.owl-prev{
+    left: 0;
+    display: flex;
+}
+.fas{
+     color: #6ABE52;
+    border-color: #6ABE52!important;
+}
+.btn-rounded{
+    padding: 15px;
+}
+
+#video-btn{
+    background-color: #6ABE52;
+    color: aliceblue;
+    font-size: large !important;
+    font-weight:200 !important;
+    height: 95px;
+    width: 300px;
+    position: absolute;
+    right:0;
+    top: 40%;
+    border-radius: 50px 0px 0px 50px!important;
+    text-decoration: none;
+}
+
+#video-btn span::before {
+    content: "";
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    z-index: 0;
+    background-color: white;
+    animation-delay: 0.2s;
+    animation: ripple 1.5s ease-out infinite;
+}
+
+@keyframes ripple {
+    from {
+        opacity: 1;
+        transform: scale(0);
+    }
+    to {
+        opacity: 0;
+        transform: scale(1.7);
+    }
+}
+
+.overlay-video {
+    display: none;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    opacity: 0;
+    -ms-transition: opacity 600ms ease-in;
+    transition: opacity 600ms ease-in;
+    -ms-transition: opacity .6s;
+    transition: opacity .6s;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, .7);
+    z-index: 999999;
+}
+
+.o1 {
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    opacity: 1;
+    -ms-transition: opacity 600ms ease-out;
+    transition: opacity 600ms ease-out;
+    -ms-transition: opacity .6s;
+    transition: opacity .6s;
+}
+
+.videoWrapperExt {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    max-width: 982px;
+    padding: 0 20px;
+}
+
+.videoWrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+}
+
+.videoWrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.close {
+    position: absolute;
+    top: -50px;
+    right: 0px;
+    cursor: pointer;
+    z-index: 9999;
+    height: 40px;
+    width: 40px;
+    background-size: 40px;
+    @media (max-width: 767px) and (orientation: landscape) {
+        display: none;
+    }
+}
+
+.productionlines { 
+    opacity: 0.5;
+    display: inline-block;
+    cursor: pointer;
+    color: rgba(165, 163, 163, 0.356);
+    
+    transition: all 0.5s;
+} 
+.productionlines:hover{ 
+    opacity: 0.9;
+}
+.productionlines .desc{
+    opacity: 0.5;
+    
+    transition: all 0.5s;
+}
+.productionlines:hover .desc{
+    opacity: 1;
+} 
+
+</style>
+
+{% endblock %}
+
+{% block main %}
+
+{% include 'home/templates/carousel-section.html' %}
+
+{% include 'home/templates/recycle-read-more.html' %}
+
+{% include 'home/templates/contribution.html' %}
+
+{% include 'home/templates/user-rank.html' %}
+
+{% if user.is_authenticated and not user.is_staff and not user.is_admin %}
+    {% include 'home/templates/volunteer-registration-banner.html' %}
+{% elif not user.is_authenticated %}
+    {% include 'home/templates/user-registration-banner.html' %}
+{% endif %}
+
+{% include 'home/templates/developers-corner.html' %}
+
+{% include 'home/templates/made-possible-by.html' %}
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'modules/owl-carousel-2/js/owl-carousel2.min.js' %}"></script>
+<script>
+
+    // Add profile enlarge animation
+    $('.profile-img').click(function(){
+        $(this).toggleClass('active');
+    });
+
+    // Redirect using button 
+    $('.btn-redirect').click(function(){
+        window.open($(this).attr('data-href'),'_blank');
+    });
+
+    //remove padding and marigin of main
+    $('#main').removeClass( "container-md mx-md-auto mx-1" ).addClass("anniversary-container p-0 m-0");
+
+    //carousel js
+    $(document).ready(function() {
+        let owl = $('.owl-carousel');
+        owl.owlCarousel({
+            margin: 20,
+            loop: true,
+            autoplay: true,
+            autoplayTimeout: 20000,
+            autoplayHoverpause: true,
+            items: 1,
+            nav: true,
+            navText : ["<i class='fas fa-chevron-left ml-0'></i>","<i class='fas fa-chevron-right mr-0'></i>"]
+        });
+    });
+
+    //scroll down to read more section
+    $('.read_more_btn').click(function(){
+        document.getElementById('read_more').scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+        });
+    });
+
+    //scroll down to statistics section
+    $('.contribution_btn').click(function(){
+        document.getElementById('contribution').scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+        });
+    });
+
+    //scroll down to user rank section
+    $('.rank').click(function(){
+        document.getElementById('rank-section').scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+        });
+    });
+
+    //add click event for playing video
+    $(".js-overlay-start").unbind("click").bind("click", function(e) {
+	    e.preventDefault();
+	    var src = $(this).attr("data-url");
+	    $(".overlay-video").show();
+	    setTimeout(function() {
+		    $(".overlay-video").addClass("o1");
+		    $("#player").attr("src", src);
+	    }, 100);
+    });
+
+    //video overlayer: close video if you click outside of the modal
+    $(".overlay-video").click(function(event) {
+	    if (!$(event.target).closest(".videoWrapperExt").length) {
+		    var PlayingVideoSrc = $("#player").attr("src").replace("&autoplay=1", "");
+		    $("#player").attr("src", PlayingVideoSrc);
+		    $(".overlay-video").removeClass("o1");
+		    setTimeout(function() {
+		    	$(".overlay-video").hide();
+		    }, 600);
+	    }
+    });
+
+    //video overlayer: close video via the close icon
+    $(".close").click(function(event) {
+		var PlayingVideoSrc = $("#player").attr("src").replace("&autoplay=1", "");
+		$("#player").attr("src", PlayingVideoSrc);
+		$(".overlay-video").removeClass("o1");
+		setTimeout(function() {
+			$(".overlay-video").hide();
+		}, 600);
+    });
+</script>
+{% endblock %}

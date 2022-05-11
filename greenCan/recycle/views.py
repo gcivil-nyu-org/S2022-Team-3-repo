@@ -4,11 +4,26 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import DropOffLocation, ZipCode
 
 
+"""
+function: index
+
+Set path for index page
+"""
+
+
 def index(request):
-    template = "index.html"
+    template = "recycle/templates/index.html"
     types = DropOffLocation.objects.values_list("type", flat=True).distinct()
     context = {"types": types}
     return render(request, template, context=context)
+
+
+"""
+function: get_dropoff_locations
+
+Query all drop-off locations from database
+Then reformat each drop-off location for frontend
+"""
 
 
 def get_dropoff_locations(centroid):
@@ -25,11 +40,19 @@ def get_dropoff_locations(centroid):
             FROM
                 (
                     SELECT *,
-                    row_number() over (partition by TYPE order by D.DISTANCE asc) as TYPE_RANK
+                    row_number() over (
+                        partition by TYPE order by D.DISTANCE asc
+                        ) as TYPE_RANK
                     FROM
                     (
                     SELECT *,
-                        calculate_distance({centroid['latitude']}, {centroid['longitude']}, R.LATITUDE, R.LONGITUDE, 'M') AS DISTANCE
+                        calculate_distance(
+                            {centroid['latitude']},
+                            {centroid['longitude']},
+                            R.LATITUDE,
+                            R.LONGITUDE,
+                            'M'
+                        ) AS DISTANCE
                         FROM RECYCLE_DROPOFFLOCATION AS R
                     ) AS D
                 ) AS F
@@ -64,6 +87,17 @@ def get_dropoff_locations(centroid):
     return sites
 
 
+"""
+function: search_dropoff_locations
+
+take user's input zip code from frontend
+then validate this zip code
+if it is valid, then sort all drop-off locations in database
+by the distance from centroid of the zip code to the drop-off location
+otherwise, return an error message
+"""
+
+
 @csrf_exempt
 def search_dropoff_locations(request):
     if request.GET.get("type") == "zipcode":
@@ -84,6 +118,7 @@ def search_dropoff_locations(request):
         centroid = {"latitude": user_lat, "longitude": user_long}
     else:
         err_msg = "Invalid arguments provided"
+        err_flag = True
         return JsonResponse({"err_flag": err_flag, "err_msg": err_msg})
     sites = get_dropoff_locations(centroid)
     search_result = {"centroid": centroid, "sites": sites}

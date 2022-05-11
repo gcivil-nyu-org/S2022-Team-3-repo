@@ -1,0 +1,106 @@
+.banner-container{
+    padding: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.banner-container .banner{
+    background:linear-gradient(-55deg, #6ABE52EE 29%, #57A242EE 29.1%, #57A242EE 68%, #6ABE52EE 68.1%);
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    box-shadow: 0 5px 10px #0005;
+    overflow: hidden;
+}
+
+.banner-container .banner .left-container{
+    flex:1 1 250px;
+    padding:15px;
+    text-align: center;
+}
+
+.banner-container .banner .left-container img{
+    width:80%;
+}
+
+.banner-container .banner .content{
+    flex:1 1 250px;
+    text-align: center;
+    padding:10px;
+    text-transform: uppercase;
+    font-family: 'Roboto', sans-serif;
+}
+
+.banner-container .banner .content span{
+    color:#eee;
+    font-size: 25px;
+    text-transform: capitalize;
+}
+
+.banner-container .banner .content h3{
+    color:#fff;
+    font-size: 40px;
+}
+
+.banner-container .banner .content p{
+    color:#eee;
+    font-size: 20px;
+    padding:10px 0;
+    text-transform: none;
+}
+
+.banner-container .banner .content p span{
+    color:#eeeeeeAA;
+    font-size: 14px;
+    padding:10px 0;
+    font-weight: lighter;
+    text-transform: none;
+}
+
+.banner-container .banner .right-container{
+    position: relative;
+    bottom: -33px;
+    padding:10px;
+    flex:1 1 250px;
+}
+
+.banner-container .banner .right-container img{
+    width:100%;
+}
+
+.btn-container .btn {
+    background-color: #fff;
+    color: #21212d;
+}
+
+.btn-container .btn:hover {
+    background-color: #21212d !important;
+    color: #fff !important;
+}
+
+@media (max-width:768px){
+    .banner-container .banner .right-container{
+        display: none;
+    }
+    .banner-container .banner {
+        margin: 0 !important;
+    }
+
+    .banner-container {
+        max-width: 90vw;
+    }
+
+    .btn-container {
+        display: flex;
+        justify-content: center;
+    }
+
+    .btn {
+        width: fit-content;
+    }
+}

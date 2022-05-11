@@ -7,121 +7,57 @@ Reuse | greenCan
 
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/carousel.css' %}" />
+<link rel="stylesheet" href="{% static 'css/form.css' %}" />
+<link rel="stylesheet" href="{% static 'css/modal.css' %}" />
 <link rel="stylesheet" href="{% static 'modules/owl-carousel-2/css/owl-carousel2.min.css' %}" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.bootstrapvalidator/0.5.3/css/bootstrapValidator.min.css">
+<style>
+  .has-error .help-block {
+    color: red;
+  }
+  .form-select{
+    outline: none;
+  }
+  .form-select:focus {
+    border-color: #6abe52;
+  }
+
+  .shelter-home-card {
+    cursor: pointer;
+  }
+  input[type=number]::-webkit-outer-spin-button,
+  input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type=number] {
+    -moz-appearance: textfield;
+  }
+</style>
 {% endblock %}
 
 {% block main %}
-<!--post ad window-->
-<div style = "position: absolute;
-float: left;
-left: 50%;
-top: 57%;
-width: 70%;
-transform: translate(-50%, -50%);
-background:#ffffff;
-border: 2px solid #00000060;
-border-radius: 10px;
-z-index: 1500;
-padding-left: 20px;
-padding-right: 20px;
-overflow-y: auto !important;
-
-box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);"class="modal fade" id="postAd_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title" id="exampleModalLabel" style = "text-align: center;">Create an Ad Post</h3>
-        </div>
-        <div class="modal-body">
-          <!--information collection form -->
-          <form class="form-container g-3 needs-validation" id = "infoForm">
-            <div class="form-group">
-            <!--img upload-->
-            <div class="upload-image-frame d-flex flex-column align-middle py-auto" id="image-frame">
-              <div class="upload-text" id="show-image-frame">
-                Upload few pictures of the item
-              </div>
-              <div class="upload-btn">
-                <i class="fa fa-plus"></i>
-                <span>
-                  ADD PICTURES
-                </span>
-              </div>
-            </div>
-            <input type="file" name="file[]" class="d-none" id="image-upload" accept="image/*" multiple="multiple" >
-            <p></p>
-            <div class ="row">
-            <!--left side info-->
-            <div class="col-6">
-                <label for="validationCustom01" class="form-label" ><b>Title:</b></label>
-                  <input type="text" class="form-control" name = "title" id="validationCustom01" style = "max-width: 100%;" placeholder="Enter the Title">
-             
-                <p></p>
-                <label for="validationCustom02" class="form-label"><b>Description:</b></label>
-                  <textarea rows=4 type="text" class="form-control" name = "description" id="validationCustom02" style = "max-width: 100%;height:auto;" placeholder="Enter the Description"></textarea>
-               
-            </div>
-
-            <!--right side info-->
-            <div class = "col-6">
-              <label for="validationCustom03" class="form-label"><b>Category:</b></label>
-              <select class="form-select" name = "category" id = "validationCustom03" aria-label="categories">
-                <option selected>Select Item Category</option>
-                <option value="1">Furniture</option>
-                <option value="2">Books</option>
-                <option value="3">Toys</option>
-                <option value="3">Electronics</option>
-              </select>
-           
-              <p></p>
-              
-              <label for="validationCustom04" class="form-label"><b>Your Contact Number:</b></label>
-                <input type="number" name = "number" class="form-control"  id="validationCustom04" placeholder="Enter your Contact Number" style = "max-width: 100%;">
-          
-                <p></p>
-              
-              <label for="validationCustom05" class="form-label"><b>Your E-mail:</b></label>
-                <input type="email" name = "email" class="form-control"  id="validationCustom05" placeholder="Enter your E-mail" style = "max-width: 100%;">
-            
-                <p></p> 
-              
-              <label for="validationCustom06" class="form-label"><b>Zipcode of Pick-up Location:</b></label>
-                <input type="text" name = "zipcode" class="form-control"  id="validationCustom06" placeholder="Enter the Zipcode of the loaction" style = "max-width: 100%;">
-          
-                <p></p> 
-            </div>
-            </div>
-         
-       <div class="form-group">
-              <div class="col-sm-9 col-sm-offset-3">
-                  <div id="messages" style="color: red;"></div>
-              </div>
-          </div>
-    
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="background-color: gray;">Close</button>
-            <button class="btn btn-primary" type="submit" value="Save">Post</button>
-
-            </div>
-          </form>
-          
-          <!--End of the form-->
-          </div>
-        </div>
-        <div class="modal-footer">
-        </div>
-      </div>
-    </div>
-<!--end of post add modal-->
-
 
 <div class="d-flex flex-column justify-content-center my-5">
-  <button class="btn-xlg btn-rounded coolBeans mb-md-2 mb-1 mt-3 mx-auto" data-bs-toggle="modal" data-bs-target="#postAd_Modal">POST AN AD</button>
+  <button class="btn-xlg btn-rounded mb-md-2 mb-1 mt-3 mx-auto {% if not user.is_authenticated %}
+  disabled
+  {% else %}
+  coolBeans
+  {% endif %}
+  " data-bs-toggle="modal" data-bs-target="#postAd_Modal" {% if not user.is_authenticated %}
+  disabled
+  {% endif %}>POST AN AD</button>
+  {% if not user.is_authenticated %}
+    <span style="color: red; text-align: center;">Login is required to post an ad.</span>
+  {% endif %}
   <div class="horizontal-divider">
         <div class="or-container">
             <span class="">OR</span>
         </div>
       </div>
-    <a href="#" class="button btn-xlg btn-rounded coolBeans mt-md-1 mt-1">NEAR BY DONATION SITE</a>
+    <a href="{% url 'reuse:ngo-donation' %}" class="button btn-xlg btn-rounded coolBeans mt-md-1 mt-1" >NEAR BY DONATION SITE</a>
 </div>
 <!-- Carousel -->
 <div class="container-fluid">
@@ -362,8 +298,9 @@ box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);"class="modal fade" id="postAd_Modal
 {% endblock %}
 
 {% block scripts %}
+{% include 'sweetalert2.html' %}
 <script src="{% static 'modules/owl-carousel-2/js/owl-carousel2.min.js' %}"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/bootstrap-validator/0.5.3/js/bootstrapValidator.js"></script>
 <script>
   $('.carousel').owlCarousel({
     margin: 10,
@@ -390,55 +327,20 @@ box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);"class="modal fade" id="postAd_Modal
   $('.shelter-home-card').click(function(){
     window.open($(this).attr('data-url'),'_blank');
   });
-
-
-//img uploading script
-
-//form validation function
-// $(document).ready(function () {
-//   'use strict'
-//   // Fetch all the forms we want to apply custom Bootstrap validation styles to
-//   var forms = document.querySelectorAll('.needs-validation')
-
-//   // Loop over them and prevent submission
-//   Array.prototype.slice.call(forms)
-//     .forEach(function (form) {
-//       form.addEventListener('submit', function (event) {
-//         if (!form.checkValidity()) {
-//           event.preventDefault()
-//           event.stopPropagation()
-//         }
-
-//         form.classList.add('was-validated')
-//       }, false)
-//     })
-// });
 </script>
 
 <!--post ad window-->
-<div style = "position: absolute;
-float: left;
-left: 50%;
-top: 50%;
-width: 70%;
-justify-content: center;
-transform: translate(-50%, -50%);
-background:#ffffff;
-border: 2px solid #00000060;
-border-radius: 10px;
-z-index: 1500;
-/* padding: 20px 40px !important; */
-box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);" class="modal fade" id="postAd_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" hidden="true">
-    <div class="modal-dialog modal-dialog-scrollable px-5 py-3">
+<div class="modal fade" id="postAd_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable px-5 py-3" style="overflow-y: initial !important">
       <div class="modal-content">
         <div class="modal-header">
           <h2 class="modal-title" id="exampleModalLabel" style = "text-align: center;">Create an Ad Post</h2>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" style="max-height: 80vh; overflow-x: hidden; overflow-y:auto;">
           <!--information collection form -->
-          <form class="form-container g-3" enctype="multipart/form-data" action="/reuse/create_post" method="POST">
+          <form class="form-container g-3" id = "infoForm" enctype="multipart/form-data" action="/reuse/create_post/" method="POST" role="form" style="margin-right:15px">
             <!--img upload-->
-            <div class="upload-image-frame d-flex flex-column align-middle py-auto" id="image-frame">
+            <div class="upload-image-frame d-flex flex-column align-middle py-4" id="image-frame">
               <div class="upload-text" id="show-image-frame">
                 Upload few pictures of the item
               </div>
@@ -449,7 +351,7 @@ box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);" class="modal fade" id="postAd_Moda
                 </span>
               </div>
             </div>
-            <input type="file" name="file[]" class="d-none" id="image-upload" accept="image/*" multiple="multiple" >
+            <input type="file" name="file[]" class="d-none" id="image-upload" accept="image/*" multiple="multiple" required>
             <br>
             {% csrf_token %}
             <div class ="row">
@@ -457,17 +359,11 @@ box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);" class="modal fade" id="postAd_Moda
             <div class="col-6">
                 <div class="form-group">
                   <label for="validationCustom01" class="form-label"><b>Title:</b></label>
-                  <input type="text" class="form-control" name="title" id="validationCustom01" style = "max-width: 100%;" placeholder="Enter the Title" required>
-                  <!-- <div class="invalid-feedback">
-                    Please enter a title for your item.
-                  </div> -->
+                  <input type="text" class="form-control" name="title" id="validationCustom01" placeholder="Enter the Title" required>
                 </div>
                 <div class="form-group">
                   <label for="validationCustom02" class="form-label"><b>Description:</b></label>
-                <textarea type="text" class="form-control" name="description" id="validationCustom02" style = "max-width: 100%;" placeholder="Enter the Description" required row="30"></textarea>
-                <!-- <div class="invalid-feedback">
-                  Please add some description.
-                </div> -->
+                <textarea type="text" class="form-control" name="description" id="validationCustom02"  placeholder="Enter the Description" required row="30"></textarea>
                 </div>
             </div>
 
@@ -475,37 +371,25 @@ box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);" class="modal fade" id="postAd_Moda
             <div class = "col-6">
               <div class="form-group">
                 <label for="validationCustom03" class="form-label"><b>Category:</b></label>
-              <select class="form-select" id = "validationCustom03" name="category" aria-label="categories" required>
-                <option selected>Select Item Category</option>
-                <option value="Furniture">Furniture</option>
-                <option value="Books">Books</option>
-                <option value="Toys">Toys</option>
-                <option value="Electronics">Electronics</option>
-              </select>
-              <!-- <div class="invalid-feedback">
-                Please select a category.
-              </div> -->
+                <select class="form-select" id = "validationCustom03" name="category" aria-label="categories" required>
+                  <option value="" disabled selected>Select your option</option>
+                  <option value="Furniture">Furniture</option>
+                  <option value="Books">Books</option>
+                  <option value="Toys">Toys</option>
+                  <option value="Electronics">Electronics</option>
+                </select>
               </div>
               <div class="form-group">
                 <label for="validationCustom04" class="form-label"><b>Your Contact Number:</b></label>
-                <input type="number" min="1000000000" max="9999999999" class="form-control"  id="validationCustom04" name="number" placeholder="Enter your Contact Number" style = "max-width: 100%;" required>
-                <!-- <div class="invalid-feedback">
-                  Please enter a valid contact number.
-                </div> -->
+                <input type="number" class="form-control"  id="validationCustom04" name="number" placeholder="Enter your Contact Number" style = "max-width: 100%;" required minlength="10" maxlength="10" min="1000000000" max="9999999999">
               </div>
               <div class="form-group">
-              <label for="validationCustom05" class="form-label"><b>Your E-mail:</b></label>
+                <label for="validationCustom05" class="form-label"><b>Your E-mail:</b></label>
                 <input type="email" class="form-control"  id="validationCustom05" name="email" placeholder="Enter your E-mail" style = "max-width: 100%;" required>
-                <!-- <div class="invalid-feedback">
-                  Please enter a valid email.
-                </div> -->
               </div>
               <div class="form-group">
               <label for="validationCustom06" class="form-label"><b>Zipcode of Pick-up Location:</b></label>
-                <input type="text" class="form-control" pattern="^\d{5}$" id="validationCustom06" name="zipcode" placeholder="Enter the Zipcode of the loaction" style = "max-width: 100%;" required>
-                <!-- <div class="invalid-feedback">
-                  Please enter a valid zipcode.
-                </div> -->
+                <input type="number" class="form-control" id="validationCustom06" name="zipcode" placeholder="Enter the Zipcode of the loaction" style = "max-width: 100%;" required minlength="5" maxlength="5" min="10001">
               </div>
             </div>
             </div>
@@ -523,20 +407,20 @@ box-shadow: 3px 3px 3px 0px rgba(0,0,0,0.3);" class="modal fade" id="postAd_Moda
 <!--end of post add modal-->
 <script>
 if (window.File && window.FileList && window.FileReader) {
-      var filesInput = document.getElementById("image-upload");
+      let filesInput = document.getElementById("image-upload");
       filesInput.addEventListener("change", function (event) {
-          var files = event.target.files; //FileList object
-          var output = document.getElementById("show-image-frame");
+          let files = event.target.files; //FileList object
+          let output = document.getElementById("show-image-frame");
           output.innerHTML = "";
-          for (var i = 0; i < files.length; i++) {
-              var file = files[i];
+          for (let i = 0; i < files.length; i++) {
+              let file = files[i];
               //Only pics
               if (!file.type.match('image'))
                   continue;
-              var picReader = new FileReader();
+              let picReader = new FileReader();
               picReader.addEventListener("load", function (event) {
-                  var picFile = event.target;
-                  var div = document.createElement("div");
+                  let picFile = event.target;
+                  let div = document.createElement("div");
                   div.innerHTML = "<img class='thumbnail' src='" + picFile.result + "'" +
                       "title='" + picReader.name + "'/>";
                   output.insertBefore(div, null);
@@ -553,78 +437,85 @@ if (window.File && window.FileList && window.FileReader) {
     $('#image-upload').trigger('click');
   });
 
-  
-//form validation function
-$(document).ready(function() {
-    $('#infoForm').bootstrapValidator({
-     container: '#messages',
+  $('input[type="number"]').keydown(function(event){
+      if (($(this).val().length >= parseInt($(this).attr('maxlength')) && event.keyCode!=8) || event.keyCode==189 || event.keyCode==190 || event.keyCode==107 || event.keyCode==109 || event.keyCode==13 || event.key.toLowerCase()=='e' || event.key=='.'){            
+          event.preventDefault();
+      }
+  });
+ 
+  $(document).ready(function() {
+  $('#infoForm').bootstrapValidator({
         feedbackIcons: {
             valid: 'glyphicon glyphicon-ok',
             invalid: 'glyphicon glyphicon-remove',
             validating: 'glyphicon glyphicon-refresh'
         },
         fields: {
-            title: {
+          title: {
                 validators: {
                     notEmpty: {
-                        message: '- The title is required and cannot be empty<br>'
+                        message: 'The title is required and cannot be empty'
                     },
                     stringLength: {
-                        max: 100,
-                        message: '- The title must be less than 100 characters long<br>'
+                        max: 50,
+                        message: 'The title should be less than 50 characters long'
                     }
                 }
             },
             description: {
                 validators: {
                     notEmpty: {
-                        message: '- The description is required and cannot be empty<br>'
+                        message: 'The description is required and cannot be empty'
                     },
                     stringLength: {
-                        max: 500,
-                        message: '- The description must be less than 100 characters long<br>'
+                        max: 200,
+                        message: 'The description must be less than 200 characters long'
                     }
                 }
             },
             category: {
                 validators: {
                     notEmpty: {
-                        message: '- Please select a category<br>'
+                        message: 'Please select a category<br>'
                     }
                 }
             },
             email: {
                 validators: {
                     notEmpty: {
-                        message: '- The email address is required<br>'
+                        message: 'The email address is required'
                     },
                     emailAddress: {
-                        message: '- The input is not a valid email address<br>'
+                        message: 'Please enter a valid email address'
                     }
                 }
             },
             zipcode: {
                 validators: {
                     notEmpty: {
-                        message: '- The zip code is required<br>'
+                        message: 'The zip code is required'
                     },
+                    stringLength: {
+                        min:5,
+                        max:5,
+                        message: 'Please enter a valid 5 digit NYC zip code'
+                    }
                 }
             },
             number: {
                 validators: {
                     notEmpty: {
-                        message: '- The contact number is required<br>'
+                        message: 'The contact number is required'
+                    },
+                    stringLength: {
+                        min:10,
+                        max:10,
+                        message: 'Please enter a valid phone number'
                     }
                 }
             }
-        },
-        
-    }).on('error.field.bv', function(e, data) {
-        data.bv.disableSubmitButtons(true); // Disable submit button
-      }).on('success.field.bv', function(e, data) {
-          data.bv.disableSubmitButtons(false); // Enable submit button
-      });
-});
+        }
+    })
+  })
 </script>
-
 {% endblock %}

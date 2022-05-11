@@ -1,0 +1,93 @@
+{% extends 'template.html' %}
+{% load static %}
+
+{% block title %}
+Rewards | greenCan
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/image-grid.css' %}">
+<link rel="stylesheet" href="{% static 'css/earn-credits-banner.css' %}">
+{% endblock %}
+
+{% block main %}
+<div class="container justify-content-center d-flex my-3">
+    <h1 class="h1">Green Wall</h1>
+</div>
+<div class="grid mb-5 effect-5 container d-flex justify-content-center" id="gallery">
+    <div class="grid-col animate" id="grid-col0"></div>
+    <div class="grid-col animate" id="grid-col1"></div>
+    <div class="grid-col animate" id="grid-col2"></div>
+    <div class="grid-col animate" id="grid-col3"></div>
+</div>
+<div class="loader mb-5"></div>
+<button class="load-more">Load More</button>
+{% include 'rewards/templates/earn-credits-banner.html' %}
+
+{% endblock %}
+
+{% block scripts %}
+{% include 'sweetalert2.html' %}
+<script>
+    
+    $(document).ready(function(){
+        var page = 1;
+        var hasNext = true;
+        $('.load-more').click(function(){
+            put_more_data();
+        });
+
+        function get_one_image_dom(image) {
+            if(image==null){
+                return '';
+            }
+            image_dom = '<div class="grid-item animate">'
+                        + `<img src="${image['image']}" alt="${image['event']}" class="img-fuild">`;
+            
+            if(image['description']){
+                image_dom += `<div class="overlay">${image['description']}</div>`
+            }
+            image_dom += '</div>';
+            return image_dom;
+        }
+
+        function put_more_data() {
+            $('.loader').show();
+            if(hasNext){
+                $.ajax({
+                    url: "{% url 'rewards:featured-image-gallery' %}",
+                    dataType: 'json',
+                    method: 'POST',
+                    data: {
+                        "csrfmiddlewaretoken": "{{ csrf_token }}",
+                        "page": page
+                    },
+                    success: function(data) {
+                        for(i=0; i<data.images.length; i++){
+                            $('#grid-col'+(i%4).toString()).append(get_one_image_dom(data.images[i]));
+                        }
+                        if(data.has_next!=hasNext){
+                            $('.load-more').toggle();
+                            hasNext = data.has_next
+                        }
+                        if(hasNext){
+                            page = data.next_page_number   
+                        }
+                        $('.loader').hide();
+                    },
+                    error : function() {
+                        Swal.fire(
+                            "Error",
+                            "Some Error occured please try again later.",
+                            "error"
+                        );
+                    }
+                });
+            }
+        }
+
+        put_more_data();
+    });
+
+</script>
+{% endblock %}

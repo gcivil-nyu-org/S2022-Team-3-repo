@@ -1,0 +1,259 @@
+{% extends 'template.html' %}
+{% load static %}
+
+{% block title %}
+Reduce | greenCan
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+<link rel="stylesheet" href="{% static 'css/map.css' %}" />
+<link rel="stylesheet" href="{% static 'css/filter.css' %}" />
+<link rel="stylesheet" href="{% static 'css/card.css' %}" />
+{% endblock %}
+
+{% block main %}
+<div class="d-flex justify-content-md-center justify-content-sm-start">
+    <h1 class="h1">Search for Paper-Bag Retailer</h1>
+</div>
+
+<div class="my-md-4 my-2 d-flex container-fluid justify-content-center pb-3 mx-auto">
+    <div class="row justify-content-center">
+        <div class="col-md-7 col-12 justify-content-center mb-1">
+          <input type="number" class="form-control" id="zipcode"  value="" pattern="^[0-9]{5}$" min="0" maxlen="5" required placeholder="Enter Zip code">
+          <div class="invalid-feedback justify-content-center d-none" id="zipcode-feedback">
+                Please enter a valid 5 digit NYC zip code.
+          </div>
+        </div>
+        <div class="col-md-2 col-12 justify-content-center mb-1">
+            <div class="mx-md-4 mx-2 p-2 or-container">
+                OR
+            </div>
+        </div>
+        <div class="col-md-3 col-12 justify-content-center mb-1">
+            <button class="btn btn-rounded" id="btn-locate-me">Locate Me</button>
+        </div>
+    </div>
+</div>
+
+<div class="row container-fluid px-0 mt-md-2">
+    <div class="col-md-8 col-sm-10 col-12 offset-md-0 offset-sm-1 pr-2">
+        <div id="map"></div>
+    </div>
+    <div class="col-md-4 col-sm-10 col-12 offset-md-0 offset-sm-1" >
+        <div id="listings" class="card_frame">
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/maps.js' %}"></script>
+{% include 'sweetalert2.html' %}
+<script>
+
+    let result = {};
+    let locations = {};
+    function markPoints(locations){
+        clearView();
+        let marker;
+        $.each(locations, function(key, site) {
+            marker = L.marker([site["latitude"],site["longitude"]],{icon: colorCategoryMap['public recycle bins'][0]})
+            marker.bindTooltip('<b>'+site["name"]+'</b><br/>'+site["street_address"]+'<br/>'+site['state_id']+' '+site['zip_code'], {
+                sticky: true
+            }).addTo(map);
+            var card = '<div class="border_rectangle1" onclick="focusOn('+site['latitude'].toString()+','+site['longitude'].toString()+')"> \
+                    <div class="info_circle_icon_frame"> \
+                      <div class="info_circle_icon"> \
+                        <i class="fa fa-info-circle" style="color: #C4C4C4"></i> \
+                        <div class="overlay">Drop-off site category: '+site['type']+'</div> \
+                      </div> \
+                    </div> \
+                    <div class="dhs_donation_site"> \
+                      '+site['name']+' \
+                    </div> \
+                    <div class="map_marker_icon_frame"> \
+                      <div class="map_marker_icon"> \
+                        <i class="fa fa-map-marker" style="color: #C4C4C4"></i> \
+                      </div> \
+                    </div> \
+                    <div class="address"> \
+                      '+site['street_address']+', '+'Manhattan'+', '+ site['state_id'] + ' ' + site['zip_code'] +'  \
+                    </div>';
+              if (site['phone_number']!=null && site['phone_number']!='' && site['phone_number']!=undefined){
+                  card += '<div class="phone_icon_frame"> \
+                      <div class="phone_icon"> \
+                        <i class="fa fa-phone" style="color: #C4C4C4"></i> \
+                      </div> \
+                    </div> \
+                    <div class="phone_number"> \
+                      '+site['phone_number']+' \
+                    </div>';
+              }
+
+                card += '<a class="direction_frame" href="https://www.google.com/maps?saddr=My+Location&daddr='+site['latitude'].toString()+','+site['longitude'].toString()+'" target="_blank"> \
+                      <div class="direction_border"> \
+                      </div> \
+                      <div class="get_direction"> \
+                        Get Directions \
+                      </div> \
+                    </a> \
+                  </div>';
+            $('#listings').append($(card));
+            markersLayer.addLayer(marker);
+        });
+    }
+
+    function clearView() {
+        if (map){
+            markersLayer.clearLayers();
+        }
+        $('#listings').html('');
+    }
+
+    function setMap() {
+      map = L.map('map').setView([latitude,longitude], 12);
+      L.tileLayer('https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=EQtP0E2R31WbTGk6hOcg', {
+          attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>',
+      }).addTo(map);
+      L.control.scale().addTo(map);
+      markersLayer.addTo(map);
+    }
+
+    function loadView() {
+        setMap();
+    }
+
+    window.onload = function() {loadView()}
+
+    function focusOn(lat,long, zoom=17){
+        map.flyTo([lat, long], zoom);
+    }
+
+    var curr_zipcode=''; 
+    var is_valid = false;
+
+    $('#zipcode').keyup(function (event) {
+        makeInvalid();
+        if(this.value.length==5){
+            zipcode = $('#zipcode').val();
+            if(is_valid===true && curr_zipcode===zipcode){
+                makeValid();
+            }else if (curr_zipcode!==zipcode){
+                curr_zipcode=zipcode;
+                getRetailerSitesZipcode(zipcode);
+            }
+        }
+    });
+
+    $('#zipcode').keydown(function(event){
+        if (event.keyCode==189 || event.keyCode==190 || event.keyCode==107 || event.keyCode==109 || event.keyCode==13 || event.key.toLowerCase()=='e' || event.key=='.'){            
+            event.preventDefault();
+        }
+        makeInvalid();
+    });
+
+    $('#zipcode').on("cut copy paste drop",function(e) {
+      e.preventDefault();
+   });
+
+    $('#zipcode').keypress(function(event){
+        if(this.value.length==5){
+            return false;
+        }else if(this.value.length<5){
+            makeInvalid();
+        }
+    });
+
+    function setData(data){
+        result = Object.entries(data['sites']);
+        locations = result.map(([key, value]) => value);
+        latitude = data['centroid']['latitude'];
+        longitude = data['centroid']['longitude'];
+        focusOn(latitude,longitude,13);
+        markPoints(locations);
+    }
+
+    function getRetailerSitesZipcode(zipcode){
+        clearView();
+        $.ajax({
+            url: "{% url 'reduce:fetch-retailer-locations' %}",
+            type: "GET",
+            async: false,
+            data: {
+                "type": "zipcode",
+                "zipcode": $('#zipcode').val()
+            },
+            success: function (data) {
+                if (data['err_flag']==true){
+                    makeInvalid();
+                    is_valid = false;
+                }else{
+                    makeValid();
+                    setData(data);  
+                    is_valid = true; 
+                }
+            }
+        });
+    }
+
+    function makeInvalid() {
+        $('#zipcode').addClass('is-invalid');
+        $('#zipcode-feedback').removeClass('d-none');
+    }
+
+    function makeValid() {
+        $('#zipcode').removeClass('is-invalid');
+        $('#zipcode-feedback').addClass('d-none');
+    }
+
+    function getRetailerSitesLocations(position){
+        let latitude = position.coords.latitude;
+        let longitude = position.coords.longitude;
+        clearView();
+        $.ajax({
+            url: "{% url 'reduce:fetch-retailer-locations' %}",
+            type: "GET",
+            async: false,
+            data: {
+                "type": "live-location",
+                "latitude": latitude,
+                "longitude": longitude
+            },
+            success: function (data) {
+                setData(data);
+                is_valid = true;
+            }
+        });
+    }
+
+    $('#btn-locate-me').click(function(){
+        $('#zipcode').val('');
+        makeValid();
+        getLocation();
+    });
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(getRetailerSitesLocations);
+        } else { 
+            Swal.fire(
+                    'Error!',
+                    'Geolocation is not supported by this browser.',
+                    'error'
+                );
+        }
+    }
+
+    $(function(){
+        $("[data-toggle='tooltip']").tooltip({
+            container: '.wrapper'
+        });
+    });
+
+    $('#main').addClass('my-3 mb-5 pb-5');
+
+</script>
+{% endblock %}
